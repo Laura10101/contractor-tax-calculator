@@ -7,3 +7,4 @@ class Jurisdiction(models.Model):
 
     # Add name attribute and validation rules for attribute
     name = models.CharField(max_length=50, null=False, blank=False)
+    
