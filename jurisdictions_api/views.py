@@ -3,7 +3,7 @@ from .services import get_all_jurisdictions
 
 # Create your views here.
 # Create the controller method to retrieve jurisdictions
-def get_jurisdictions():
+def get_jurisdictions(request):
     jurisdictions = get_all_jurisdictions()
     # Convert into a Python dictionary
     # Django will translate this into a JSON object
