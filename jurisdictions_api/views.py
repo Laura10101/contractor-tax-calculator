@@ -6,10 +6,11 @@ from .services import get_all_jurisdictions, create_jurisdiction
 
 # Create request handler method for jurisdiction requests 
 def handle_jurisdiction_request(request):
+    deserialized_request = json.loads(request.body)
     if request.method == 'GET':
         return get_jurisdictions(request)
     elif request.method == 'POST':
-        return create_jurisdiction(request)
+        return create_jurisdiction(deserialized_request)
 
 # Create your views here.
 # Create the controller method to retrieve jurisdictions
@@ -26,7 +27,7 @@ def get_jurisdictions(request):
 # Create controller method to create new jurisdiction 
 def post_jurisdiction(request):
     # Extract jurisdiction name from http request 
-    name = request.POST.get('name')
+    name = request['name']
     # Call services method to create new jurisdiction
     jurisdiction_id = create_jurisdiction(name)
     # Build JSON response including new jurisdiction ID
