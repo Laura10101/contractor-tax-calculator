@@ -15,9 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from jurisdictions_api.views import get_jurisdictions
+from jurisdictions_api.views import handle_jurisdiction_request
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/jurisdictions/', get_jurisdictions)
+    path('api/jurisdictions/', handle_jurisdiction_request)
 ]
