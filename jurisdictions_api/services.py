@@ -6,6 +6,7 @@ def get_all_jurisdictions():
     jurisdictions = Jurisdiction.objects.all()
     return jurisdictions
 
+# Create service method to add new jurisdiction
 def create_jurisdiction(name):
     # Create new jurisdiction in the database 
     new_jurisdiction = Jurisdiction.objects.create(name=name)
