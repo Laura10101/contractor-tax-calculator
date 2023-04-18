@@ -13,4 +13,11 @@ def create_jurisdiction(name):
     # Return ID of newly created jurisdiction
     return new_jurisdiction.id
 
+# Create new method to delete jurisdictions 
+def delete_jurisdictions(ids):
+    # Delete each id in the database 
+    Jurisdicition.objects.filter(ids).delete()
+
+
+
 
