@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from django.core.serializers import serialize
 from django.views.decorators.csrf import csrf_exempt
 import json
-from .services import get_all_jurisdictions, create_jurisdiction, delete_jurisdictions
+from .services import get_all_jurisdictions, create_jurisdiction, delete_jurisdictions_by_id
 
 # Create request handler method for jurisdiction requests
 @csrf_exempt
@@ -12,7 +12,7 @@ def handle_jurisdiction_request(request):
     if request.method == 'GET':
         response = get_jurisdictions(request)
     elif request.method == 'POST':
-        response = create_jurisdiction(json.loads(request.body))
+        response = post_jurisdiction(json.loads(request.body))
     elif request.method == 'DELETE':
         response = delete_jurisdictions(request)
     return JsonResponse(response, safe=False)
@@ -53,7 +53,7 @@ def delete_jurisdictions(request):
         id = int(id_str)
         ids.append(id)
     # Call services method to delete jurisdictions 
-    delete_jurisdictions(ids)
+    delete_jurisdictions_by_id(ids)
     # Build empty JSON response 
     response = { }
     # Return response 
