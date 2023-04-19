@@ -1,22 +1,23 @@
 from django.db import models
+from polymorphic.models import PolymorphicModel
 
 # Create your models here.
 class Form(models.Model):
     pass
 
-class Question(models.Model):
+class Question(PolymorphicModel):
     pass
 
-class BooleanQuestion(models.Model):
+class BooleanQuestion(Question):
     pass
 
-class MultipleChoiceQuestion(models.Model):
+class MultipleChoiceQuestion(Question):
     pass
 
 class MultipleChoiceOption(models.Model):
     pass
 
-class NumericQuestion(models.Model):
+class NumericQuestion(Question):
     pass
 
 class NumericAnswerValidationRule(models.Model):
