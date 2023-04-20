@@ -3,13 +3,14 @@ from polymorphic.models import PolymorphicModel
 
 # Create your models here.
 class Form(models.Model):
-    pass
-    # Questions - one to many 
-    
+    # Questions - one to many so the code for this is in the Question class as that is where
+    # the foreign key needs to be
     # Jurisdiction ID 
     jurisdiction_id = models.IntegerField()
 
 class Question(PolymorphicModel):
+    # Create foreign key for Form/Question relationship 
+    form = models.ForeignKey(Form, on_delete=models.CASCADE)
     # Question text 
     text = models.CharField(max_length=255, null=False, blank=False)
     # ordinal to indicate order in which questions are asked 
@@ -24,20 +25,24 @@ class BooleanQuestion(Question):
     # Nothing extra needed here 
 
 class MultipleChoiceQuestion(Question):
-    pass
     # Possible multiple choices - one to many 
+    # The code for this is in MultipleChoiceOption as that is where the 
+    # foreign key needs to be
+
     # Whether multiselect or single select 
     is_multiselect = models.BooleanField()
 
 class MultipleChoiceOption(models.Model):
+    # Create foreign key for MultipleChoiceQuestion/MCOption 
+    question = models.ForeignKey(MultipleChoiceQuestion, on_delete=models.CASCADE)
     # Option text 
     text = models.CharField(max_length=255, null=False, blank=False)
     # Explanatory notes for each option 
     explainer = models.CharField(max_length=255, null=False, blank=False)
 
 class NumericQuestion(Question):
-    pass
     # Numeric validation rule - one to one 
+    validation_rule = models.OneToOneField(NumericAnswerValidationRule)
 
 class NumericAnswerValidationRule(models.Model):
     # Is integer: boolean
