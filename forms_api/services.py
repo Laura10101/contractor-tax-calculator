@@ -9,13 +9,15 @@ def get_forms_by_jurisdiction_ids(jurisdiction_ids):
 def create_form():
     pass
 
+
 # Create new method to update forms 
 def update_forms():
     pass
 
 # Create new method to delete forms 
-def delete_forms(): 
-    pass 
+def delete_forms(id): 
+    Form.objects.filter(pk__exact=id).delete()
+    
 
 # Create new method to create questions 
 def create_question():
