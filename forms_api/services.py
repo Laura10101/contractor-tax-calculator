@@ -70,8 +70,41 @@ def create_numeric_question(form_id, text, ordinal, explainer, is_mandatory, is_
     return new_question.id
 
 # Create new method to update questions 
-def update_question():
-    pass
+def update_boolean_question(id, text, ordinal, explainer, is_mandatory):
+    BooleanQuestion.objects.filter(pk__exact=id).update(
+        text=text,
+        ordinal=ordinal,
+        explainer=explainer,
+        is_mandatory=is_mandatory
+        )
+
+def update_multiple_choice_question(id, text, ordinal, explainer, is_mandatory):
+    MultipleChoiceQuestion.objects.filter(pk__exact=id).update(
+        text=text,
+        ordinal=ordinal,
+        explainer=explainer,
+        is_mandatory=is_mandatory
+    )
+
+def update_numeric_question(id, text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value):
+    # Here I am updating two objects rather than one as the int/val fields are from the validation rule 
+    # class
+    # First, update the question data
+    # Create a variable to store the updated question info
+    question = NumericQuestion.objects.filter(pk__exact=id)
+    # Perform the update on the question
+    question.update(
+        text=text,
+        ordinal=ordinal,
+        explainer=explainer,
+        is_mandatory=is_mandatory
+    )
+    # Second, perform the update on the validation rule
+    question.validation_rule.update(
+        is_integer=is_integer,
+        min_value=min_value, 
+        max_value=max_value
+    )
 
 # Create new method to delete questions
 def delete_question(id):
