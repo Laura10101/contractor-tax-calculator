@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'jurisdictions_api',
     'rules_api',
     'polymorphic',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
