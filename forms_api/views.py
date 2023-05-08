@@ -56,14 +56,17 @@ def get_form(request):
 
 # Process CREATE requests for forms 
 def post_form(request):
-    pass
     # Extract relevant data from http request 
-
+    # For a post request, we get the data from the body of the http request
+    # Get jurisdiction id from http body 
+    # The request parameter is already a python dictionary (see handler method) 
+    jurisdiction_id = request['jurisdiction_id']
     # Call apropriate services method
-
+    form_id = create_form(jurisdiction_id)
     # Create response 
-
+    response = { 'form_id' : form_id }
     # Return response 
+    return response 
 
 # Process DELETE requests for forms
 def delete_form(request):
