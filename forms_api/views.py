@@ -60,7 +60,7 @@ class FormDetail(APIView):
 
 # Create django rest form question detail view
 class FormQuestionList(APIView):
-    def post(self, request):
+    def post(self, request, form_pk):
         # Extract relevant data from http request 
 
         # Call apropriate services method
@@ -71,7 +71,7 @@ class FormQuestionList(APIView):
 
 # Create django rest form questions list 
 class FormQuestionsDetail(APIView):
-    def delete(self, request, pk)
+    def delete(self, request, form_pk, pk)
         # Extract relevant data from http request 
 
         # Call apropriate services method
@@ -80,7 +80,7 @@ class FormQuestionsDetail(APIView):
 
         # Return response 
 
-    def put(self, request, pk):
+    def put(self, request, form_pk, pk):
         # Extract relevant data from http request 
 
         # Call apropriate services method
