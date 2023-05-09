@@ -8,7 +8,7 @@ import json
 from .serializers import JurisdictionSerializer
 from .services import get_all_jurisdictions, create_jurisdiction, delete_jurisdictions_by_id
 
-# Craete JursidictionList API View
+# Create JursidictionList API View
 class JurisdictionList(APIView):
 
     # Implement get jurisidctions controller method
@@ -24,7 +24,7 @@ class JurisdictionList(APIView):
         return Response(response)
 
     # Create controller method to delete jurisdictions by ids
-    def delete_jurisdictions(self, request):
+    def delete(self, request):
         # Extract jurisdiction ids to delete 
         # Get id string from http request 
         id_string = request.GET['ids']
@@ -40,11 +40,11 @@ class JurisdictionList(APIView):
         # Build empty JSON response 
         response = { }
         # Return response 
-        return response
+        return Response(response)
 
 
     # Create controller method to create new jurisdiction 
-    def post_jurisdiction(self, request):
+    def post(self, request):
         try:
             # Create the jurisidction serializer instance to serialize
             # the data provided in the request
@@ -54,4 +54,4 @@ class JurisdictionList(APIView):
             # Extract the ID and return the response
             return Response(item.data)
         except:
-            return Response(status=status.HTTP )
+            return Response(status=status.HTTP)
