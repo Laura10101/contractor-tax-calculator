@@ -16,11 +16,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from jurisdictions_api.views import JurisdictionList
-from forms_api.views import handle_forms_request, handle_questions_request
+from forms_api.views import FormDetail, FormsList, FormQuestionList, FormQuestionsDetail
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/jurisdictions/', JurisdictionList.as_view()),
     path('api/forms/questions/', handle_questions_request),
-    path('api/forms/', handle_forms_request),
+    path('api/forms/', FormList.as_view()),
+    path('api/forms/<int:pk>/', FormDetail.as_view())
+    path('api/forms/<int:forms_pk>/questions/', FormQuestionsList.as_view())
+    path('api/forms/<int:forms_pk>/questions/<int:pk>', FormQuestionsDetail.as_view())
 ]
