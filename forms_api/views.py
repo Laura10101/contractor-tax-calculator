@@ -2,111 +2,90 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.core.serializers import serialize
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework.views import APIView
+from rest_framework.response import Response
 import json
+from .serializers import *
 from .services import *
 
-# Create request handler method for forms requests
-@csrf_exempt
-def handle_forms_request(request):
-    print(str(request.method))
-    if request.method == 'GET':
-        response = get_form(request)
-    elif request.method == 'POST':
-        response = post_form(json.loads(request.body))
-    elif request.method == 'DELETE':
-        response = delete_form(request)
-    return JsonResponse(response, safe=False)
+# Create django rest forms list view 
+# Django rest views are classes inheriting APIView 
+class FormsList(APIView):
+    def post(self, request):
+        # Extract relevant data from http request 
+        # For a post request, we get the data from the body of the http request
+        # Get jurisdiction id from http body 
+        # The request parameter is already a python dictionary (see handler method) 
+        jurisdiction_id = request['jurisdiction_id']
+        # Call apropriate services method
+        form_id = create_form(jurisdiction_id)
+        # Create response 
+        response = { 'form_id' : form_id }
+        # Return response 
+        return response 
 
-# Create request handler method for questions requests
-@csrf_exempt
-def handle_questions_request(request):
-    print(str(request.method))
-    if request.method == 'GET':
-        response = get_question(request)
-    elif request.method == 'POST':
-        response = post_question(json.loads(request.body))
-    elif request.method == 'DELETE':
-        response = delete_question(request)
-    elif request.method == 'PUT':
-        response = put_question(json.loads(request.body))
-    return JsonResponse(response, safe=False)
+    # Create get form method 
+    def get(self, request):
+        # Extract relevant data from http request 
+        # Services method expects a list of jurisdiction ids
+        # List of jurisdiction ids will be provded as comma separated list in query string
+        # Get value of ids parameter from http request (query string)
+        id_string = request.GET['ids']
+        # Split string into array of strings 
+        id_strings = id_string.split(',')
+        # Parse the array of string values into an array integers 
+        id_ints = list(map(int, id_strings))
+        # Call apropriate services method
+        # Create variable to contain results of get method 
+        forms = get_forms_by_jurisdiction_ids(id_ints)
+        # Create response 
+        # Now to translate this into JSON data
+        serializer = FormSerializer(forms, many=True)
+        # Package the JSON data up into a response object
+        response = { 'forms' : serializer.data }
+        # Sending the Json response back to the client
+        return Response(response)
 
-# Controller methods
-# Process GET requests for forms 
-def get_form(request):
-    # Extract relevant data from http request 
-    # Services method expects a list of jurisdiction ids
-    # List of jurisdiction ids will be provded as comma separated list in query string
-    # Get value of ids parameter from http request (query string)
-    id_string = request.GET['ids']
-    # Split string into array of strings 
-    id_strings = id_string.split(',')
-    # Parse the array of string values into an array integers 
-    id_ints = list(map(int, id_strings))
-    # Call apropriate services method
-    # Create variable to contain results of get method 
-    forms = get_forms_by_jurisdiction_ids(id_ints)
-    # Create response 
-    # Now to translate this into JSON data
-    serialized_data = serialize('json', forms)
-    # Package the JSON data up into a response object
-    response = { 'forms' : json.loads(serialized_data) }
-    # Sending the Json response back to the client
-    return response
+# Create django rest form detail view 
+class FormDetail(APIView):
+    # Create delete form method 
+    def delete(self, request, pk):
+        # Extract relevant data from http request 
 
-# Process CREATE requests for forms 
-def post_form(request):
-    # Extract relevant data from http request 
-    # For a post request, we get the data from the body of the http request
-    # Get jurisdiction id from http body 
-    # The request parameter is already a python dictionary (see handler method) 
-    jurisdiction_id = request['jurisdiction_id']
-    # Call apropriate services method
-    form_id = create_form(jurisdiction_id)
-    # Create response 
-    response = { 'form_id' : form_id }
-    # Return response 
-    return response 
+        # Call apropriate services method
 
-# Process DELETE requests for forms
-def delete_form(request):
-    pass
-    # Extract relevant data from http request 
+        # Create response 
 
-    # Call apropriate services method
+        # Return response 
 
-    # Create response 
+# Create django rest form question detail view
+class FormQuestionList(APIView):
+    def post(self, request):
+        # Extract relevant data from http request 
 
-    # Return response 
+        # Call apropriate services method
 
-# Process CREATE requests for questions 
-def post_question(request):
-    pass
-    # Extract relevant data from http request 
+        # Create response 
 
-    # Call apropriate services method
+        # Return response 
 
-    # Create response 
+# Create django rest form questions list 
+class FormQuestionsDetail(APIView):
+    def delete(self, request, pk)
+        # Extract relevant data from http request 
 
-    # Return response 
+        # Call apropriate services method
 
-# Process DELETE requests for questions 
-def delete_question(request):
-    pass
-    # Extract relevant data from http request 
-    # Call apropriate services method
+        # Create response 
 
-    # Create response 
+        # Return response 
 
-    # Return response 
+    def put(self, request, pk):
+        # Extract relevant data from http request 
 
-# Process PUT requests for questions 
-def put_question(request):
-    pass
-    # Extract relevant data from http request 
+        # Call apropriate services method
 
-    # Call apropriate services method
+        # Create response 
 
-    # Create response 
+        # Return response 
 
-    # Return response 
