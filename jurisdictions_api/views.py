@@ -50,8 +50,9 @@ class JurisdictionList(APIView):
             # the data provided in the request
             serializer = JurisdictionSerializer(data=request.data)
             # Check that the data is valid and raise an exception if not
+            serializer.is_valid(raise_exception=True)
             serializer.save()
             # Extract the ID and return the response
-            return Response(item.data)
+            return Response(serializer.data)
         except:
             return Response(status=status.HTTP)
