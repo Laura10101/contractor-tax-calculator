@@ -17,14 +17,21 @@ class FormsList(APIView):
         # Extract relevant data from http request 
         # For a post request, we get the data from the body of the http request
         # Get jurisdiction id from http body 
-        # The request parameter is already a python dictionary (see handler method) 
-        jurisdiction_id = request['jurisdiction_id']
+        # The request parameter is already a python dictionary (see handler method)
+        if 'jurisdiction_id' not in request.data.keys():
+            # Code to return an HTTP 400 error
+            # From: https://stackoverflow.com/questions/23492000/how-to-return-http-400-response-in-django
+            return Response(
+                { 'error' : 'Invalid request. Please specify jurisdiction ID for the new form.' },
+                status=status.HTTP_400_BAD_REQUEST
+                )
+        jurisdiction_id = request.data['jurisdiction_id']
         # Call apropriate services method
         form_id = create_form(jurisdiction_id)
         # Create response 
         response = { 'form_id' : form_id }
         # Return response 
-        return response 
+        return Response(response)
 
     # Create get form method 
     def get(self, request):
