@@ -40,10 +40,6 @@ class MultipleChoiceOption(models.Model):
     # Explanatory notes for each option 
     explainer = models.CharField(max_length=255, null=False, blank=False)
 
-class NumericQuestion(Question):
-    # Numeric validation rule - one to one 
-    validation_rule = models.OneToOneField(NumericAnswerValidationRule)
-
 class NumericAnswerValidationRule(models.Model):
     # Is integer: boolean
     is_integer = models.BooleanField()
@@ -51,3 +47,7 @@ class NumericAnswerValidationRule(models.Model):
     min_value = models.IntegerField()
     # Max value
     max_value = models.IntegerField()
+
+class NumericQuestion(Question):
+    # Numeric validation rule - one to one 
+    validation_rule = models.OneToOneField(NumericAnswerValidationRule, on_delete=models.CASCADE)
