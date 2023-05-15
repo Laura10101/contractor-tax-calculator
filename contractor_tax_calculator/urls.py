@@ -21,9 +21,8 @@ from forms_api.views import FormDetail, FormsList, FormQuestionList, FormQuestio
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/jurisdictions/', JurisdictionList.as_view()),
-    path('api/forms/questions/', handle_questions_request),
-    path('api/forms/', FormList.as_view()),
-    path('api/forms/<int:pk>/', FormDetail.as_view())
-    path('api/forms/<int:form_pk>/questions/', FormQuestionsList.as_view())
-    path('api/forms/<int:form_pk>/questions/<int:pk>', FormQuestionsDetail.as_view())
+    path('api/forms/', FormsList.as_view()),
+    path('api/forms/<int:pk>/', FormDetail.as_view()),
+    path('api/forms/<int:form_pk>/questions/', FormQuestionList.as_view()),
+    path('api/forms/<int:form_pk>/questions/<int:pk>', FormQuestionsDetail.as_view()),
 ]
