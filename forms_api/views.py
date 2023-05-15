@@ -4,6 +4,8 @@ from django.core.serializers import serialize
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework import status
+from django.core.exceptions import SuspiciousOperation
 import json
 from .serializers import *
 from .services import *
@@ -30,7 +32,14 @@ class FormsList(APIView):
         # Services method expects a list of jurisdiction ids
         # List of jurisdiction ids will be provded as comma separated list in query string
         # Get value of ids parameter from http request (query string)
-        id_string = request.GET['ids']
+        if 'jurisdiction_ids' not in request.GET.keys():
+            # Code to return an HTTP 400 error
+            # From: https://stackoverflow.com/questions/23492000/how-to-return-http-400-response-in-django
+            return Response(
+                { 'error' : 'Invalid request. Please specify jurisdiction IDs' },
+                status=status.HTTP_400_BAD_REQUEST
+                )
+        id_string = request.GET['jurisdiction_ids']
         # Split string into array of strings 
         id_strings = id_string.split(',')
         # Parse the array of string values into an array integers 
