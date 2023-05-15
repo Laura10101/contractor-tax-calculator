@@ -2,7 +2,7 @@ from .models import *
 
 # Create new method to get forms by jurisidiction ids 
 def get_forms_by_jurisdiction_ids(jurisdiction_ids):
-    forms = Form.objects.filter(jursidiction_id__in=jurisdiction_ids)
+    forms = Form.objects.filter(jurisdiction_id__in=jurisdiction_ids)
     return forms
 
 # Create new method to create forms 
