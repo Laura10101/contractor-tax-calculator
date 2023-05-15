@@ -13,7 +13,7 @@ def create_form(jurisdiction_id):
     return new_form.id
 
 # Create new method to delete forms 
-def delete_forms(id): 
+def delete_form(id): 
     Form.objects.filter(pk__exact=id).delete()    
 
 # Create new method to create questions 
