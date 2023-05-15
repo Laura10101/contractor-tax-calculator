@@ -67,41 +67,170 @@ class FormDetail(APIView):
     # Create delete form method 
     def delete(self, request, pk):
         # Extract relevant data from http request 
-        pass
+        # Django automatically extracts the pk 
+        # from the url pattern, so nothing to do here. 
+
         # Call apropriate services method
-        
-        # Create response 
-
+        delete_form(pk)
+        # Create response via empty JSON object
+        response = { }
         # Return response 
+        return Response(response)
+       
 
-# Create django rest form question detail view
+# Create django rest form question list view
 class FormQuestionList(APIView):
     def post(self, request, form_pk):
-        # Extract relevant data from http request 
-        pass
+        # Validate common required attributes
+
+        common_attributes = [
+            'text',
+            'ordinal',
+            'explainer',
+            'is_mandatory',
+            'type',
+        ]
+        for attribute in common_attributes:
+            if attribute not in request.data.keys():
+            return Response(
+                { 'error' : 'Invalid request. Please supply ' + attribute },
+                status=status.HTTP_400_BAD_REQUEST
+                )
+
+        # Extract relevant informaiton from JSON object into set of variables
+        text = request.data['text']
+        ordinal = request.data['ordinal']
+        explainer = request.data['explainer']
+        is_mandatory = request.data['is_mandatory']
+        
+        # Call the apropriate post method depending on Q type, using switch statement
+        match request.data['type']:
+            case "boolean":
+                question_id = create_boolean_question(form_pk, text, ordinal, explainer, is_mandatory)
+
+            case "numeric":
+                question_id = __post_numeric_question(request, form_pk, text, ordinal, explainer, is_mandatory)
+
+            case "multiple_choice":
+                question_id = create_multiple_choice_question(form_pk, text, ordinal, explainer, is_mandatory)
+
+            case _:
+                return Response(
+                { 'error' : 'Invalid request. Type should be boolean, numeric or multiple_choice' },
+                status=status.HTTP_400_BAD_REQUEST
+                )
+
+            return Response({ 'id': question_id })
+
+    # Private controller methods to handle creating questions with specific attributes
+
+    # Method to create Numeric question 
+    def __post_numeric_question(self, request, form_pk, text, ordinal, explainer, is_mandatory):
+        # Validate that the specific attributes required are presnet
+        specific_attributes = [
+            'is_integer',
+            'min_value',
+            'max_value',
+        ]
+        for attribute in specific_attributes:
+            if attribute not in request.data.keys():
+            return Response(
+                { 'error' : 'Invalid request. Please supply ' + attribute },
+                status=status.HTTP_400_BAD_REQUEST
+                )
+
+        # Extract specific attributes from JSON data
+        is_integer = request.data['is_integer']
+        min_value = request.data['min_value']
+        max_value = request.data['max_value']
+
         # Call apropriate services method
-
-        # Create response 
-
-        # Return response 
+        question_id = create_numeric_question(
+            form_id, text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value
+            )
+        # Return question id
+        return question_id
 
 # Create django rest form questions list 
 class FormQuestionsDetail(APIView):
     def delete(self, request, form_pk, pk):
         # Extract relevant data from http request 
-        pass
+        # Django automatically extracts the pk 
+        # from the url pattern, so nothing to do here. 
+
         # Call apropriate services method
-
-        # Create response 
-
+        delete_question(pk)
+        # Create response via empty JSON object
+        response = { }
         # Return response 
+        return Response(response)
 
     def put(self, request, form_pk, pk):
-        # Extract relevant data from http request 
-        pass
+        # Validate common required attributes
+
+        common_attributes = [
+            'text',
+            'ordinal',
+            'explainer',
+            'is_mandatory',
+            'type',
+        ]
+        for attribute in common_attributes:
+            if attribute not in request.data.keys():
+            return Response(
+                { 'error' : 'Invalid request. Please supply ' + attribute },
+                status=status.HTTP_400_BAD_REQUEST
+                )
+
+        # Extract relevant informaiton from JSON object into set of variables
+        text = request.data['text']
+        ordinal = request.data['ordinal']
+        explainer = request.data['explainer']
+        is_mandatory = request.data['is_mandatory']
+        
+        # Call the apropriate post method depending on Q type, using switch statement
+        match request.data['type']:
+            case "boolean":
+                question_id = update_boolean_question(pk, text, ordinal, explainer, is_mandatory)
+
+            case "numeric":
+                question_id = __post_numeric_question(request, form_pk, pk, text, ordinal, explainer, is_mandatory)
+
+            case "multiple_choice":
+                question_id = update_multiple_choice_question(pk, text, ordinal, explainer, is_mandatory)
+
+            case _:
+                return Response(
+                { 'error' : 'Invalid request. Type should be boolean, numeric or multiple_choice' },
+                status=status.HTTP_400_BAD_REQUEST
+                )
+
+            return Response({ 'id': question_id })
+        
+        # Private controller methods to handle creating questions with specific attributes
+
+    # Method to put Numeric question 
+    def __put_numeric_question(self, request, form_pk, pk, text, ordinal, explainer, is_mandatory):
+        # Validate that the specific attributes required are presnet
+        specific_attributes = [
+            'is_integer',
+            'min_value',
+            'max_value',
+        ]
+        for attribute in specific_attributes:
+            if attribute not in request.data.keys():
+            return Response(
+                { 'error' : 'Invalid request. Please supply ' + attribute },
+                status=status.HTTP_400_BAD_REQUEST
+                )
+
+        # Extract specific attributes from JSON data
+        is_integer = request.data['is_integer']
+        min_value = request.data['min_value']
+        max_value = request.data['max_value']
+
         # Call apropriate services method
-
-        # Create response 
-
-        # Return response 
+        update_numeric_question(
+            pk, text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value
+            )
 
