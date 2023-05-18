@@ -92,10 +92,10 @@ class FormQuestionList(APIView):
         ]
         for attribute in common_attributes:
             if attribute not in request.data.keys():
-            return Response(
-                { 'error' : 'Invalid request. Please supply ' + attribute },
-                status=status.HTTP_400_BAD_REQUEST
-                )
+                return Response(
+                    { 'error' : 'Invalid request. Please supply ' + attribute },
+                    status=status.HTTP_400_BAD_REQUEST
+                    )
 
         # Extract relevant informaiton from JSON object into set of variables
         text = request.data['text']
@@ -109,7 +109,7 @@ class FormQuestionList(APIView):
                 question_id = create_boolean_question(form_pk, text, ordinal, explainer, is_mandatory)
 
             case "numeric":
-                question_id = __post_numeric_question(request, form_pk, text, ordinal, explainer, is_mandatory)
+                question_id = self.__post_numeric_question(request, form_pk, text, ordinal, explainer, is_mandatory)
 
             case "multiple_choice":
                 question_id = create_multiple_choice_question(form_pk, text, ordinal, explainer, is_mandatory)
@@ -119,14 +119,18 @@ class FormQuestionList(APIView):
                 { 'error' : 'Invalid request. Type should be boolean, numeric or multiple_choice' },
                 status=status.HTTP_400_BAD_REQUEST
                 )
-
-            return Response({ 'id': question_id })
+        if question_id == 0: 
+            return Response(
+                { 'error' : 'Invalid request. Please supply all required attributes' },
+                status=status.HTTP_400_BAD_REQUEST
+                )
+        return Response({ 'id': question_id })
 
     # Private controller methods to handle creating questions with specific attributes
 
     # Method to create Numeric question 
     def __post_numeric_question(self, request, form_pk, text, ordinal, explainer, is_mandatory):
-        # Validate that the specific attributes required are presnet
+        # Validate that the specific attributes required are present
         specific_attributes = [
             'is_integer',
             'min_value',
@@ -134,10 +138,11 @@ class FormQuestionList(APIView):
         ]
         for attribute in specific_attributes:
             if attribute not in request.data.keys():
-            return Response(
-                { 'error' : 'Invalid request. Please supply ' + attribute },
-                status=status.HTTP_400_BAD_REQUEST
-                )
+                return 0
+                    #{ 'error' : 'Invalid request. Please supply ' + attribute },
+                    #status=status.HTTP_400_BAD_REQUEST
+
+        print("Form PK is: " + str(form_pk))                    
 
         # Extract specific attributes from JSON data
         is_integer = request.data['is_integer']
@@ -146,7 +151,7 @@ class FormQuestionList(APIView):
 
         # Call apropriate services method
         question_id = create_numeric_question(
-            form_id, text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value
+            form_pk, text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value
             )
         # Return question id
         return question_id
@@ -177,10 +182,10 @@ class FormQuestionsDetail(APIView):
         ]
         for attribute in common_attributes:
             if attribute not in request.data.keys():
-            return Response(
-                { 'error' : 'Invalid request. Please supply ' + attribute },
-                status=status.HTTP_400_BAD_REQUEST
-                )
+                return Response(
+                    { 'error' : 'Invalid request. Please supply ' + attribute },
+                    status=status.HTTP_400_BAD_REQUEST
+                    )
 
         # Extract relevant informaiton from JSON object into set of variables
         text = request.data['text']
@@ -205,7 +210,7 @@ class FormQuestionsDetail(APIView):
                 status=status.HTTP_400_BAD_REQUEST
                 )
 
-            return Response({ 'id': question_id })
+        return Response({ 'id': question_id })
         
         # Private controller methods to handle creating questions with specific attributes
 
@@ -219,10 +224,10 @@ class FormQuestionsDetail(APIView):
         ]
         for attribute in specific_attributes:
             if attribute not in request.data.keys():
-            return Response(
-                { 'error' : 'Invalid request. Please supply ' + attribute },
-                status=status.HTTP_400_BAD_REQUEST
-                )
+                return Response(
+                    { 'error' : 'Invalid request. Please supply ' + attribute },
+                    status=status.HTTP_400_BAD_REQUEST
+                    )
 
         # Extract specific attributes from JSON data
         is_integer = request.data['is_integer']
