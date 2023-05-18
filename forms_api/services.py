@@ -21,7 +21,7 @@ def delete_form(id):
 
 def create_boolean_question(form_id, text, ordinal, explainer, is_mandatory):
     # Get form object by its primary key 
-    form = Form.objects.filter(pk__exact=form_id)
+    form = Form.objects.get(pk=form_id)
     # Create new question in the database
     new_question = BooleanQuestion.objects.create(
         form=form,
@@ -35,7 +35,7 @@ def create_boolean_question(form_id, text, ordinal, explainer, is_mandatory):
 
 def create_multiple_choice_question(form_id, text, ordinal, explainer, is_mandatory):
     # Get form object by its primary key 
-    form = Form.objects.filter(pk__exact=form_id)
+    form = Form.objects.get(pk=form_id)
     # Create new question in the database
     new_question = MultipleChoiceQuestion.objects.create(
         form=form,
@@ -49,7 +49,8 @@ def create_multiple_choice_question(form_id, text, ordinal, explainer, is_mandat
     
 def create_numeric_question(form_id, text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value):
     # Get form object by its primary key 
-    form = Form.objects.filter(pk__exact=form_id)
+    form = Form.objects.get(pk=form_id)
+    print("Form is: " + str(form))
     # Create numeric validation rule for this question 
     validation_rule = NumericAnswerValidationRule.objects.create(
         is_integer=is_integer,
