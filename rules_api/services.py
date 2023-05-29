@@ -27,6 +27,10 @@ def create_tax_category(name):
 def delete_tax_category(id):
     TaxCategory.objects.filter(pk__exact=id).delete()
 
+### GENERIC RULES ###
+def delete_rule(id):
+    Rule.objects.filter(pk__exact=id).delete()
+
 ### FLAT RATE RULES ###
 # Create rule 
 def create_flat_rate_rule(name, ordinal, explainer, variable_name, tax_rate):
@@ -49,10 +53,6 @@ def update_flat_rate_rule(id, name, ordinal, explainer, variable_name, tax_rate)
         flat_rate=tax_rate        
         )
 
-# Delete rule 
-def delete_flat_rate_rule(id):
-    FlatRateRule.objects.filter(pk__exact=id).delete()
-
 ### TIERED RATE RULES ###
 def create_tiered_rate_rule(name, ordinal, explainer, variable_name):
     tiered_rate_rule = TieredRateRule.objects.create(
@@ -71,9 +71,6 @@ def update_tiered_rate_rule(id, name, ordinal, explainer, variable_name):
         variable_name=variable_name       
         )
 
-def delete_tiered_rate_rule(id):
-    TieredRateRule.objects.filter(pk__exact=id).delete()
-
 ### RULE TIER ###
 # create a method to create rule tier
 def create_rule_tier(rule_id, min_value, max_value, ordinal, tier_rate):
@@ -88,7 +85,7 @@ def create_rule_tier(rule_id, min_value, max_value, ordinal, tier_rate):
     )
     return rule_tier.id
 
-def update_rule_tier():
+def update_rule_tier(id, min_value, max_value, ordinal, tier_rate):
     RuleTier.objects.filter(pk__exact=id).update(
         min_value=min_value,
         max_value=max_value,
@@ -100,8 +97,10 @@ def delete_rule_tier(id):
     RuleTier.objects.filter(pk__exact=id).delete()
 
 ### SECONDARY TIERED RATE RULES ###
-def create_secondary_tiered_rate_rule(name, ordinal, explainer, variable_name):
+def create_secondary_tiered_rate_rule(primary_rule_id, name, ordinal, explainer, variable_name):
+    primary_rule = TieredRateRule.objects.get(pk=primary_rule_id)
     secondary_tiered_rate_rule = SecondaryTieredRateRule.objects.create(
+        primary_rule = primary_rule,
         name=name, 
         ordinal=ordinal, 
         explainer=explainer, 
@@ -117,14 +116,13 @@ def update_secondary_tiered_rate_rule(id, name, ordinal, explainer, variable_nam
         variable_name=variable_name   
         )
 
-def delete_secondary_tiered_rate_rule(id):
-    SecondaryTieredRateRule.objects.filter(pk__exact=id).delete()
-
 ### SECONDARY RULE TIER ###
-def create_secondary_rule_tier(primary_tier_id, tier_rate):
+def create_secondary_rule_tier(secondary_rule_id, primary_tier_id, tier_rate):
     # Get the primary rule object from the database based on the rule tier id
+    secondary_rule = SecondaryTieredRateRule.objects.get(pk=secondary_rule_id)
     primary_tier = RuleTier.objects.get(pk=primary_tier_id)
     secondary_rule_tier = SecondaryRuleTier.objects.create(
+        secondary_rule=secondary_rule,
         primary_tier=primary_tier,
         tier_rate=tier_rate
     )

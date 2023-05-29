@@ -55,5 +55,6 @@ class SecondaryTieredRateRule(Rule):
 
 # This class represents a tier of a secondary tiered rate rule 
 class SecondaryRuleTier(models.Model):
+    secondary_rule = models.ForeignKey(SecondaryTieredRateRule, on_delete=models.CASCADE)
     primary_tier = models.ForeignKey(RuleTier, on_delete=models.CASCADE)
     tier_rate = models.DecimalField(decimal_places=2)
