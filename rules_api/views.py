@@ -10,13 +10,31 @@ import json
 from .serializers import *
 from .services import *
 
+# Create a function to validate that a request contains
+# the required attributes, so the API views can use it
+def contains_required_attributes(request, required_attributes):
+    for attribute in required_attributes:
+            if attribute not in request.data.keys():
+                return False
+    return True
+    
 # Create your views here.
 
 # Create django rest rule sets list view 
 # Django rest views are classes inheriting APIView 
 class RuleSetsList(APIView):
     def post(self, request):
+        # Define the list of required attributes 
+        required_attributes = [
+            'jurisdiction_id',
+            'tax_category_id',
+        ]
         # Validate data 
+        if not contains_required_attributes(request, required_attributes):
+            return Response(
+                { 'error' : 'Invalid request. Please supply all required attributes.' },
+                status=status.HTTP_400_BAD_REQUEST
+                )
         # Extract data required for service method 
         # Invoke service method 
         # Generate and return response 
@@ -32,17 +50,20 @@ class RuleSetDetail(APIView):
         # Generate and return response 
         pass
 
-    def put(self, request, pk):
-        # Validate data 
-        # Extract data required for service method 
-        # Invoke service method 
-        # Generate and return response 
-        pass
-
 # Create django rest tax categories list view 
 # Django rest views are classes inheriting APIView 
 class TaxCategoriesList(APIView):
     def post(self, request):
+        # Define the list of required attributes 
+        required_attributes = [
+            'name'
+        ]
+        # Validate data 
+        if not contains_required_attributes(request, required_attributes):
+            return Response(
+                { 'error' : 'Invalid request. Please supply all required attributes.' },
+                status=status.HTTP_400_BAD_REQUEST
+                )
         # Validate data 
         # Extract data required for service method 
         # Invoke service method 
@@ -59,26 +80,27 @@ class TaxCategoryDetail(APIView):
         # Generate and return response 
         pass
 
-    def put(self, request, pk):
-        # Validate data 
-        # Extract data required for service method 
-        # Invoke service method 
-        # Generate and return response 
-        pass
-
-# Create django rest flat rate rules list view 
-# Django rest views are classes inheriting APIView 
-class FlatRateRulesList(APIView):
+# Create Django REST rules list view
+class RuleList(APIView):
     def post(self, request):
+        # Define the list of required attributes 
+        required_attributes = [
+            
+        ]
+        # Validate data 
+        if not contains_required_attributes(request, required_attributes):
+            return Response(
+                { 'error' : 'Invalid request. Please supply all required attributes.' },
+                status=status.HTTP_400_BAD_REQUEST
+                )
         # Validate data 
         # Extract data required for service method 
         # Invoke service method 
         # Generate and return response 
         pass
 
-# Create django rest flat rate rule detail view 
-# Django rest views are classes inheriting APIView 
-class FlatRateRuleDetail(APIView):
+# Create Django REST rule detail view
+class RuleDetail(APIView):
     def delete(self, request, pk):
         # Validate data 
         # Extract data required for service method 
@@ -87,33 +109,16 @@ class FlatRateRuleDetail(APIView):
         pass
 
     def put(self, request, pk):
+        # Define the list of required attributes 
+        required_attributes = [
+            
+        ]
         # Validate data 
-        # Extract data required for service method 
-        # Invoke service method 
-        # Generate and return response 
-        pass
-
-# Create django rest tiered rate rule list view 
-# Django rest views are classes inheriting APIView 
-class TieredRateRulesList(APIView):
-    def post(self, request):
-        # Validate data 
-        # Extract data required for service method 
-        # Invoke service method 
-        # Generate and return response 
-        pass
-
-# Create django rest tiered rate rule detail view 
-# Django rest views are classes inheriting APIView 
-class TieredRateRuleDetail(APIView):
-    def delete(self, request, pk):
-        # Validate data 
-        # Extract data required for service method 
-        # Invoke service method 
-        # Generate and return response 
-        pass
-
-    def put(self, request, pk):
+        if not contains_required_attributes(request, required_attributes):
+            return Response(
+                { 'error' : 'Invalid request. Please supply all required attributes.' },
+                status=status.HTTP_400_BAD_REQUEST
+                )
         # Validate data 
         # Extract data required for service method 
         # Invoke service method 
@@ -124,6 +129,16 @@ class TieredRateRuleDetail(APIView):
 # Django rest views are classes inheriting APIView 
 class RuleTiersList(APIView):
     def post(self, request):
+        # Define the list of required attributes 
+        required_attributes = [
+            
+        ]
+        # Validate data 
+        if not contains_required_attributes(request, required_attributes):
+            return Response(
+                { 'error' : 'Invalid request. Please supply all required attributes.' },
+                status=status.HTTP_400_BAD_REQUEST
+                )
         # Validate data 
         # Extract data required for service method 
         # Invoke service method 
@@ -141,33 +156,16 @@ class RuleTierDetail(APIView):
         pass
 
     def put(self, request, pk):
+        # Define the list of required attributes 
+        required_attributes = [
+            
+        ]
         # Validate data 
-        # Extract data required for service method 
-        # Invoke service method 
-        # Generate and return response 
-        pass
-
-# Create django rest secondary tiered rate rules list view 
-# Django rest views are classes inheriting APIView 
-class SecondaryTieredRateRulesList(APIView):
-    def post(self, request):
-        # Validate data 
-        # Extract data required for service method 
-        # Invoke service method 
-        # Generate and return response 
-        pass
-
-# Create django rest secondary tiered rate detail view 
-# Django rest views are classes inheriting APIView 
-class SecondaryTieredRateRuleDetail(APIView):
-    def delete(self, request, pk):
-        # Validate data 
-        # Extract data required for service method 
-        # Invoke service method 
-        # Generate and return response 
-        pass
-
-    def put(self, request, pk):
+        if not contains_required_attributes(request, required_attributes):
+            return Response(
+                { 'error' : 'Invalid request. Please supply all required attributes.' },
+                status=status.HTTP_400_BAD_REQUEST
+                )
         # Validate data 
         # Extract data required for service method 
         # Invoke service method 
@@ -178,6 +176,16 @@ class SecondaryTieredRateRuleDetail(APIView):
 # Django rest views are classes inheriting APIView 
 class SecondaryRuleTiersList(APIView):
     def post(self, request):
+        # Define the list of required attributes 
+        required_attributes = [
+            
+        ]
+        # Validate data 
+        if not contains_required_attributes(request, required_attributes):
+            return Response(
+                { 'error' : 'Invalid request. Please supply all required attributes.' },
+                status=status.HTTP_400_BAD_REQUEST
+                )
         # Validate data 
         # Extract data required for service method 
         # Invoke service method 
@@ -195,6 +203,16 @@ class SecondaryRuleTierDetail(APIView):
         pass
 
     def put(self, request, pk):
+        # Define the list of required attributes 
+        required_attributes = [
+            
+        ]
+        # Validate data 
+        if not contains_required_attributes(request, required_attributes):
+            return Response(
+                { 'error' : 'Invalid request. Please supply all required attributes.' },
+                status=status.HTTP_400_BAD_REQUEST
+                )
         # Validate data 
         # Extract data required for service method 
         # Invoke service method 
