@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from jurisdictions_api.views import JurisdictionList
 from forms_api.views import FormDetail, FormsList, FormQuestionList, FormQuestionsDetail
+from rules_api.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -24,5 +25,19 @@ urlpatterns = [
     path('api/forms/', FormsList.as_view()),
     path('api/forms/<int:pk>/', FormDetail.as_view()),
     path('api/forms/<int:form_pk>/questions/', FormQuestionList.as_view()),
-    path('api/forms/<int:form_pk>/questions/<int:pk>', FormQuestionsDetail.as_view()),
+    path('api/forms/<int:form_pk>/questions/<int:pk>/', FormQuestionsDetail.as_view()),
+    path('api/rulesets/', RuleSetsList.as_view()),
+    path('api/rulesets/<int:pk>/', RuleSetDetail.as_view()),
+    path('api/taxcategories/', TaxCategoriesList.as_view()),
+    path('api/taxcategories/<int:pk>/', TaxCategoryDetail.as_view()),
+    path('api/flatraterules/', FlatRateRulesList.as_view()),
+    path('api/flatraterules/<int:pk>/', FlatRateRuleDetail.as_view()),
+    path('api/tieredraterules/', TieredRateRulesList.as_view()),
+    path('api/tieredraterules/<int:pk>/', TieredRateRuleDetail.as_view()),
+    path('api/tieredraterules/<int:rule_pk>/tiers/', RuleTiersList.as_view()),
+    path('api/tieredraterules/<int:rule_pk>/tiers/<int:pk>/', RuleTierDetail.as_view()),
+    path('api/secondarytieredraterules/', SecondaryTieredRateRulesList.as_view()),
+    path('api/secondarytieredraterules/<int:pk>/', SecondaryRuleTierDetail.as_view()),
+    path('api/secondarytieredraterules/<int:rule_pk>/tiers/', SecondaryTieredRateRulesList.as_view()),
+    path('api/secondarytieredraterules/<int:rule_pk>/tiers/<int:pk>/', SecondaryRuleTierDetail.as_view()),
 ]
