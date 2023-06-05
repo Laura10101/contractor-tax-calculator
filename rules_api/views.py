@@ -7,7 +7,6 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.core.exceptions import SuspiciousOperation
 import json
-from .serializers import *
 from .services import *
 
 # Create a function to validate that a request contains
