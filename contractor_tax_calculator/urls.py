@@ -38,4 +38,5 @@ urlpatterns = [
     path('api/rules/<int:rule_pk>/secondarytiers/', SecondaryRuleTiersList.as_view()),
     path('api/rules/<int:rule_pk>/secondarytiers/<int:pk>/', SecondaryRuleTierDetail.as_view()),
     path('accounts/', include('allauth.urls')),
+    path('checkout/', include('checkout.urls')),
 ]
