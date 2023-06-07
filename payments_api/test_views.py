@@ -196,15 +196,15 @@ def test_patch_payment_with_null_payment_data():
     ccv2 = None
     
     data = {
-        'billing_address' {
+        'billing_address': {
             'billing_street_1': billing_street_1,
             'billing_street_2': billing_street_2,
             'town_or_city': town_or_city,
             'county': county,
             'country': country,
             'postcode': postcode
-        }
-        'payment_details' {
+        },
+        'payment_details': {
             'card_number': card_number,
             'expiry_date': expiry_date,
             'ccv2': ccv2
@@ -231,15 +231,15 @@ def test_patch_payment_with_null_street1():
     ccv2 = 439
 
     data = {
-        'billing_address' {
+        'billing_address': {
             'billing_street_1': billing_street_1,
             'billing_street_2': billing_street_2,
             'town_or_city': town_or_city,
             'county': county,
             'country': country,
             'postcode': postcode
-        }
-        'payment_details' {
+        },
+        'payment_details': {
             'card_number': card_number,
             'expiry_date': expiry_date,
             'ccv2': ccv2
@@ -266,15 +266,15 @@ def test_patch_payment_with_null_street2():
     ccv2 = 439
     
     data = {
-        'billing_address' {
+        'billing_address': {
             'billing_street_1': billing_street_1,
             'billing_street_2': billing_street_2,
             'town_or_city': town_or_city,
             'county': county,
             'country': country,
             'postcode': postcode
-        }
-        'payment_details' {
+        },
+        'payment_details': {
             'card_number': card_number,
             'expiry_date': expiry_date,
             'ccv2': ccv2
@@ -301,15 +301,15 @@ def test_patch_payment_with_null_city():
     ccv2 = 439
     
     data = {
-        'billing_address' {
+        'billing_address': {
             'billing_street_1': billing_street_1,
             'billing_street_2': billing_street_2,
             'town_or_city': town_or_city,
             'county': county,
             'country': country,
             'postcode': postcode
-        }
-        'payment_details' {
+        },
+        'payment_details': {
             'card_number': card_number,
             'expiry_date': expiry_date,
             'ccv2': ccv2
@@ -336,15 +336,15 @@ def test_patch_payment_with_null_county():
     ccv2 = 439
     
     data = {
-        'billing_address' {
+        'billing_address': {
             'billing_street_1': billing_street_1,
             'billing_street_2': billing_street_2,
             'town_or_city': town_or_city,
             'county': county,
             'country': country,
             'postcode': postcode
-        }
-        'payment_details' {
+        },
+        'payment_details': {
             'card_number': card_number,
             'expiry_date': expiry_date,
             'ccv2': ccv2
@@ -371,15 +371,15 @@ def test_patch_payment_with_null_country():
     ccv2 = 439
     
     data = {
-        'billing_address' {
+        'billing_address': {
             'billing_street_1': billing_street_1,
             'billing_street_2': billing_street_2,
             'town_or_city': town_or_city,
             'county': county,
             'country': country,
             'postcode': postcode
-        }
-        'payment_details' {
+        },
+        'payment_details': {
             'card_number': card_number,
             'expiry_date': expiry_date,
             'ccv2': ccv2
@@ -406,15 +406,15 @@ def test_patch_payment_with_null_postcode():
     ccv2 = 439
     
     data = {
-        'billing_address' {
+        'billing_address': {
             'billing_street_1': billing_street_1,
             'billing_street_2': billing_street_2,
             'town_or_city': town_or_city,
             'county': county,
             'country': country,
             'postcode': postcode
-        }
-        'payment_details' {
+        },
+        'payment_details': {
             'card_number': card_number,
             'expiry_date': expiry_date,
             'ccv2': ccv2
@@ -441,15 +441,15 @@ def test_patch_payment_with_null_card_number():
     ccv2 = 439
     
     data = {
-        'billing_address' {
+        'billing_address': {
             'billing_street_1': billing_street_1,
             'billing_street_2': billing_street_2,
             'town_or_city': town_or_city,
             'county': county,
             'country': country,
             'postcode': postcode
-        }
-        'payment_details' {
+        },
+        'payment_details': {
             'card_number': card_number,
             'expiry_date': expiry_date,
             'ccv2': ccv2
@@ -476,15 +476,15 @@ def test_patch_payment_with_null_expiry():
     ccv2 = 439
     
     data = {
-        'billing_address' {
+        'billing_address': {
             'billing_street_1': billing_street_1,
             'billing_street_2': billing_street_2,
             'town_or_city': town_or_city,
             'county': county,
             'country': country,
             'postcode': postcode
-        }
-        'payment_details' {
+        },
+        'payment_details': {
             'card_number': card_number,
             'expiry_date': expiry_date,
             'ccv2': ccv2
@@ -511,15 +511,15 @@ def test_patch_payment_with_null_ccv2():
     ccv2 = None
     
     data = {
-        'billing_address' {
+        'billing_address': {
             'billing_street_1': billing_street_1,
             'billing_street_2': billing_street_2,
             'town_or_city': town_or_city,
             'county': county,
             'country': country,
             'postcode': postcode
-        }
-        'payment_details' {
+        },
+        'payment_details': {
             'card_number': card_number,
             'expiry_date': expiry_date,
             'ccv2': ccv2
@@ -547,15 +547,15 @@ def test_patch_payment():
     
     
     data = {
-        'billing_address' {
+        'billing_address': {
             'billing_street_1': billing_street_1,
             'billing_street_2': billing_street_2,
             'town_or_city': town_or_city,
             'county': county,
             'country': country,
             'postcode': postcode
-        }
-        'payment_details' {
+        },
+        'payment_details': {
             'card_number': card_number,
             'expiry_date': expiry_date,
             'ccv2': ccv2
@@ -596,15 +596,15 @@ def test_patch_payment_with_short_card_number():
     ccv2 = 439
     
     data = {
-        'billing_address' {
+        'billing_address': {
             'billing_street_1': billing_street_1,
             'billing_street_2': billing_street_2,
             'town_or_city': town_or_city,
             'county': county,
             'country': country,
             'postcode': postcode
-        }
-        'payment_details' {
+        },
+        'payment_details': {
             'card_number': card_number,
             'expiry_date': expiry_date,
             'ccv2': ccv2
@@ -631,15 +631,15 @@ def test_patch_payment_with_long_card_number():
     ccv2 = 439
     
     data = {
-        'billing_address' {
+        'billing_address': {
             'billing_street_1': billing_street_1,
             'billing_street_2': billing_street_2,
             'town_or_city': town_or_city,
             'county': county,
             'country': country,
             'postcode': postcode
-        }
-        'payment_details' {
+        },
+        'payment_details': {
             'card_number': card_number,
             'expiry_date': expiry_date,
             'ccv2': ccv2
@@ -666,15 +666,15 @@ def test_patch_payment_with_non_date_expiry():
     ccv2 = 439
     
     data = {
-        'billing_address' {
+        'billing_address': {
             'billing_street_1': billing_street_1,
             'billing_street_2': billing_street_2,
             'town_or_city': town_or_city,
             'county': county,
             'country': country,
             'postcode': postcode
-        }
-        'payment_details' {
+        },
+        'payment_details': {
             'card_number': card_number,
             'expiry_date': expiry_date,
             'ccv2': ccv2
@@ -701,15 +701,15 @@ def test_patch_payment_with_non_numeric_ccv2():
     ccv2 = '439'
     
     data = {
-        'billing_address' {
+        'billing_address': {
             'billing_street_1': billing_street_1,
             'billing_street_2': billing_street_2,
             'town_or_city': town_or_city,
             'county': county,
             'country': country,
             'postcode': postcode
-        }
-        'payment_details' {
+        },
+        'payment_details': {
             'card_number': card_number,
             'expiry_date': expiry_date,
             'ccv2': ccv2
@@ -736,15 +736,15 @@ def test_patch_payment_with_nonexistent_payment_id():
     ccv2 = '439'
     
     data = {
-        'billing_address' {
+        'billing_address': {
             'billing_street_1': billing_street_1,
             'billing_street_2': billing_street_2,
             'town_or_city': town_or_city,
             'county': county,
             'country': country,
             'postcode': postcode
-        }
-        'payment_details' {
+        },
+        'payment_details': {
             'card_number': card_number,
             'expiry_date': expiry_date,
             'ccv2': ccv2
