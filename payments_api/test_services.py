@@ -1,6 +1,6 @@
 from datetime import date
 from django.db import IntegrityError
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from .models import *
 from .services import *
 import pytest
@@ -47,57 +47,57 @@ def test_create_payment_with_null_data():
 
 def test_create_payment_with_null_subscription_id():
     susbcription_id = None
-    requested_subscription_months = None
-    subtotal = None
-    currency = None
+    requested_subscription_months = 6
+    subtotal = 42.30
+    currency = 'GBP'
     with pytest.raises(IntegrityError):
         id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
 
 def test_create_payment_with_null_months():
-    susbcription_id = None
+    susbcription_id = 1
     requested_subscription_months = None
-    subtotal = None
-    currency = None
+    subtotal = 42.30
+    currency = 'GBP'
     with pytest.raises(IntegrityError):
         id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
 
 def test_create_payment_with_negative_months():
-    susbcription_id = None
-    requested_subscription_months = None
-    subtotal = None
-    currency = None
+    susbcription_id = 1
+    requested_subscription_months = -6
+    subtotal = 42.30
+    currency = 'GBP'
     with pytest.raises(ValidationError):
         id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
 
 def test_create_payment_with_null_subtotal():
-    susbcription_id = None
-    requested_subscription_months = None
+    susbcription_id = 1
+    requested_subscription_months = 6
     subtotal = None
-    currency = None
+    currency = 'GBP'
     with pytest.raises(IntegrityError):
         id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
 
 def test_create_payment_with_negative_subtotal():
-    susbcription_id = None
-    requested_subscription_months = None
-    subtotal = None
-    currency = None
+    susbcription_id = 1
+    requested_subscription_months = 6
+    subtotal = -42.30
+    currency = 'GBP'
     with pytest.raises(ValidationError):
         id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
 
 def test_create_payment_with_invalid_currency_code():
-    susbcription_id = None
-    requested_subscription_months = None
-    subtotal = None
-    currency = None
+    susbcription_id = 1
+    requested_subscription_months = 6
+    subtotal = 42.30
+    currency = 'G'
     with pytest.raises(ValidationError):
         id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
 
 def test_create_valid_payment():
-    susbcription_id = None
-    requested_subscription_months = None
-    subtotal = None
-    currency = None
+    susbcription_id = 1
+    requested_subscription_months = 6
+    subtotal = 42.30
+    currency = 'GBP'
     id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
     assert id is not None
     payment = Payments.objects.get(pk=id)
@@ -113,42 +113,423 @@ def test_create_valid_payment():
     assert payment.stripe_pid is not None
 
 # Test patching a payment with payment details
+# Requires the following fields:
+# billing_street_1, billing_street_2, town_or_city, county, country, postcode, card_number, expiry_date, ccv2
 def test_update_payment_with_null_payment_data():
-    pass
+    susbcription_id = 1
+    requested_subscription_months = 6
+    subtotal = 42.30
+    currency = 'GBP'
+    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+
+    billing_street_1 = None
+    billing_street_2 = None
+    town_or_city = None
+    county = None
+    country = None
+    postcode = None
+    card_number = None
+    expiry_date = None
+    ccv2 = None
+    with pytest.raises(IntegrityError):
+        confirm_payment(
+            id,
+            billing_street_1, billing_street_2, town_or_city, county, country, postcode,
+            card_number, expiry_date, ccv2
+        )
 
 def test_update_payment_with_null_street1():
-    pass
+    susbcription_id = 1
+    requested_subscription_months = 6
+    subtotal = 42.30
+    currency = 'GBP'
+    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+    
+    billing_street_1 = '4 Maine Street'
+    billing_street_2 = 'St Leonards'
+    town_or_city = 'Exeter'
+    county = 'Devon'
+    country = 'United Kingdom'
+    postcode = 'EX2 7ST'
+    card_number = '1111 1111 1111 1111'
+    expiry_date = date.today()
+    ccv2 = 439
+    with pytest.raises(IntegrityError):
+        confirm_payment(
+            id,
+            billing_street_1, billing_street_2, town_or_city, county, country, postcode,
+            card_number, expiry_date, ccv2
+        )
 
 def test_update_payment_with_null_street2():
-    pass
+    susbcription_id = 1
+    requested_subscription_months = 6
+    subtotal = 42.30
+    currency = 'GBP'
+    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+
+    billing_street_1 = '4 Maine Street'
+    billing_street_2 = None
+    town_or_city = 'Exeter'
+    county = 'Devon'
+    country = 'United Kingdom'
+    postcode = 'EX2 7ST'
+    card_number = '1111 1111 1111 1111'
+    expiry_date = date.today()
+    ccv2 = 439
+    with pytest.raises(IntegrityError):
+        confirm_payment(
+            id,
+            billing_street_1, billing_street_2, town_or_city, county, country, postcode,
+            card_number, expiry_date, ccv2
+        )
 
 def test_update_payment_with_null_city():
-    pass
+    susbcription_id = 1
+    requested_subscription_months = 6
+    subtotal = 42.30
+    currency = 'GBP'
+    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+
+    billing_street_1 = '4 Maine Street'
+    billing_street_2 = 'St Leonards'
+    town_or_city = None
+    county = 'Devon'
+    country = 'United Kingdom'
+    postcode = 'EX2 7ST'
+    card_number = '1111 1111 1111 1111'
+    expiry_date = date.today()
+    ccv2 = 439
+    with pytest.raises(IntegrityError):
+        confirm_payment(
+            id,
+            billing_street_1, billing_street_2, town_or_city, county, country, postcode,
+            card_number, expiry_date, ccv2
+        )
 
 def test_update_payment_with_null_county():
-    pass
+    susbcription_id = 1
+    requested_subscription_months = 6
+    subtotal = 42.30
+    currency = 'GBP'
+    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+
+    billing_street_1 = '4 Maine Street'
+    billing_street_2 = 'St Leonards'
+    town_or_city = 'Exeter'
+    county = None
+    country = 'United Kingdom'
+    postcode = 'EX2 7ST'
+    card_number = '1111 1111 1111 1111'
+    expiry_date = date.today()
+    ccv2 = 439
+    with pytest.raises(IntegrityError):
+        confirm_payment(
+            id,
+            billing_street_1, billing_street_2, town_or_city, county, country, postcode,
+            card_number, expiry_date, ccv2
+        )
 
 def test_update_payment_with_null_country():
-    pass
+    susbcription_id = 1
+    requested_subscription_months = 6
+    subtotal = 42.30
+    currency = 'GBP'
+    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+
+    billing_street_1 = '4 Maine Street'
+    billing_street_2 = 'St Leonards'
+    town_or_city = 'Exeter'
+    county = 'Devon'
+    country = None
+    postcode = 'EX2 7ST'
+    card_number = '1111 1111 1111 1111'
+    expiry_date = date.today()
+    ccv2 = 439
+    with pytest.raises(IntegrityError):
+        confirm_payment(
+            id,
+            billing_street_1, billing_street_2, town_or_city, county, country, postcode,
+            card_number, expiry_date, ccv2
+        )
 
 def test_update_payment_with_null_postcode():
-    pass
+    susbcription_id = 1
+    requested_subscription_months = 6
+    subtotal = 42.30
+    currency = 'GBP'
+    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+
+    billing_street_1 = '4 Maine Street'
+    billing_street_2 = 'St Leonards'
+    town_or_city = 'Exeter'
+    county = 'Devon'
+    country = 'United Kingdom'
+    postcode = None
+    card_number = '1111 1111 1111 1111'
+    expiry_date = date.today()
+    ccv2 = 439
+    with pytest.raises(IntegrityError):
+        confirm_payment(
+            id,
+            billing_street_1, billing_street_2, town_or_city, county, country, postcode,
+            card_number, expiry_date, ccv2
+        )
 
 def test_update_payment_with_null_card_number():
-    pass
+    susbcription_id = 1
+    requested_subscription_months = 6
+    subtotal = 42.30
+    currency = 'GBP'
+    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+
+    billing_street_1 = '4 Maine Street'
+    billing_street_2 = 'St Leonards'
+    town_or_city = 'Exeter'
+    county = 'Devon'
+    country = 'United Kingdom'
+    postcode = 'EX2 7ST'
+    card_number = None
+    expiry_date = date.today()
+    ccv2 = 439
+    with pytest.raises(IntegrityError):
+        confirm_payment(
+            id,
+            billing_street_1, billing_street_2, town_or_city, county, country, postcode,
+            card_number, expiry_date, ccv2
+        )
 
 def test_update_payment_with_null_expiry():
-    pass
+    susbcription_id = 1
+    requested_subscription_months = 6
+    subtotal = 42.30
+    currency = 'GBP'
+    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+
+    billing_street_1 = '4 Maine Street'
+    billing_street_2 = 'St Leonards'
+    town_or_city = 'Exeter'
+    county = 'Devon'
+    country = 'United Kingdom'
+    postcode = 'EX2 7ST'
+    card_number = '1111 1111 1111 1111'
+    expiry_date = None
+    ccv2 = 439
+    with pytest.raises(IntegrityError):
+        confirm_payment(
+            id,
+            billing_street_1, billing_street_2, town_or_city, county, country, postcode,
+            card_number, expiry_date, ccv2
+        )
 
 def test_update_payment_with_null_ccv2():
-    pass
+    susbcription_id = 1
+    requested_subscription_months = 6
+    subtotal = 42.30
+    currency = 'GBP'
+    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+
+    billing_street_1 = '4 Maine Street'
+    billing_street_2 = 'St Leonards'
+    town_or_city = 'Exeter'
+    county = 'Devon'
+    country = 'United Kingdom'
+    postcode = 'EX2 7ST'
+    card_number = '1111 1111 1111 1111'
+    expiry_date = date.today()
+    ccv2 = None
+    with pytest.raises(IntegrityError):
+        confirm_payment(
+            id,
+            billing_street_1, billing_street_2, town_or_city, county, country, postcode,
+            card_number, expiry_date, ccv2
+        )
 
 def test_update_payment():
-    pass
+    susbcription_id = 1
+    requested_subscription_months = 6
+    subtotal = 42.30
+    currency = 'GBP'
+    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+
+    billing_street_1 = '4 Maine Street'
+    billing_street_2 = 'St Leonards'
+    town_or_city = 'Exeter'
+    county = 'Devon'
+    country = 'United Kingdom'
+    postcode = 'EX2 7ST'
+    card_number = '1111 1111 1111 1111'
+    expiry_date = date.today()
+    ccv2 = 439
+    
+    confirm_payment(
+        id,
+        billing_street_1, billing_street_2, town_or_city, county, country, postcode,
+        card_number, expiry_date, ccv2
+    )
+
+    payment = Payment.objects.get(pk=id)
+    assert payment is not None
+    assert payment.billing_street_1 == billing_street_1
+    assert payment.billing_street_2 == billing_street_2
+    assert payment.town_or_city == town_or_city
+    assert payment.county == county
+    assert payment.country == country
+    assert payment.postcode == postcode
+    assert payment.card_number == card_number
+    assert payment.expiry_date == expiry_date
+    assert payment.ccv2 == ccv2
+    assert payment.status == 3
+    assert payment.stripe_pid is not None
+
+def test_update_payment_with_short_card_number():
+    susbcription_id = 1
+    requested_subscription_months = 6
+    subtotal = 42.30
+    currency = 'GBP'
+    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+
+    billing_street_1 = '4 Maine Street'
+    billing_street_2 = 'St Leonards'
+    town_or_city = 'Exeter'
+    county = 'Devon'
+    country = 'United Kingdom'
+    postcode = 'EX2 7ST'
+    card_number = '1111 1111 1111 111'
+    expiry_date = date.today()
+    ccv2 = 439
+    with pytest.raises(ValidationError):
+        confirm_payment(
+            id,
+            billing_street_1, billing_street_2, town_or_city, county, country, postcode,
+            card_number, expiry_date, ccv2
+        )
+
+def test_update_payment_with_long_card_number():
+    susbcription_id = 1
+    requested_subscription_months = 6
+    subtotal = 42.30
+    currency = 'GBP'
+    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+
+    billing_street_1 = '4 Maine Street'
+    billing_street_2 = 'St Leonards'
+    town_or_city = 'Exeter'
+    county = 'Devon'
+    country = 'United Kingdom'
+    postcode = 'EX2 7ST'
+    card_number = '1111 1111 1111 1111 1'
+    expiry_date = date.today()
+    ccv2 = 439
+    with pytest.raises(ValidationError):
+        confirm_payment(
+            id,
+            billing_street_1, billing_street_2, town_or_city, county, country, postcode,
+            card_number, expiry_date, ccv2
+        )
+
+def test_update_payment_with_non_date_expiry():
+    susbcription_id = 1
+    requested_subscription_months = 6
+    subtotal = 42.30
+    currency = 'GBP'
+    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+
+    billing_street_1 = '4 Maine Street'
+    billing_street_2 = 'St Leonards'
+    town_or_city = 'Exeter'
+    county = 'Devon'
+    country = 'United Kingdom'
+    postcode = 'EX2 7ST'
+    card_number = '1111 1111 1111 1111 1'
+    expiry_date = 51085
+    ccv2 = 439
+    with pytest.raises(ValidationError):
+        confirm_payment(
+            id,
+            billing_street_1, billing_street_2, town_or_city, county, country, postcode,
+            card_number, expiry_date, ccv2
+        )
+
+def test_update_payment_with_non_numeric_ccv2():
+    susbcription_id = 1
+    requested_subscription_months = 6
+    subtotal = 42.30
+    currency = 'GBP'
+    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+
+    billing_street_1 = '4 Maine Street'
+    billing_street_2 = 'St Leonards'
+    town_or_city = 'Exeter'
+    county = 'Devon'
+    country = 'United Kingdom'
+    postcode = 'EX2 7ST'
+    card_number = '1111 1111 1111 1111 1'
+    expiry_date = date.today()
+    ccv2 = '439'
+    with pytest.raises(ValidationError):
+        confirm_payment(
+            id,
+            billing_street_1, billing_street_2, town_or_city, county, country, postcode,
+            card_number, expiry_date, ccv2
+        )
+
+def test_update_payment_with_nonexistent_payment_id():
+    susbcription_id = 1
+    requested_subscription_months = 6
+    subtotal = 42.30
+    currency = 'GBP'
+    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+
+    billing_street_1 = '4 Maine Street'
+    billing_street_2 = 'St Leonards'
+    town_or_city = 'Exeter'
+    county = 'Devon'
+    country = 'United Kingdom'
+    postcode = 'EX2 7ST'
+    card_number = '1111 1111 1111 1111 1'
+    expiry_date = date.today()
+    ccv2 = '439'
+    with pytest.raises(ValidationError):
+        confirm_payment(
+            id,
+            billing_street_1, billing_street_2, town_or_city, county, country, postcode,
+            card_number, expiry_date, ccv2
+        )
 
 # Test posting the payment result
-def test_confirm_payment_success():
-    pass
+def test_process_payment_success():
+    client = APIClient()
+    subs_url = '/api/subscriptions/'
 
-def test_fail_payment():
-    pass
+    stripe_pid = 'TBC'
+    id = complete_payment(stripe_pid)
+
+    payment = Payment.objects.get(pk=id)
+    assert payment.status == 4
+
+    subs_id = payment.subscription_id
+
+    response = client.get(subs_url + str(subs_id) + '/')
+    assert response.data['is_active'] == True
+    assert response.data['subscription_months'] == payment.requested_subscription_months
+    assert response.data['start_date'] == payment.completed_or_failed_date
+
+def test_process_payment_success_with_unknown_stripe_pid():
+    stripe_pid = 'pid_imadethisup'
+    with pytest.raises(ObjectDoesNotExist):
+        complete_payment(stripe_pid)
+
+def test_process_payment_failure():
+    stripe_pid = 'TBC'
+    reason = 'Some stripe reason'
+    id = fail_payment(stripe_pid, reason)
+
+    payment = Payment.objects.get(pk=id)
+    assert payment.status == -1
+
+def test_process_payment_failure_with_unknown_stripe_pid():
+    stripe_pid = 'pid_imadethisup'
+    reason = 'Some stripe reason'
+    with pytest.raises(ObjectDoesNotExist):
+        fail_payment(stripe_pid, reason)
