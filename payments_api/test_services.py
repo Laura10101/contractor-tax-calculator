@@ -113,37 +113,37 @@ def test_create_valid_payment():
     assert payment.stripe_pid is not None
 
 # Test patching a payment with payment details
-def test_patch_payment_with_null_payment_data():
+def test_update_payment_with_null_payment_data():
     pass
 
-def test_patch_payment_with_null_street1():
+def test_update_payment_with_null_street1():
     pass
 
-def test_patch_payment_with_null_street2():
+def test_update_payment_with_null_street2():
     pass
 
-def test_patch_payment_with_null_city():
+def test_update_payment_with_null_city():
     pass
 
-def test_patch_payment_with_null_county():
+def test_update_payment_with_null_county():
     pass
 
-def test_patch_payment_with_null_country():
+def test_update_payment_with_null_country():
     pass
 
-def test_patch_payment_with_null_postcode():
+def test_update_payment_with_null_postcode():
     pass
 
-def test_patch_payment_with_null_card_number():
+def test_update_payment_with_null_card_number():
     pass
 
-def test_patch_payment_with_null_expiry():
+def test_update_payment_with_null_expiry():
     pass
 
-def test_patch_payment_with_null_ccv2():
+def test_update_payment_with_null_ccv2():
     pass
 
-def test_patch_payment():
+def test_update_payment():
     pass
 
 # Test posting the payment result
