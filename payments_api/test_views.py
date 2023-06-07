@@ -17,13 +17,6 @@ client = APIClient()
 url = '/api/payments/'
 
 # Test creating a subscription
-@pytest.mark.django_db
-from datetime import date
-from django.db import IntegrityError
-from django.core.exceptions import ValidationError
-from .models import *
-from .services import *
-import pytest
 
 # Test creating a payment
 # Format for POST payload on payments API
@@ -34,68 +27,127 @@ import pytest
 #   'currency': 'ZZZ'
 # }
 @pytest.mark.django_db
-def test_create_payment_with_null_data():
+def test_post_payment_with_null_data():
     susbcription_id = None
     requested_subscription_months = None
     subtotal = None
     currency = None
-    with pytest.raises(IntegrityError):
-        id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
 
-def test_create_payment_with_null_subscription_id():
-    susbcription_id = None
-    requested_subscription_months = None
-    subtotal = None
-    currency = None
-    with pytest.raises(IntegrityError):
-        id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+    data = {
+        'subscription_id': subscription_id,
+        'requested_months': requested_subscription_months,
+        'subtotal': subtotal,
+        'currency': currency
+    }
+    response = client.post(url, data, format='json')
+    assert response.status_code == 400
 
-def test_create_payment_with_null_months():
+def test_post_payment_with_null_subscription_id():
     susbcription_id = None
-    requested_subscription_months = None
-    subtotal = None
-    currency = None
-    with pytest.raises(IntegrityError):
-        id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+    requested_subscription_months = 6
+    subtotal = 42.30
+    currency = 'GBP'
 
-def test_create_payment_with_negative_months():
-    susbcription_id = None
-    requested_subscription_months = None
-    subtotal = None
-    currency = None
-    with pytest.raises(ValidationError):
-        id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+    data = {
+        'subscription_id': subscription_id,
+        'requested_months': requested_subscription_months,
+        'subtotal': subtotal,
+        'currency': currency
+    }
+    response = client.post(url, data, format='json')
+    assert response.status_code == 400
 
-def test_create_payment_with_null_subtotal():
-    susbcription_id = None
+def test_post_payment_with_null_months():
+    susbcription_id = 1
     requested_subscription_months = None
-    subtotal = None
-    currency = None
-    with pytest.raises(IntegrityError):
-        id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+    subtotal = 42.30
+    currency = 'GBP'
+    
+    data = {
+        'subscription_id': subscription_id,
+        'requested_months': requested_subscription_months,
+        'subtotal': subtotal,
+        'currency': currency
+    }
+    response = client.post(url, data, format='json')
+    assert response.status_code == 400
 
-def test_create_payment_with_negative_subtotal():
-    susbcription_id = None
-    requested_subscription_months = None
-    subtotal = None
-    currency = None
-    with pytest.raises(ValidationError):
-        id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+def test_post_payment_with_negative_months():
+    susbcription_id = 1
+    requested_subscription_months = -6
+    subtotal = 42.30
+    currency = 'GBP'
+    
+    data = {
+        'subscription_id': subscription_id,
+        'requested_months': requested_subscription_months,
+        'subtotal': subtotal,
+        'currency': currency
+    }
+    response = client.post(url, data, format='json')
+    assert response.status_code == 400
 
-def test_create_payment_with_invalid_currency_code():
-    susbcription_id = None
-    requested_subscription_months = None
+def test_post_payment_with_null_subtotal():
+    susbcription_id = 1
+    requested_subscription_months = 6
     subtotal = None
-    currency = None
-    with pytest.raises(ValidationError):
-        id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+    currency = 'GBP'
+    
+    data = {
+        'subscription_id': subscription_id,
+        'requested_months': requested_subscription_months,
+        'subtotal': subtotal,
+        'currency': currency
+    }
+    response = client.post(url, data, format='json')
+    assert response.status_code == 400
 
-def test_create_valid_payment():
-    susbcription_id = None
-    requested_subscription_months = None
-    subtotal = None
-    currency = None
-    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+def test_post_payment_with_negative_subtotal():
+    susbcription_id = 1
+    requested_subscription_months = 6
+    subtotal = -42.30
+    currency = 'GBP'
+    
+    data = {
+        'subscription_id': subscription_id,
+        'requested_months': requested_subscription_months,
+        'subtotal': subtotal,
+        'currency': currency
+    }
+    response = client.post(url, data, format='json')
+    assert response.status_code == 400
+
+def test_post_payment_with_invalid_currency_code():
+    susbcription_id = 1
+    requested_subscription_months = 6
+    subtotal = 42.30
+    currency = 'G'
+    
+    data = {
+        'subscription_id': subscription_id,
+        'requested_months': requested_subscription_months,
+        'subtotal': subtotal,
+        'currency': currency
+    }
+    response = client.post(url, data, format='json')
+    assert response.status_code == 400
+
+def test_post_valid_payment():
+    susbcription_id = 1
+    requested_subscription_months = 6
+    subtotal = 42.30
+    currency = 'GBP'
+    
+    data = {
+        'subscription_id': subscription_id,
+        'requested_months': requested_subscription_months,
+        'subtotal': subtotal,
+        'currency': currency
+    }
+    response = client.post(url, data, format='json')
+    assert response.status_code == 400
+    id = response.data['id']
+
     assert id is not None
     payment = Payments.objects.get(pk=id)
     assert payment.subscription_id == subscription_id
@@ -127,37 +179,579 @@ def test_create_valid_payment():
 #   }
 # }
 def test_patch_payment_with_null_payment_data():
-    pass
+    susbcription_id = 1
+    requested_subscription_months = 6
+    subtotal = 42.30
+    currency = 'GBP'
+    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+
+    billing_street_1 = None
+    billing_street_2 = None
+    town_or_city = None
+    county = None
+    country = None
+    postcode = None
+    card_number = None
+    expiry_date = None
+    ccv2 = None
+    
+    data = {
+        'billing_address' {
+            'billing_street_1': billing_street_1,
+            'billing_street_2': billing_street_2,
+            'town_or_city': town_or_city,
+            'county': county,
+            'country': country,
+            'postcode': postcode
+        }
+        'payment_details' {
+            'card_number': card_number,
+            'expiry_date': expiry_date,
+            'ccv2': ccv2
+        }
+    }
+    response = client.patch(url + str(id) + '/', data, format='json')
+    assert response.status_code == 400
 
 def test_patch_payment_with_null_street1():
-    pass
+    susbcription_id = 1
+    requested_subscription_months = 6
+    subtotal = 42.30
+    currency = 'GBP'
+    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+    
+    billing_street_1 = '4 Maine Street'
+    billing_street_2 = 'St Leonards'
+    town_or_city = 'Exeter'
+    county = 'Devon'
+    country = 'United Kingdom'
+    postcode = 'EX2 7ST'
+    card_number = '1111 1111 1111 1111'
+    expiry_date = date.today()
+    ccv2 = 439
+
+    data = {
+        'billing_address' {
+            'billing_street_1': billing_street_1,
+            'billing_street_2': billing_street_2,
+            'town_or_city': town_or_city,
+            'county': county,
+            'country': country,
+            'postcode': postcode
+        }
+        'payment_details' {
+            'card_number': card_number,
+            'expiry_date': expiry_date,
+            'ccv2': ccv2
+        }
+    }
+    response = client.patch(url + str(id) + '/', data, format='json')
+    assert response.status_code == 400
 
 def test_patch_payment_with_null_street2():
-    pass
+    susbcription_id = 1
+    requested_subscription_months = 6
+    subtotal = 42.30
+    currency = 'GBP'
+    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+
+    billing_street_1 = '4 Maine Street'
+    billing_street_2 = None
+    town_or_city = 'Exeter'
+    county = 'Devon'
+    country = 'United Kingdom'
+    postcode = 'EX2 7ST'
+    card_number = '1111 1111 1111 1111'
+    expiry_date = date.today()
+    ccv2 = 439
+    
+    data = {
+        'billing_address' {
+            'billing_street_1': billing_street_1,
+            'billing_street_2': billing_street_2,
+            'town_or_city': town_or_city,
+            'county': county,
+            'country': country,
+            'postcode': postcode
+        }
+        'payment_details' {
+            'card_number': card_number,
+            'expiry_date': expiry_date,
+            'ccv2': ccv2
+        }
+    }
+    response = client.patch(url + str(id) + '/', data, format='json')
+    assert response.status_code == 400
 
 def test_patch_payment_with_null_city():
-    pass
+    susbcription_id = 1
+    requested_subscription_months = 6
+    subtotal = 42.30
+    currency = 'GBP'
+    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+
+    billing_street_1 = '4 Maine Street'
+    billing_street_2 = 'St Leonards'
+    town_or_city = None
+    county = 'Devon'
+    country = 'United Kingdom'
+    postcode = 'EX2 7ST'
+    card_number = '1111 1111 1111 1111'
+    expiry_date = date.today()
+    ccv2 = 439
+    
+    data = {
+        'billing_address' {
+            'billing_street_1': billing_street_1,
+            'billing_street_2': billing_street_2,
+            'town_or_city': town_or_city,
+            'county': county,
+            'country': country,
+            'postcode': postcode
+        }
+        'payment_details' {
+            'card_number': card_number,
+            'expiry_date': expiry_date,
+            'ccv2': ccv2
+        }
+    }
+    response = client.patch(url + str(id) + '/', data, format='json')
+    assert response.status_code == 400
 
 def test_patch_payment_with_null_county():
-    pass
+    susbcription_id = 1
+    requested_subscription_months = 6
+    subtotal = 42.30
+    currency = 'GBP'
+    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+
+    billing_street_1 = '4 Maine Street'
+    billing_street_2 = 'St Leonards'
+    town_or_city = 'Exeter'
+    county = None
+    country = 'United Kingdom'
+    postcode = 'EX2 7ST'
+    card_number = '1111 1111 1111 1111'
+    expiry_date = date.today()
+    ccv2 = 439
+    
+    data = {
+        'billing_address' {
+            'billing_street_1': billing_street_1,
+            'billing_street_2': billing_street_2,
+            'town_or_city': town_or_city,
+            'county': county,
+            'country': country,
+            'postcode': postcode
+        }
+        'payment_details' {
+            'card_number': card_number,
+            'expiry_date': expiry_date,
+            'ccv2': ccv2
+        }
+    }
+    response = client.patch(url + str(id) + '/', data, format='json')
+    assert response.status_code == 400
 
 def test_patch_payment_with_null_country():
-    pass
+    susbcription_id = 1
+    requested_subscription_months = 6
+    subtotal = 42.30
+    currency = 'GBP'
+    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+
+    billing_street_1 = '4 Maine Street'
+    billing_street_2 = 'St Leonards'
+    town_or_city = 'Exeter'
+    county = 'Devon'
+    country = None
+    postcode = 'EX2 7ST'
+    card_number = '1111 1111 1111 1111'
+    expiry_date = date.today()
+    ccv2 = 439
+    
+    data = {
+        'billing_address' {
+            'billing_street_1': billing_street_1,
+            'billing_street_2': billing_street_2,
+            'town_or_city': town_or_city,
+            'county': county,
+            'country': country,
+            'postcode': postcode
+        }
+        'payment_details' {
+            'card_number': card_number,
+            'expiry_date': expiry_date,
+            'ccv2': ccv2
+        }
+    }
+    response = client.patch(url + str(id) + '/', data, format='json')
+    assert response.status_code == 400
 
 def test_patch_payment_with_null_postcode():
-    pass
+    susbcription_id = 1
+    requested_subscription_months = 6
+    subtotal = 42.30
+    currency = 'GBP'
+    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+
+    billing_street_1 = '4 Maine Street'
+    billing_street_2 = 'St Leonards'
+    town_or_city = 'Exeter'
+    county = 'Devon'
+    country = 'United Kingdom'
+    postcode = None
+    card_number = '1111 1111 1111 1111'
+    expiry_date = date.today()
+    ccv2 = 439
+    
+    data = {
+        'billing_address' {
+            'billing_street_1': billing_street_1,
+            'billing_street_2': billing_street_2,
+            'town_or_city': town_or_city,
+            'county': county,
+            'country': country,
+            'postcode': postcode
+        }
+        'payment_details' {
+            'card_number': card_number,
+            'expiry_date': expiry_date,
+            'ccv2': ccv2
+        }
+    }
+    response = client.patch(url + str(id) + '/', data, format='json')
+    assert response.status_code == 400
 
 def test_patch_payment_with_null_card_number():
-    pass
+    susbcription_id = 1
+    requested_subscription_months = 6
+    subtotal = 42.30
+    currency = 'GBP'
+    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+
+    billing_street_1 = '4 Maine Street'
+    billing_street_2 = 'St Leonards'
+    town_or_city = 'Exeter'
+    county = 'Devon'
+    country = 'United Kingdom'
+    postcode = 'EX2 7ST'
+    card_number = None
+    expiry_date = date.today()
+    ccv2 = 439
+    
+    data = {
+        'billing_address' {
+            'billing_street_1': billing_street_1,
+            'billing_street_2': billing_street_2,
+            'town_or_city': town_or_city,
+            'county': county,
+            'country': country,
+            'postcode': postcode
+        }
+        'payment_details' {
+            'card_number': card_number,
+            'expiry_date': expiry_date,
+            'ccv2': ccv2
+        }
+    }
+    response = client.patch(url + str(id) + '/', data, format='json')
+    assert response.status_code == 400
 
 def test_patch_payment_with_null_expiry():
-    pass
+    susbcription_id = 1
+    requested_subscription_months = 6
+    subtotal = 42.30
+    currency = 'GBP'
+    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+
+    billing_street_1 = '4 Maine Street'
+    billing_street_2 = 'St Leonards'
+    town_or_city = 'Exeter'
+    county = 'Devon'
+    country = 'United Kingdom'
+    postcode = 'EX2 7ST'
+    card_number = '1111 1111 1111 1111'
+    expiry_date = None
+    ccv2 = 439
+    
+    data = {
+        'billing_address' {
+            'billing_street_1': billing_street_1,
+            'billing_street_2': billing_street_2,
+            'town_or_city': town_or_city,
+            'county': county,
+            'country': country,
+            'postcode': postcode
+        }
+        'payment_details' {
+            'card_number': card_number,
+            'expiry_date': expiry_date,
+            'ccv2': ccv2
+        }
+    }
+    response = client.patch(url + str(id) + '/', data, format='json')
+    assert response.status_code == 400
 
 def test_patch_payment_with_null_ccv2():
-    pass
+    susbcription_id = 1
+    requested_subscription_months = 6
+    subtotal = 42.30
+    currency = 'GBP'
+    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+
+    billing_street_1 = '4 Maine Street'
+    billing_street_2 = 'St Leonards'
+    town_or_city = 'Exeter'
+    county = 'Devon'
+    country = 'United Kingdom'
+    postcode = 'EX2 7ST'
+    card_number = '1111 1111 1111 1111'
+    expiry_date = date.today()
+    ccv2 = None
+    
+    data = {
+        'billing_address' {
+            'billing_street_1': billing_street_1,
+            'billing_street_2': billing_street_2,
+            'town_or_city': town_or_city,
+            'county': county,
+            'country': country,
+            'postcode': postcode
+        }
+        'payment_details' {
+            'card_number': card_number,
+            'expiry_date': expiry_date,
+            'ccv2': ccv2
+        }
+    }
+    response = client.patch(url + str(id) + '/', data, format='json')
+    assert response.status_code == 400
 
 def test_patch_payment():
-    pass
+    susbcription_id = 1
+    requested_subscription_months = 6
+    subtotal = 42.30
+    currency = 'GBP'
+    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+
+    billing_street_1 = '4 Maine Street'
+    billing_street_2 = 'St Leonards'
+    town_or_city = 'Exeter'
+    county = 'Devon'
+    country = 'United Kingdom'
+    postcode = 'EX2 7ST'
+    card_number = '1111 1111 1111 1111'
+    expiry_date = date.today()
+    ccv2 = 439
+    
+    
+    data = {
+        'billing_address' {
+            'billing_street_1': billing_street_1,
+            'billing_street_2': billing_street_2,
+            'town_or_city': town_or_city,
+            'county': county,
+            'country': country,
+            'postcode': postcode
+        }
+        'payment_details' {
+            'card_number': card_number,
+            'expiry_date': expiry_date,
+            'ccv2': ccv2
+        }
+    }
+    response = client.patch(url + str(id) + '/', data, format='json')
+    assert response.status_code == 200
+
+    payment = Payment.objects.get(pk=id)
+    assert payment is not None
+    assert payment.billing_street_1 == billing_street_1
+    assert payment.billing_street_2 == billing_street_2
+    assert payment.town_or_city == town_or_city
+    assert payment.county == county
+    assert payment.country == country
+    assert payment.postcode == postcode
+    assert payment.card_number == card_number
+    assert payment.expiry_date == expiry_date
+    assert payment.ccv2 == ccv2
+    assert payment.status == 3
+    assert payment.stripe_pid is not None
+
+def test_patch_payment_with_short_card_number():
+    susbcription_id = 1
+    requested_subscription_months = 6
+    subtotal = 42.30
+    currency = 'GBP'
+    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+
+    billing_street_1 = '4 Maine Street'
+    billing_street_2 = 'St Leonards'
+    town_or_city = 'Exeter'
+    county = 'Devon'
+    country = 'United Kingdom'
+    postcode = 'EX2 7ST'
+    card_number = '1111 1111 1111 111'
+    expiry_date = date.today()
+    ccv2 = 439
+    
+    data = {
+        'billing_address' {
+            'billing_street_1': billing_street_1,
+            'billing_street_2': billing_street_2,
+            'town_or_city': town_or_city,
+            'county': county,
+            'country': country,
+            'postcode': postcode
+        }
+        'payment_details' {
+            'card_number': card_number,
+            'expiry_date': expiry_date,
+            'ccv2': ccv2
+        }
+    }
+    response = client.patch(url + str(id) + '/', data, format='json')
+    assert response.status_code == 400
+
+def test_patch_payment_with_long_card_number():
+    susbcription_id = 1
+    requested_subscription_months = 6
+    subtotal = 42.30
+    currency = 'GBP'
+    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+
+    billing_street_1 = '4 Maine Street'
+    billing_street_2 = 'St Leonards'
+    town_or_city = 'Exeter'
+    county = 'Devon'
+    country = 'United Kingdom'
+    postcode = 'EX2 7ST'
+    card_number = '1111 1111 1111 1111 1'
+    expiry_date = date.today()
+    ccv2 = 439
+    
+    data = {
+        'billing_address' {
+            'billing_street_1': billing_street_1,
+            'billing_street_2': billing_street_2,
+            'town_or_city': town_or_city,
+            'county': county,
+            'country': country,
+            'postcode': postcode
+        }
+        'payment_details' {
+            'card_number': card_number,
+            'expiry_date': expiry_date,
+            'ccv2': ccv2
+        }
+    }
+    response = client.patch(url + str(id) + '/', data, format='json')
+    assert response.status_code == 400
+
+def test_patch_payment_with_non_date_expiry():
+    susbcription_id = 1
+    requested_subscription_months = 6
+    subtotal = 42.30
+    currency = 'GBP'
+    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+
+    billing_street_1 = '4 Maine Street'
+    billing_street_2 = 'St Leonards'
+    town_or_city = 'Exeter'
+    county = 'Devon'
+    country = 'United Kingdom'
+    postcode = 'EX2 7ST'
+    card_number = '1111 1111 1111 1111 1'
+    expiry_date = 51085
+    ccv2 = 439
+    
+    data = {
+        'billing_address' {
+            'billing_street_1': billing_street_1,
+            'billing_street_2': billing_street_2,
+            'town_or_city': town_or_city,
+            'county': county,
+            'country': country,
+            'postcode': postcode
+        }
+        'payment_details' {
+            'card_number': card_number,
+            'expiry_date': expiry_date,
+            'ccv2': ccv2
+        }
+    }
+    response = client.patch(url + str(id) + '/', data, format='json')
+    assert response.status_code == 400
+
+def test_patch_payment_with_non_numeric_ccv2():
+    susbcription_id = 1
+    requested_subscription_months = 6
+    subtotal = 42.30
+    currency = 'GBP'
+    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+
+    billing_street_1 = '4 Maine Street'
+    billing_street_2 = 'St Leonards'
+    town_or_city = 'Exeter'
+    county = 'Devon'
+    country = 'United Kingdom'
+    postcode = 'EX2 7ST'
+    card_number = '1111 1111 1111 1111 1'
+    expiry_date = date.today()
+    ccv2 = '439'
+    
+    data = {
+        'billing_address' {
+            'billing_street_1': billing_street_1,
+            'billing_street_2': billing_street_2,
+            'town_or_city': town_or_city,
+            'county': county,
+            'country': country,
+            'postcode': postcode
+        }
+        'payment_details' {
+            'card_number': card_number,
+            'expiry_date': expiry_date,
+            'ccv2': ccv2
+        }
+    }
+    response = client.patch(url + str(id) + '/', data, format='json')
+    assert response.status_code == 400
+
+def test_patch_payment_with_nonexistent_payment_id():
+    susbcription_id = 1
+    requested_subscription_months = 6
+    subtotal = 42.30
+    currency = 'GBP'
+    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+
+    billing_street_1 = '4 Maine Street'
+    billing_street_2 = 'St Leonards'
+    town_or_city = 'Exeter'
+    county = 'Devon'
+    country = 'United Kingdom'
+    postcode = 'EX2 7ST'
+    card_number = '1111 1111 1111 1111 1'
+    expiry_date = date.today()
+    ccv2 = '439'
+    
+    data = {
+        'billing_address' {
+            'billing_street_1': billing_street_1,
+            'billing_street_2': billing_street_2,
+            'town_or_city': town_or_city,
+            'county': county,
+            'country': country,
+            'postcode': postcode
+        }
+        'payment_details' {
+            'card_number': card_number,
+            'expiry_date': expiry_date,
+            'ccv2': ccv2
+        }
+    }
+    response = client.patch(url + str(id) + '/', data, format='json')
+    assert response.status_code == 400
 
 # Test posting the payment result
 # Expected payload for Stripe webhook will be a payment intent object
@@ -232,16 +826,72 @@ webhook_payload = {
     "type": ""
 }
 
-def test_stripe_webhook_payment_success():
-    webhook_payload['type'] == 'payment_intent.succeeded'
-    webhook_payload['data']['object']['status'] == 'succeeded'
-    request_url = url + '/stripe-webhooks/'
+def test_process_payment_success_webhook():
+    client = APIClient()
+    subs_url = '/api/subscriptions/'
+
+    susbcription_id = 1
+    requested_subscription_months = 6
+    subtotal = 42.30
+    currency = 'GBP'
+    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+
+    payment = Payment.objects.get(pk=id)
+
+    webhook_payload['type'] = 'payment_intent.succeeded'
+    webhook_payload['data']['object']['id'] = payment.stripe_pid
+    webhook_payload['data']['object']['status'] = 'succeeded'
+    request_url = url + 'stripe-webhooks/'
     response = client.post(request_url, webhook_payload, format='json')
     assert response.status_code == 200
 
-def test_stripe_webhook_payment_failure():
-    webhook_payload['type'] == 'payment_intent.payment_failed'
-    webhook_payload['data']['object']['status'] == 'failed'
-    request_url = url + '/stripe_webhooks/'
+    payment = Payment.objects.get(pk=id)
+    assert payment.status == 4
+
+    subs_id = payment.subscription_id
+
+    response = client.get(subs_url + str(subs_id) + '/')
+    assert response.data['is_active'] == True
+    assert response.data['subscription_months'] == payment.requested_subscription_months
+    assert response.data['start_date'] == payment.completed_or_failed_date
+
+def test_process_payment_success_webhook_with_unknown_stripe_pid():
+    stripe_pid = 'pid_imadethisup'
+
+    webhook_payload['type'] = 'payment_intent.succeeded'
+    webhook_payload['data']['object']['id'] = stripe_pid
+    webhook_payload['data']['object']['status'] = 'succeeded'
+    request_url = url + 'stripe-webhooks/'
+    response = client.post(request_url, webhook_payload, format='json')
+    assert response.status_code == 404
+
+def test_process_payment_failure_webhook():
+    reason = 'Some stripe reason'
+
+    susbcription_id = 1
+    requested_subscription_months = 6
+    subtotal = 42.30
+    currency = 'GBP'
+    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+
+    payment = Payment.objects.get(pk=id)
+
+    webhook_payload['type'] = 'payment_intent.payment_failed'
+    webhook_payload['data']['object']['id'] = payment.stripe_pid
+    webhook_payload['data']['object']['status'] = 'failed'
+    request_url = url + 'stripe_webhooks/'
     response = client.post(request_url, webhook_payload, format='json')
     assert response.status_code == 200
+
+    payment = Payment.objects.get(pk=id)
+    assert payment.status == -1
+    assert payment.stripe_error == reason
+
+def test_process_payment_failure_webhook_with_unknown_stripe_pid():
+    stripe_pid = 'pid_imadethisup'
+    webhook_payload['type'] = 'payment_intent.payment_failed'
+    webhook_payload['data']['object']['id'] = stripe_pid
+    webhook_payload['data']['object']['status'] = 'failed'
+    request_url = url + 'stripe_webhooks/'
+    response = client.post(request_url, webhook_payload, format='json')
+    assert response.status_code == 404
