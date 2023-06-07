@@ -762,7 +762,7 @@ def test_patch_payment_with_nonexistent_payment_id():
 webhook_payload = {
     "id": "evt_1NGObyFkVBiDxSnkSOAnG6mj",
     "object": "event",
-    "api_version": null,
+    "api_version": None,
     "created": 1686152966,
     "data": {
         "object": {
@@ -774,54 +774,54 @@ webhook_payload = {
                 "tip": {}
             },
             "amount_received": 0,
-            "application": null,
-            "application_fee_amount": null,
-            "automatic_payment_methods": null,
-            "canceled_at": null,
-            "cancellation_reason": null,
+            "application": None,
+            "application_fee_amount": None,
+            "automatic_payment_methods": None,
+            "canceled_at": None,
+            "cancellation_reason": None,
             "capture_method": "automatic",
             "client_secret": "pi_1JKS5I2x6R10KRrhk9GzY4BM_secret_N1kiKaTvicujcDGMskLXGasty",
             "confirmation_method": "automatic",
             "created": 1628014284,
             "currency": "usd",
-            "customer": null,
+            "customer": None,
             "description": "Created by stripe.com/docs demo",
-            "invoice": null,
-            "last_payment_error": null,
-            "latest_charge": null,
-            "livemode": false,
+            "invoice": None,
+            "last_payment_error": None,
+            "latest_charge": None,
+            "livemode": False,
             "metadata": {},
-            "next_action": null,
-            "on_behalf_of": null,
-            "payment_method": null,
+            "next_action": None,
+            "on_behalf_of": None,
+            "payment_method": None,
             "payment_method_options": {
                 "card": {
-                    "installments": null,
-                    "mandate_options": null,
-                    "network": null,
+                    "installments": None,
+                    "mandate_options": None,
+                    "network": None,
                     "request_three_d_secure": "automatic"
                 }
             },
             "payment_method_types": [
                 "card"
             ],
-            "processing": null,
-            "receipt_email": null,
-            "review": null,
-            "setup_future_usage": null,
-            "shipping": null,
-            "statement_descriptor": null,
-            "statement_descriptor_suffix": null,
+            "processing": None,
+            "receipt_email": None,
+            "review": None,
+            "setup_future_usage": None,
+            "shipping": None,
+            "statement_descriptor": None,
+            "statement_descriptor_suffix": None,
             "status": "requires_payment_method",
-            "transfer_data": null,
-            "transfer_group": null
+            "transfer_data": None,
+            "transfer_group": None
         }
     },
-    "livemode": false,
+    "livemode": False,
     "pending_webhooks": 0,
     "request": {
-        "id": null,
-        "idempotency_key": null
+        "id": None,
+        "idempotency_key": None
     },
     "type": ""
 }
