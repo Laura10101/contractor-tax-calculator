@@ -18,6 +18,7 @@ from django.urls import path, include
 from jurisdictions_api.views import JurisdictionList
 from forms_api.views import FormDetail, FormsList, FormQuestionList, FormQuestionsDetail
 from rules_api.views import *
+from subscriptions_api.views import *
 
 
 urlpatterns = [
@@ -37,6 +38,9 @@ urlpatterns = [
     path('api/rules/<int:rule_pk>/tiers/<int:pk>/', RuleTierDetail.as_view()),
     path('api/rules/<int:rule_pk>/secondarytiers/', SecondaryRuleTiersList.as_view()),
     path('api/rules/<int:rule_pk>/secondarytiers/<int:pk>/', SecondaryRuleTierDetail.as_view()),
+    path('api/subscriptions/', SubscriptionsList.as_view()),
+    path('api/subscriptions/<int:pk>/', SubscriptionDetail.as_view()),
+    path('api/subscriptions/status/', SubscriptionStatusesList.as_view()),
     path('accounts/', include('allauth.urls')),
     path('checkout/', include('checkout.urls')),
 ]

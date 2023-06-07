@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'forms_api',
     'jurisdictions_api',
     'rules_api',
+    'subscriptions_api',
+    'payments_api',
     'polymorphic',
     'rest_framework',
     'django.contrib.sites',
