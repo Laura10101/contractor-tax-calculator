@@ -2,7 +2,6 @@ from django.db import IntegrityError
 from django.core.exceptions import ValidationError
 from .models import *
 from .services import *
-from .test_tools import *
 import pytest
 
 
