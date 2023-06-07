@@ -502,8 +502,15 @@ def test_process_payment_success():
     client = APIClient()
     subs_url = '/api/subscriptions/'
 
-    stripe_pid = 'TBC'
-    id = complete_payment(stripe_pid)
+    susbcription_id = 1
+    requested_subscription_months = 6
+    subtotal = 42.30
+    currency = 'GBP'
+    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+
+    payment = Payment.objects.get(pk=id)
+
+    complete_payment(payment.stripe_pid)
 
     payment = Payment.objects.get(pk=id)
     assert payment.status == 4
@@ -521,12 +528,21 @@ def test_process_payment_success_with_unknown_stripe_pid():
         complete_payment(stripe_pid)
 
 def test_process_payment_failure():
-    stripe_pid = 'TBC'
     reason = 'Some stripe reason'
-    id = fail_payment(stripe_pid, reason)
+
+    susbcription_id = 1
+    requested_subscription_months = 6
+    subtotal = 42.30
+    currency = 'GBP'
+    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+
+    payment = Payment.objects.get(pk=id)
+
+    id = fail_payment(payment.stripe_pid, reason)
 
     payment = Payment.objects.get(pk=id)
     assert payment.status == -1
+    assert payment.stripe_error == reason
 
 def test_process_payment_failure_with_unknown_stripe_pid():
     stripe_pid = 'pid_imadethisup'
