@@ -31,10 +31,21 @@ class JurisdictionList(APIView):
         # Divide string by commas 
         id_strings = id_string.split(',')
         # Parse each value into an integer
-        ids = []
-        for id_str in id_strings:
-            id = int(id_str)
-            ids.append(id)
+        try:
+            ids = []
+            for id_str in id_strings:
+                id = int(id_str)
+                ids.append(id)
+        except ValueError:
+            return Response(
+                    { 'error' : 'IDs string is not correctly formatted.' },
+                    status=400
+                    )
+        except:
+            return Response(
+                    { 'error' : 'A server error occurred.' },
+                    status=500
+                    )
         # Call services method to delete jurisdictions 
         delete_jurisdictions_by_id(ids)
         # Build empty JSON response 
@@ -45,14 +56,11 @@ class JurisdictionList(APIView):
 
     # Create controller method to create new jurisdiction 
     def post(self, request):
-        try:
-            # Create the jurisidction serializer instance to serialize
-            # the data provided in the request
-            serializer = JurisdictionSerializer(data=request.data)
-            # Check that the data is valid and raise an exception if not
-            serializer.is_valid(raise_exception=True)
-            serializer.save()
-            # Extract the ID and return the response
-            return Response(serializer.data)
-        except:
-            return Response(status=status.HTTP)
+        # Create the jurisidction serializer instance to serialize
+        # the data provided in the request
+        serializer = JurisdictionSerializer(data=request.data)
+        # Check that the data is valid and raise an exception if not
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        # Extract the ID and return the response
+        return Response(serializer.data)
