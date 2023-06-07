@@ -1,5 +1,5 @@
 from django.db import IntegrityError
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from .models import *
 from .services import *
 import pytest
@@ -9,39 +9,93 @@ import pytest
 # Test creation of forms
 @pytest.mark.django_db
 def test_create_form():
-    pass
+    jurisdiction_id = 1
+    id = create_form(jurisdiction_id)
+    assert id is not None
+
+    form = Form.objects.get(pk=id)
+    assert form.jurisdiction_id == jurisdiction_id
 
 def test_create_second_form_for_jurisdiction():
-    pass
+    jurisdiction_id = 1
+    id = create_form(jurisdiction_id)
+    assert id is not None
+
+    form = Form.objects.get(pk=id)
+    assert form.jurisdiction_id == jurisdiction_id
+
+    with pytest.raises(IntegrityError):
+        id = create_form(jurisdiction_id)
 
 def test_create_form_with_null_jurisdiction_id():
-    pass
+    jurisdiction_id = None
+    with pytest.raises(IntegrityError):
+        id = create_form(jurisdiction_id)
 
 def test_create_form_with_non_numeric_jurisdiction_id():
-    pass
+    jurisdiction_id = 'ABC'
+    with pytest.raises(ValidationError):
+        id = create_form(jurisdiction_id)
 
 # Test retrieval of forms based on jurisdiction IDs
 def test_get_forms_with_null_jurisdiction_ids_list():
-    pass
+    jurisdiction_ids = None
+    with pytest.raises(Exception):
+        forms = get_forms_by_jurisdiction_ids(jurisdiction_ids)
 
 def test_get_forms_with_empty_jurisdiction_ids_list():
-    pass
+    jurisdiction_ids = []
+    with pytest.raises(Exception):
+        forms = get_forms_by_jurisdiction_ids(jurisdiction_ids)
 
 def test_get_forms_with_non_numeric_jurisdiction_ids_in_list():
-    pass
+    jurisdiction_ids = ['A']
+    with pytest.raises(Exception):
+        forms = get_forms_by_jurisdiction_ids(jurisdiction_ids)
 
 def test_get_single_form():
-    pass
+    id = create_form(1)
+    assert id is not None
+    jurisdiction_ids = [1]
+    
+    forms = get_forms_by_jurisdiction_ids(jurisdiction_ids)
+    assert forms is not None
+    assert forms.count() == len(jurisdiction_ids)
+    assert forms.first().id == id
 
 def test_get_multiple_forms():
-    pass
+    id1 = create_form(1)
+    assert id1 is not None
+
+    id2 = create_form(2)
+    assert id2 is not None
+    jurisdiction_ids = [1,2]
+    
+    forms = get_forms_by_jurisdiction_ids(jurisdiction_ids)
+    assert forms is not None
+    assert forms.count() == len(jurisdiction_ids)
+    assert forms.first().id == id1
+
+    assert forms[1].id == id2
 
 # Test deletion of forms
 def test_delete_form():
-    pass
+    assert Form.objects.all().count() == 0
+    id = create_form(1)
+    assert id is not None
+    jurisdiction_ids = [1]
+    
+    forms = get_forms_by_jurisdiction_ids(jurisdiction_ids)
+    assert forms is not None
+    assert forms.count() == len(jurisdiction_ids)
+    assert forms.first().id == id
+
+    delete_form(id)
+    assert Form.objects.all().count() == 0
 
 def test_delete_form_with_non_existent_id():
-    pass
+    with pytest.raises(ObjectDoesNotExist):
+        delete_form(78)
 
 # Test creation of boolean questions
 def test_create_boolean_question_with_null_data():
@@ -258,10 +312,23 @@ def test_update_numeric_question_with_non_existent_id():
 
 # Test deleting questions
 def test_delete_question():
-    pass
+    form_id = create_form(1)
+    assert form_id is not None
+    assert Question.objects.all().count() == 0
+    id = create_boolean_question(
+        form_id,
+        'My question is wonderful?',
+        1,
+        'A test question only',
+        False
+    )
+
+    delete_question(id)
+    assert Form.objects.all().count() == 0
 
 def test_delete_question_with_non_existent_id():
-    pass
+    with pytest.raises(ObjectDoesNotExist):
+        delete_question(729)
 
 # Test creation of multiple choice options
 def test_create_option_with_null_text():
