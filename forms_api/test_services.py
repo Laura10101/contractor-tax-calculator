@@ -16,6 +16,7 @@ def test_create_form():
     form = Form.objects.get(pk=id)
     assert form.jurisdiction_id == jurisdiction_id
 
+@pytest.mark.django_db
 def test_create_second_form_for_jurisdiction():
     jurisdiction_id = 1
     id = create_form(jurisdiction_id)
@@ -27,32 +28,38 @@ def test_create_second_form_for_jurisdiction():
     with pytest.raises(IntegrityError):
         id = create_form(jurisdiction_id)
 
+@pytest.mark.django_db
 def test_create_form_with_null_jurisdiction_id():
     jurisdiction_id = None
     with pytest.raises(IntegrityError):
         id = create_form(jurisdiction_id)
 
+@pytest.mark.django_db
 def test_create_form_with_non_numeric_jurisdiction_id():
     jurisdiction_id = 'ABC'
     with pytest.raises(ValidationError):
         id = create_form(jurisdiction_id)
 
 # Test retrieval of forms based on jurisdiction IDs
+@pytest.mark.django_db
 def test_get_forms_with_null_jurisdiction_ids_list():
     jurisdiction_ids = None
     with pytest.raises(Exception):
         forms = get_forms_by_jurisdiction_ids(jurisdiction_ids)
 
+@pytest.mark.django_db
 def test_get_forms_with_empty_jurisdiction_ids_list():
     jurisdiction_ids = []
     with pytest.raises(Exception):
         forms = get_forms_by_jurisdiction_ids(jurisdiction_ids)
 
+@pytest.mark.django_db
 def test_get_forms_with_non_numeric_jurisdiction_ids_in_list():
     jurisdiction_ids = ['A']
     with pytest.raises(Exception):
         forms = get_forms_by_jurisdiction_ids(jurisdiction_ids)
 
+@pytest.mark.django_db
 def test_get_single_form():
     id = create_form(1)
     assert id is not None
@@ -63,6 +70,7 @@ def test_get_single_form():
     assert forms.count() == len(jurisdiction_ids)
     assert forms.first().id == id
 
+@pytest.mark.django_db
 def test_get_multiple_forms():
     id1 = create_form(1)
     assert id1 is not None
@@ -79,6 +87,7 @@ def test_get_multiple_forms():
     assert forms[1].id == id2
 
 # Test deletion of forms
+@pytest.mark.django_db
 def test_delete_form():
     assert Form.objects.all().count() == 0
     id = create_form(1)
@@ -93,6 +102,7 @@ def test_delete_form():
     delete_form(id)
     assert Form.objects.all().count() == 0
 
+@pytest.mark.django_db
 def test_delete_form_with_non_existent_id():
     with pytest.raises(ObjectDoesNotExist):
         delete_form(78)
@@ -104,6 +114,7 @@ def get_mock_form():
     form_id = create_form(jurisdiction_id)
     return form_id
 
+@pytest.mark.django_db
 def test_create_boolean_question_with_null_data():
     form_id = get_mock_form()
     question_text = None
@@ -114,6 +125,7 @@ def test_create_boolean_question_with_null_data():
     with pytest.raises(IntegrityError):
         id = create_boolean_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
+@pytest.mark.django_db
 def test_create_boolean_question_with_null_form_id():
     form_id = None
     question_text = 'How do you like your eggs in the morning?'
@@ -124,6 +136,7 @@ def test_create_boolean_question_with_null_form_id():
     with pytest.raises(IntegrityError):
         id = create_boolean_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
+@pytest.mark.django_db
 def test_create_boolean_question_with_non_existent_form_id():
     form_id = 7256
     question_text = 'How do you like your eggs in the morning?'
@@ -134,6 +147,7 @@ def test_create_boolean_question_with_non_existent_form_id():
     with pytest.raises(ObjectDoesNotExist):
         id = create_boolean_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
+@pytest.mark.django_db
 def test_create_boolean_question_with_non_numeric_form_id():
     form_id = 'Wrongo'
     question_text = 'How do you like your eggs in the morning?'
@@ -144,6 +158,7 @@ def test_create_boolean_question_with_non_numeric_form_id():
     with pytest.raises(IntegrityError):
         id = create_boolean_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
+@pytest.mark.django_db
 def test_create_boolean_question_with_null_text():
     form_id = get_mock_form()
     question_text = None
@@ -154,6 +169,7 @@ def test_create_boolean_question_with_null_text():
     with pytest.raises(IntegrityError):
         id = create_boolean_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
+@pytest.mark.django_db
 def test_create_boolean_question_with_null_ordinal():
     form_id = get_mock_form()
     question_text = 'How do you like your eggs in the morning?'
@@ -164,6 +180,7 @@ def test_create_boolean_question_with_null_ordinal():
     with pytest.raises(IntegrityError):
         id = create_boolean_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
+@pytest.mark.django_db
 def test_create_boolean_question_with_non_numeric_ordinal():
     form_id = get_mock_form()
     question_text = 'How do you like your eggs in the morning?'
@@ -174,6 +191,7 @@ def test_create_boolean_question_with_non_numeric_ordinal():
     with pytest.raises(IntegrityError):
         id = create_boolean_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
+@pytest.mark.django_db
 def test_create_boolean_question_with_null_explainer():
     form_id = get_mock_form()
     question_text = 'How do you like your eggs in the morning?'
@@ -184,6 +202,7 @@ def test_create_boolean_question_with_null_explainer():
     with pytest.raises(IntegrityError):
         id = create_boolean_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
+@pytest.mark.django_db
 def test_create_boolean_question_with_null_is_mandatory():
     form_id = get_mock_form()
     question_text = 'How do you like your eggs in the morning?'
@@ -194,6 +213,7 @@ def test_create_boolean_question_with_null_is_mandatory():
     with pytest.raises(IntegrityError):
         id = create_boolean_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
+@pytest.mark.django_db
 def test_create_boolean_question():
     form_id = get_mock_form()
     question_text = 'How do you like your eggs in the morning?'
@@ -210,6 +230,7 @@ def test_create_boolean_question():
     assert question.is_mandatory == is_mandatory
 
 # Test updates to boolean questions
+@pytest.mark.django_db
 def test_update_boolean_question_with_null_data():
     form_id = get_mock_form()
     question_text = 'How do you like your eggs in the morning?'
@@ -227,6 +248,7 @@ def test_update_boolean_question_with_null_data():
     with pytest.raises(IntegrityError):
         update_boolean_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory)
 
+@pytest.mark.django_db
 def test_update_boolean_question_with_null_text():
     form_id = get_mock_form()
     question_text = 'How do you like your eggs in the morning?'
@@ -244,6 +266,7 @@ def test_update_boolean_question_with_null_text():
     with pytest.raises(IntegrityError):
         update_boolean_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory)
 
+@pytest.mark.django_db
 def test_update_boolean_question_with_null_ordinal():
     form_id = get_mock_form()
     question_text = 'How do you like your eggs in the morning?'
@@ -261,6 +284,7 @@ def test_update_boolean_question_with_null_ordinal():
     with pytest.raises(IntegrityError):
         update_boolean_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory)
 
+@pytest.mark.django_db
 def test_update_boolean_question_with_non_numeric_ordinal():
     form_id = get_mock_form()
     question_text = 'How do you like your eggs in the morning?'
@@ -278,6 +302,7 @@ def test_update_boolean_question_with_non_numeric_ordinal():
     with pytest.raises(ValidationError):
         update_boolean_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory)
 
+@pytest.mark.django_db
 def test_update_boolean_question_with_null_explainer():
     form_id = get_mock_form()
     question_text = 'How do you like your eggs in the morning?'
@@ -295,6 +320,7 @@ def test_update_boolean_question_with_null_explainer():
     with pytest.raises(IntegrityError):
         update_boolean_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory)
 
+@pytest.mark.django_db
 def test_update_boolean_question_with_null_is_mandatory():
     form_id = get_mock_form()
     question_text = 'How do you like your eggs in the morning?'
@@ -312,6 +338,7 @@ def test_update_boolean_question_with_null_is_mandatory():
     with pytest.raises(IntegrityError):
         update_boolean_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory)
 
+@pytest.mark.django_db
 def test_update_boolean_question():
     form_id = get_mock_form()
     question_text = 'How do you like your eggs in the morning?'
@@ -335,6 +362,7 @@ def test_update_boolean_question():
     assert question.explainer == new_explainer
     assert question.is_mandatory == new_is_mandatory
 
+@pytest.mark.django_db
 def test_update_boolean_question_with_non_existent_id():
     form_id = get_mock_form()
     question_text = 'How do you like your eggs in the morning?'
@@ -353,6 +381,7 @@ def test_update_boolean_question_with_non_existent_id():
         update_boolean_question(7236, new_text, new_ordinal, new_explainer, new_is_mandatory)
 
 # Test creation of multiple_choice questions
+@pytest.mark.django_db
 def test_create_multiple_choice_question_with_null_data():
     form_id = get_mock_form()
     question_text = None
@@ -363,6 +392,7 @@ def test_create_multiple_choice_question_with_null_data():
     with pytest.raises(IntegrityError):
         id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
+@pytest.mark.django_db
 def test_create_multiple_choice_question_with_null_form_id():
     form_id = None
     question_text = 'How do you like your eggs in the morning?'
@@ -373,6 +403,7 @@ def test_create_multiple_choice_question_with_null_form_id():
     with pytest.raises(IntegrityError):
         id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
+@pytest.mark.django_db
 def test_create_multiple_choice_question_with_non_existent_form_id():
     form_id = 7256
     question_text = 'How do you like your eggs in the morning?'
@@ -383,6 +414,7 @@ def test_create_multiple_choice_question_with_non_existent_form_id():
     with pytest.raises(ObjectDoesNotExist):
         id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
+@pytest.mark.django_db
 def test_create_multiple_choice_question_with_non_numeric_form_id():
     form_id = 'Wrongo'
     question_text = 'How do you like your eggs in the morning?'
@@ -393,6 +425,7 @@ def test_create_multiple_choice_question_with_non_numeric_form_id():
     with pytest.raises(IntegrityError):
         id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
+@pytest.mark.django_db
 def test_create_multiple_choice_question_with_null_text():
     form_id = get_mock_form()
     question_text = None
@@ -403,6 +436,7 @@ def test_create_multiple_choice_question_with_null_text():
     with pytest.raises(IntegrityError):
         id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
+@pytest.mark.django_db
 def test_create_multiple_choice_question_with_null_ordinal():
     form_id = get_mock_form()
     question_text = 'How do you like your eggs in the morning?'
@@ -413,6 +447,7 @@ def test_create_multiple_choice_question_with_null_ordinal():
     with pytest.raises(IntegrityError):
         id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
+@pytest.mark.django_db
 def test_create_multiple_choice_question_with_non_numeric_ordinal():
     form_id = get_mock_form()
     question_text = 'How do you like your eggs in the morning?'
@@ -423,6 +458,7 @@ def test_create_multiple_choice_question_with_non_numeric_ordinal():
     with pytest.raises(IntegrityError):
         id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
+@pytest.mark.django_db
 def test_create_multiple_choice_question_with_null_explainer():
     form_id = get_mock_form()
     question_text = 'How do you like your eggs in the morning?'
@@ -433,6 +469,7 @@ def test_create_multiple_choice_question_with_null_explainer():
     with pytest.raises(IntegrityError):
         id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
+@pytest.mark.django_db
 def test_create_multiple_choice_question_with_null_is_mandatory():
     form_id = get_mock_form()
     question_text = 'How do you like your eggs in the morning?'
@@ -443,6 +480,7 @@ def test_create_multiple_choice_question_with_null_is_mandatory():
     with pytest.raises(IntegrityError):
         id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
+@pytest.mark.django_db
 def test_create_multiple_choice_question():
     form_id = get_mock_form()
     question_text = 'How do you like your eggs in the morning?'
@@ -459,6 +497,7 @@ def test_create_multiple_choice_question():
     assert question.is_mandatory == is_mandatory
 
 # Test updates to multiple choice questions
+@pytest.mark.django_db
 def test_update_multiple_choice_question_with_null_data():
     form_id = get_mock_form()
     question_text = 'How do you like your eggs in the morning?'
@@ -476,6 +515,7 @@ def test_update_multiple_choice_question_with_null_data():
     with pytest.raises(IntegrityError):
         update_multiple_choice_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory)
 
+@pytest.mark.django_db
 def test_update_multiple_choice_question_with_null_text():
     form_id = get_mock_form()
     question_text = 'How do you like your eggs in the morning?'
@@ -493,6 +533,7 @@ def test_update_multiple_choice_question_with_null_text():
     with pytest.raises(IntegrityError):
         update_multiple_choice_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory)
 
+@pytest.mark.django_db
 def test_update_multiple_choice_question_with_null_ordinal():
     form_id = get_mock_form()
     question_text = 'How do you like your eggs in the morning?'
@@ -510,6 +551,7 @@ def test_update_multiple_choice_question_with_null_ordinal():
     with pytest.raises(IntegrityError):
         update_multiple_choice_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory)
 
+@pytest.mark.django_db
 def test_update_multiple_choice_question_with_non_numeric_ordinal():
     form_id = get_mock_form()
     question_text = 'How do you like your eggs in the morning?'
@@ -527,6 +569,7 @@ def test_update_multiple_choice_question_with_non_numeric_ordinal():
     with pytest.raises(ValidationError):
         update_multiple_choice_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory)
 
+@pytest.mark.django_db
 def test_update_multiple_choice_question_with_null_explainer():
     form_id = get_mock_form()
     question_text = 'How do you like your eggs in the morning?'
@@ -544,6 +587,7 @@ def test_update_multiple_choice_question_with_null_explainer():
     with pytest.raises(IntegrityError):
         update_multiple_choice_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory)
 
+@pytest.mark.django_db
 def test_update_multiple_choice_question_with_null_is_mandatory():
     form_id = get_mock_form()
     question_text = 'How do you like your eggs in the morning?'
@@ -561,6 +605,7 @@ def test_update_multiple_choice_question_with_null_is_mandatory():
     with pytest.raises(IntegrityError):
         update_multiple_choice_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory)
 
+@pytest.mark.django_db
 def test_update_multiple_choice_question():
     form_id = get_mock_form()
     question_text = 'How do you like your eggs in the morning?'
@@ -584,6 +629,7 @@ def test_update_multiple_choice_question():
     assert question.explainer == new_explainer
     assert question.is_mandatory == new_is_mandatory
 
+@pytest.mark.django_db
 def test_update_multiple_choice_question_with_non_existent_id():
     form_id = get_mock_form()
     question_text = 'How do you like your eggs in the morning?'
@@ -602,6 +648,7 @@ def test_update_multiple_choice_question_with_non_existent_id():
         update_multiple_choice_question(7236, new_text, new_ordinal, new_explainer, new_is_mandatory)
 
 # Test creation of numeric questions
+@pytest.mark.django_db
 def test_create_numeric_question_with_null_data():
     form_id = get_mock_form()
     question_text = None
@@ -615,6 +662,7 @@ def test_create_numeric_question_with_null_data():
     with pytest.raises(IntegrityError):
         id = create_numeric_question(form_id, question_text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value)
 
+@pytest.mark.django_db
 def test_create_numeric_question_with_null_form_id():
     form_id = None
     question_text = 'How do you like your eggs in the morning?'
@@ -628,6 +676,7 @@ def test_create_numeric_question_with_null_form_id():
     with pytest.raises(IntegrityError):
         id = create_numeric_question(form_id, question_text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value)
 
+@pytest.mark.django_db
 def test_create_numeric_question_with_non_existent_form_id():
     form_id = 7256
     question_text = 'How do you like your eggs in the morning?'
@@ -641,6 +690,7 @@ def test_create_numeric_question_with_non_existent_form_id():
     with pytest.raises(IntegrityError):
         id = create_numeric_question(form_id, question_text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value)
 
+@pytest.mark.django_db
 def test_create_numeric_question_with_non_numeric_form_id():
     form_id = 'Wrongo'
     question_text = 'How do you like your eggs in the morning?'
@@ -654,6 +704,7 @@ def test_create_numeric_question_with_non_numeric_form_id():
     with pytest.raises(IntegrityError):
         id = create_numeric_question(form_id, question_text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value)
 
+@pytest.mark.django_db
 def test_create_numeric_question_with_null_text():
     form_id = get_mock_form()
     question_text = None
@@ -667,6 +718,7 @@ def test_create_numeric_question_with_null_text():
     with pytest.raises(IntegrityError):
         id = create_numeric_question(form_id, question_text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value)
 
+@pytest.mark.django_db
 def test_create_numeric_question_with_null_ordinal():
     form_id = get_mock_form()
     question_text = 'How do you like your eggs in the morning?'
@@ -680,7 +732,7 @@ def test_create_numeric_question_with_null_ordinal():
     with pytest.raises(IntegrityError):
         id = create_numeric_question(form_id, question_text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value)
     
-
+@pytest.mark.django_db
 def test_create_numeric_question_with_non_numeric_ordinal():
     form_id = get_mock_form()
     question_text = 'How do you like your eggs in the morning?'
@@ -694,6 +746,7 @@ def test_create_numeric_question_with_non_numeric_ordinal():
     with pytest.raises(IntegrityError):
         id = create_numeric_question(form_id, question_text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value)
 
+@pytest.mark.django_db
 def test_create_numeric_question_with_null_explainer():
     form_id = get_mock_form()
     question_text = 'How do you like your eggs in the morning?'
@@ -707,6 +760,7 @@ def test_create_numeric_question_with_null_explainer():
     with pytest.raises(IntegrityError):
         id = create_numeric_question(form_id, question_text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value)
 
+@pytest.mark.django_db
 def test_create_numeric_question_with_null_is_mandatory():
     form_id = get_mock_form()
     question_text = 'How do you like your eggs in the morning?'
@@ -720,6 +774,7 @@ def test_create_numeric_question_with_null_is_mandatory():
     with pytest.raises(IntegrityError):
         id = create_numeric_question(form_id, question_text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value)
 
+@pytest.mark.django_db
 def test_create_numeric_question():
     form_id = get_mock_form()
     question_text = 'How do you like your eggs in the morning?'
@@ -739,6 +794,7 @@ def test_create_numeric_question():
     assert question.is_mandatory == is_mandatory
 
 # Test updates to numeric questions
+@pytest.mark.django_db
 def test_update_numeric_question_with_null_data():
     form_id = get_mock_form()
     question_text = 'How do you like your eggs in the morning?'
@@ -762,6 +818,7 @@ def test_update_numeric_question_with_null_data():
     with pytest.raises(IntegrityError):
         update_numeric_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory, new_is_integer, new_min_val, new_max_val)
 
+@pytest.mark.django_db
 def test_update_numeric_question_with_null_text():
     form_id = get_mock_form()
     question_text = 'How do you like your eggs in the morning?'
@@ -785,6 +842,7 @@ def test_update_numeric_question_with_null_text():
     with pytest.raises(IntegrityError):
         update_numeric_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory, new_is_integer, new_min_val, new_max_val)
 
+@pytest.mark.django_db
 def test_update_numeric_question_with_null_ordinal():
     form_id = get_mock_form()
     question_text = 'How do you like your eggs in the morning?'
@@ -808,6 +866,7 @@ def test_update_numeric_question_with_null_ordinal():
     with pytest.raises(IntegrityError):
         update_numeric_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory, new_is_integer, new_min_val, new_max_val)
 
+@pytest.mark.django_db
 def test_update_numeric_question_with_non_numeric_ordinal():
     form_id = get_mock_form()
     question_text = 'How do you like your eggs in the morning?'
@@ -831,6 +890,7 @@ def test_update_numeric_question_with_non_numeric_ordinal():
     with pytest.raises(IntegrityError):
         update_numeric_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory, new_is_integer, new_min_val, new_max_val)
 
+@pytest.mark.django_db
 def test_update_numeric_question_with_null_explainer():
     form_id = get_mock_form()
     question_text = 'How do you like your eggs in the morning?'
@@ -854,6 +914,7 @@ def test_update_numeric_question_with_null_explainer():
     with pytest.raises(IntegrityError):
         update_numeric_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory, new_is_integer, new_min_val, new_max_val)
 
+@pytest.mark.django_db
 def test_update_numeric_question_with_null_is_mandatory():
     form_id = get_mock_form()
     question_text = 'How do you like your eggs in the morning?'
@@ -877,6 +938,7 @@ def test_update_numeric_question_with_null_is_mandatory():
     with pytest.raises(IntegrityError):
         update_numeric_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory, new_is_integer, new_min_val, new_max_val)
 
+@pytest.mark.django_db
 def test_update_numeric_question():
     form_id = get_mock_form()
     question_text = 'How do you like your eggs in the morning?'
@@ -910,6 +972,7 @@ def test_update_numeric_question():
     assert question.min_val == new_min_val
     assert question.max_val == new_max_val
 
+@pytest.mark.django_db
 def test_update_numeric_question_with_non_existent_id():
     form_id = get_mock_form()
     question_text = 'How do you like your eggs in the morning?'
@@ -934,6 +997,7 @@ def test_update_numeric_question_with_non_existent_id():
         update_numeric_question(4894, new_text, new_ordinal, new_explainer, new_is_mandatory, new_is_integer, new_min_val, new_max_val)
 
 # Test deleting questions
+@pytest.mark.django_db
 def test_delete_question():
     form_id = create_form(1)
     assert form_id is not None
@@ -949,16 +1013,19 @@ def test_delete_question():
     delete_question(id)
     assert Form.objects.all().count() == 0
 
+@pytest.mark.django_db
 def test_delete_question_with_non_existent_id():
     with pytest.raises(ObjectDoesNotExist):
         delete_question(729)
 
 # Test creation of multiple choice options
+@pytest.mark.django_db
 def test_create_option_with_null_text():
     text = None
     with pytest.raises(IntegrityError):
         id = create_multiple_choice_option(text)
 
+@pytest.mark.django_db
 def test_create_option():
     text = 'Fried'
     id = create_multiple_choice_option(text)
@@ -967,6 +1034,7 @@ def test_create_option():
     assert option.text == text
 
 # Test deletion of multiple choice options
+@pytest.mark.django_db
 def test_delete_option():
     assert MultipleChoiceOption.objects.all().count() == 0
     text = 'Boiled'
@@ -977,6 +1045,9 @@ def test_delete_option():
     delete_multiple_choice_option(id)
     assert MultipleChoiceOption.objects.all().count() == 0
 
+@pytest.mark.django_db
 def test_delete_option_with_non_existent_id():
     with pytest.raises(ObjectDoesNotExist):
         delete_multiple_choice_option(7496854)
+
+        
