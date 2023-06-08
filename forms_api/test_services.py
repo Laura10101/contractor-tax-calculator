@@ -98,217 +98,840 @@ def test_delete_form_with_non_existent_id():
         delete_form(78)
 
 # Test creation of boolean questions
+# Helper function to create a mock form
+def get_mock_form():
+    jurisdiction_id = 1
+    form_id = create_form(jurisdiction_id)
+    return form_id
+
 def test_create_boolean_question_with_null_data():
-    pass
+    form_id = get_mock_form()
+    question_text = None
+    ordinal = None
+    explainer = None
+    is_mandatory = None
+
+    with pytest.raises(IntegrityError):
+        id = create_boolean_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
 def test_create_boolean_question_with_null_form_id():
-    pass
+    form_id = None
+    question_text = 'How do you like your eggs in the morning?'
+    ordinal = 1
+    explainer = 'A very serious tax-related question'
+    is_mandatory = True
+
+    with pytest.raises(IntegrityError):
+        id = create_boolean_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
 def test_create_boolean_question_with_non_existent_form_id():
-    pass
+    form_id = 7256
+    question_text = 'How do you like your eggs in the morning?'
+    ordinal = 1
+    explainer = 'A very serious tax-related question'
+    is_mandatory = True
+
+    with pytest.raises(ObjectDoesNotExist):
+        id = create_boolean_question(form_id, question_text, ordinal, explainer, is_mandatory)
+
+def test_create_boolean_question_with_non_numeric_form_id():
+    form_id = 'Wrongo'
+    question_text = 'How do you like your eggs in the morning?'
+    ordinal = 1
+    explainer = 'A very serious tax-related question'
+    is_mandatory = True
+
+    with pytest.raises(IntegrityError):
+        id = create_boolean_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
 def test_create_boolean_question_with_null_text():
-    pass
+    form_id = get_mock_form()
+    question_text = None
+    ordinal = 1
+    explainer = 'A very serious tax-related question'
+    is_mandatory = True
+
+    with pytest.raises(IntegrityError):
+        id = create_boolean_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
 def test_create_boolean_question_with_null_ordinal():
-    pass
+    form_id = get_mock_form()
+    question_text = 'How do you like your eggs in the morning?'
+    ordinal = None
+    explainer = 'A very serious tax-related question'
+    is_mandatory = True
+
+    with pytest.raises(IntegrityError):
+        id = create_boolean_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
 def test_create_boolean_question_with_non_numeric_ordinal():
-    pass
+    form_id = get_mock_form()
+    question_text = 'How do you like your eggs in the morning?'
+    ordinal = 'Try again'
+    explainer = 'A very serious tax-related question'
+    is_mandatory = True
+
+    with pytest.raises(IntegrityError):
+        id = create_boolean_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
 def test_create_boolean_question_with_null_explainer():
-    pass
+    form_id = get_mock_form()
+    question_text = 'How do you like your eggs in the morning?'
+    ordinal = 1
+    explainer = None
+    is_mandatory = True
+
+    with pytest.raises(IntegrityError):
+        id = create_boolean_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
 def test_create_boolean_question_with_null_is_mandatory():
-    pass
+    form_id = get_mock_form()
+    question_text = 'How do you like your eggs in the morning?'
+    ordinal = 1
+    explainer = 'A very serious tax-related question'
+    is_mandatory = None
+
+    with pytest.raises(IntegrityError):
+        id = create_boolean_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
 def test_create_boolean_question():
-    pass
+    form_id = get_mock_form()
+    question_text = 'How do you like your eggs in the morning?'
+    ordinal = 1
+    explainer = 'A very serious tax-related question'
+    is_mandatory = True
+
+    id = create_boolean_question(form_id, question_text, ordinal, explainer, is_mandatory)
+    assert id is not None
+    question = BooleanQuestion.objects.get(pk=id)
+    assert question.text == question_text
+    assert question.ordinal == ordinal
+    assert question.explainer == explainer
+    assert question.is_mandatory == is_mandatory
 
 # Test updates to boolean questions
 def test_update_boolean_question_with_null_data():
-    pass
+    form_id = get_mock_form()
+    question_text = 'How do you like your eggs in the morning?'
+    ordinal = 1
+    explainer = 'A very serious tax-related question'
+    is_mandatory = True
+    
+    id = create_boolean_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
-def test_update_boolean_question_with_null_form_id():
-    pass
+    new_text = None
+    new_ordinal = None
+    new_explainer = None
+    new_is_mandatory = None
 
-def test_update_boolean_question_with_non_existent_form_id():
-    pass
+    with pytest.raises(IntegrityError):
+        update_boolean_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory)
 
 def test_update_boolean_question_with_null_text():
-    pass
+    form_id = get_mock_form()
+    question_text = 'How do you like your eggs in the morning?'
+    ordinal = 1
+    explainer = 'A very serious tax-related question'
+    is_mandatory = True
+    
+    id = create_boolean_question(form_id, question_text, ordinal, explainer, is_mandatory)
+
+    new_text = None
+    new_ordinal = 2
+    new_explainer = 'Boiled or fried and whether or not you are satisfied by eggs alone.'
+    new_is_mandatory = False
+
+    with pytest.raises(IntegrityError):
+        update_boolean_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory)
 
 def test_update_boolean_question_with_null_ordinal():
-    pass
+    form_id = get_mock_form()
+    question_text = 'How do you like your eggs in the morning?'
+    ordinal = 1
+    explainer = 'A very serious tax-related question'
+    is_mandatory = True
+    
+    id = create_boolean_question(form_id, question_text, ordinal, explainer, is_mandatory)
+
+    new_text = 'Please describe how you like your eggs in the morning.'
+    new_ordinal = None
+    new_explainer = 'Boiled or fried and whether or not you are satisfied by eggs alone.'
+    new_is_mandatory = False
+
+    with pytest.raises(IntegrityError):
+        update_boolean_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory)
 
 def test_update_boolean_question_with_non_numeric_ordinal():
-    pass
+    form_id = get_mock_form()
+    question_text = 'How do you like your eggs in the morning?'
+    ordinal = 1
+    explainer = 'A very serious tax-related question'
+    is_mandatory = True
+    
+    id = create_boolean_question(form_id, question_text, ordinal, explainer, is_mandatory)
+
+    new_text = 'Please describe how you like your eggs in the morning.'
+    new_ordinal = 'Hmmm'
+    new_explainer = 'Boiled or fried and whether or not you are satisfied by eggs alone.'
+    new_is_mandatory = False
+
+    with pytest.raises(ValidationError):
+        update_boolean_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory)
 
 def test_update_boolean_question_with_null_explainer():
-    pass
+    form_id = get_mock_form()
+    question_text = 'How do you like your eggs in the morning?'
+    ordinal = 1
+    explainer = 'A very serious tax-related question'
+    is_mandatory = True
+    
+    id = create_boolean_question(form_id, question_text, ordinal, explainer, is_mandatory)
+
+    new_text = 'Please describe how you like your eggs in the morning.'
+    new_ordinal = 2
+    new_explainer = None
+    new_is_mandatory = False
+
+    with pytest.raises(IntegrityError):
+        update_boolean_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory)
 
 def test_update_boolean_question_with_null_is_mandatory():
-    pass
+    form_id = get_mock_form()
+    question_text = 'How do you like your eggs in the morning?'
+    ordinal = 1
+    explainer = 'A very serious tax-related question'
+    is_mandatory = True
+    
+    id = create_boolean_question(form_id, question_text, ordinal, explainer, is_mandatory)
+
+    new_text = 'Please describe how you like your eggs in the morning.'
+    new_ordinal = 2
+    new_explainer = 'Boiled or fried and whether or not you are satisfied by eggs alone.'
+    new_is_mandatory = None
+
+    with pytest.raises(IntegrityError):
+        update_boolean_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory)
 
 def test_update_boolean_question():
-    pass
+    form_id = get_mock_form()
+    question_text = 'How do you like your eggs in the morning?'
+    ordinal = 1
+    explainer = 'A very serious tax-related question'
+    is_mandatory = True
+    
+    id = create_boolean_question(form_id, question_text, ordinal, explainer, is_mandatory)
+
+    new_text = 'Please describe how you like your eggs in the morning.'
+    new_ordinal = 2
+    new_explainer = 'Boiled or fried and whether or not you are satisfied by eggs alone.'
+    new_is_mandatory = False
+
+    update_boolean_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory)
+
+    question = BooleanQuestion.objects.get(pk=id)
+    assert question is not None
+    assert question.text == new_text
+    assert question.ordinal == new_ordinal
+    assert question.explainer == new_explainer
+    assert question.is_mandatory == new_is_mandatory
 
 def test_update_boolean_question_with_non_existent_id():
-    pass
+    form_id = get_mock_form()
+    question_text = 'How do you like your eggs in the morning?'
+    ordinal = 1
+    explainer = 'A very serious tax-related question'
+    is_mandatory = True
+    
+    id = create_boolean_question(form_id, question_text, ordinal, explainer, is_mandatory)
+
+    new_text = 'Please describe how you like your eggs in the morning.'
+    new_ordinal = 2
+    new_explainer = 'Boiled or fried and whether or not you are satisfied by eggs alone.'
+    new_is_mandatory = False
+
+    with pytest.raises(ObjectDoesNotExist):
+        update_boolean_question(7236, new_text, new_ordinal, new_explainer, new_is_mandatory)
 
 # Test creation of multiple_choice questions
 def test_create_multiple_choice_question_with_null_data():
-    pass
+    form_id = get_mock_form()
+    question_text = None
+    ordinal = None
+    explainer = None
+    is_mandatory = None
+
+    with pytest.raises(IntegrityError):
+        id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
 def test_create_multiple_choice_question_with_null_form_id():
-    pass
+    form_id = None
+    question_text = 'How do you like your eggs in the morning?'
+    ordinal = 1
+    explainer = 'A very serious tax-related question'
+    is_mandatory = True
+
+    with pytest.raises(IntegrityError):
+        id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
 def test_create_multiple_choice_question_with_non_existent_form_id():
-    pass
+    form_id = 7256
+    question_text = 'How do you like your eggs in the morning?'
+    ordinal = 1
+    explainer = 'A very serious tax-related question'
+    is_mandatory = True
+
+    with pytest.raises(ObjectDoesNotExist):
+        id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, is_mandatory)
+
+def test_create_multiple_choice_question_with_non_numeric_form_id():
+    form_id = 'Wrongo'
+    question_text = 'How do you like your eggs in the morning?'
+    ordinal = 1
+    explainer = 'A very serious tax-related question'
+    is_mandatory = True
+
+    with pytest.raises(IntegrityError):
+        id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
 def test_create_multiple_choice_question_with_null_text():
-    pass
+    form_id = get_mock_form()
+    question_text = None
+    ordinal = 1
+    explainer = 'A very serious tax-related question'
+    is_mandatory = True
+
+    with pytest.raises(IntegrityError):
+        id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
 def test_create_multiple_choice_question_with_null_ordinal():
-    pass
+    form_id = get_mock_form()
+    question_text = 'How do you like your eggs in the morning?'
+    ordinal = None
+    explainer = 'A very serious tax-related question'
+    is_mandatory = True
+
+    with pytest.raises(IntegrityError):
+        id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
 def test_create_multiple_choice_question_with_non_numeric_ordinal():
-    pass
+    form_id = get_mock_form()
+    question_text = 'How do you like your eggs in the morning?'
+    ordinal = 'Try again'
+    explainer = 'A very serious tax-related question'
+    is_mandatory = True
+
+    with pytest.raises(IntegrityError):
+        id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
 def test_create_multiple_choice_question_with_null_explainer():
-    pass
+    form_id = get_mock_form()
+    question_text = 'How do you like your eggs in the morning?'
+    ordinal = 1
+    explainer = None
+    is_mandatory = True
+
+    with pytest.raises(IntegrityError):
+        id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
 def test_create_multiple_choice_question_with_null_is_mandatory():
-    pass
+    form_id = get_mock_form()
+    question_text = 'How do you like your eggs in the morning?'
+    ordinal = 1
+    explainer = 'A very serious tax-related question'
+    is_mandatory = None
+
+    with pytest.raises(IntegrityError):
+        id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
 def test_create_multiple_choice_question():
-    pass
+    form_id = get_mock_form()
+    question_text = 'How do you like your eggs in the morning?'
+    ordinal = 1
+    explainer = 'A very serious tax-related question'
+    is_mandatory = True
 
-# Test updates to multiple_choice questions
+    id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, is_mandatory)
+    assert id is not None
+    question = MultipleChoiceQuestion.objects.get(pk=id)
+    assert question.text == question_text
+    assert question.ordinal == ordinal
+    assert question.explainer == explainer
+    assert question.is_mandatory == is_mandatory
+
+# Test updates to multiple choice questions
 def test_update_multiple_choice_question_with_null_data():
-    pass
+    form_id = get_mock_form()
+    question_text = 'How do you like your eggs in the morning?'
+    ordinal = 1
+    explainer = 'A very serious tax-related question'
+    is_mandatory = True
+    
+    id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
-def test_update_multiple_choice_question_with_null_form_id():
-    pass
+    new_text = None
+    new_ordinal = None
+    new_explainer = None
+    new_is_mandatory = None
 
-def test_update_multiple_choice_question_with_non_existent_form_id():
-    pass
+    with pytest.raises(IntegrityError):
+        update_multiple_choice_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory)
 
 def test_update_multiple_choice_question_with_null_text():
-    pass
+    form_id = get_mock_form()
+    question_text = 'How do you like your eggs in the morning?'
+    ordinal = 1
+    explainer = 'A very serious tax-related question'
+    is_mandatory = True
+    
+    id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, is_mandatory)
+
+    new_text = None
+    new_ordinal = 2
+    new_explainer = 'Boiled or fried and whether or not you are satisfied by eggs alone.'
+    new_is_mandatory = False
+
+    with pytest.raises(IntegrityError):
+        update_multiple_choice_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory)
 
 def test_update_multiple_choice_question_with_null_ordinal():
-    pass
+    form_id = get_mock_form()
+    question_text = 'How do you like your eggs in the morning?'
+    ordinal = 1
+    explainer = 'A very serious tax-related question'
+    is_mandatory = True
+    
+    id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, is_mandatory)
+
+    new_text = 'Please describe how you like your eggs in the morning.'
+    new_ordinal = None
+    new_explainer = 'Boiled or fried and whether or not you are satisfied by eggs alone.'
+    new_is_mandatory = False
+
+    with pytest.raises(IntegrityError):
+        update_multiple_choice_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory)
 
 def test_update_multiple_choice_question_with_non_numeric_ordinal():
-    pass
+    form_id = get_mock_form()
+    question_text = 'How do you like your eggs in the morning?'
+    ordinal = 1
+    explainer = 'A very serious tax-related question'
+    is_mandatory = True
+    
+    id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, is_mandatory)
+
+    new_text = 'Please describe how you like your eggs in the morning.'
+    new_ordinal = 'Hmmm'
+    new_explainer = 'Boiled or fried and whether or not you are satisfied by eggs alone.'
+    new_is_mandatory = False
+
+    with pytest.raises(ValidationError):
+        update_multiple_choice_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory)
 
 def test_update_multiple_choice_question_with_null_explainer():
-    pass
+    form_id = get_mock_form()
+    question_text = 'How do you like your eggs in the morning?'
+    ordinal = 1
+    explainer = 'A very serious tax-related question'
+    is_mandatory = True
+    
+    id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, is_mandatory)
+
+    new_text = 'Please describe how you like your eggs in the morning.'
+    new_ordinal = 2
+    new_explainer = None
+    new_is_mandatory = False
+
+    with pytest.raises(IntegrityError):
+        update_multiple_choice_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory)
 
 def test_update_multiple_choice_question_with_null_is_mandatory():
-    pass
+    form_id = get_mock_form()
+    question_text = 'How do you like your eggs in the morning?'
+    ordinal = 1
+    explainer = 'A very serious tax-related question'
+    is_mandatory = True
+    
+    id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, is_mandatory)
+
+    new_text = 'Please describe how you like your eggs in the morning.'
+    new_ordinal = 2
+    new_explainer = 'Boiled or fried and whether or not you are satisfied by eggs alone.'
+    new_is_mandatory = None
+
+    with pytest.raises(IntegrityError):
+        update_multiple_choice_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory)
 
 def test_update_multiple_choice_question():
-    pass
+    form_id = get_mock_form()
+    question_text = 'How do you like your eggs in the morning?'
+    ordinal = 1
+    explainer = 'A very serious tax-related question'
+    is_mandatory = True
+    
+    id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, is_mandatory)
+
+    new_text = 'Please describe how you like your eggs in the morning.'
+    new_ordinal = 2
+    new_explainer = 'Boiled or fried and whether or not you are satisfied by eggs alone.'
+    new_is_mandatory = False
+
+    update_multiple_choice_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory)
+
+    question = MultipleChoiceQuestion.objects.get(pk=id)
+    assert question is not None
+    assert question.text == new_text
+    assert question.ordinal == new_ordinal
+    assert question.explainer == new_explainer
+    assert question.is_mandatory == new_is_mandatory
 
 def test_update_multiple_choice_question_with_non_existent_id():
-    pass
+    form_id = get_mock_form()
+    question_text = 'How do you like your eggs in the morning?'
+    ordinal = 1
+    explainer = 'A very serious tax-related question'
+    is_mandatory = True
+    
+    id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, is_mandatory)
+
+    new_text = 'Please describe how you like your eggs in the morning.'
+    new_ordinal = 2
+    new_explainer = 'Boiled or fried and whether or not you are satisfied by eggs alone.'
+    new_is_mandatory = False
+
+    with pytest.raises(ObjectDoesNotExist):
+        update_multiple_choice_question(7236, new_text, new_ordinal, new_explainer, new_is_mandatory)
 
 # Test creation of numeric questions
 def test_create_numeric_question_with_null_data():
-    pass
+    form_id = get_mock_form()
+    question_text = None
+    ordinal = None
+    explainer = None
+    is_mandatory = None
+    is_integer = None
+    min_value = None
+    max_value = None
+
+    with pytest.raises(IntegrityError):
+        id = create_numeric_question(form_id, question_text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value)
 
 def test_create_numeric_question_with_null_form_id():
-    pass
+    form_id = None
+    question_text = 'How do you like your eggs in the morning?'
+    ordinal = 1
+    explainer = 'A very serious tax-related question'
+    is_mandatory = True
+    is_integer = False
+    min_value = 0
+    max_value = 100
+
+    with pytest.raises(IntegrityError):
+        id = create_numeric_question(form_id, question_text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value)
 
 def test_create_numeric_question_with_non_existent_form_id():
-    pass
+    form_id = 7256
+    question_text = 'How do you like your eggs in the morning?'
+    ordinal = 1
+    explainer = 'A very serious tax-related question'
+    is_mandatory = True
+    is_integer = False
+    min_value = 0
+    max_value = 100
+
+    with pytest.raises(IntegrityError):
+        id = create_numeric_question(form_id, question_text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value)
+
+def test_create_numeric_question_with_non_numeric_form_id():
+    form_id = 'Wrongo'
+    question_text = 'How do you like your eggs in the morning?'
+    ordinal = 1
+    explainer = 'A very serious tax-related question'
+    is_mandatory = True
+    is_integer = False
+    min_value = 0
+    max_value = 100
+
+    with pytest.raises(IntegrityError):
+        id = create_numeric_question(form_id, question_text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value)
 
 def test_create_numeric_question_with_null_text():
-    pass
+    form_id = get_mock_form()
+    question_text = None
+    ordinal = 1
+    explainer = 'A very serious tax-related question'
+    is_mandatory = True
+    is_integer = False
+    min_value = 0
+    max_value = 100
+
+    with pytest.raises(IntegrityError):
+        id = create_numeric_question(form_id, question_text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value)
 
 def test_create_numeric_question_with_null_ordinal():
-    pass
+    form_id = get_mock_form()
+    question_text = 'How do you like your eggs in the morning?'
+    ordinal = None
+    explainer = 'A very serious tax-related question'
+    is_mandatory = True
+    is_integer = False
+    min_value = 0
+    max_value = 100
+
+    with pytest.raises(IntegrityError):
+        id = create_numeric_question(form_id, question_text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value)
+    
 
 def test_create_numeric_question_with_non_numeric_ordinal():
-    pass
+    form_id = get_mock_form()
+    question_text = 'How do you like your eggs in the morning?'
+    ordinal = 'Try again'
+    explainer = 'A very serious tax-related question'
+    is_mandatory = True
+    is_integer = False
+    min_value = 0
+    max_value = 100
+
+    with pytest.raises(IntegrityError):
+        id = create_numeric_question(form_id, question_text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value)
 
 def test_create_numeric_question_with_null_explainer():
-    pass
+    form_id = get_mock_form()
+    question_text = 'How do you like your eggs in the morning?'
+    ordinal = 1
+    explainer = None
+    is_mandatory = True
+    is_integer = False
+    min_value = 0
+    max_value = 100
+
+    with pytest.raises(IntegrityError):
+        id = create_numeric_question(form_id, question_text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value)
 
 def test_create_numeric_question_with_null_is_mandatory():
-    pass
+    form_id = get_mock_form()
+    question_text = 'How do you like your eggs in the morning?'
+    ordinal = 1
+    explainer = 'A very serious tax-related question'
+    is_mandatory = None
+    is_integer = False
+    min_value = 0
+    max_value = 100
 
-def test_create_numeric_question_with_null_is_integer():
-    pass
-
-def test_create_numeric_question_with_non_boolean_is_integer():
-    pass
-
-def test_create_numeric_question_with_null_max_value():
-    pass
-
-def test_create_numeric_question_with_non_numeric_max_value():
-    pass
-
-def test_create_numeric_question_with_null_min_value():
-    pass
-
-def test_create_numeric_question_with_non_numeric_min_value():
-    pass
+    with pytest.raises(IntegrityError):
+        id = create_numeric_question(form_id, question_text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value)
 
 def test_create_numeric_question():
-    pass
+    form_id = get_mock_form()
+    question_text = 'How do you like your eggs in the morning?'
+    ordinal = 1
+    explainer = 'A very serious tax-related question'
+    is_mandatory = True
+    is_integer = False
+    min_value = 0
+    max_value = 100
+
+    id = create_numeric_question(form_id, question_text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value)
+    assert id is not None
+    question = NumericQuestion.objects.get(pk=id)
+    assert question.text == question_text
+    assert question.ordinal == ordinal
+    assert question.explainer == explainer
+    assert question.is_mandatory == is_mandatory
 
 # Test updates to numeric questions
 def test_update_numeric_question_with_null_data():
-    pass
+    form_id = get_mock_form()
+    question_text = 'How do you like your eggs in the morning?'
+    ordinal = 1
+    explainer = 'A very serious tax-related question'
+    is_mandatory = True
+    is_integer = False
+    min_value = 0
+    max_value = 100
 
-def test_update_numeric_question_with_null_form_id():
-    pass
+    id = create_numeric_question(form_id, question_text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value)
 
-def test_update_numeric_question_with_non_existent_form_id():
-    pass
+    new_text = None
+    new_ordinal = None
+    new_explainer = None
+    new_is_mandatory = None
+    new_is_integer = None
+    new_min_val = None
+    new_max_val = None
+
+    with pytest.raises(IntegrityError):
+        update_numeric_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory, new_is_integer, new_min_val, new_max_val)
 
 def test_update_numeric_question_with_null_text():
-    pass
+    form_id = get_mock_form()
+    question_text = 'How do you like your eggs in the morning?'
+    ordinal = 1
+    explainer = 'A very serious tax-related question'
+    is_mandatory = True
+    is_integer = False
+    min_value = 0
+    max_value = 100
+
+    id = create_numeric_question(form_id, question_text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value)
+
+    new_text = None
+    new_ordinal = 2
+    new_explainer = 'Boiled or fried and whether or not you are satisfied by eggs alone.'
+    new_is_mandatory = False
+    new_is_integer = True
+    new_min_val = -10
+    new_max_val = 10
+
+    with pytest.raises(IntegrityError):
+        update_numeric_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory, new_is_integer, new_min_val, new_max_val)
 
 def test_update_numeric_question_with_null_ordinal():
-    pass
+    form_id = get_mock_form()
+    question_text = 'How do you like your eggs in the morning?'
+    ordinal = 1
+    explainer = 'A very serious tax-related question'
+    is_mandatory = True
+    is_integer = False
+    min_value = 0
+    max_value = 100
+
+    id = create_numeric_question(form_id, question_text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value)
+
+    new_text = 'Please describe how you like your eggs in the morning.'
+    new_ordinal = None
+    new_explainer = 'Boiled or fried and whether or not you are satisfied by eggs alone.'
+    new_is_mandatory = False
+    new_is_integer = True
+    new_min_val = -10
+    new_max_val = 10
+
+    with pytest.raises(IntegrityError):
+        update_numeric_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory, new_is_integer, new_min_val, new_max_val)
 
 def test_update_numeric_question_with_non_numeric_ordinal():
-    pass
+    form_id = get_mock_form()
+    question_text = 'How do you like your eggs in the morning?'
+    ordinal = 1
+    explainer = 'A very serious tax-related question'
+    is_mandatory = True
+    is_integer = False
+    min_value = 0
+    max_value = 100
+
+    id = create_numeric_question(form_id, question_text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value)
+
+    new_text = 'Please describe how you like your eggs in the morning.'
+    new_ordinal = 'Hmmm'
+    new_explainer = 'Boiled or fried and whether or not you are satisfied by eggs alone.'
+    new_is_mandatory = False
+    new_is_integer = True
+    new_min_val = -10
+    new_max_val = 10
+
+    with pytest.raises(IntegrityError):
+        update_numeric_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory, new_is_integer, new_min_val, new_max_val)
 
 def test_update_numeric_question_with_null_explainer():
-    pass
+    form_id = get_mock_form()
+    question_text = 'How do you like your eggs in the morning?'
+    ordinal = 1
+    explainer = 'A very serious tax-related question'
+    is_mandatory = True
+    is_integer = False
+    min_value = 0
+    max_value = 100
+
+    id = create_numeric_question(form_id, question_text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value)
+
+    new_text = 'Please describe how you like your eggs in the morning.'
+    new_ordinal = 2
+    new_explainer = None
+    new_is_mandatory = False
+    new_is_integer = True
+    new_min_val = -10
+    new_max_val = 10
+
+    with pytest.raises(IntegrityError):
+        update_numeric_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory, new_is_integer, new_min_val, new_max_val)
 
 def test_update_numeric_question_with_null_is_mandatory():
-    pass
+    form_id = get_mock_form()
+    question_text = 'How do you like your eggs in the morning?'
+    ordinal = 1
+    explainer = 'A very serious tax-related question'
+    is_mandatory = True
+    is_integer = False
+    min_value = 0
+    max_value = 100
 
-def test_update_numeric_question_with_null_is_integer():
-    pass
+    id = create_numeric_question(form_id, question_text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value)
 
-def test_update_numeric_question_with_non_boolean_is_integer():
-    pass
+    new_text = 'Please describe how you like your eggs in the morning.'
+    new_ordinal = 2
+    new_explainer = 'Boiled or fried and whether or not you are satisfied by eggs alone.'
+    new_is_mandatory = None
+    new_is_integer = True
+    new_min_val = -10
+    new_max_val = 10
 
-def test_update_numeric_question_with_null_max_value():
-    pass
-
-def test_update_numeric_question_with_non_numeric_max_value():
-    pass
-
-def test_update_numeric_question_with_null_min_value():
-    pass
-
-def test_update_numeric_question_with_non_numeric_min_value():
-    pass
+    with pytest.raises(IntegrityError):
+        update_numeric_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory, new_is_integer, new_min_val, new_max_val)
 
 def test_update_numeric_question():
-    pass
+    form_id = get_mock_form()
+    question_text = 'How do you like your eggs in the morning?'
+    ordinal = 1
+    explainer = 'A very serious tax-related question'
+    is_mandatory = True
+    is_integer = False
+    min_value = 0
+    max_value = 100
+
+    id = create_numeric_question(form_id, question_text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value)
+
+    new_text = 'Please describe how you like your eggs in the morning.'
+    new_ordinal = 2
+    new_explainer = 'Boiled or fried and whether or not you are satisfied by eggs alone.'
+    new_is_mandatory = False
+    new_is_integer = True
+    new_min_val = -10
+    new_max_val = 10
+
+    with pytest.raises(IntegrityError):
+        update_numeric_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory, new_is_integer, new_min_val, new_max_val)
+
+    question = NumericQuestion.objects.get(pk=id)
+    assert question is not None
+    assert question.text == new_text
+    assert question.ordinal == new_ordinal
+    assert question.explainer == new_explainer
+    assert question.is_mandatory == new_is_mandatory
+    assert question.is_integer == new_is_integer
+    assert question.min_val == new_min_val
+    assert question.max_val == new_max_val
 
 def test_update_numeric_question_with_non_existent_id():
-    pass
+    form_id = get_mock_form()
+    question_text = 'How do you like your eggs in the morning?'
+    ordinal = 1
+    explainer = 'A very serious tax-related question'
+    is_mandatory = True
+    is_integer = False
+    min_value = 0
+    max_value = 100
+
+    id = create_numeric_question(form_id, question_text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value)
+
+    new_text = 'Please describe how you like your eggs in the morning.'
+    new_ordinal = 2
+    new_explainer = 'Boiled or fried and whether or not you are satisfied by eggs alone.'
+    new_is_mandatory = False
+    new_is_integer = True
+    new_min_val = -10
+    new_max_val = 10
+
+    with pytest.raises(IntegrityError):
+        update_numeric_question(4894, new_text, new_ordinal, new_explainer, new_is_mandatory, new_is_integer, new_min_val, new_max_val)
 
 # Test deleting questions
 def test_delete_question():
@@ -332,14 +955,28 @@ def test_delete_question_with_non_existent_id():
 
 # Test creation of multiple choice options
 def test_create_option_with_null_text():
-    pass
+    text = None
+    with pytest.raises(IntegrityError):
+        id = create_multiple_choice_option(text)
 
 def test_create_option():
-    pass
+    text = 'Fried'
+    id = create_multiple_choice_option(text)
+    assert id is not None
+    option = MultipleChoiceOption.objects.get(pk=id)
+    assert option.text == text
 
 # Test deletion of multiple choice options
 def test_delete_option():
-    pass
+    assert MultipleChoiceOption.objects.all().count() == 0
+    text = 'Boiled'
+    id = create_multiple_choice_option(text)
+    option = MultipleChoiceOption.objects.get(pk=id)
+    assert option.text == text
+    assert MultipleChoiceOption.objects.all().count() == 1
+    delete_multiple_choice_option(id)
+    assert MultipleChoiceOption.objects.all().count() == 0
 
 def test_delete_option_with_non_existent_id():
-    pass
+    with pytest.raises(ObjectDoesNotExist):
+        delete_multiple_choice_option(7496854)
