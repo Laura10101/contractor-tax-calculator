@@ -1011,7 +1011,7 @@ def test_delete_question():
     )
 
     delete_question(id)
-    assert Form.objects.all().count() == 0
+    assert Question.objects.all().count() == 0
 
 @pytest.mark.django_db
 def test_delete_question_with_non_existent_id():
