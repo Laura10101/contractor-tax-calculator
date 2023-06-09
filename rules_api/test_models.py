@@ -96,7 +96,7 @@ def test_secondary_tier_calculate_where_total_income_below_lower_boundary():
     tier = RuleTier(min_value=10000, max_value=45000, tier_rate=10)
     secondary_tier = SecondaryRuleTier(primary_tier=tier, tier_rate=10)
     results = create_empty_results_table()
-    tier.calculate(secondary_income, primary_income, results)
+    secondary_tier.calculate(secondary_income, primary_income, results)
     assert len(results) == 0
 
 def test_secondary_tier_calculate_where_primary_income_on_lower_boundary_and_no_secondary_income():
@@ -105,7 +105,7 @@ def test_secondary_tier_calculate_where_primary_income_on_lower_boundary_and_no_
     tier = RuleTier(min_value=10000, max_value=45000, tier_rate=10)
     secondary_tier = SecondaryRuleTier(primary_tier=tier, tier_rate=10)
     results = create_empty_results_table()
-    tier.calculate(secondary_income, primary_income, results)
+    secondary_tier.calculate(secondary_income, primary_income, results)
     assert len(results) == 0
 
 def test_secondary_tier_calculate_where_primary_income_on_lower_boundary_and_total_within_boundaries():
@@ -114,7 +114,7 @@ def test_secondary_tier_calculate_where_primary_income_on_lower_boundary_and_tot
     tier = RuleTier(min_value=10000, max_value=45000, tier_rate=10)
     secondary_tier = SecondaryRuleTier(primary_tier=tier, tier_rate=10)
     results = create_empty_results_table()
-    tier.calculate(secondary_income, primary_income, results)
+    secondary_tier.calculate(secondary_income, primary_income, results)
     assert len(results) == 1
     assert results[0] is not None
     assert results[0]['tax_subtotal'] == round(secondary_income * (tier.tier_rate / 100), 2)
@@ -125,7 +125,7 @@ def test_secondary_tier_calculate_where_primary_income_and_total_within_boundari
     tier = RuleTier(min_value=10000, max_value=45000, tier_rate=10)
     secondary_tier = SecondaryRuleTier(primary_tier=tier, tier_rate=10)
     results = create_empty_results_table()
-    tier.calculate(secondary_income, primary_income, results)
+    secondary_tier.calculate(secondary_income, primary_income, results)
     assert len(results) == 1
     assert results[0] is not None
     assert results[0]['tax_subtotal'] == round(secondary_income * (tier.tier_rate / 100), 2)
@@ -136,7 +136,7 @@ def test_secondary_tier_calculate_where_primary_income_within_boundaries_and_tot
     tier = RuleTier(min_value=10000, max_value=45000, tier_rate=10)
     secondary_tier = SecondaryRuleTier(primary_tier=tier, tier_rate=10)
     results = create_empty_results_table()
-    tier.calculate(secondary_income, primary_income, results)
+    secondary_tier.calculate(secondary_income, primary_income, results)
 
     tier_amount = tier.max_value - tier.min_value
     tier_amount_remaining = tier_amount - (primary_income - tier.min_value)
@@ -151,7 +151,7 @@ def test_secondary_tier_calculate_where_primary_income_on_upper_boundary_and_tot
     tier = RuleTier(min_value=10000, max_value=45000, tier_rate=10)
     secondary_tier = SecondaryRuleTier(primary_tier=tier, tier_rate=10)
     results = create_empty_results_table()
-    tier.calculate(secondary_income, primary_income, results)
+    secondary_tier.calculate(secondary_income, primary_income, results)
 
     tier_amount = tier.max_value - tier.min_value
     tier_amount_remaining = tier_amount - (primary_income - tier.min_value)
@@ -166,7 +166,7 @@ def test_secondary_tier_calculate_where_primary_income_above_upper_boundary():
     tier = RuleTier(min_value=10000, max_value=45000, tier_rate=10)
     secondary_tier = SecondaryRuleTier(primary_tier=tier, tier_rate=10)
     results = create_empty_results_table()
-    tier.calculate(secondary_income, primary_income, results)
+    secondary_tier.calculate(secondary_income, primary_income, results)
 
     tier_amount = tier.max_value - tier.min_value
     tier_amount_remaining = tier_amount - (primary_income - tier.min_value)
