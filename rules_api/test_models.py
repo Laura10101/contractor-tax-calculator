@@ -174,13 +174,13 @@ def test_secondary_tier_calculate_where_primary_income_above_upper_boundary():
 
 # Test iteration over rule tiers
 def test_tiered_rule_iteration_with_no_tiers_defined():
-    rule = TieredRule()
+    rule = TieredRateRule()
     rule.reset()
     assert rule.next() is None
 
 def test_tiered_rule_iteration_with_single_tier_defined():
     tier = RuleTier(min_value=0, max_value=100)
-    rule = TieredRule(first_tier=tier)
+    rule = TieredRateRule(first_tier=tier)
     assert rule.next() is None
     rule.reset()
     next_tier = rule.next()
@@ -193,7 +193,7 @@ def test_tiered_rule_iteration_with_single_tier_defined():
 def test_tiered_rule_iteration_with_multiple_tiers_defined():
     tier2 = RuleTier(min_value=101, max_value=200)
     tier1 = RuleTier(min_value=0, max_value=100, next=tier2)
-    rule = TieredRule(first_tier=tier1)
+    rule = TieredRateRule(first_tier=tier1)
     assert rule.next() is None
     rule.reset()
     next_tier = rule.next()
