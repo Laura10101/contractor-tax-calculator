@@ -105,7 +105,7 @@ def test_patch_subscription_with_negative_months():
     assert response.status_code == 400
 
 @pytest.mark.django_db
-def test_patch_subscription_update():
+def test_patch_subscription():
     user_id = 1
     subscription_months = 6
     id = create_subscription(user_id, subscription_months)
@@ -116,6 +116,7 @@ def test_patch_subscription_update():
     body = { 'user_id': user_id, 'subscription_months': new_subscription_months }
     response = client.patch(url + '/' + str(id) + '/', body, format='json')
     assert response is not None
+    assert response.status_code == 200
     id = response.data['id']
     subscription = Subscription.objects.get(pk=id)
     assert subscription.subscription_months == new_subscription_months
