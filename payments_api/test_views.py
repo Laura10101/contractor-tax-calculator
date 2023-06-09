@@ -28,7 +28,7 @@ url = '/api/payments/'
 # }
 @pytest.mark.django_db
 def test_post_payment_with_null_data():
-    susbcription_id = None
+    subscription_id = None
     requested_subscription_months = None
     subtotal = None
     currency = None
@@ -43,7 +43,7 @@ def test_post_payment_with_null_data():
     assert response.status_code == 400
 
 def test_post_payment_with_null_subscription_id():
-    susbcription_id = None
+    subscription_id = None
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
@@ -58,7 +58,7 @@ def test_post_payment_with_null_subscription_id():
     assert response.status_code == 400
 
 def test_post_payment_with_null_months():
-    susbcription_id = 1
+    subscription_id = 1
     requested_subscription_months = None
     subtotal = 42.30
     currency = 'GBP'
@@ -73,7 +73,7 @@ def test_post_payment_with_null_months():
     assert response.status_code == 400
 
 def test_post_payment_with_negative_months():
-    susbcription_id = 1
+    subscription_id = 1
     requested_subscription_months = -6
     subtotal = 42.30
     currency = 'GBP'
@@ -88,7 +88,7 @@ def test_post_payment_with_negative_months():
     assert response.status_code == 400
 
 def test_post_payment_with_null_subtotal():
-    susbcription_id = 1
+    subscription_id = 1
     requested_subscription_months = 6
     subtotal = None
     currency = 'GBP'
@@ -103,7 +103,7 @@ def test_post_payment_with_null_subtotal():
     assert response.status_code == 400
 
 def test_post_payment_with_negative_subtotal():
-    susbcription_id = 1
+    subscription_id = 1
     requested_subscription_months = 6
     subtotal = -42.30
     currency = 'GBP'
@@ -118,7 +118,7 @@ def test_post_payment_with_negative_subtotal():
     assert response.status_code == 400
 
 def test_post_payment_with_invalid_currency_code():
-    susbcription_id = 1
+    subscription_id = 1
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'G'
@@ -133,7 +133,7 @@ def test_post_payment_with_invalid_currency_code():
     assert response.status_code == 400
 
 def test_post_valid_payment():
-    susbcription_id = 1
+    subscription_id = 1
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
@@ -179,7 +179,7 @@ def test_post_valid_payment():
 #   }
 # }
 def test_patch_payment_with_null_payment_data():
-    susbcription_id = 1
+    subscription_id = 1
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
@@ -214,7 +214,7 @@ def test_patch_payment_with_null_payment_data():
     assert response.status_code == 400
 
 def test_patch_payment_with_null_street1():
-    susbcription_id = 1
+    subscription_id = 1
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
@@ -249,7 +249,7 @@ def test_patch_payment_with_null_street1():
     assert response.status_code == 400
 
 def test_patch_payment_with_null_street2():
-    susbcription_id = 1
+    subscription_id = 1
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
@@ -284,7 +284,7 @@ def test_patch_payment_with_null_street2():
     assert response.status_code == 400
 
 def test_patch_payment_with_null_city():
-    susbcription_id = 1
+    subscription_id = 1
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
@@ -319,7 +319,7 @@ def test_patch_payment_with_null_city():
     assert response.status_code == 400
 
 def test_patch_payment_with_null_county():
-    susbcription_id = 1
+    subscription_id = 1
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
@@ -354,7 +354,7 @@ def test_patch_payment_with_null_county():
     assert response.status_code == 400
 
 def test_patch_payment_with_null_country():
-    susbcription_id = 1
+    subscription_id = 1
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
@@ -389,7 +389,7 @@ def test_patch_payment_with_null_country():
     assert response.status_code == 400
 
 def test_patch_payment_with_null_postcode():
-    susbcription_id = 1
+    subscription_id = 1
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
@@ -424,7 +424,7 @@ def test_patch_payment_with_null_postcode():
     assert response.status_code == 400
 
 def test_patch_payment_with_null_card_number():
-    susbcription_id = 1
+    subscription_id = 1
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
@@ -459,7 +459,7 @@ def test_patch_payment_with_null_card_number():
     assert response.status_code == 400
 
 def test_patch_payment_with_null_expiry():
-    susbcription_id = 1
+    subscription_id = 1
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
@@ -494,7 +494,7 @@ def test_patch_payment_with_null_expiry():
     assert response.status_code == 400
 
 def test_patch_payment_with_null_ccv2():
-    susbcription_id = 1
+    subscription_id = 1
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
@@ -529,7 +529,7 @@ def test_patch_payment_with_null_ccv2():
     assert response.status_code == 400
 
 def test_patch_payment():
-    susbcription_id = 1
+    subscription_id = 1
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
@@ -579,7 +579,7 @@ def test_patch_payment():
     assert payment.stripe_pid is not None
 
 def test_patch_payment_with_short_card_number():
-    susbcription_id = 1
+    subscription_id = 1
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
@@ -614,7 +614,7 @@ def test_patch_payment_with_short_card_number():
     assert response.status_code == 400
 
 def test_patch_payment_with_long_card_number():
-    susbcription_id = 1
+    subscription_id = 1
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
@@ -649,7 +649,7 @@ def test_patch_payment_with_long_card_number():
     assert response.status_code == 400
 
 def test_patch_payment_with_non_date_expiry():
-    susbcription_id = 1
+    subscription_id = 1
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
@@ -684,7 +684,7 @@ def test_patch_payment_with_non_date_expiry():
     assert response.status_code == 400
 
 def test_patch_payment_with_non_numeric_ccv2():
-    susbcription_id = 1
+    subscription_id = 1
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
@@ -719,7 +719,7 @@ def test_patch_payment_with_non_numeric_ccv2():
     assert response.status_code == 400
 
 def test_patch_payment_with_nonexistent_payment_id():
-    susbcription_id = 1
+    subscription_id = 1
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
