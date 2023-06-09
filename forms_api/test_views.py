@@ -56,7 +56,7 @@ def test_post_form_with_non_numeric_jurisdiction_id():
 @pytest.mark.django_db
 def test_get_forms_with_no_jurisdiction_ids_list():
     jurisdiction_ids = None
-    response = client.get(request_url)
+    response = client.get(url)
     assert response.status_code == 400
 
 @pytest.mark.django_db
