@@ -229,7 +229,7 @@ def test_secondary_tiered_rule_iteration_with_single_tier_defined():
 
 def test_secondary_tiered_rule_iteration_with_multiple_tiers_defined():
     ptier2 = RuleTier(min_value=101, max_value=200)
-    ptier1 = RuleTier(min_value=0, max_value=100, next=tier2)
+    ptier1 = RuleTier(min_value=0, max_value=100, next=ptier2)
 
     tier2 = SecondaryRuleTier(primary_tier=ptier1)
     tier1 = SecondaryRuleTier(primary_tier=ptier1, next=tier2)
