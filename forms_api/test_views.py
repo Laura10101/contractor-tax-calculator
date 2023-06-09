@@ -1531,7 +1531,7 @@ def get_mock_multiple_choice_question(form_id):
 @pytest.mark.django_db
 def test_post_option_with_null_text():
     form_id = get_mock_form()
-    question_id = get_mock_multiple_choice_question()
+    question_id = get_mock_multiple_choice_question(form_id)
     request_url = url + str(form_id) + '/questions/' + str(question_id) + '/options'
 
     text = None
@@ -1545,7 +1545,7 @@ def test_post_option_with_null_text():
 @pytest.mark.django_db
 def test_post_option():
     form_id = get_mock_form()
-    question_id = get_mock_multiple_choice_question()
+    question_id = get_mock_multiple_choice_question(form_id)
     request_url = url + str(form_id) + '/questions/' + str(question_id) + '/options'
 
     text = 'My question'
