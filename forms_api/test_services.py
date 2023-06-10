@@ -133,7 +133,7 @@ def test_create_boolean_question_with_null_form_id():
     explainer = 'A very serious tax-related question'
     is_mandatory = True
 
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ObjectDoesNotExist):
         id = create_boolean_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
 @pytest.mark.django_db
@@ -400,7 +400,7 @@ def test_create_multiple_choice_question_with_null_form_id():
     explainer = 'A very serious tax-related question'
     is_mandatory = True
 
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ObjectDoesNotExist):
         id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
 @pytest.mark.django_db
@@ -673,7 +673,7 @@ def test_create_numeric_question_with_null_form_id():
     min_value = 0
     max_value = 100
 
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ObjectDoesNotExist):
         id = create_numeric_question(form_id, question_text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value)
 
 @pytest.mark.django_db
@@ -687,7 +687,7 @@ def test_create_numeric_question_with_non_existent_form_id():
     min_value = 0
     max_value = 100
 
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ObjectDoesNotExist):
         id = create_numeric_question(form_id, question_text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value)
 
 @pytest.mark.django_db
@@ -993,7 +993,7 @@ def test_update_numeric_question_with_non_existent_id():
     new_min_val = -10
     new_max_val = 10
 
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ObjectDoesNotExist):
         update_numeric_question(4894, new_text, new_ordinal, new_explainer, new_is_mandatory, new_is_integer, new_min_val, new_max_val)
 
 # Test deleting questions
