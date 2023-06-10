@@ -37,7 +37,7 @@ def test_create_form_with_null_jurisdiction_id():
 @pytest.mark.django_db
 def test_create_form_with_non_numeric_jurisdiction_id():
     jurisdiction_id = 'ABC'
-    with pytest.raises(ValidationError):
+    with pytest.raises(ValueError):
         id = create_form(jurisdiction_id)
 
 # Test retrieval of forms based on jurisdiction IDs
@@ -56,7 +56,7 @@ def test_get_forms_with_empty_jurisdiction_ids_list():
 @pytest.mark.django_db
 def test_get_forms_with_non_numeric_jurisdiction_ids_in_list():
     jurisdiction_ids = ['A']
-    with pytest.raises(Exception):
+    with pytest.raises(ValueError):
         forms = get_forms_by_jurisdiction_ids(jurisdiction_ids)
 
 @pytest.mark.django_db
@@ -155,7 +155,7 @@ def test_create_boolean_question_with_non_numeric_form_id():
     explainer = 'A very serious tax-related question'
     is_mandatory = True
 
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ValueError):
         id = create_boolean_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
 @pytest.mark.django_db
@@ -188,7 +188,7 @@ def test_create_boolean_question_with_non_numeric_ordinal():
     explainer = 'A very serious tax-related question'
     is_mandatory = True
 
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ValueError):
         id = create_boolean_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
 @pytest.mark.django_db
@@ -299,7 +299,7 @@ def test_update_boolean_question_with_non_numeric_ordinal():
     new_explainer = 'Boiled or fried and whether or not you are satisfied by eggs alone.'
     new_is_mandatory = False
 
-    with pytest.raises(ValidationError):
+    with pytest.raises(ValueError):
         update_boolean_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory)
 
 @pytest.mark.django_db
@@ -422,7 +422,7 @@ def test_create_multiple_choice_question_with_non_numeric_form_id():
     explainer = 'A very serious tax-related question'
     is_mandatory = True
 
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ValueError):
         id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
 @pytest.mark.django_db
@@ -455,7 +455,7 @@ def test_create_multiple_choice_question_with_non_numeric_ordinal():
     explainer = 'A very serious tax-related question'
     is_mandatory = True
 
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ValueError):
         id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
 @pytest.mark.django_db
@@ -566,7 +566,7 @@ def test_update_multiple_choice_question_with_non_numeric_ordinal():
     new_explainer = 'Boiled or fried and whether or not you are satisfied by eggs alone.'
     new_is_mandatory = False
 
-    with pytest.raises(ValidationError):
+    with pytest.raises(ValueError):
         update_multiple_choice_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory)
 
 @pytest.mark.django_db
@@ -701,7 +701,7 @@ def test_create_numeric_question_with_non_numeric_form_id():
     min_value = 0
     max_value = 100
 
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ValueError):
         id = create_numeric_question(form_id, question_text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value)
 
 @pytest.mark.django_db
@@ -743,7 +743,7 @@ def test_create_numeric_question_with_non_numeric_ordinal():
     min_value = 0
     max_value = 100
 
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ValueError):
         id = create_numeric_question(form_id, question_text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value)
 
 @pytest.mark.django_db
@@ -887,7 +887,7 @@ def test_update_numeric_question_with_non_numeric_ordinal():
     new_min_val = -10
     new_max_val = 10
 
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ValueError):
         update_numeric_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory, new_is_integer, new_min_val, new_max_val)
 
 @pytest.mark.django_db
