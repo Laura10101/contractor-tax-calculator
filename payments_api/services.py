@@ -1,5 +1,7 @@
 from .models import Payment 
+from .stripe import *
 from datetime import date 
+
 
 def create_payment(subscription_id, requested_subscription_months, subtotal, currency):
     # Calculate VAT 
@@ -15,27 +17,31 @@ def create_payment(subscription_id, requested_subscription_months, subtotal, cur
         vat=vat,
         total=total
     )
+    new_payment.stripe_pid = create_stripe_payment_intention(new_payment.total, new_payment.currency)
     new_payment.status = 2
     new_payment.save()
 
     # Return ID of newly created jurisdiction
     return new_payment.id
 
-def confirm_payment(id, billing_street_1, billing_street_2, town_or_city, county, country, postcode, 
-    card_number, expiry_date, ccv2):
-    payment = Payment.objects.filter(pk__exact=id).update(
-        billing_street_1=billing_street_1,
-        billing_street_2=billing_street_2, 
-        town_or_city=town_or_city, 
-        county=county, 
-        country=country, 
-        postcode=postcode, 
-        card_number=card_number, 
-        expiry_date=expiry_date, 
-        ccv2=ccv2,
-        status=3,
-        intended_date=date.today()
-        )
+def confirm_payment(id, billing_street_1, billing_street_2, town_or_city, county, country, postcode, stripe_card_id):
+    payment = Payment.objects.get(pkid)
+
+    # Update the payment with the billing details
+    payment.billing_street_1=billing_street_1
+    payment.billing_street_2=billing_street_2
+    payment.town_or_city=town_or_city
+    payment.county=county
+    payment.country=country
+    payment.postcode=postcode
+    payment.stripe_card_id=stripe_card_id
+    payment.save()
+
+    # Confirm the payment with Stripe and update its status
+    confirm_stripe_payment(payment.pid, payment.stripe_card_id)
+    payment.status=3
+    payment.intended_date=date.today()
+    payment.save()
 
 def complete_payment(stripe_pid):
     payment = Payment.objects.filter(stripe_pid__exact=id).update(
