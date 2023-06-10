@@ -55,9 +55,3 @@ class Payment(models.Model):
     intended_date = DateTimeField(null=False, blank=False)
     completed_or_failed_date = DateTimeField(null=False, blank=False)
 
-
-
-
-
-
-
