@@ -80,6 +80,8 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.media',
+                # Custom context processor to check users subscription status 
+                'subscription.context_processors.user_has_subscription', 
             ],
             'builtins': [
                 'crispy_forms.templatetags.crispy_forms_tags',
