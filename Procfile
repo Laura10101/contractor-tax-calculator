@@ -1,0 +1,1 @@
+web: gunicorn contractor_tax_calculator.wsgi:application
