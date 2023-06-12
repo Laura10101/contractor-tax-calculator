@@ -4,8 +4,8 @@
 <html lang="en">
   <head>
     <!-- Check if logged in user has an active subscription and if not redirct to subsctiption form-->
-    {% if not user_has_subscription %}
-      <meta http-equiv="REFRESH" content="/subscription/">
+    {% if not user_has_subscription and not request.path == '/subscription/' %}
+      <meta http-equiv="Refresh" content="0;/subscription/">
     {% endif %}
 
     {% block meta %}
@@ -41,9 +41,14 @@
     <header>
 
     </header>
-
     {% if messages %}
         <div class="message-container"></div>
     {% endif %}
+
+    {% block page_header %}
+    {% endblock %}
+
+    {% block content %}
+    {% endblock %}
   </body>
 </html>
