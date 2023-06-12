@@ -29,30 +29,35 @@
                     {% csrf_token %}
                     <fieldset class="rounded px-3 mb-5">
                         <legend class="fieldset-label small text-black px-2 w-auto">Details</legend>
-                        {{ order_form.fullname | as_crispy_field }}
-                        {{ order_form.email | as_crispy_field }}
+                        <label class="form-check-label" for="full_name"></label>
+                        <input class="form-control" type="text" id="full_name">
+
+                        <label class="form-check-label" for="email"></label>
+                        <input class="form-control" type="email" id="email" placeholder="name@example.com">
                     </fieldset>
 
                     <fieldset class="rounded px-3 mb-5">
                         <legend class="fieldset-label small text-black px-2 w-auto">Delivery</legend>
-                        {{ order_form.phone_number | as_crispy_field }}
-                        {{ order_form.country | as_crispy_field }}
-                        {{ order_form.postcode | as_crispy_field }}
-                        {{ order_form.town_or_city | as_crispy_field }}
-                        {{ order_form.street_address1 | as_crispy_field }}
-                        {{ order_form.street_address2 | as_crispy_field }}
-                        {{ order_form.county | as_crispy_field }}
-                        <div class="form-check form-check-inline float-right mr-0">
-                            {% if user.is_authenticated %}
-                                <label class="form-check-label" for="id-save-info">Save delivery info to my profile</label>
-                                <input class="form-check-input ml-2 mr-0" type="checkbox" id="id-save-info" name="save-info" checked>
-                            {% else %}
-                                <label class="form-check-label" for="id-save-info">
-                                    <a class="text-info" href="{% url 'account_signup' %}">Create an account</a> or
-                                    <a class="text-info" href="{% url 'account_login' %}">login</a> to save this info
-                                </label>
-                            {% endif %}
-                        </div>
+                        <label class="form-check-label" for="phone_number"></label>
+                        <input class="form-control" type="text" id="phone_number">
+                        
+                        <label class="form-check-label" for="country"></label>
+                        <input class="form-control" type="text" id="country">
+
+                        <label class="form-check-label" for="postcode"></label>
+                        <input class="form-control" type="text" id="postcode">
+                        
+                        <label class="form-check-label" for="town_or_city"></label>
+                        <input class="form-control" type="text" id="town_or_city">
+
+                        <label class="form-check-label" for="street_address1"></label>
+                        <input class="form-control" type="text" id="street_address1">
+                        
+                        <label class="form-check-label" for="street_address2"></label>
+                        <input class="form-control" type="text" id="street_address2">
+                        
+                        <label class="form-check-label" for="county"></label>
+                        <input class="form-control" type="text" id="county">
                     </fieldset>
 
                     <fieldset class="rounded px-3 mb-5">
