@@ -43,4 +43,5 @@ urlpatterns = [
     path('api/subscriptions/status/', SubscriptionStatusesList.as_view()),
     path('accounts/', include('allauth.urls')),
     path('checkout/', include('checkout.urls')),
+    path('dashboard/', include('dashboard.urls')),
 ]
