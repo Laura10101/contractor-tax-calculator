@@ -3,8 +3,13 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <!-- Check if logged in user has an active subscription and if not redirct to subsctiption form-->
+    {% if not user_has_subscription %}
+      <meta http-equiv="REFRESH" content="/subscription/">
+    {% endif %}
+
     {% block meta %}
-        <meta http-equiv=""X-UA-Compatible content="ie=edge">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     {% endblock %}
@@ -12,7 +17,7 @@
     {% block extra_meta %}
     {% endblock %}
 
-    {% block corecss %}}
+    {% block corecss %}
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
     {% endblock %}
 
