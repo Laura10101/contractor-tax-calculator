@@ -235,37 +235,36 @@ Alternatively, if using Gitpod, you can click below to create your own workspace
 ## Credits
 
 ### Educational Resources
-Uncle Bob’s Clean Code 
-Government tax websites/legal resources 
-Canva pallet picker (with colours amended by me)
-Balsamiq for wireframes 
-Book on architecture principles/guidelines
-Django Best Practices: Projects vs Apps | LearnDjango.com
-Django Stripe Subscriptions | TestDriven.io
-Strategy (refactoring.guru)
-Serializing Django objects | Django documentation | Django (djangoproject.com)
-Convert Queryset To Json In Django (letscodemore.com)
-URL dispatcher | Django documentation | Django (djangoproject.com)
-How to read JSON data in an HTTP POST request in Django | by Sampath Surineni | Medium
-python - How to disable Django's CSRF validation? - Stack Overflow
-REST/HTTP - Should you use a body for your DELETE requests? (peterdaugaardrasmussen.com)
-(2) How to delete multiple objects in django? : djangolearning (reddit.com)
-Getting query params from request in Django - https://pythoncircle.com
-Python String split() Method (w3schools.com)
-Making queries | Django documentation | Django (djangoproject.com)
-Model Inheritance In Python Django (buildatscale.tech)
-Modeling Polymorphism in Django With Python – Real Python
-Quickstart — django-polymorphic 3.1 documentation
-Getting query params from request in Django - https://pythoncircle.com
-python 2.7 - How to return HTTP 400 response in Django? - Stack Overflow
-Http Delete request to django returns a 301(Moved permenantly)_django_Mangs-DevPress官方社区 (csdn.net)
-Add Months to datetime Object in Python - GeeksforGeeks
-python - how to get request object in django unit testing? - Stack Overflow
-Advanced testing topics | Django documentation | Django (djangoproject.com)
-How to write and report assertions in tests — pytest documentation
-Django helpers — pytest-django documentation
-Python: Fastest — Convert list of integers to comma separated string | by Akshay Chavan | Medium
-Use incoming webhooks to get real-time updates | Stripe Documentation
-Stripe API Reference - The event object
-How intents work | Stripe Documentation
-Stripe API Reference - The PaymentIntent object
+- Uncle Bob’s Clean Code 
+- Government tax websites/legal resources 
+- Canva pallet picker (with colours amended by me)
+- Book on architecture principles/guidelines
+- [Django Best Practices: Projects vs Apps | LearnDjango.com](https://learndjango.com/tutorials/django-best-practices-projects-vs-apps)
+- [Django Stripe Subscriptions | TestDriven.io](https://testdriven.io/blog/django-stripe-subscriptions/)
+- [Strategy (refactoring.guru)](https://refactoring.guru/design-patterns/strategy)
+- [Serializing Django objects | Django documentation | Django (djangoproject.com)](https://docs.djangoproject.com/en/4.1/topics/serialization/)
+- [Convert Queryset To Json In Django (letscodemore.com)](https://www.letscodemore.com/blog/convert-queryset-to-json-in-django/)
+- [URL dispatcher | Django documentation | Django (djangoproject.com)](https://docs.djangoproject.com/en/4.2/topics/http/urls/)
+- [How to read JSON data in an HTTP POST request in Django | by Sampath Surineni | Medium](https://medium.com/@sampathkumar/how-to-read-json-data-in-an-http-post-request-in-django-d29fd6dae6b4)
+- [python - How to disable Django's CSRF validation? - Stack Overflow](https://stackoverflow.com/questions/16458166/how-to-disable-djangos-csrf-validation)
+- [REST/HTTP - Should you use a body for your DELETE requests? (peterdaugaardrasmussen.com)](https://peterdaugaardrasmussen.com/2020/11/14/rest-should-you-use-a-body-for-your-http-delete-requests/)
+- [(2) How to delete multiple objects in django? : djangolearning (reddit.com)](https://www.reddit.com/r/djangolearning/comments/uq66mz/how_to_delete_multiple_objects_in_django/)
+- [Getting query params from request in Django - https://pythoncircle.com](https://pythoncircle.com/post/710/getting-query-params-from-request-in-django/)
+- [Python String split() Method (w3schools.com)](https://www.w3schools.com/python/ref_string_split.asp)
+- [Making queries | Django documentation | Django (djangoproject.com)](https://docs.djangoproject.com/en/4.2/topics/db/queries/#the-pk-lookup-shortcut)
+- [Model Inheritance In Python Django (buildatscale.tech)](https://buildatscale.tech/model-inheritance-in-django/)
+- [Modeling Polymorphism in Django With Python – Real Python](https://realpython.com/modeling-polymorphism-django-python/#abstract-base-model)
+- [Quickstart — django-polymorphic 3.1 documentation](https://django-polymorphic.readthedocs.io/en/stable/quickstart.html)
+- [Getting query params from request in Django - https://pythoncircle.com](https://pythoncircle.com/post/710/getting-query-params-from-request-in-django/)
+- [python 2.7 - How to return HTTP 400 response in Django? - Stack Overflow](https://stackoverflow.com/questions/23492000/how-to-return-http-400-response-in-django)
+- [Http Delete request to django returns a 301(Moved permenantly)_django_Mangs-DevPress官方社区 (csdn.net)](https://devpress.csdn.net/python/6304bd0ac67703293080dc2d.html)
+- [Add Months to datetime Object in Python - GeeksforGeeks](https://www.geeksforgeeks.org/add-months-to-datetime-object-in-python/)
+- [python - how to get request object in django unit testing? - Stack Overflow](https://stackoverflow.com/questions/10277748/how-to-get-request-object-in-django-unit-testing)
+- [Advanced testing topics | Django documentation | Django (djangoproject.com)](https://docs.djangoproject.com/en/4.2/topics/testing/advanced/)
+- [How to write and report assertions in tests — pytest documentation](https://docs.pytest.org/en/7.1.x/how-to/assert.html)
+- [Django helpers — pytest-django documentation](https://pytest-django.readthedocs.io/en/latest/helpers.html)
+- [Python: Fastest — Convert list of integers to comma separated string | by Akshay Chavan | Medium](https://arccoder.medium.com/python-fastest-convert-list-of-integers-to-comma-separated-string-7818494ab8f6)
+- [Use incoming webhooks to get real-time updates | Stripe Documentation](https://stripe.com/docs/webhooks)
+- [Stripe API Reference - The event object](https://stripe.com/docs/api/events/object)
+- [How intents work | Stripe Documentation](https://stripe.com/docs/payments/intents#intent-statuses)
+- [Stripe API Reference - The PaymentIntent object](https://stripe.com/docs/api/payment_intents/object)
