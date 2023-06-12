@@ -1,4 +1,5 @@
 # Context processor to check user subscription status 
+from django.conf import settings
 import requests
 import json
 
@@ -9,5 +10,6 @@ def user_has_subscription(request):
     data = json.loads(response.text)
     user_has_subscription = data['has_active_subscription']
     return { 
-        'user_has_subscription' : user_has_subscription
+        'user_has_subscription' : user_has_subscription,
+        'subscription_exempt_paths': settings.SUBSCRIPTION_EXEMPT_PATHS
     }
