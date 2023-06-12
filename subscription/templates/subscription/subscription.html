@@ -10,6 +10,32 @@
 {% endblock %}
 
 {% block content %}
-    <p>Your subscription</p>
+    <h1>Your Subscription Options</h1>
+    <p>You don't currently have an active subscription. Please choose one of the following:</p>
+    <form method="POST" action="/checkout/">
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="1_month" value="10">
+            <label class="form-check-label" for="inlineRadio1">
+                1 Month: £10
+            </label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="3_month" value="25">
+            <label class="form-check-label" for="inlineRadio2">
+                3 Months: £25
+            </label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="12_month" value="90">
+            <label class="form-check-label" for="inlineRadio3">
+                12 Months: £90
+            </label>
+        </div>
+
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="submit">
+        </div>
+
+    </form>
 {% endblock %}
 
