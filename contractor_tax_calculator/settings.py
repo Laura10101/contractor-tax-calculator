@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-z$-^w4kq@-iy^c^qr=)@q)1aw$uc!tmj&vb7osqpmi6pohnyx7'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = 'DEVELOPMENT' in os.environ
 
 ALLOWED_HOSTS = ['8000-laura10101-contractorta-x36vvy68pn6.ws-eu99.gitpod.io']
 
@@ -176,3 +176,6 @@ SUBSCRIPTION_EXEMPT_PATHS = [
     '/subscription/',
     '/checkout/',
 ]
+
+STRIPE_PUBLIC_KEY = os.getenv('STRIPE_PUBLIC_KEY', '')
+STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY', '')
