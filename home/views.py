@@ -1,8 +1,8 @@
 from django.shortcuts import render
 
 # Create your views here.
-def dashboard(request):
-    template = 'dashboard/dashboard.html'
+def home(request):
+    template = 'home/home.html'
     context = {
     }
 
