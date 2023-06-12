@@ -44,4 +44,5 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('checkout/', include('checkout.urls')),
     path('dashboard/', include('dashboard.urls')),
+    path('subscription/', include('subscription.urls')),
 ]
