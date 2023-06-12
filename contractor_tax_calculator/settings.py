@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-z$-^w4kq@-iy^c^qr=)@q)1aw$uc!tmj&vb7osqpmi6pohnyx7
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['8000-laura10101-contractorta-x36vvy68pn6.ws-eu98.gitpod.io']
+ALLOWED_HOSTS = ['8000-laura10101-contractorta-x36vvy68pn6.ws-eu99.gitpod.io']
 
 
 # Application definition
@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'checkout',
     'crispy_forms',
+    'dashboard',
 ]
 
 MIDDLEWARE = [
