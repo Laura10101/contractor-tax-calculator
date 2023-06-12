@@ -150,7 +150,7 @@ Plug in to currency converter. Get conversion rate, store as variable so use sam
 
 ## Deployment
 
-The live deployed application can be found at [Tax Calculator](https://cat-identifier.herokuapp.com/).
+The live deployed application can be found at [Tax Calculator](https://contractor-tax-calculator.herokuapp.com/).
 
 ### Heroku
 
