@@ -6,6 +6,8 @@
     <!-- Check if logged in user has an active subscription and if not redirct to subsctiption form-->
     {% if not user_has_subscription and not request.path == '/subscription/' %}
       <meta http-equiv="Refresh" content="0;/subscription/">
+    {% elif user_has_subscription and request.path == '/subscription/' %}
+      <meta http-equiv="Refresh" content="0;/dashboard/">
     {% endif %}
 
     {% block meta %}
