@@ -10,6 +10,6 @@ def checkout(request):
     template = 'checkout/checkout.html'
     context = { 
         'stripe_public_key': stripe_public_key,
-        'client_secret': 'intent.client_secret',
+        'client_secret_key': 'intent.client_secret',
     }
     return render(request, template, context)
