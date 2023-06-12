@@ -181,6 +181,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 SUBSCRIPTION_EXEMPT_PATHS = [
     '/subscription/',
     '/checkout/',
+    '/accounts/login/'
 ]
 
 STRIPE_PUBLIC_KEY = os.getenv('STRIPE_PUBLIC_KEY', '')
