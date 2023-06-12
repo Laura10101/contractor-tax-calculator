@@ -1,5 +1,6 @@
+from django.conf import settings
+
 import stripe
-import ..env
 
 # Retrieve keys from env.py
 stripe_public_key = settings.STRIPE_PUBLIC_KEY
