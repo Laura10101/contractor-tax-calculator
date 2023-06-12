@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'dashboard',
     'subscription',
     'storages',
+    'crispy_bootstrap4',
 ]
 
 MIDDLEWARE = [
