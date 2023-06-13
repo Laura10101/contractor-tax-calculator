@@ -15,7 +15,7 @@ def create_stripe_payment_intention(amount, currency):
         amount=stripe_total,
         currency=settings.STRIPE_CURRENCY,
     )
-    return intent.id
+    return intent.id, intent.client_secret
 
 # Confirm the payment intent for Stripe 
 def confirm_stripe_payment(stripe_pid, stripe_card_id):

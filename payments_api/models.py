@@ -34,7 +34,8 @@ from django.db import models
 class Payment(models.Model):
     # Add class attributes 
     subscription_id = models.IntegerField(null=False, blank=False)
-    stripe_pid = models.CharField(max_length=50, null=False, blank=False)
+    stripe_pid = models.CharField(max_length=50, null=True, blank=True)
+    client_secret = models.CharField(max_length=50, null=False, blank=False)
     status = models.IntegerField(null=False, blank=False, default=1)
     stripe_error = models.CharField(max_length=50, null=False, blank=False)
     requested_subscription_months = models.IntegerField(null=False, blank=False)

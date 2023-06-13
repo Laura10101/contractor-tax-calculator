@@ -19,12 +19,14 @@ def create_payment(subscription_id, requested_subscription_months, subtotal, cur
     )
     # Create the payment intention in Stripe and update the local payment record 
     # with the payment ID from Stripe and with the intent created status
-    new_payment.stripe_pid = create_stripe_payment_intention(new_payment.total, new_payment.currency)
+    new_payment.stripe_pid, new_payemnt.client_secret = create_stripe_payment_intention(
+        new_payment.total, new_payment.currency
+        )
     new_payment.status = 2
     new_payment.save()
 
     # Return ID of newly created jurisdiction
-    return new_payment.id
+    return new_payment.id, new_payment.client_secret
 
 def confirm_payment(id, billing_street_1, billing_street_2, town_or_city, county, country, postcode, stripe_card_id):
     payment = Payment.objects.get(pkid)

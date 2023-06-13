@@ -39,9 +39,12 @@ class PaymentsList(APIView):
         currency = request.data['currency']
 
         # Invoke service method 
-        payment_id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+        payment_id, client_secret = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
         # Create response 
-        response = { 'payment_id' : payment_id }
+        response = {
+            'payment_id' : payment_id,
+            'client_secret': client_secret,
+        }
         # Return response 
         return Response(response)
 
