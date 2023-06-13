@@ -4,7 +4,8 @@ import requests
 import json
 
 def user_has_subscription(request):
-    url = 'https://8000-laura10101-contractorta-x36vvy68pn6.ws-eu99.gitpod.io/api/subscriptions/status/'
+    base_url = request.scheme + '://' + request.get_host()
+    url = base_url + '/api/subscriptions/status/'
     print('Checking the user: ' + str(request.user))
     user_has_subscription = False
     if not str(request.user) == 'AnonymousUser':
