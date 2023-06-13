@@ -35,7 +35,13 @@ class PaymentsList(APIView):
         # Extract data required for service method
         subscription_id = request.data['subscription_id']
         requested_subscription_months = request.data['requested_months']
-        subtotal = request.data['total']
+        try:
+            subtotal = int(request.data['subtotal'])
+        except ValueError:
+            return Response(
+                { 'error' : 'Subtotal must be a numeric value.' },
+                status=status.HTTP_400_BAD_REQUEST
+                )
         currency = request.data['currency']
 
         # Invoke service method 
