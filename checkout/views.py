@@ -56,19 +56,21 @@ def checkout_status(request):
     # Define template
     template = 'checkout/checkout_status.html'
     base_url = request.scheme + '://' + request.get_host() + '/api/payments/'
+    failure_reason = ''
     # If request method is POST, confirm payment in payments API
     if request.method == 'POST':
         payment_id = request.POST['payment_id']
         url = base_url + str(payment_id) + '/'
         data = {
             'billing_street_1': request.POST['street_address1'],
-            'billing_street_2': request.POST['street_address2'],
             'town_or_city': request.POST['town_or_city'],
             'county': request.POST['county'],
             'country': request.POST['country'],
             'postcode': request.POST['postcode'],
             'stripe_card_id': request.POST['payment_method_id']
         }
+        if 'street_address2' in request.POST:
+            data['billing_street_2'] = request.POST['street_address2'],
         print("Confirming payment at URL: " + url)
         response = requests.patch(url, json=data)
         print('Confirm payment response: ' + str(response))
@@ -87,7 +89,7 @@ def checkout_status(request):
         'payment_id': payment_id,
         'payment_status': payment_status,
         'failure_reason': failure_reason,
-        'payment_pending': pamyent_pending,
+        'payment_pending': payment_status == 'pending',
     }
     # Render template and return 
     return render(request, template, context)

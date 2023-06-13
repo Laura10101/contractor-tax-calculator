@@ -55,7 +55,7 @@ class PaymentsList(APIView):
         return Response(response)
 
 class PaymentDetail(APIView):
-    def patch(self, request, id):
+    def patch(self, request, pk):
         required_attributes = [
             'billing_street_1',
             'billing_street_2',
@@ -69,7 +69,7 @@ class PaymentDetail(APIView):
         if not contains_required_attributes(request, required_attributes):
             return Response(
                 { 'error' : 'Invalid request. Please supply all required attributes.' },
-                status=status.HTTP_400_BAD_REQUEST
+                status=400
                 )
         
         # Extract data required for service method
@@ -89,7 +89,7 @@ class PaymentDetail(APIView):
         return Response(response)
 
 class PaymentStatusDetail(APIView):
-    def get(self, request, id):
+    def get(self, request, pk):
         status, failure_reason = get_payment_status(id)
         response = {
             'id': id,
@@ -124,19 +124,19 @@ class StripeWebhooksList(APIView):
         if 'type' not in request.data.keys():
             return Response(
                 { 'error' : 'Invalid request. Please supply all required attributes.' },
-                status=status.HTTP_400_BAD_REQUEST
+                status=400
                 )
 
         if 'id' not in request.data['data']['object'].keys():
             return Response(
                 { 'error' : 'Invalid request. Please supply all required attributes.' },
-                status=status.HTTP_400_BAD_REQUEST
+                status=400
                 )
 
         if 'status' not in request.data['data']['object'].keys():
             return Response(
                 { 'error' : 'Invalid request. Please supply all required attributes.' },
-                status=status.HTTP_400_BAD_REQUEST
+                status=400
                 )
 
         # Extract the attributes from the webhook request
