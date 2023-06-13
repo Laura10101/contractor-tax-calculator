@@ -19,7 +19,7 @@ def create_payment(subscription_id, requested_subscription_months, subtotal, cur
     )
     # Create the payment intention in Stripe and update the local payment record 
     # with the payment ID from Stripe and with the intent created status
-    new_payment.stripe_pid, new_payemnt.client_secret = create_stripe_payment_intention(
+    new_payment.stripe_pid, new_payment.client_secret = create_stripe_payment_intention(
         new_payment.total, new_payment.currency
         )
     new_payment.status = 2
