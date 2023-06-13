@@ -44,7 +44,7 @@ urlpatterns = [
     path('api/subscriptions/status/', SubscriptionStatusesList.as_view()),
     path('api/payments/', PaymentsList.as_view()),
     path('api/payments/<int:pk>/', PaymentDetail.as_view()),
-    path('api/payments/status/<int:pk>', PaymentStatusDetail.as_view()),
+    path('api/payments/<int:pk>/status/', PaymentStatusDetail.as_view()),
     path('api/payments/webhooks/', StripeWebhooksList.as_view()),
     path('accounts/', include('allauth.urls')),
     path('checkout/', include('checkout.urls')),
