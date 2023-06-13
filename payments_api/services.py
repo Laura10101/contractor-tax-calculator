@@ -59,3 +59,14 @@ def fail_payment(stripe_pid, reason):
         created_or_failed_date=date.today(),
         stripe_error=reason
         )
+
+def get_payment_status(id):
+    payment = Payment.objects.get(pk=id)
+    payment_statuses = {
+        -1: 'failed',
+        1: 'created',
+        2: 'intended',
+        3: 'pending',
+        4: 'complete',
+    }
+    return payment_statuses[payment.status]

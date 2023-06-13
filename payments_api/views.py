@@ -87,6 +87,15 @@ class PaymentDetail(APIView):
         response = { }
         # Return response 
         return Response(response)
+
+class PaymentStatusDetail(APIView):
+    def get(self, request, id):
+        status = get_payment_status(id)
+        response = {
+            'id': id,
+            'status': status
+        }
+        return Response(response)
         
 class StripeWebhooksList(APIView):
     # Create function to handle webhooks from Stripe
