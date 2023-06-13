@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_header %}
+    <div class="container header-container">
+        <div class="row">
+            <div class="col"><h1>Payment failed</h1></div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <p>Your payment could not be processed, for reason '{{failure_reason}}'. Please check your details and try again, 
+        or contact us.</p>
+{% endblock %}
