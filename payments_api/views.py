@@ -90,10 +90,11 @@ class PaymentDetail(APIView):
 
 class PaymentStatusDetail(APIView):
     def get(self, request, id):
-        status = get_payment_status(id)
+        status, failure_reason = get_payment_status(id)
         response = {
             'id': id,
-            'status': status
+            'status': status,
+            'failure_reason': failure_reason,
         }
         return Response(response)
         
