@@ -35,8 +35,9 @@ def checkout(request):
 
     # POST data to payment API
     # This will create Stripe payment confirmation and local record 
+    print("Creating payment at URL: " + url)
     response = requests.post(url, json=data)
-    print(response)
+    print('Create payment response: ' + str(response))
     data = json.loads(response.text)
     
     # Extract data from response 
