@@ -19,6 +19,7 @@ from jurisdictions_api.views import JurisdictionList
 from forms_api.views import FormDetail, FormsList, FormQuestionList, FormQuestionsDetail
 from rules_api.views import *
 from subscriptions_api.views import *
+from payments_api.views import *
 
 
 urlpatterns = [
@@ -41,6 +42,9 @@ urlpatterns = [
     path('api/subscriptions/', SubscriptionsList.as_view()),
     path('api/subscriptions/<int:pk>/', SubscriptionDetail.as_view()),
     path('api/subscriptions/status/', SubscriptionStatusesList.as_view()),
+    path('api/payments/', PaymentsList.as_view()),
+    path('api/payments/<int:pk>/', PaymentDetail.as_view()),
+    path('api/payments/webhooks/', StripeWebhooksList.as_view()),
     path('accounts/', include('allauth.urls')),
     path('checkout/', include('checkout.urls')),
     path('home/', include('home.urls')),
