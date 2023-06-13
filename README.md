@@ -268,3 +268,4 @@ Alternatively, if using Gitpod, you can click below to create your own workspace
 - [Stripe API Reference - The event object](https://stripe.com/docs/api/events/object)
 - [How intents work | Stripe Documentation](https://stripe.com/docs/payments/intents#intent-statuses)
 - [Stripe API Reference - The PaymentIntent object](https://stripe.com/docs/api/payment_intents/object)
+- [Stripe Documentation - Create Payment Method](https://stripe.com/docs/js/payment_methods/create_payment_method)
