@@ -33,7 +33,7 @@ from django.db import models
 
 class Payment(models.Model):
     # Add class attributes 
-    subscription_id = models.IntegerField(null=False, blank=False)
+    subscription_id = models.IntegerField(null=True, blank=True)
     stripe_pid = models.CharField(max_length=50, null=True, blank=True)
     client_secret = models.CharField(max_length=50, null=False, blank=False)
     status = models.IntegerField(null=False, blank=False, default=1)
@@ -51,6 +51,6 @@ class Payment(models.Model):
     postcode = models.CharField(max_length = 10, null=True, blank=True)
     stripe_card_id = models.CharField(max_length=50, null=True, blank=True)
     created_date = models.DateTimeField(auto_now_add=True, null=False, blank=False)
-    intended_date = models.DateTimeField(null=False, blank=False)
-    completed_or_failed_date = models.DateTimeField(null=False, blank=False)
+    intended_date = models.DateTimeField(null=True, blank=True)
+    completed_or_failed_date = models.DateTimeField(null=True, blank=True)
 
