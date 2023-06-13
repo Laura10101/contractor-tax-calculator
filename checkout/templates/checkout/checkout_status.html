@@ -10,5 +10,12 @@
 {% endblock %}
 
 {% block content %}
-    <p>We are processing your payment, sit tight, we'll let you know once it's confirmed.</p>
+    {% if payment_pending %}
+        <p>We are processing your payment, sit tight, we'll let you know once it's confirmed.</p>
+    {% else %}
+        <p>Your payment is {{ payment_status }}.</p>
+        {% if payment_status == 'failed' %}
+            <p>The reason for the failure is: {{ failure_reason }}</p>
+        {% endif %}
+    {% endif %}
 {% endblock %}
