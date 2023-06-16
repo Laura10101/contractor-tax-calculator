@@ -12,31 +12,40 @@
 {% block content %}
     <h1>Your Subscription Options</h1>
     <p>You don't currently have an active subscription. Please choose one of the following:</p>
-    <form method="POST" action="/checkout/">
+    <form method="POST" action="{% url 'checkout' %}">
         {% csrf_token %}
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="1_month" id="1_month" value="10">
+            <input class="form-check-input" type="radio" name="subscription" id="1_month" value="10">
             <label class="form-check-label" for="1_month">
                 1 Month: £10
             </label>
         </div>
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="3_month" id="3_month" value="25">
+            <input class="form-check-input" type="radio" name="subscription" id="3_month" value="25">
             <label class="form-check-label" for="3_month">
                 3 Months: £25
             </label>
         </div>
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="12_month" id="12_month" value="90">
+            <input class="form-check-input" type="radio" name="subscription" id="12_month" value="90">
             <label class="form-check-label" for="12_month">
                 12 Months: £90
             </label>
         </div>
 
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="submit">
+            <input class="form-check-input" type="submit" id="submit" disabled>
         </div>
 
     </form>
 {% endblock %}
 
+{% block postloadjs %}
+    <script>
+        $('input:radio[name="subscription"]').change(
+            function() {
+                $('#submit').prop('disabled', false);
+            }
+        );
+    </script>
+{% endblock %}
