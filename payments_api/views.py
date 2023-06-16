@@ -57,14 +57,9 @@ class PaymentsList(APIView):
 class PaymentDetail(APIView):
     def patch(self, request, pk):
         required_attributes = [
-            'billing_street_1',
-            'billing_street_2',
-            'town_or_city',
-            'county',
-            'country',
-            'postcode',
-            'stripe_card_id'
+            'stripe_card_id',
         ]
+
         # Validate data 
         if not contains_required_attributes(request, required_attributes):
             return Response(
@@ -73,16 +68,10 @@ class PaymentDetail(APIView):
                 )
         
         # Extract data required for service method
-        billing_street_1 = request.data['billing_street_1']
-        billing_street_2 = request.data['billing_street_2']
-        town_or_city = request.data['town_or_city']
-        county = request.data['county']
-        country = request.data['country']
-        postcode = request.data['postcode']
         stripe_card_id = request.data['stripe_card_id']
 
         # Invoke service method 
-        confirm_payment(id, billing_street_1, billing_street_2, town_or_city, county, country, postcode, stripe_card_id)
+        confirm_payment(id, stripe_card_id)
         # Create response 
         response = { }
         # Return response 
