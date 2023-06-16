@@ -15,15 +15,16 @@ def checkout(request):
     url = base_url + '/api/payments/'
 
     # Get subscription details from form
-    if '1_month' in request.POST.keys():
+    if request.POST.get('subscription') == 10:
         requested_months = 1
-        subtotal = request.POST['1_month']
-    elif '3_month' in request.POST.keys():
+    elif request.POST.get('subscription') == 25:
         requested_months = 3
-        subtotal = request.POST['3_month']
-    elif '12_month' in request.POST.keys():
+    elif request.POST.get('subscription') == 90:
         requested_months = 12
-        subtotal = request.POST['12_month']
+    else:
+        requested_months = 12
+
+    subtotal = request.POST.get('subscription')
 
     # Create data payload for POST request to payment API
     data = {
