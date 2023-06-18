@@ -13,24 +13,21 @@ def checkout(request):
 
     base_url = request.scheme + '://' + request.get_host()
     url = base_url + '/api/payments/'
+    subscription_options_api = base_url + '/api/subscriptions/options/'
 
-    # Get subscription details from form
-    if request.POST.get('subscription') == 10:
-        requested_months = 1
-    elif request.POST.get('subscription') == 25:
-        requested_months = 3
-    elif request.POST.get('subscription') == 90:
-        requested_months = 12
-    else:
-        requested_months = 12
+    # Get subscription option id from form
+    subscription_option_id = request.POST.get('subscription')
 
-    subtotal = request.POST.get('subscription')
+    # Get the subscription option from the subscription API
+    response = requests.get(subscription_options_api + str(subscription_option_id))
+    print('Subscription option response: ' + response.text)
+    option_data = json.loads(response.text)['subscription_option']
 
     # Create data payload for POST request to payment API
     data = {
         'subscription_id': None,
-        'requested_months': requested_months,
-        'subtotal': subtotal,
+        'subscription_option_id': option_data['id'],
+        'total': option_data['total'],
         'currency': 'GBP',
     }
 
@@ -48,7 +45,11 @@ def checkout(request):
     context = { 
         'stripe_public_key': stripe_public_key,
         'client_secret_key': client_secret,
-        'payment_id': payment_id
+        'payment_id': payment_id,
+        'subscription_months': option_data['subscription_months'],
+        'subscription_price': option_data['subscription_price'],
+        'vat': option_data['vat'],
+        'total': option_data['total'],
     }
     return render(request, template, context)
 
