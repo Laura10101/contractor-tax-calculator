@@ -4,11 +4,11 @@
 <html lang="en">
   <head>
     <!-- Check if logged in user has an active subscription and if not redirct to subsctiption form-->
-    {% if not user_has_subscription and not request.path in subscription_exempt_paths %}
+    <!--{% if not user_has_subscription and not request.path in subscription_exempt_paths %}
       <meta http-equiv="Refresh" content="0;/subscription/">
     {% elif user_has_subscription and request.path in subscription_exempt_paths %}
       <meta http-equiv="Refresh" content="0;/dashboard/">
-    {% endif %}
+    {% endif %}-->
 
     {% block meta %}
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
