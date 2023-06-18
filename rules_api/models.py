@@ -78,5 +78,42 @@ class SecondaryRuleTier(models.Model):
     primary_tier = models.ForeignKey(RuleTier, on_delete=models.CASCADE)
     tier_rate = models.DecimalField(decimal_places=2, max_digits=5)
 
-    def calculate(self, variable, results_table):
-        pass
+    def calculate(self, primary_income, secondary_income, results_table):
+        # Get the tier max and mins from the primary tier
+        # and calculate total income
+        tier_min = self.primary_tier.min_value
+        tier_max = self.primary_tier.max_value
+        total_income = primary_income + secondary_income
+
+        # Check to see if this tier applies
+        if total_income >= tier_min and primary_income < tier_max:
+            # Work out how much of this tier has not yet been used
+            # by the primary income
+            if primary_income >= tier_min:
+                tier_allowance_remaining = tier_max - primary_income
+            else:
+                tier_allowance_remaining = tier_max - tier_min
+
+            # Now work out how much of the secondary allowance
+            # hasn't yet been taxed by lower tiers
+            # If the primary income falls within this tier then
+            # none of the secondary income has been taxed
+            # Otherwise the difference between this tier's lower limit
+            # and the primary income gives the amount of the secondary income
+            # that has been taxed by lower tiers
+            if primary_income < tier_min:
+                secondary_income_remaining = secondary_income - (lower_limit - primary_income)
+            else:
+                secondary_income_remaining = secondary_income
+
+            # Now work out how much secondary income needs to be taxed
+            # in this tier
+            # If the secondary income remaining is greater than the amount
+            # reamining for this tier then just all of the remaining tier allowance
+            # will be used up, otherwise only tax the reamining secondary income
+            if secondary_income_remaining > tier_allowance_remaining:
+                taxable_amount = tier_allowance_remaining
+            else:
+                taxable_amount = secondary_income_remaining
+
+            tax_subtotal = taxable_amount * (self.tier_rate / 100)
