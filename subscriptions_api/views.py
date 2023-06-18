@@ -64,8 +64,17 @@ class SubscriptionDetail(APIView):
 
 class SubscriptionOptionsList(APIView):
     def get(self, request):
-        subscription_options = get_subscription_options()
-        response = { 'subscription_options': subscription_options }
+        all_options = get_subscription_options()
+
+        serialised_options = []
+        for option in all_options:
+            serialised_options.append({
+                'id': option.id,
+                'subscription_months': option.subscription_months,
+                'subscription_price': option.subscription_price,
+            })
+
+        response = { 'subscription_options': serialised_options }
         return Response(response)
 
 class SubscriptionStatusesList(APIView):

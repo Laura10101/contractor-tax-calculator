@@ -9,6 +9,7 @@ def subscription(request):
     url = base_url + '/api/subscriptions/options'
 
     response = requests.get(url)
+    print('Response text' + response.text)
     data = json.loads(response.text)
 
     template = 'subscription/subscription.html'
