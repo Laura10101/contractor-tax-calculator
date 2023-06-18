@@ -30,22 +30,22 @@ class PaymentsList(APIView):
         if not contains_required_attributes(request, required_attributes):
             return Response(
                 { 'error' : 'Invalid request. Please supply all required attributes.' },
-                status=status.HTTP_400_BAD_REQUEST
+                status=400
                 )
         # Extract data required for service method
         subscription_id = request.data['subscription_id']
-        requested_subscription_months = request.data['requested_months']
+        subscription_option_id = request.data['subscription_option_id']
         try:
-            subtotal = int(request.data['subtotal'])
+            total = int(request.data['total'])
         except ValueError:
             return Response(
-                { 'error' : 'Subtotal must be a numeric value.' },
-                status=status.HTTP_400_BAD_REQUEST
+                { 'error' : 'Total must be a numeric value.' },
+                status=400
                 )
         currency = request.data['currency']
 
         # Invoke service method 
-        payment_id, client_secret = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+        payment_id, client_secret = create_payment(subscription_id, subscription_option_id, total, currency)
         # Create response 
         response = {
             'payment_id' : payment_id,
