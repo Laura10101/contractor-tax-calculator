@@ -5,8 +5,8 @@ from datetime import date, timedelta
 
 class Subscription(models.Model):
     user_id = models.IntegerField()
+    subscription_option = models.ForeignKey(SubscriptionOption, on_delete=models.CASCADE)
     start_date = models.DateTimeField(auto_now_add=True, null=False, blank=False)
-    subscription_months = models.IntegerField()
 
     def is_active(self):
         expiry_date = F(self.start_date) + relativedelta(months=self.subscription_months)
