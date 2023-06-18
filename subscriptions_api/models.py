@@ -18,5 +18,6 @@ class Subscription(models.Model):
     start_date = models.DateTimeField(auto_now_add=True, null=False, blank=False)
 
     def is_active(self):
-        expiry_date = F(self.start_date) + relativedelta(months=self.subscription_months)
+        subscription_months = self.subscription_option.subscription_months
+        expiry_date = F(self.start_date) + relativedelta(months=subscription_months)
         return date.today() <= expiry_date
