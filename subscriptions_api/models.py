@@ -9,10 +9,10 @@ class SubscriptionOption(models.Model):
     is_active = models.BooleanField(null=False, blank=False)
 
     def vat(self):
-        return self.subscription_price * 0.20
+        return round(float(self.subscription_price) * 0.20, 2)
 
     def total(self):
-        return self.subscription_price + self.vat()
+        return round(float(self.subscription_price) + self.vat(), 2)
 
 class Subscription(models.Model):
     user_id = models.IntegerField()

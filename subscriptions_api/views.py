@@ -81,8 +81,15 @@ class SubscriptionOptionsList(APIView):
 
 class SubscriptionOptionDetail(APIView):
     def get(self, request, pk):
-        subscription_option = get_subscription_option(pk)
-        response = { 'subscription_option': subscription_option }
+        option = get_subscription_option(pk)
+        serialized_option = {
+            'id': option.id,
+            'subscription_months': option.subscription_months,
+            'subscription_price': option.subscription_price,
+            'vat': option.vat(),
+            'total': option.total(),
+        }
+        response = { 'subscription_option': serialized_option }
         return Response(response)
 
 class SubscriptionStatusesList(APIView):
