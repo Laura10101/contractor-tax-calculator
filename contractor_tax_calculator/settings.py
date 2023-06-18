@@ -28,7 +28,11 @@ SECRET_KEY = os.environ.get('SECRET_KEY', '')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEVELOPMENT', False)
 
-ALLOWED_HOSTS = ['8000-laura10101-contractorta-x36vvy68pn6.ws-eu99.gitpod.io', 'contractor-tax-calculator.herokuapp.com', 'localhost']
+ALLOWED_HOSTS = [
+    '8000-laura10101-contractorta-x36vvy68pn6.ws-eu100.gitpod.io',
+    'contractor-tax-calculator.herokuapp.com',
+    'localhost'
+    ]
 
 
 # Application definition
