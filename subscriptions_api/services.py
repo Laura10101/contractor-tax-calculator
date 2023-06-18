@@ -1,4 +1,4 @@
-from .models import Subscription
+from .models import Subscription, SubscriptionOption
 
 # Create service method to create subscription 
 def create_subscription(user_id, subscription_option_id):
@@ -36,4 +36,4 @@ def update_subscription(id, subscription_option_id):
 
 # Load all subscription options
 def get_subscription_options():
-    return SubscriptionObject.objects.all()
+    return SubscriptionOption.objects.all()
