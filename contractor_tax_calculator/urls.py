@@ -52,4 +52,5 @@ urlpatterns = [
     path('checkout/', include('checkout.urls')),
     path('home/', include('home.urls')),
     path('subscription/', include('subscription.urls')),
+    path('calculations/', include('calculations.urls')),
 ]
