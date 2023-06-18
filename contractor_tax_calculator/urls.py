@@ -43,6 +43,7 @@ urlpatterns = [
     path('api/subscriptions/<int:pk>/', SubscriptionDetail.as_view()),
     path('api/subscriptions/status/', SubscriptionStatusesList.as_view()),
     path('api/subscriptions/options/', SubscriptionOptionsList.as_view()),
+    path('api/subscriptions/options/<int:pk>', SubscriptionOptionDetail.as_view()),
     path('api/payments/', PaymentsList.as_view()),
     path('api/payments/<int:pk>/', PaymentDetail.as_view()),
     path('api/payments/<int:pk>/status/', PaymentStatusDetail.as_view()),
