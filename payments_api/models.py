@@ -35,12 +35,10 @@ from django.contrib.auth.models import User
 class Payment(models.Model):
     # Add class attributes
     subscription_id = models.IntegerField(null=True, blank=True)
+    subscription_option_id = models.IntegerField(null=False, blank=False)
     stripe_pid = models.CharField(max_length=255, null=True, blank=True)
     status = models.IntegerField(null=False, blank=False, default=1)
     stripe_error = models.CharField(max_length=255, null=True, blank=True)
-    requested_subscription_months = models.IntegerField(null=False, blank=False)
-    subtotal = models.DecimalField(decimal_places=2, null=False, blank=False, max_digits=6)
-    vat = models.DecimalField(decimal_places=2, null=False, blank=False, max_digits=6)
     total = models.DecimalField(decimal_places=2, null=False, blank=False, max_digits=6)
     currency = models.CharField(max_length=3, null=False, blank=False)
     created_date = models.DateTimeField(auto_now_add=True, null=False, blank=False)
