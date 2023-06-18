@@ -11,3 +11,8 @@ class Subscription(models.Model):
     def is_active(self):
         expiry_date = F(self.start_date) + relativedelta(months=self.subscription_months)
         return date.today() <= expiry_date
+
+class SubscriptionOption(models.Model):
+    subscription_months = models.IntegerField()
+    subscription_price = models.DecimalField(decimal_places=2, null=False, blank=False, max_digits=6)
+    is_active = models.BooleanField(null=False, blank=False)
