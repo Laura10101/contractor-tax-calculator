@@ -37,3 +37,6 @@ def update_subscription(id, subscription_option_id):
 # Load all subscription options
 def get_subscription_options():
     return SubscriptionOption.objects.all()
+
+def get_subscription_option(id):
+    return SubscriptionOption.objects.get(pk=id)
