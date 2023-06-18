@@ -22,8 +22,8 @@ class PaymentsList(APIView):
     def post(self, request):
         required_attributes = [
             'subscription_id',
-            'requested_months',
-            'subtotal',
+            'subscription_option_id',
+            'total',
             'currency',
         ]
         # Validate data 

@@ -3,18 +3,12 @@ from .stripe import *
 from datetime import date 
 
 
-def create_payment(subscription_id, requested_subscription_months, subtotal, currency):
-    # Calculate VAT 
-    vat = subtotal * 0.2
-    # Calculate total
-    total = subtotal + vat
+def create_payment(subscription_id, subscription_option_id, total, currency):
     # Create new payment in the database 
     new_payment = Payment.objects.create(
         subscription_id=subscription_id,
-        requested_subscription_months=requested_subscription_months,
-        subtotal=subtotal,
+        subscription_option_id=subscription_option_id,
         currency=currency,
-        vat=vat,
         total=total
     )
     # Create the payment intention in Stripe and update the local payment record 
