@@ -72,6 +72,8 @@ class SubscriptionOptionsList(APIView):
                 'id': option.id,
                 'subscription_months': option.subscription_months,
                 'subscription_price': option.subscription_price,
+                'vat': option.vat(),
+                'total_price': option.total(),
             })
 
         response = { 'subscription_options': serialised_options }

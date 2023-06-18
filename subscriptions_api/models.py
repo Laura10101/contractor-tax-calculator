@@ -8,6 +8,12 @@ class SubscriptionOption(models.Model):
     subscription_price = models.DecimalField(decimal_places=2, null=False, blank=False, max_digits=6)
     is_active = models.BooleanField(null=False, blank=False)
 
+    def vat(self):
+        return self.subscription_price * 0.20
+
+    def total(self):
+        return self.subscription_price + self.vat()
+
 class Subscription(models.Model):
     user_id = models.IntegerField()
     subscription_option = models.ForeignKey(
