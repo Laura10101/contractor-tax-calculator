@@ -1,9 +1,11 @@
 from .models import Subscription
 
 # Create service method to create subscription 
-def create_subscription(user_id, subscription_months):
-     # Create new subscription in the database 
-    new_subscription = Subscription.objects.create(user_id=user_id, subscription_months=subscription_months)
+def create_subscription(user_id, subscription_option_id):
+    # Load the subscription option
+    subscription_option = SubscriptionOption.objects.get(pk=subscription_option_id)
+    # Create new subscription in the database 
+    new_subscription = Subscription.objects.create(user_id=user_id, subscription_option=subscription_option)
     # Return ID of newly created jurisdiction
     return new_subscription.id
 
@@ -21,11 +23,13 @@ def check_subscription(user_id):
     return subscriptions.first().is_active()
 
 # Create service method to update subscription 
-def update_subscription(id, subscription_months):
-    # Get subscription from databse 
+def update_subscription(id, subscription_option_id):
+    # Load the subscription option
+    subscription_option = SubscriptionOption.objects.get(pk=subscription_option_id)
+    # Get subscription from database 
     # Patch start date
     # Patch subscription months 
     subscription = Subscription.objects.get(pk=id).update(
         start_date = date.today(),
-        subscription_months = subscription_months
+        subscription_option = subscription_option
         )

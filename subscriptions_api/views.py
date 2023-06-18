@@ -23,7 +23,7 @@ class SubscriptionsList(APIView):
         # Define the list of required attributes 
         required_attributes = [
             'user_id',
-            'subscription_months',
+            'subscription_option_id',
         ]
         # Validate data 
         if not contains_required_attributes(request, required_attributes):
@@ -33,9 +33,9 @@ class SubscriptionsList(APIView):
                 )
         # Extract data required for service method 
         user_id = request.data['user_id']
-        susbcription_months = request.data['subscription_months']
+        subscription_option_id = request.data['subscription_option_id']
         # Invoke service method 
-        subscription_id = create_subscription(user_id, subscription_months)
+        subscription_id = create_subscription(user_id, subscription_option_id)
         # Create response 
         response = { 'subscription_id' : subscription_id }
         # Return response 
@@ -45,7 +45,7 @@ class SubscriptionDetail(APIView):
     def patch(self, request, pk):
         # Define the list of required attributes 
         required_attributes = [
-            'subscription_months',
+            'subscription_option_id',
         ]
         # Validate data 
         if not contains_required_attributes(request, required_attributes):
@@ -54,9 +54,9 @@ class SubscriptionDetail(APIView):
                 status=status.HTTP_400_BAD_REQUEST
                 )
         # Extract data required for service method 
-        susbcription_months = request.data['subscription_months']
+        subscription_option_id = request.data['subscription_option_id']
         # Invoke service method
-        update_subscription(pk, subscription_months)
+        update_subscription(pk, subscription_option_id)
         # Generate and return response 
         response = { }
         # Return response 
