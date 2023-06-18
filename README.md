@@ -269,3 +269,4 @@ Alternatively, if using Gitpod, you can click below to create your own workspace
 - [How intents work | Stripe Documentation](https://stripe.com/docs/payments/intents#intent-statuses)
 - [Stripe API Reference - The PaymentIntent object](https://stripe.com/docs/api/payment_intents/object)
 - [Stripe Documentation - Create Payment Method](https://stripe.com/docs/js/payment_methods/create_payment_method)
+- [How to create Django admin with readonly permissions for all users](https://thetldr.tech/how-to-create-django-admin-with-readonly-permission/)
