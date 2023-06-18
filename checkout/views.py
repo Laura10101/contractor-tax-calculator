@@ -4,31 +4,23 @@ from django.contrib import messages
 import requests
 import json
 
-# Create your views here.
-def checkout(request):
-    stripe_public_key = settings.STRIPE_PUBLIC_KEY
-    stripe_secret_key = settings.STRIPE_SECRET_KEY
-
-    template = 'checkout/checkout.html'
-
-    base_url = request.scheme + '://' + request.get_host()
-    url = base_url + '/api/payments/'
-    subscription_options_api = base_url + '/api/subscriptions/options/'
-
-    # Get subscription option id from form
-    subscription_option_id = request.POST.get('subscription')
-
-    # Get the subscription option from the subscription API
-    response = requests.get(subscription_options_api + str(subscription_option_id))
+# Helper functions
+# Get details of a subscription option based on its id
+def get_subscription_option(base_url, subscription_option_id):
+    url = base_url + '/api/subscriptions/options/'
+    response = requests.get(url + str(subscription_option_id))
     print('Subscription option response: ' + response.text)
-    option_data = json.loads(response.text)['subscription_option']
+    return json.loads(response.text)['subscription_option']
+
+def post_payment(base_url, subscription_id, subscription_option_id, total, currency):
+    url = base_url + '/api/payments/'
 
     # Create data payload for POST request to payment API
     data = {
-        'subscription_id': None,
-        'subscription_option_id': option_data['id'],
-        'total': option_data['total'],
-        'currency': 'GBP',
+        'subscription_id': subscription_id,
+        'subscription_option_id': subscription_option_id,
+        'total': total,
+        'currency': currency,
     }
 
     # POST data to payment API
@@ -36,11 +28,31 @@ def checkout(request):
     print("Creating payment at URL: " + url)
     response = requests.post(url, json=data)
     print('Create payment response: ' + str(response))
-    data = json.loads(response.text)
+    payment_result = json.loads(response.text)
+    return payment_result['payment_id'], payment_result['client_secret']
+
+# Create your views here.
+def checkout(request):
+    stripe_public_key = settings.STRIPE_PUBLIC_KEY
+    stripe_secret_key = settings.STRIPE_SECRET_KEY
+
+    template = 'checkout/checkout.html'
+    base_url = request.scheme + '://' + request.get_host()
     
+    # Get subscription option id from form
+    subscription_option_id = request.POST.get('subscription')
+
+    # Get the subscription option from the subscription API
+    option_data = get_subscription_option(base_url, subscription_option_id)
+
     # Extract data from response 
-    payment_id = data['payment_id']
-    client_secret = data['client_secret']
+    payment_id, client_secret = post_payment(
+        base_url,
+        None,
+        subscription_option_id,
+        option_data['total'],
+        'GBP',
+    )
 
     context = { 
         'stripe_public_key': stripe_public_key,
