@@ -33,3 +33,7 @@ def update_subscription(id, subscription_option_id):
         start_date = date.today(),
         subscription_option = subscription_option
         )
+
+# Load all subscription options
+def get_subscription_options():
+    return SubscriptionObject.objects.all()

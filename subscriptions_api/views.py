@@ -62,6 +62,12 @@ class SubscriptionDetail(APIView):
         # Return response 
         return Response(response)
 
+class SubscriptionOptionsList(APIView):
+    def get(self, request):
+        subscription_options = get_subscription_options()
+        response = { 'subscription_options': subscription_options }
+        return Response(response)
+
 class SubscriptionStatusesList(APIView):
     def get(self, request):
         # Extract user_id
