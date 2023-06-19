@@ -62,6 +62,8 @@ INSTALLED_APPS = [
     'subscription',
     'storages',
     'calculations',
+    # Other apps here
+    'selectable',
 ]
 
 MIDDLEWARE = [

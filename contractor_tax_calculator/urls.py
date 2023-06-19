@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from jurisdictions_api.views import JurisdictionList
 from forms_api.views import FormDetail, FormsList, FormQuestionList, FormQuestionsDetail
 from rules_api.views import *
@@ -24,6 +24,7 @@ from payments_api.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    re_path(r'^selectable/', include('selectable.urls')),
     path('api/jurisdictions/', include('jurisdictions_api.urls')),
     path('api/forms/', FormsList.as_view()),
     path('api/forms/<int:pk>/', FormDetail.as_view()),
