@@ -24,7 +24,7 @@ from payments_api.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/jurisdictions/', JurisdictionList.as_view()),
+    path('api/jurisdictions/', include('jurisdictions_api.urls')),
     path('api/forms/', FormsList.as_view()),
     path('api/forms/<int:pk>/', FormDetail.as_view()),
     path('api/forms/<int:form_pk>/questions/', FormQuestionList.as_view()),
@@ -52,5 +52,5 @@ urlpatterns = [
     path('checkout/', include('checkout.urls')),
     path('home/', include('home.urls')),
     path('subscription/', include('subscription.urls')),
-    path('calculations/', include('calculations.urls')),
+    path('calculations/', include('calculations.urls'))
 ]
