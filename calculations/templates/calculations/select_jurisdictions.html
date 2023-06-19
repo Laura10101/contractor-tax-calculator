@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_header %}
+    <div class="container header-container">
+        <div class="row">
+            <div class="col">
+                <h1>Create Calcuation</h1>
+                <h2>Select Jurisdictions</h2>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+    {% for jurisdiction in jurisdictions %}
+        <div class="form-check form-check-inline">
+            <input
+                class="form-check-input"
+                type="checkbox"
+                name="{{ jurisdiction.id }}"
+                id="jurisdiction_{{ jurisdiction.id }}">
+            <label class="form-check-label" for="{{ jurisdiction.id }}">
+                {{ jurisdiction.name }}
+            </label>
+        </div>
+    {% endfor %}
+{% endblock %}
