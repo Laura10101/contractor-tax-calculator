@@ -24,7 +24,6 @@ from payments_api.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    re_path(r'^selectable/', include('selectable.urls')),
     path('api/jurisdictions/', include('jurisdictions_api.urls')),
     path('api/forms/', FormsList.as_view()),
     path('api/forms/<int:pk>/', FormDetail.as_view()),
