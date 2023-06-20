@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+from subscriptions_api.models import SubscriptionOption
+
 # Create your models here.
 
 # Required fields on a payment
@@ -46,4 +48,5 @@ class Payment(models.Model):
     completed_or_failed_date = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
-        return self.user.username
+        subscription_length = str(SubscriptionOption.objects.get(pk=self.subscription_option_id).subscription_months)
+        return 'Payment #' + str(self.id) + ' of ' + str(self.total) + ' for ' + subscription_length + ' month extension to subscription ' + str(self.subscription_id)

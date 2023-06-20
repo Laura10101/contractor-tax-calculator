@@ -14,18 +14,4 @@ class BaseReadOnlyAdminMixin:
     def has_delete_permission(self, request, obj=None):
         return False
 
-class PaymentModelAdmin(BaseReadOnlyAdminMixin, admin.ModelAdmin):
-    list_display = (
-        'subscription_id',
-        'subscription_option_id',
-        'stripe_pid',
-        'status',
-        'stripe_error',
-        'total',
-        'currency',
-        'created_date',
-        'intended_date',
-        'completed_or_failed_date'
-        )
-
-admin.site.register(Payment, PaymentModelAdmin)
+admin.site.register(Payment)
