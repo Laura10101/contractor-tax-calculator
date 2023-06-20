@@ -1,7 +1,7 @@
 from django.db import models
 from polymorphic.models import PolymorphicModel
 
-from jurisdiction_api.models import Jurisdiction
+from jurisdictions_api.models import Jurisdiction
 
 # Create your models here.
 class Form(models.Model):
