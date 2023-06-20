@@ -10,12 +10,12 @@ urlpatterns = [
     path('options/<int:pk>', SubscriptionOptionDetail.as_view()),
     re_path(
         r'^subscription-autocomplete/$',
-        SubscriptionAutocompleteAutocomplete.as_view(),
+        SubscriptionAutocomplete.as_view(),
         name='subscription-autocomplete',
     ),
     re_path(
         r'^subscription-option-autocomplete/$',
-        SubscriptionOptionAutocompleteAutocomplete.as_view(),
+        SubscriptionOptionAutocomplete.as_view(),
         name='subscription-option-autocomplete',
     ),
 ]
