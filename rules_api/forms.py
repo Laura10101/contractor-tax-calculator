@@ -11,5 +11,3 @@ class RuleSetForm(forms.ModelForm):
         }
         exclude = []
 
-
-    
