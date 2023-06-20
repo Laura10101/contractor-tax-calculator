@@ -1,5 +1,5 @@
 from django.urls import path, re_path
-from .autocompletes import SubscriptionAutocomplete, SubscriptionOptionAutocomplete
+from .autocompletes import SubscriptionAutocomplete, SubscriptionOptionAutocomplete, UserAutocomplete
 from .views import *
 
 urlpatterns = [
@@ -17,5 +17,10 @@ urlpatterns = [
         r'^subscription-option-autocomplete/$',
         SubscriptionOptionAutocomplete.as_view(),
         name='subscription-option-autocomplete',
+    ),
+    re_path(
+        r'^user-autocomplete/$',
+        UserAutocomplete.as_view(),
+        name='user-autocomplete',
     ),
 ]
