@@ -3,3 +3,4 @@ from .models import Subscription, SubscriptionOption
 
 # Register your models here.
 admin.site.register(SubscriptionOption)
+admin.site.register(Subscription)
