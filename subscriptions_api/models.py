@@ -15,7 +15,7 @@ class SubscriptionOption(models.Model):
         return round(float(self.subscription_price) + self.vat(), 2)
 
     def __str__(self):
-        return self.subscription_months + ' month extension (£' + str(self.subscription_price) + ')'
+        return str(self.subscription_months) + ' month extension (£' + str(self.subscription_price) + ')'
 
 class Subscription(models.Model):
     user_id = models.IntegerField()
