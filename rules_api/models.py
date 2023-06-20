@@ -1,11 +1,15 @@
 from django.db import models
 from polymorphic.models import PolymorphicModel
+from jurisdictions_api.models import Jurisdiction
 
 # Create your models here.
 
 # This class contains the types of tax categories
 class TaxCategory(models.Model):
     name = models.CharField(max_length=255, null=False, blank=False)
+
+    def __str__(self):
+        return self.name
 
 # This class is to group all the rules for a particular tax category in 
 # a given jurisdiction
@@ -14,8 +18,12 @@ class RuleSet(models.Model):
     # Create foreign key for RuleSet/TaxCategory relationship 
     tax_category = models.ForeignKey(TaxCategory, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return Jurisdiction.objects.get(pk=self.jurisdiction_id).name + ' - ' + self.tax_category.name
+
 # This class is the parent class for the different types of rules 
 class Rule(PolymorphicModel): 
+    ruleset = models.ForeignKey(RuleSet, on_delete=models.CASCADE)
     name = models.CharField(max_length=255, null=False, blank=False)
     # ordinal to indicate order in which rules are applied  
     ordinal = models.IntegerField()
@@ -24,6 +32,10 @@ class Rule(PolymorphicModel):
     # Indicates which value from the form submitted by the user this rule 
     # should be applied to 
     variable_name = models.CharField(max_length=255, null=False, blank=False)
+
+    def __str__(self):
+        return str(self.ruleset) + ' - ' + self.name
+
 
 # This class applies flat tax rates 
 class FlatRateRule(Rule):
@@ -59,6 +71,9 @@ class RuleTier(models.Model):
             max_value = variable
 
         tax_subtotal = (max_value - self.min_value) * (self.tier_rate / 100)
+
+    def __str__(self):
+        return str(self.rule) + ' - Tier ' + str(self.min_value)  + ' to ' + str(self.max_value)
 
 # This class represents a tiered rate rule that depends on another tiered rate tule
 # e.g. uk dividend tax 
@@ -117,3 +132,6 @@ class SecondaryRuleTier(models.Model):
                 taxable_amount = secondary_income_remaining
 
             tax_subtotal = taxable_amount * (self.tier_rate / 100)
+
+    def __str__(self):
+        return str(self.secondary_rule) + ' - Tier ' + str(self.primary_tier.min_value)  + ' to ' + str(self.primary_tier.max_value)
