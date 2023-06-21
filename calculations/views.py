@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from subscription.helpers import user_has_subscription
+from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.core.exceptions import SuspiciousOperation
 
@@ -24,6 +25,8 @@ def length(list):
 # Create your views here.
 # Create view for select jurisdictions form 
 def select_jurisdictions(request):
+    if not user_has_subscription(request):
+        return redirect('subscription')
     template = 'calculations/select_jurisdictions.html'
     url = request.build_absolute_uri(reverse('jurisdictions'))
     response = requests.get(url)
