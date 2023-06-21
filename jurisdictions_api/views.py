@@ -8,13 +8,43 @@ import json
 from .serializers import JurisdictionSerializer
 from .services import get_all_jurisdictions, create_jurisdiction, delete_jurisdictions_by_id
 
+def id_string_to_list(id_string):
+    # Divide string by commas 
+    id_strings = id_string.split(',')
+
+    # Parse id strings to integers
+    ids = []
+    for id_str in id_strings:
+        id = int(id_str)
+        ids.append(id)
+    return ids
+
+
 # Create JursidictionList API View
 class JurisdictionList(APIView):
 
     # Implement get jurisidctions controller method
     def get(self, request):
         # First, return all jurisdictions from the Django model
-        jurisdictions = get_all_jurisdictions()
+        if 'ids' in request.GET:
+            # Get id string from http request 
+            id_string = request.GET['ids']
+            
+            # Parse each value into an integer
+            try:
+                ids = id_string_to_list(id_string)
+            except ValueError:
+                return Response(
+                        { 'error' : 'IDs string is not correctly formatted.' },
+                        status=400
+                        )
+            except:
+                return Response(
+                        { 'error' : 'A server error occurred.' },
+                        status=500
+                        )
+        else:    
+            jurisdictions = get_all_jurisdictions()
         # Create the jurisidction serializer instance to serialize
         # the returned jurisidctions
         serializer = JurisdictionSerializer(jurisdictions, many=True)
@@ -28,14 +58,10 @@ class JurisdictionList(APIView):
         # Extract jurisdiction ids to delete 
         # Get id string from http request 
         id_string = request.GET['ids']
-        # Divide string by commas 
-        id_strings = id_string.split(',')
+        
         # Parse each value into an integer
         try:
-            ids = []
-            for id_str in id_strings:
-                id = int(id_str)
-                ids.append(id)
+            ids = id_string_to_list(id_string)
         except ValueError:
             return Response(
                     { 'error' : 'IDs string is not correctly formatted.' },
