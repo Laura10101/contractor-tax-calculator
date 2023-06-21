@@ -26,7 +26,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/jurisdictions/', include('jurisdictions_api.urls')),
     path('api/subscriptions/', include('subscriptions_api.urls')),
-    path('api/forms/', FormsList.as_view()),
+    path('api/forms/', FormsList.as_view(), name='forms'),
     path('api/forms/<int:pk>/', FormDetail.as_view()),
     path('api/forms/<int:form_pk>/questions/', FormQuestionList.as_view()),
     path('api/forms/<int:form_pk>/questions/<int:pk>/', FormQuestionsDetail.as_view()),
