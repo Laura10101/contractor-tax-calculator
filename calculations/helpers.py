@@ -22,4 +22,9 @@ def get_forms_by_jurisdiction_ids(url, jurisdiction_ids):
         raise Exception('Received status code of ' + str(response.status_code) + ' when retrieving forms.')
 
     data = json.loads(response.text)
-    return data['forms']
+
+    # JSON treats keys as strings so need to cast the keys back to ints
+    deserialised_data = {}
+    for jurisdiction_id_str in data['forms'].keys():
+        deserialised_data[int(jurisdiction_id_str)] = data['forms'][jurisdiction_id_str]
+    return deserialised_data

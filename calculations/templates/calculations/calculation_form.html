@@ -17,9 +17,7 @@
     <form>
         <div class="accordion" id="accordionExample">
             <!-- Display one accordian card for each jurisdiction selected by the user, if needed -->
-            {{ jurisdictions|length }}
             {% for jurisdiction in jurisdictions %}
-                {{ jurisdiction.name }}
                 {% with form=forms|get_item:jurisdiction.id %}
                 {% if form.questions|length > 0 %}
                     <div class="card">
