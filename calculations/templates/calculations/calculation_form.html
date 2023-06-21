@@ -18,8 +18,8 @@
         <div class="accordion" id="accordionExample">
             <!-- Display one accordian card for each jurisdiction selected by the user, if needed -->
             {% for jurisdiction in jurisdictions %}
-                {% with form=forms[jurisdiction.id] %}
-                {% if len(form.questions) > 0 %}
+                {% with form=forms|get_item:jurisdiction.id %}
+                {% if form.questions|length > 0 %}
                     <div class="card">
                         <div class="card-header" id="headingOne">
                             <h2 class="mb-0">
@@ -115,7 +115,7 @@
                                                         {{ question.explainer }}
                                                     </h6>
                                                     {% for option in question.options %}
-                                                        {% with option_name=question.system_name + '_' + option.system_name %}
+                                                        {% with option_name=question.system_name|add:'_'|add:option.system_name %}
                                                         <div class="form-check">
                                                             <input
                                                                 class="form-check-input"
@@ -142,7 +142,7 @@
                                                         {{ question.explainer }}
                                                     </h6>
                                                     {% for option in question.options %}
-                                                        {% with option_name=question.system_name + '_' + option.system_name %}
+                                                        {% with option_name=question.system_name|add:'_'|add:option.system_name %}
                                                         <div class="form-check">
                                                             <input
                                                                 class="form-check-input"
