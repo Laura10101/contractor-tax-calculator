@@ -1,5 +1,6 @@
 from django.db import models
-from datetime import date, timedelta
+from datetime import date
+from dateutil.relativedelta import relativedelta
 
 # Create your models here.
 
@@ -24,11 +25,15 @@ class Subscription(models.Model):
         on_delete=models.CASCADE,
         null=True,
         blank=True)
-    start_date = models.DateTimeField(auto_now_add=True, null=False, blank=False)
+    start_date = models.DateTimeField(null=False, blank=False)
 
     def is_active(self):
+        print('Checking whether subscription is active')
         subscription_months = self.subscription_option.subscription_months
-        expiry_date = F(self.start_date) + relativedelta(months=subscription_months)
+        print('Number of months on subscription is ' + str(subscription_months))
+        print('Start date is ' + str(self.start_date.date()))
+        expiry_date = self.start_date.date() + relativedelta(months=subscription_months)
+        print('Expiry date of subscription is ' + str(expiry_date))
         return date.today() <= expiry_date
 
     def __str__(self):

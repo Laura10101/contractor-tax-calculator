@@ -11,14 +11,22 @@ def create_subscription(user_id, subscription_option_id):
 
 # Create service method to check subscription 
 def check_subscription(user_id):
+    print('Checking subscription for user ' + str(user_id))
     # Get the subscription from the database for the user ID 
-    subscriptions = Subscription.objects.filter(user_id=user_id)
+    subscriptions = Subscription.objects.filter(user_id__exact=user_id)
+    print('Retrieved subscriptions for user ' + str(user_id))
+    print(str(len(subscriptions)))
+    print('Number of subscriptions is shown above')
     # Return an error if more than one subscription 
-    if subscriptions.count() > 1:
+    if len(subscriptions) > 1:
+        print('More than one exception found for user ' + str(user_id))
         raise Exception ("More than one subscription found for user")
     # Return false if no subscription for that user ID
-    if subscriptions.count() <= 0:
+    if len(subscriptions) <= 0:
+        print('No subscription found for user ' + str(user_id))
         return False
+
+    print('Exactly one subscription found for user ' + str(user_id))
     # If subscription, call is_active function and return result
     return subscriptions.first().is_active()
 
