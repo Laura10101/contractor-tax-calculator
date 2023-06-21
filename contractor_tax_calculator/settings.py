@@ -65,6 +65,7 @@ INSTALLED_APPS = [
     'subscription',
     'storages',
     'calculations',
+    'allauth.socialaccount',
 ]
 
 MIDDLEWARE = [
