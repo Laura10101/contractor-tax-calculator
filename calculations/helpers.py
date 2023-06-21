@@ -15,7 +15,7 @@ def get_jurisdictions_by_ids(url, ids):
 
 # Create helper function to return form data based on a list of jurisdiction IDs 
 def get_forms_by_jurisdiction_ids(url, jurisdiction_ids):
-    url = url + '?ids=' + ','.join(str(id) for id in jurisdiction_ids)
+    url = url + '?jurisdiction_ids=' + ','.join(str(id) for id in jurisdiction_ids)
     response = requests.get(url)
 
     if response.status_code != 200:
