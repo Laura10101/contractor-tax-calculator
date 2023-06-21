@@ -28,3 +28,9 @@ def get_forms_by_jurisdiction_ids(url, jurisdiction_ids):
     for jurisdiction_id_str in data['forms'].keys():
         deserialised_data[int(jurisdiction_id_str)] = data['forms'][jurisdiction_id_str]
     return deserialised_data
+
+def create_calculation(url, data):
+    return 1
+
+def get_calculation(url, id):
+    return {}

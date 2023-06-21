@@ -65,4 +65,25 @@ def display_form(request):
     }
     return render(request, template, context)
 
+# Create view for displaying the results of the user's tax calculation
+# This will use the calculation results template
+def display_calculation(request):
+    template = 'calculations/calculation_results.html'
+    # If the method is POST, then first create the calculation using the
+    # rules API
+    if request.method == 'POST':
+        id = create_calculation('', request.POST)
+    else:
+        if not 'id' in request.GET:
+            raise SuspiciousOperation("Invalid request. Please select a calculation to display.")
+
+    # Retrieve the calculation details from the calculation API
+    calculation = get_calculation('', id)
+    context = {
+        'calculation': calculation
+    }
+    return render(request, template, context)
+
+
+
     

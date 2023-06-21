@@ -14,7 +14,8 @@
 
 {% block content %}
 <!-- Code from https://getbootstrap.com/docs/4.3/components/collapse/ -->
-    <form>
+    <form action="{% url 'display_calculation' %}" method="POST">
+        {% csrf_token %}
         <div class="accordion" id="accordionExample">
             <!-- Display one accordian card for each jurisdiction selected by the user, if needed -->
             {% for jurisdiction in jurisdictions %}
@@ -171,5 +172,6 @@
                 {% endwith %}
             {% endfor %}
         </div>
+        <input type="submit" value="Next">
     </form>
 {% endblock %}
