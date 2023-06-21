@@ -4,35 +4,60 @@
 {% block page_header %}
     <div class="container header-container">
         <div class="row">
-            <div class="col"></div>
+            <div class="col">
+                <h1>Your Subscription Options</h1>
+            </div>
         </div>
     </div>
 {% endblock %}
 
 {% block content %}
-    <h1>Your Subscription Options</h1>
-    <p>You don't currently have an active subscription. Please choose one of the following:</p>
     <form method="POST" action="{% url 'checkout' %}">
         {% csrf_token %}
-        {% for option in subscription_options %}
-            <div class="form-check form-check-inline">
-                <input
-                    class="form-check-input"
-                    type="radio"
-                    name="subscription"
-                    value="{{ option.id }}"
-                    id="{{ option.id }}">
-                <label class="form-check-label" for="{{ option.id }}">
-                    {% if option.subscription_months == 1 %}
-                        1 Month: 
-                    {% else %}
-                        {{ option.subscription_months }} Months: 
-                    {% endif %}
-                    £{{ option.subscription_price }}
-                </label>
-            </div>
-        {% endfor %}
 
+        <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+            <h1 class="display-4">Pricing</h1>
+            <p class="lead">
+                You don't currently have an active subscription. To use the tax calculator,
+                please choose one of the following to purchase a subscription:
+            </p>
+        </div>
+          
+        <div class="container">
+            <div class="card-deck mb-3 text-center">
+                {% for option in subscription_options %}
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-header">
+                            <h4 class="my-0 font-weight-normal">
+                                {% if option.subscription_months == 1 %}
+                                    1 Month: 
+                                {% else %}
+                                    {{ option.subscription_months }} Months: 
+                                {% endif %}
+                    
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <h1 class="card-title pricing-card-title">
+                                £{{ option.subscription_price }}
+                            </h1>
+                            <ul class="list-unstyled mt-3 mb-4">
+                                <li>Access to all features</li>
+                                <li>Unlimited calculations</li>
+                            </ul>
+                            <div class="form-check form-check-inline">
+                                <input
+                                    class="form-check-input"
+                                    type="radio"
+                                    name="subscription"
+                                    value="{{ option.id }}"
+                                    id="{{ option.id }}">
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="submit" id="submit" disabled>
         </div>
