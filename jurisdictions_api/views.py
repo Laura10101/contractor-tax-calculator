@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 import json
 from .serializers import JurisdictionSerializer
-from .services import get_all_jurisdictions, create_jurisdiction, delete_jurisdictions_by_id
+from .services import get_all_jurisdictions, create_jurisdiction, delete_jurisdictions_by_id, get_jurisdictions_by_ids
 
 def id_string_to_list(id_string):
     # Divide string by commas 
@@ -43,6 +43,7 @@ class JurisdictionList(APIView):
                         { 'error' : 'A server error occurred.' },
                         status=500
                         )
+            jurisdictions = get_jurisdictions_by_ids(ids)
         else:    
             jurisdictions = get_all_jurisdictions()
         # Create the jurisidction serializer instance to serialize
