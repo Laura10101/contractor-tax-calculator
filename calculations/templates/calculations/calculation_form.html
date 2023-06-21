@@ -18,7 +18,7 @@
         <div class="accordion" id="accordionExample">
             <!-- Display one accordian card for each jurisdiction selected by the user, if needed -->
             {% for jurisdiction in jurisdictions %}
-                {% form = forms[jurisdiction.id] %}
+                {% with form=forms[jurisdiction.id] %}
                 {% if len(form.questions) > 0 %}
                     <div class="card">
                         <div class="card-header" id="headingOne">
@@ -32,7 +32,7 @@
                         <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
                             <div class="card-body">
                                 {% for question in form.questions %}
-                                    {% type = question.type %}
+                                    {% with type=question.type %}
                                     {% if type == 'boolean' %}
                                         <div class="card" style="width: 18rem;">
                                             <div class="card-body">
@@ -115,19 +115,20 @@
                                                         {{ question.explainer }}
                                                     </h6>
                                                     {% for option in question.options %}
-                                                        {% option_name = question.system_name + '_' + option.system_name %}
+                                                        {% with option_name=question.system_name + '_' + option.system_name %}
                                                         <div class="form-check">
                                                             <input
                                                                 class="form-check-input"
                                                                 type="checkbox"
                                                                 value=""
-                                                                id="option_name">
+                                                                id="{{ option_name }}">
                                                             <label
                                                                 class="form-check-label"
-                                                                for="option_name">
+                                                                for="{{ option_name }}">
                                                                 {{ option.text }}
                                                             </label>
                                                         </div>
+                                                        {% endwith %}
                                                     {% endfor %}
                                                 </div>
                                             </div>
@@ -141,7 +142,7 @@
                                                         {{ question.explainer }}
                                                     </h6>
                                                     {% for option in question.options %}
-                                                        {% option_name = question.system_name + '_' + option.system_name %}
+                                                        {% with option_name=question.system_name + '_' + option.system_name %}
                                                         <div class="form-check">
                                                             <input
                                                                 class="form-check-input"
@@ -155,16 +156,19 @@
                                                                 {{ option.text }}
                                                             </label>
                                                         </div>
+                                                        {% endwith %}
                                                     {% endfor %}
                                                 </div>
                                             </div>
                                         {% endif %}
                                     {% endif %}
+                                    {% endwith %}
                                 {% endfor %}
                             </div>
                         </div>
                     </div>
                 {% endif %}
+                {% endwith %}
             {% endfor %}
         </div>
     </form>
