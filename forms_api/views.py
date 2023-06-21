@@ -9,6 +9,7 @@ from django.core.exceptions import SuspiciousOperation
 import json
 from .serializers import *
 from .services import *
+from .models import BooleanQuestion, NumericQuestion, MultipleChoiceQuestion
 
 # Create django rest forms list view 
 # Django rest views are classes inheriting APIView 
@@ -56,9 +57,46 @@ class FormsList(APIView):
         forms = get_forms_by_jurisdiction_ids(id_ints)
         # Create response 
         # Now to translate this into JSON data
-        serializer = FormSerializer(forms, many=True)
+        # Generate dictionary of form data listed by jurisdiciton id
+        forms_by_jurisdiction_id = {}
+        for form in forms:
+            questions = []
+            for question in form.questions.all():
+                serialised_question = {
+                    'id': question.id,
+                    'text': question.text,
+                    'explainer': question.explainer,
+                    'is_mandatory': question.is_mandatory,
+                }
+
+                if isinstance(question, BooleanQuestion):
+                    serialised_question['type'] = 'boolean'
+                elif isinstance(question, NumericQuestion):
+                    serialised_question['type'] = 'numeric'
+                    serialised_question['is_integer'] = question.is_integer
+                    serialised_question['min_value'] = question.min_value
+                    serialised_question['max_value'] = question.max_value
+                elif isinstance(question, MultipleChoiceQuestion):
+                    serialised_question['type'] = 'multiple_choice'
+                    serialised_question['options'] = []
+                    for option in question.options.all():
+                        serialised_question.append({
+                            'id': option.id,
+                            'text': option.text,
+                            'explainer': option.explainer,
+                        })
+
+                questions.append(serialised_question)
+
+
+            forms_by_jurisdiction_id[form.jurisdiction_id] = {
+                'id': form.id,
+                'jurisdiction_id': form.jurisdiction_id,
+                'questions': questions,
+            }
+        print(forms_by_jurisdiction_id)
         # Package the JSON data up into a response object
-        response = { 'forms' : serializer.data }
+        response = { 'forms' : forms_by_jurisdiction_id }
         # Sending the Json response back to the client
         return Response(response)
 
