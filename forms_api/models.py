@@ -26,7 +26,7 @@ class Question(PolymorphicModel):
     is_mandatory = models.BooleanField()
 
     def __str__(self):
-        return str(self.form) + ': ' + text
+        return str(self.form) + ': ' + self.text
 
 class BooleanQuestion(Question):
     pass
