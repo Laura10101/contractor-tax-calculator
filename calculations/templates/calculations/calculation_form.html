@@ -14,66 +14,158 @@
 
 {% block content %}
 <!-- Code from https://getbootstrap.com/docs/4.3/components/collapse/ -->
-    <div class="accordion" id="accordionExample">
-        <div class="card">
-            <div class="card-header" id="headingZero">
-                <h2 class="mb-0">
-                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseZero" aria-expanded="true" aria-controls="collapseOne">
-                    All Jurisdictions
-                </button>
-                </h2>
-            </div>
-        
-            <div id="collapseZero" class="collapse show" aria-labelledby="headingZero" data-parent="#accordionExample">
-                <div class="card-body">
-                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                </div>
-            </div>
+    <form>
+        <div class="accordion" id="accordionExample">
+            <!-- Display one accordian card for each jurisdiction selected by the user, if needed -->
+            {% for jurisdiction in jurisdictions %}
+                {% form = forms[jurisdiction.name] %}
+                {% if len(form.questions) > 0 %}
+                    <div class="card">
+                        <div class="card-header" id="headingOne">
+                            <h2 class="mb-0">
+                                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    {{ jurisdiction.name }}
+                                </button>
+                            </h2>
+                        </div>
+                    
+                        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                            <div class="card-body">
+                                {% for question in form.questions %}
+                                    {% type = question.type %}
+                                    {% if type == 'boolean' %}
+                                        <div class="card" style="width: 18rem;">
+                                            <div class="card-body">
+                                                <h5 class="card-title">
+                                                    {{ question.text }}
+                                                </h5>
+                                                <h6 class="card-subtitle mb-2 text-muted">
+                                                    {{ question.explainer }}
+                                                </h6>
+                                                <div class="form-check">
+                                                    <input
+                                                        class="form-check-input"
+                                                        type="radio"
+                                                        name="{{ question.system_name }}"
+                                                        id="{{ question.system_name }}Yes"
+                                                        value="True"
+                                                        checked>
+                                                    <label class="form-check-label" for="{{ question.system_name }}Yes">
+                                                        Yes
+                                                    </label>
+                                                </div>
+                
+                                                <div class="form-check">
+                                                    <input
+                                                        class="form-check-input"
+                                                        type="radio"
+                                                        name="{{ question.system_name }}"
+                                                        id="{{ question.system_name }}No"
+                                                        value="False">
+                                                    <label class="form-check-label" for="{{ question.system_name }}No">
+                                                        No
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% elif type == 'numeric' %}
+                                        {% if question.is_integer %}
+                                            <div class="card" style="width: 18rem;">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">
+                                                        {{ question.text }}
+                                                    </h5>
+                                                    <h6 class="card-subtitle mb-2 text-muted">
+                                                        {{ question.explainer }}
+                                                    </h6>
+                                                    <div class="form-outline">
+                                                        <input
+                                                            type="number"
+                                                            id="{{ question.system_name }}"
+                                                            class="form-control" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% else %}
+                                            <div class="card" style="width: 18rem;">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">
+                                                        {{ question.text }}
+                                                    </h5>
+                                                    <h6 class="card-subtitle mb-2 text-muted">
+                                                        {{ question.explainer }}</h6>
+                                                    <div class="form-outline">
+                                                        <input
+                                                            type="number"
+                                                            id="{{ question.system_name }}"
+                                                            class="form-control"
+                                                            step="0.1" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    {% elif type == 'multiple_choice' %}
+                                        {% if question.is_multiselect %}
+                                            <div class="card" style="width: 18rem;">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">
+                                                        {{ question.text }}
+                                                    </h5>
+                                                    <h6 class="card-subtitle mb-2 text-muted">
+                                                        {{ question.explainer }}
+                                                    </h6>
+                                                    {% for option in question.options %}
+                                                        {% option_name = question.system_name + '_' + option.system_name %}
+                                                        <div class="form-check">
+                                                            <input
+                                                                class="form-check-input"
+                                                                type="checkbox"
+                                                                value=""
+                                                                id="option_name">
+                                                            <label
+                                                                class="form-check-label"
+                                                                for="option_name">
+                                                                {{ option.text }}
+                                                            </label>
+                                                        </div>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        {% else %}
+                                            <div class="card" style="width: 18rem;">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">
+                                                        {{ question.text }}
+                                                    </h5>
+                                                    <h6 class="card-subtitle mb-2 text-muted">
+                                                        {{ question.explainer }}
+                                                    </h6>
+                                                    {% for option in question.options %}
+                                                        {% option_name = question.system_name + '_' + option.system_name %}
+                                                        <div class="form-check">
+                                                            <input
+                                                                class="form-check-input"
+                                                                type="radio"
+                                                                name="{{ question.system_name }}"
+                                                                value=""
+                                                                id="option_name">
+                                                            <label
+                                                                class="form-check-label"
+                                                                for="option_name">
+                                                                {{ option.text }}
+                                                            </label>
+                                                        </div>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
         </div>
-
-        <div class="card">
-        <div class="card-header" id="headingOne">
-            <h2 class="mb-0">
-            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                United Kingdom
-            </button>
-            </h2>
-        </div>
-    
-        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-            <div class="card-body">
-            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-            </div>
-        </div>
-        </div>
-
-        <div class="card">
-        <div class="card-header" id="headingTwo">
-            <h2 class="mb-0">
-            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                Isle of Man
-            </button>
-            </h2>
-        </div>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-            <div class="card-body">
-            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-            </div>
-        </div>
-        </div>
-        <div class="card">
-        <div class="card-header" id="headingThree">
-            <h2 class="mb-0">
-            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                Singapore
-            </button>
-            </h2>
-        </div>
-        <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
-            <div class="card-body">
-            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-            </div>
-        </div>
-        </div>
-    </div>
+    </form>
 {% endblock %}
