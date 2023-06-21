@@ -2,10 +2,24 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.core.exceptions import SuspiciousOperation
 
+
 from .helpers import *
 
 import requests
 import json
+
+from django.template.defaulttags import register
+
+# Custom filter to return a dictionary item based on its key
+# Copied from this StackOverflow answer:
+# https://stackoverflow.com/questions/8000022/django-template-how-to-look-up-a-dictionary-value-with-a-variable/8000091#8000091
+@register.filter
+def get_item(dictionary, key):
+    return dictionary.get(key)
+
+@register.filter
+def length(list):
+    return len(list)
 
 # Create your views here.
 # Create view for select jurisdictions form 
