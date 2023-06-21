@@ -1,3 +1,4 @@
+from datetime import datetime
 from .models import Subscription, SubscriptionOption
 
 # Create service method to create subscription 
@@ -5,7 +6,11 @@ def create_subscription(user_id, subscription_option_id):
     # Load the subscription option
     subscription_option = SubscriptionOption.objects.get(pk=subscription_option_id)
     # Create new subscription in the database 
-    new_subscription = Subscription.objects.create(user_id=user_id, subscription_option=subscription_option)
+    new_subscription = Subscription.objects.create(
+        user_id=user_id,
+        subscription_option=subscription_option,
+        start_date=datetime.now()
+        )
     # Return ID of newly created jurisdiction
     return new_subscription.id
 
