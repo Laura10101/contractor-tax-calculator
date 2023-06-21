@@ -14,7 +14,4 @@ def user_has_subscription(request):
         print(response)
         data = json.loads(response.text)
         user_has_subscription = data['has_active_subscription']
-    return { 
-        'user_has_subscription' : user_has_subscription,
-        'subscription_exempt_paths': settings.SUBSCRIPTION_EXEMPT_PATHS
-    }
+    return user_has_subscription

@@ -96,8 +96,6 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.media',
-                # Custom context processor to check users subscription status 
-                'subscription.context_processors.user_has_subscription', 
             ],
             'builtins': [
                 'crispy_forms.templatetags.crispy_forms_tags',
@@ -189,13 +187,6 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# Custom setting to exempt pages from needing subscriptions
-SUBSCRIPTION_EXEMPT_PATHS = [
-    '/subscription/',
-    '/checkout/',
-    '/accounts/login/'
-]
 
 STRIPE_PUBLIC_KEY = os.getenv('STRIPE_PUBLIC_KEY', '')
 STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY', '')
