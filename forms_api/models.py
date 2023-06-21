@@ -15,7 +15,7 @@ class Form(models.Model):
 
 class Question(PolymorphicModel):
     # Create foreign key for Form/Question relationship 
-    form = models.ForeignKey(Form, on_delete=models.CASCADE)
+    form = models.ForeignKey(Form, on_delete=models.CASCADE, related_name='questions')
     # Question text 
     text = models.CharField(max_length=255, null=False, blank=False)
     # ordinal to indicate order in which questions are asked 
@@ -42,7 +42,7 @@ class MultipleChoiceQuestion(Question):
 
 class MultipleChoiceOption(models.Model):
     # Create foreign key for MultipleChoiceQuestion/MCOption 
-    question = models.ForeignKey(MultipleChoiceQuestion, on_delete=models.CASCADE)
+    question = models.ForeignKey(MultipleChoiceQuestion, on_delete=models.CASCADE, related_name='options')
     # Option text 
     text = models.CharField(max_length=255, null=False, blank=False)
     # Explanatory notes for each option 
