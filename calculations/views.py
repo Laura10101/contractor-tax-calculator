@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.urls import reverse
-from django.http import Response
+from django.core.exceptions import SuspiciousOperation
 
 from .helpers import *
 
@@ -26,7 +26,8 @@ def select_jurisdictions(request):
 # This will use the calculation form template 
 def display_form(request):
     if request.method != 'POST':
-        return Response('This view is only accessible via the select jurisdictions form.', status=400)
+        raise SuspiciousOperation("Invalid request. This view is only accessible via the select jurisdictions form.")
+
 
     template = 'calculations/calculation_form.html'
     jurisdictions_url = request.build_absolute_uri(reverse('jurisdictions'))
