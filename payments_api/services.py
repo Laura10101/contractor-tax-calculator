@@ -23,7 +23,7 @@ def create_payment(subscription_id, subscription_option_id, total, currency):
     return new_payment.id, new_payment.client_secret
 
 def confirm_payment(id, stripe_card_id):
-    payment = Payment.objects.get(pkid)
+    payment = Payment.objects.get(pk=id)
 
     # Confirm the payment with Stripe and update its status
     confirm_stripe_payment(payment.pid, payment.stripe_card_id)
