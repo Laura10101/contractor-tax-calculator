@@ -1,6 +1,6 @@
 from .models import Payment 
 from .stripe import *
-from datetime import date 
+from datetime import datetime 
 
 
 def create_payment(subscription_id, subscription_option_id, total, currency):
@@ -26,10 +26,18 @@ def confirm_payment(id, stripe_card_id):
     payment = Payment.objects.get(pk=id)
 
     # Confirm the payment with Stripe and update its status
-    confirm_stripe_payment(payment.stripe_pid, stripe_card_id)
-    payment.status=3
-    payment.intended_date=date.today()
-    payment.save()
+    success, status_or_error = confirm_stripe_payment(payment.stripe_pid, stripe_card_id)
+
+    if success and status_or_error == 'processing':
+        print('Payment is processing')
+        payment.status=3
+        payment.intended_date=datetime.now()
+        payment.save()
+    else:
+        print('Payment failed with reason ' + status_or_error)
+        payment.status=-1
+        payment.completed_or_failed_date=datetime.now()
+        payment.save()
 
 def complete_payment(stripe_pid):
     payment = Payment.objects.filter(stripe_pid__exact=id).update(

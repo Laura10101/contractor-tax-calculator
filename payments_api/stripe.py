@@ -27,10 +27,15 @@ def confirm_stripe_payment(stripe_pid, stripe_card_id):
     # This code is adapted from the Stripe documentation 
     # https://stripe.com/docs/api/payment_intents/confirm?lang=python
     stripe.api_key = stripe_secret_key
-    result = stripe.PaymentIntent.confirm(
-        stripe_pid,
-        payment_method=stripe_card_id,
-        capture_method='automatic_async'
-    )
+    try:
+        payment_intent = stripe.PaymentIntent.confirm(
+            stripe_pid,
+            payment_method=stripe_card_id,
+            capture_method='automatic_async'
+        )
+        return True, payment_intent.status
+    except stripe.error.CardError as ex:
+        return False, str(ex)
+        
 
     
