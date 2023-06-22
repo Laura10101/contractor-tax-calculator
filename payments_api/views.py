@@ -71,7 +71,7 @@ class PaymentDetail(APIView):
         stripe_card_id = request.data['stripe_card_id']
 
         # Invoke service method 
-        confirm_payment(id, stripe_card_id)
+        confirm_payment(pk, stripe_card_id)
         # Create response 
         response = { }
         # Return response 
