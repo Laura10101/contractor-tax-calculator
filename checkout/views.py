@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.core.exceptions import SuspiciousOperation
 from django.shortcuts import render, redirect, reverse
 from django.contrib import messages
 import requests
@@ -65,43 +66,63 @@ def checkout(request):
     }
     return render(request, template, context)
 
+def confirm_checkout(request):
+    # Define template
+    template = 'checkout/checkout_status.html'
+    base_url = request.scheme + '://' + request.get_host() + '/api/payments/'
+
+    if not request.method == 'POST':
+        raise SuspiciousOperation('Invalid request. This view may only be accessed via the checkout form.')
+
+    payment_id = request.POST['payment_id']
+    print('Confirming payment with local id of ' + str(payment_id))
+    url = base_url + str(payment_id) + '/'
+    data = {
+        'billing_street_1': request.POST['street_address1'],
+        'town_or_city': request.POST['town_or_city'],
+        'county': request.POST['county'],
+        'country': request.POST['country'],
+        'postcode': request.POST['postcode'],
+        'stripe_card_id': request.POST['payment_method_id']
+    }
+    if 'street_address2' in request.POST:
+        data['billing_street_2'] = request.POST['street_address2'],
+    print("Confirming payment at URL: " + url)
+    response = requests.patch(url, json=data)
+    print('Confirm payment response: ' + str(response))
+    data = json.loads(response.text)
+    if data['succeeded']:
+        redirect('checkout_status', id=payment_id)
+    else:
+        payment_status = 'failed'
+        failure_reason = data['result']
+        context = { 
+            'payment_id': payment_id,
+            'payment_status': payment_status,
+            'failure_reason': failure_reason,
+            'payment_pending': payment_status == 'pending',
+        }
+        return render(request, template, context)
+
 # Create function for views on checkout status page: talk to payment API to get payment status
-def checkout_status(request):
+def checkout_status(request, id):
     # Define template
     template = 'checkout/checkout_status.html'
     base_url = request.scheme + '://' + request.get_host() + '/api/payments/'
     failure_reason = ''
-    # If request method is POST, confirm payment in payments API
-    if request.method == 'POST':
-        payment_id = request.POST['payment_id']
-        print('Confirming payment with local id of ' + str(payment_id))
-        url = base_url + str(payment_id) + '/'
-        data = {
-            'billing_street_1': request.POST['street_address1'],
-            'town_or_city': request.POST['town_or_city'],
-            'county': request.POST['county'],
-            'country': request.POST['country'],
-            'postcode': request.POST['postcode'],
-            'stripe_card_id': request.POST['payment_method_id']
-        }
-        if 'street_address2' in request.POST:
-            data['billing_street_2'] = request.POST['street_address2'],
-        print("Confirming payment at URL: " + url)
-        response = requests.patch(url, json=data)
-        print('Confirm payment response: ' + str(response))
-        data = json.loads(response.text)
-        payment_status = 'pending'
-    # If request method is GET, get payment status from payments API
-    elif request.method == 'GET':
-        payment_id = request.GET['payment_id']
-        url = base_url + str(payment_id) + '/status/'
-        response = requests.get(url)
-        data = json.loads(response.text)
-        payment_status = data['status']
-        failure_reason = data['failure_reason']
+
+    if not request.method == 'GET':
+        raise SuspiciousOperation('Invalid request. This view must be accessed via a GET request.')
+    
+    # Get payment status from payments API
+    url = base_url + str(id) + '/status/'
+    response = requests.get(url)
+    data = json.loads(response.text)
+    payment_status = data['status']
+    failure_reason = data['failure_reason']
     # Build context 
     context = { 
-        'payment_id': payment_id,
+        'payment_id': id,
         'payment_status': payment_status,
         'failure_reason': failure_reason,
         'payment_pending': payment_status == 'pending',

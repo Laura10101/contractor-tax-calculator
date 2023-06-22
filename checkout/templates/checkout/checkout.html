@@ -58,7 +58,7 @@
 
             <div class="col-12 col-lg-6">
                 <p class="text-muted">Please fill out the form below to complete your order</p>
-                <form action="status/" method="POST" id="payment-form">
+                <form action="{% url 'confirm_checkout' %}" method="POST" id="payment-form">
                     {% csrf_token %}
                     <input type="hidden" value="{{ payment_id }}" name="payment_id" id="payment_id">
                     <input type="hidden" value="" name="payment_method_id" id="payment_method_id">
