@@ -43,7 +43,7 @@ def update_subscription(id, subscription_option_id):
     # Patch start date
     # Patch subscription months 
     subscription = Subscription.objects.get(pk=id).update(
-        start_date = date.today(),
+        start_date = datetime.now(),
         subscription_option = subscription_option
         )
 
