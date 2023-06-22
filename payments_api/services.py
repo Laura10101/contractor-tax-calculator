@@ -28,8 +28,8 @@ def confirm_payment(id, stripe_card_id):
     # Confirm the payment with Stripe and update its status
     success, status_or_error = confirm_stripe_payment(payment.stripe_pid, stripe_card_id)
 
-    if success and status_or_error == 'processing':
-        print('Payment is processing')
+    if success and status_or_error in ['processing', 'succeeded']:
+        print('Payment confirmation succeeded')
         payment.status=3
         payment.intended_date=datetime.now()
         payment.save()
