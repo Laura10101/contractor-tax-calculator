@@ -73,6 +73,7 @@ def checkout_status(request):
     failure_reason = ''
     # If request method is POST, confirm payment in payments API
     if request.method == 'POST':
+        payment_id = request.POST['payment_id']
         print('Confirming payment with local id of ' + str(payment_id))
         url = base_url + str(payment_id) + '/'
         data = {
