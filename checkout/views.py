@@ -32,6 +32,12 @@ def post_payment(base_url, subscription_id, subscription_option_id, total, curre
     payment_result = json.loads(response.text)
     return payment_result['payment_id'], payment_result['client_secret']
 
+def update_subscription(base_url, user_id, subscription_option_id):
+    url = base_url + '/api/subscriptions/?user_id' = str(user_id)
+    data = { 'subscription_option_id': subscription_option_id }
+    response = requests.patch(url, json=data)
+    return response.status_code == 200
+
 # Create your views here.
 def checkout(request):
     stripe_public_key = settings.STRIPE_PUBLIC_KEY
@@ -59,6 +65,7 @@ def checkout(request):
         'stripe_public_key': stripe_public_key,
         'client_secret_key': client_secret,
         'payment_id': payment_id,
+        'subscription_option_id': subscription_option_id,
         'subscription_months': option_data['subscription_months'],
         'subscription_price': option_data['subscription_price'],
         'vat': option_data['vat'],
@@ -69,14 +76,14 @@ def checkout(request):
 def confirm_checkout(request):
     # Define template
     template = 'checkout/checkout_status.html'
-    base_url = request.scheme + '://' + request.get_host() + '/api/payments/'
+    base_url = request.scheme + '://' + request.get_host()
 
     if not request.method == 'POST':
         raise SuspiciousOperation('Invalid request. This view may only be accessed via the checkout form.')
 
     payment_id = request.POST['payment_id']
     print('Confirming payment with local id of ' + str(payment_id))
-    url = base_url + str(payment_id) + '/'
+    url = base_url + '/api/payments/' + str(payment_id) + '/'
     data = {
         'billing_street_1': request.POST['street_address1'],
         'town_or_city': request.POST['town_or_city'],
@@ -92,6 +99,10 @@ def confirm_checkout(request):
     print('Confirm payment response: ' + str(response))
     data = json.loads(response.text)
     if data['succeeded']:
+        # Update subscription
+        subscription_option_id = request.POST['subscription_option_id']
+        result = update_subscription(base_url, request.user.id, subscription_option_id)
+        # Display success to user
         payment_status = 'succeeded'
         failure_reason = ''
     else:

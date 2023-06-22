@@ -1,5 +1,6 @@
 from datetime import datetime
 from .models import Subscription, SubscriptionOption
+from rest_framework.exceptions import *
 
 # Create service method to create subscription 
 def create_subscription(user_id, subscription_option_id):
@@ -36,16 +37,25 @@ def check_subscription(user_id):
     return subscriptions.first().is_active()
 
 # Create service method to update subscription 
-def update_subscription(id, subscription_option_id):
+def update_subscription(user_id, subscription_option_id):
     # Load the subscription option
-    subscription_option = SubscriptionOption.objects.get(pk=subscription_option_id)
-    # Get subscription from database 
+    subscription_option = SubscriptionOption.objects.filter(user_id__exact=subscription_option_id)
+    # Get the subscription from the database for the user ID 
+    subscriptions = Subscription.objects.filter(user_id__exact=int(user_id))
+    # Return an error if more than one subscription 
+    if len(subscriptions) > 1:
+        print('More than one exception found for user ' + str(user_id))
+        raise Exception ("More than one subscription found for user")
+    # Return false if no subscription for that user ID
+    if len(subscriptions) <= 0:
+        print('No subscription found for user ' + str(user_id))
+        raise NotFound('No subscription found for user')
     # Patch start date
+    subscription = subscriptions.first()
+    subscription.start_date = datetime.now()
     # Patch subscription months 
-    subscription = Subscription.objects.get(pk=id).update(
-        start_date = datetime.now(),
-        subscription_option = subscription_option
-        )
+    subscription.subscription_option = subscription_option
+    subscription.save()
 
 # Load all subscription options
 def get_subscription_options():

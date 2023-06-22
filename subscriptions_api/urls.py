@@ -4,7 +4,6 @@ from .views import *
 
 urlpatterns = [
     path('', SubscriptionsList.as_view()),
-    path('<int:pk>/', SubscriptionDetail.as_view()),
     path('status/', SubscriptionStatusesList.as_view()),
     path('options/', SubscriptionOptionsList.as_view()),
     path('options/<int:pk>', SubscriptionOptionDetail.as_view()),
