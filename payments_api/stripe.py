@@ -26,6 +26,7 @@ def create_stripe_payment_intention(amount, currency):
 def confirm_stripe_payment(stripe_pid, stripe_card_id):
     # This code is adapted from the Stripe documentation 
     # https://stripe.com/docs/api/payment_intents/confirm?lang=python
+    stripe.api_key = stripe_secret_key
     result = stripe.PaymentIntent.confirm(
         stripe_pid,
         payment_method=stripe_card_id,
