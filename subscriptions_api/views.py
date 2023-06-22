@@ -41,7 +41,7 @@ class SubscriptionsList(APIView):
         # Return response 
         return Response(response)
 
-    def patch(self, request, user_id):
+    def patch(self, request):
         # Define the list of required attributes 
         required_attributes = [
             'subscription_option_id',

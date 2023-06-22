@@ -39,7 +39,7 @@ def check_subscription(user_id):
 # Create service method to update subscription 
 def update_subscription(user_id, subscription_option_id):
     # Load the subscription option
-    subscription_option = SubscriptionOption.objects.filter(user_id__exact=subscription_option_id)
+    subscription_option = SubscriptionOption.objects.get(pk=subscription_option_id)
     # Get the subscription from the database for the user ID 
     subscriptions = Subscription.objects.filter(user_id__exact=int(user_id))
     # Return an error if more than one subscription 

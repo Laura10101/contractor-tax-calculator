@@ -33,7 +33,7 @@ def post_payment(base_url, subscription_id, subscription_option_id, total, curre
     return payment_result['payment_id'], payment_result['client_secret']
 
 def update_subscription(base_url, user_id, subscription_option_id):
-    url = base_url + '/api/subscriptions/?user_id' = str(user_id)
+    url = base_url + '/api/subscriptions/?user_id=' + str(user_id)
     data = { 'subscription_option_id': subscription_option_id }
     response = requests.patch(url, json=data)
     return response.status_code == 200
@@ -96,6 +96,8 @@ def confirm_checkout(request):
         data['billing_street_2'] = request.POST['street_address2'],
     print("Confirming payment at URL: " + url)
     response = requests.patch(url, json=data)
+    if not response:
+        raise Exception('Failed to update subscription')
     print('Confirm payment response: ' + str(response))
     data = json.loads(response.text)
     if data['succeeded']:
