@@ -26,7 +26,7 @@ def confirm_payment(id, stripe_card_id):
     payment = Payment.objects.get(pk=id)
 
     # Confirm the payment with Stripe and update its status
-    confirm_stripe_payment(payment.pid, payment.stripe_card_id)
+    confirm_stripe_payment(payment.stripe_pid, payment.stripe_card_id)
     payment.status=3
     payment.intended_date=date.today()
     payment.save()
