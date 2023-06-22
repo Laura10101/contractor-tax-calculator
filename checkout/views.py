@@ -92,17 +92,18 @@ def confirm_checkout(request):
     print('Confirm payment response: ' + str(response))
     data = json.loads(response.text)
     if data['succeeded']:
-        redirect('checkout_status', id=payment_id)
+        payment_status = 'succeeded'
+        failure_reason = ''
     else:
         payment_status = 'failed'
         failure_reason = data['result']
-        context = { 
-            'payment_id': payment_id,
-            'payment_status': payment_status,
-            'failure_reason': failure_reason,
-            'payment_pending': payment_status == 'pending',
-        }
-        return render(request, template, context)
+    context = { 
+        'payment_id': payment_id,
+        'payment_status': payment_status,
+        'failure_reason': failure_reason,
+        'payment_pending': payment_status == 'pending',
+    }
+    return render(request, template, context)
 
 # Create function for views on checkout status page: talk to payment API to get payment status
 def checkout_status(request, id):
