@@ -1,0 +1,5 @@
+- Complete calculations API
+- Complete calculation_results.html template
+- Look and feel for user apps
+- Update automated tests
+- Add custom jurisdiction management app
