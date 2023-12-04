@@ -46,7 +46,7 @@ urlpatterns = [
     path('api/payments/webhooks/', StripeWebhooksList.as_view()),
     path('accounts/', include('allauth.urls')),
     path('checkout/', include('checkout.urls')),
-    path('home/', include('home.urls')),
+    path('', include('home.urls')),
     path('subscription/', include('subscription.urls')),
     path('calculations/', include('calculations.urls'))
 ]

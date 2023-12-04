@@ -29,7 +29,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', '')
 DEBUG = os.getenv('DEVELOPMENT', False)
 
 ALLOWED_HOSTS = [
-    '8000-laura10101-contractorta-x36vvy68pn6.ws-eu100.gitpod.io',
+    '8000-laura10101-contractorta-g5o2od5xoex.ws-eu106.gitpod.io',
     'contractor-tax-calculator.herokuapp.com',
     'localhost'
     ]
@@ -182,7 +182,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = "/static/"
+STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
