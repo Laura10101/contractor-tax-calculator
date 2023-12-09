@@ -1,8 +1,63 @@
 from django.db import models
 from polymorphic.models import PolymorphicModel
 from jurisdictions_api.models import Jurisdiction
-
 # Create your models here.
+# This class contains the results for a given calculation across all jurisdictions in the comparison
+class TaxCalculationResult(models.Model):
+    username = models.CharField(max_length=255, null=False, blank=False)
+
+    def add_ruleset_result(self, jurisdiction_id, tax_category_id, tax_category_name):
+        result = TaxRuleSetResult.objects.create(
+            tax_calculation_result = self,
+            jurisdiction_id=jurisdiction_id,
+            tax_category_id = tax_category_id,
+            tax_category_name = tax_category_name,
+            ordinal = self.results.count()
+        )
+
+# This class contains the tax calculation results for a given ruleset within a given jursidction
+class TaxRuleSetResult(models.Model):
+    tax_calculation_result = models.ForeignKey(TaxCalculationResult, on_delete=models.CASCADE, related_name='results')
+    jurisdiction_id = models.IntegerField()
+    tax_category_id = models.IntegerField()
+    tax_category_name = models.CharField(max_length=255, null=False, blank=False)
+    ordinal = models.IntegerField()
+
+    def add_result(self, rule_id, rule_model_name, rule_name, variable_name, variable_value, taxable_amount,
+        tax_rate, tax_payable, tier_id=None, tier_model_name=None, tier_name=None):
+        result = TaxRuleTierResult.objects.create(
+            ruleset_result=self,
+            rule_id=rule_id,
+            rule_model_name=rule_model_name,
+            tier_id=tier_id,
+            tier_model_name=tier_model_name,
+            tier_name=tier_name,
+            variable_name=variable_name,
+            variable_value=variable_value,
+            taxable_amount=taxable_amount,
+            tax_payable=tax_payable,
+            ordinal=self.results.count()
+        )
+
+# This class contains the tax calculation results for a given rule tier (for flat rate rules, there will only be one result for the rule)
+class TaxRuleTierResult(models.Model):
+    ruleset_result = models.ForeignKey(TaxRuleSetResult, on_delete=models.CASCADE, related_name='results')
+
+    # Rules and rule tiers are polymorphic so instead of holding object references,
+    # store the ids, names and model types to simplify displaying the results in a consistent way
+    rule_id = models.IntegerField()
+    rule_model_name = models.CharField(max_length=255, null=False, blank=False)
+    rule_name = models.CharField(max_length=255, null=False, blank=False)
+    tier_id = models.IntegerField(null = True)
+    tier_model_name = models.CharField(max_length=255, null=True, blank=False)
+    tier_name = models.CharField(max_length=255, null=True, blank=False)
+
+    variable_name = models.CharField(max_length=255, null=False, blank=False)
+    variable_value = models.DecimalField(decimal_places=2)
+    taxable_amount = models.DecimalField(decimal_places=2)
+    tax_rate = models.DecimalField(decimal_places=2)
+    tax_payable = models.DecimalField(decimal_places=2)
+    ordinal = mdoels.IntegerField()
 
 # This class contains the types of tax categories
 class TaxCategory(models.Model):
@@ -41,14 +96,31 @@ class Rule(PolymorphicModel):
 class FlatRateRule(Rule):
     flat_rate = models.DecimalField(decimal_places=2, max_digits=5)
 
-    def calculate(self, variable_table, results_table):
-        tax_total = variable_table[self.variable_name] * (flat_rate / 100)
+    def calculate(self, variable_table, ruleset_results):
+        variable_value = variable_table[self.variable_name]
+        tax_total = variable_value * (self.flat_rate / 100)
+
+        # Add to the results dictionary
+        ruleset_results.add_result(
+            rule_id=self.id,
+            rule_model_name='FlatRateRule',
+            rule_name = str(self),
+            variable_name = self.variable_name,
+            variable_value = variable_value,
+            taxable_amount = variable_value,
+            tax_rate=self.flat_rate,
+            tax_payable = tax_total
+        )
 
 # This class applies tiered rates of tax
 class TieredRateRule(Rule):
     
-    def calculate(self, variable_table, results_table):
-        pass
+    def calculate(self, variable_table, ruleset_results):
+        tiers = self.tiers.order_by('ordinal')
+        variable = variable_table[self.variable_name]
+
+        for tier in tiers:
+            tier.calculate(variable_table, ruleset_results)
 
 # This class represents a single tax tier within a tiered rate rule
 class RuleTier(models.Model):
@@ -61,7 +133,7 @@ class RuleTier(models.Model):
     ordinal = models.IntegerField()
     tier_rate = models.DecimalField(decimal_places=2, max_digits=5)
 
-    def calculate(self, variable, results_table):
+    def calculate(self, variable, ruleset_results):
         max_value = self.max_value
 
         if max_value == None:
@@ -70,7 +142,21 @@ class RuleTier(models.Model):
         if variable < max_value:
             max_value = variable
 
-        tax_subtotal = (max_value - self.min_value) * (self.tier_rate / 100)
+        taxable_amount = max_value - self.min_value
+        tax_subtotal = taxable_amount * (self.tier_rate / 100)
+
+        ruleset_results.add_result(
+            rule_id = self.rule.id,
+            rule_model_name = 'TieredRateRule',
+            rule_name = str(self.rule),
+            tier_id = self.id,
+            tier_model_name = 'RuleTier',
+            tier_name = str(self),
+            variable_name = self.rule.variable_name,
+            taxable_amount = taxable_amount,
+            tax_rate = self.tier_rate,
+            tax_payable = tax_subtotal
+        )
 
     def __str__(self):
         return str(self.rule) + ' - Tier ' + str(self.min_value)  + ' to ' + str(self.max_value)
@@ -84,8 +170,12 @@ class SecondaryTieredRateRule(Rule):
     # Foreign key to primary rule that it is connected to 
     primary_rule = models.ForeignKey(TieredRateRule, on_delete=models.CASCADE)
 
-    def calculate(self, variable_table, results_table):
-        pass
+    def calculate(self, variable_table, ruleset_results):
+        tiers = self.tiers.order_by('ordinal')
+        variable = variable_table[self.variable_name]
+
+        for tier in tiers:
+            tier.calculate(variable_table, ruleset_results)
 
 # This class represents a tier of a secondary tiered rate rule 
 class SecondaryRuleTier(models.Model):
@@ -93,7 +183,7 @@ class SecondaryRuleTier(models.Model):
     primary_tier = models.ForeignKey(RuleTier, on_delete=models.CASCADE, related_name='+')
     tier_rate = models.DecimalField(decimal_places=2, max_digits=5)
 
-    def calculate(self, primary_income, secondary_income, results_table):
+    def calculate(self, primary_income, secondary_income, ruleset_results):
         # Get the tier max and mins from the primary tier
         # and calculate total income
         tier_min = self.primary_tier.min_value
@@ -132,6 +222,19 @@ class SecondaryRuleTier(models.Model):
                 taxable_amount = secondary_income_remaining
 
             tax_subtotal = taxable_amount * (self.tier_rate / 100)
+
+            ruleset_results.add_result(
+                rule_id = self.secondary_rule.id,
+                rule_model_name = 'SecondaryTieredRateRule',
+                rule_name = str(self.secondary_rule),
+                tier_id = self.id,
+                tier_model_name = 'SecondaryRuleTier',
+                tier_name = str(self),
+                variable_name = self.secondary_rule.variable_name,
+                taxable_amount = taxable_amount,
+                tax_rate = self.tier_rate,
+                tax_payable = tax_subtotal
+            )
 
     def __str__(self):
         return str(self.secondary_rule) + ' - Tier ' + str(self.primary_tier.min_value)  + ' to ' + str(self.primary_tier.max_value)
