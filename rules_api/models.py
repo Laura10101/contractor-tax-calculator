@@ -5,7 +5,7 @@ from jurisdictions_api.models import Jurisdiction
 # This class contains the results for a given calculation across all jurisdictions in the comparison
 class TaxCalculationResult(models.Model):
     username = models.CharField(max_length=255, null=False, blank=False)
-    created = models.DateTimeField(DateTimeField.auto_add_now)
+    created = models.DateTimeField(auto_now_add=True)
 
     def add_ruleset_result(self, jurisdiction_id, tax_category_id, tax_category_name):
         result = TaxRuleSetResult.objects.create(
@@ -55,11 +55,11 @@ class TaxRuleTierResult(models.Model):
     tier_name = models.CharField(max_length=255, null=True, blank=False)
 
     variable_name = models.CharField(max_length=255, null=False, blank=False)
-    variable_value = models.DecimalField(decimal_places=2)
-    taxable_amount = models.DecimalField(decimal_places=2)
-    tax_rate = models.DecimalField(decimal_places=2)
-    tax_payable = models.DecimalField(decimal_places=2)
-    ordinal = mdoels.IntegerField()
+    variable_value = models.DecimalField(decimal_places=2, max_digits=10)
+    taxable_amount = models.DecimalField(decimal_places=2, max_digits=10)
+    tax_rate = models.DecimalField(decimal_places=2, max_digits=4)
+    tax_payable = models.DecimalField(decimal_places=2, max_digits=10)
+    ordinal = models.IntegerField()
 
 # This class contains the types of tax categories
 class TaxCategory(models.Model):
