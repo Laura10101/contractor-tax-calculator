@@ -53,7 +53,7 @@ class TieredRateRule(Rule):
 # This class represents a single tax tier within a tiered rate rule
 class RuleTier(models.Model):
     # Identify the rule to which this tier belongs
-    rule = models.ForeignKey(TieredRateRule, on_delete=models.CASCADE)
+    rule = models.ForeignKey(TieredRateRule, on_delete=models.CASCADE, related_name='tiers')
     # Create min and max value attributes for each tier 
     min_value = models.IntegerField()
     # This has to allow null as there will be no max value for some objects
@@ -89,8 +89,8 @@ class SecondaryTieredRateRule(Rule):
 
 # This class represents a tier of a secondary tiered rate rule 
 class SecondaryRuleTier(models.Model):
-    secondary_rule = models.ForeignKey(SecondaryTieredRateRule, on_delete=models.CASCADE)
-    primary_tier = models.ForeignKey(RuleTier, on_delete=models.CASCADE)
+    secondary_rule = models.ForeignKey(SecondaryTieredRateRule, on_delete=models.CASCADE, related_name='tiers')
+    primary_tier = models.ForeignKey(RuleTier, on_delete=models.CASCADE, related_name='+')
     tier_rate = models.DecimalField(decimal_places=2, max_digits=5)
 
     def calculate(self, primary_income, secondary_income, results_table):
