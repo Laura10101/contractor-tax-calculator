@@ -134,4 +134,4 @@ def test_get_list_with_multiple_jurisdictions(rf):
     for jurisdiction in jurisdictions:
         print(jurisdiction)
         assert jurisdiction['name'] in names
-        assert jurisdiction['id'] == jurisdiction_ids[jurisdiction.name]
+        assert jurisdiction['id'] == jurisdiction_ids[jurisdiction['name']]
