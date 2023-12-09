@@ -146,3 +146,6 @@ def create_calculation(username, jurisdiction_ids, variable_table):
             ruleset.calculate(variable_table, calculation_result)
 
     return calculation_result
+
+def get_calculations_for_user(username):
+    return TaxCalculationResult.objects.filter(username__exact=username).order_by('-created')

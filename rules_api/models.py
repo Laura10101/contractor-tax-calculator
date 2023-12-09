@@ -5,6 +5,7 @@ from jurisdictions_api.models import Jurisdiction
 # This class contains the results for a given calculation across all jurisdictions in the comparison
 class TaxCalculationResult(models.Model):
     username = models.CharField(max_length=255, null=False, blank=False)
+    created = models.DateTimeField(DateTimeField.auto_add_now)
 
     def add_ruleset_result(self, jurisdiction_id, tax_category_id, tax_category_name):
         result = TaxRuleSetResult.objects.create(
