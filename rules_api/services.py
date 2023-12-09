@@ -135,3 +135,14 @@ def update_secondary_rule_tier(id, tier_rate):
 
 def delete_secondary_rule_tier(id):
     SecondaryRuleTier.objects.filter(pk__exact=id).delete()
+
+# Calculations
+def create_calculation(username, jurisdiction_ids, variable_table):
+    calculation_result = TaxCalculationResult.objects.create(username=username)
+    
+    for jurisdiction_id in jurisdiction_ids:
+        rulesets = RuleSet.objects.filter(jurisdiction_id__exact=jurisdiction_id).order_by('ordinal')
+        for ruleset in rulesets:
+            ruleset.calculate(variable_table, calculation_result)
+
+    return calculation_result
