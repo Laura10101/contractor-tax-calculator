@@ -14,6 +14,7 @@ class TaxCalculationResult(models.Model):
             tax_category_name = tax_category_name,
             ordinal = self.results.count()
         )
+        return result
 
 # This class contains the tax calculation results for a given ruleset within a given jursidction
 class TaxRuleSetResult(models.Model):
@@ -73,12 +74,24 @@ class RuleSet(models.Model):
     # Create foreign key for RuleSet/TaxCategory relationship 
     tax_category = models.ForeignKey(TaxCategory, on_delete=models.CASCADE)
 
+    def calculate(self, variable_table, calculation_result):
+        ruleset_result = calculation_result.add_ruleset_result(
+            jurisdiction_id = self.jurisdiction_id,
+            tax_category_id = self.tax_category.id,
+            tax_category_name = self.tax_category.name
+        )
+
+        rules = self.rules.order_by('ordinal')
+        for rule in rules:
+            rule.calculate(variable_table, ruleset_result)
+
+
     def __str__(self):
         return Jurisdiction.objects.get(pk=self.jurisdiction_id).name + ' - ' + self.tax_category.name
 
 # This class is the parent class for the different types of rules 
 class Rule(PolymorphicModel): 
-    ruleset = models.ForeignKey(RuleSet, on_delete=models.CASCADE)
+    ruleset = models.ForeignKey(RuleSet, on_delete=models.CASCADE, related_name='rules')
     name = models.CharField(max_length=255, null=False, blank=False)
     # ordinal to indicate order in which rules are applied  
     ordinal = models.IntegerField()
