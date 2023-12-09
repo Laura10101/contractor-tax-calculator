@@ -275,3 +275,4 @@ def test_ruleset_iteration_with_multiple_rules_defined():
     assert next_rule.name == 'B'
     assert rs.next() is None
 
+pyt
