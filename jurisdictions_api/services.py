@@ -13,7 +13,10 @@ def get_jurisdictions_by_ids(ids):
 # Create service method to add new jurisdiction
 def create_jurisdiction(name):
     # Create new jurisdiction in the database 
-    new_jurisdiction = Jurisdiction.objects.create(name=name)
+    new_jurisdiction = Jurisdiction()
+    new_jurisdiction.name = name
+    new_jurisdiction.full_clean()
+    new_jurisdiction.save()
     # Return ID of newly created jurisdiction
     return new_jurisdiction.id
 
