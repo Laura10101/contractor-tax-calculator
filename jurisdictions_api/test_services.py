@@ -19,7 +19,7 @@ def test_create_valid_jurisdiction():
 @pytest.mark.django_db
 def test_create_jurisdiction_with_null_name():
     name = None
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ValidationError):
         id = create_jurisdiction(name=name)
 
 @pytest.mark.django_db
