@@ -49,7 +49,7 @@ def update_subscription(user_id, subscription_option_id):
     # Return false if no subscription for that user ID
     if len(subscriptions) <= 0:
         print('No subscription found for user ' + str(user_id))
-        raise NotFound('No subscription found for user')
+        raise Subscription.DoesNotExist()
     # Patch start date
     subscription = subscriptions.first()
     subscription.start_date = datetime.now()
