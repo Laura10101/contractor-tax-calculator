@@ -83,7 +83,7 @@ def test_post_valid_subscription():
     response = client.post(url, body, format='json')
     assert response is not None
     assert response.status_code == 200
-    id = response.data['id']
+    id = response.data['subscription_id']
     subscription = Subscription.objects.get(pk=id)
     assert subscription.user_id == user_id
     assert subscription.subscription_option.subscription_months == subscription_months
@@ -104,7 +104,7 @@ def test_patch_subscription_with_null_subscription_option_id():
     subscription = Subscription.objects.get(pk=id)
 
     body = { 'user_id': user_id, 'subscription_option_id': None }
-    response = client.patch(url + '/' + str(id) + '/', body, format='json')
+    response = client.patch(url, body, format='json')
     assert response is not None
     assert response.status_code == 400
 
@@ -130,7 +130,8 @@ def test_patch_subscription():
     ).id
 
     body = { 'user_id': user_id, 'subscription_option_id': new_subscription_option_id }
-    response = client.patch(url + '/' + str(id) + '/', body, format='json')
+    response = client.patch(url, body, format='json')
+    print(response.data)
     assert response is not None
     assert response.status_code == 200
     id = response.data['id']
