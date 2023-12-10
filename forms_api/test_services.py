@@ -116,6 +116,16 @@ def get_mock_form():
     form_id = create_form(jurisdiction_id)
     return form_id
 
+def get_mock_multiple_choice_question():
+    form_id = get_mock_form()
+    question_text = 'How do you like your eggs in the morning?'
+    ordinal = 1
+    explainer = 'A very serious tax-related question'
+    is_mandatory = True
+
+    id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, is_mandatory)
+    return id
+
 @pytest.mark.django_db
 def test_create_boolean_question_with_null_data():
     form_id = get_mock_form()
@@ -1022,24 +1032,32 @@ def test_delete_question_with_non_existent_id():
 # Test creation of multiple choice options
 @pytest.mark.django_db
 def test_create_option_with_null_text():
+    question_id = get_mock_multiple_choice_question()
     text = None
-    with pytest.raises(IntegrityError):
-        id = create_multiple_choice_option(text)
+    explainer = None
+    with pytest.raises(ValidationError):
+        id = create_multiple_choice_option(question_id, text, explainer)
 
 @pytest.mark.django_db
 def test_create_option():
+    question_id = get_mock_multiple_choice_question()
     text = 'Fried'
-    id = create_multiple_choice_option(text)
+    explainer = 'In lots of oil'
+    id = create_multiple_choice_option(question_id, text, explainer)
     assert id is not None
     option = MultipleChoiceOption.objects.get(pk=id)
+    assert option.question.id == question_id
     assert option.text == text
+    assert option.explainer == explainer
 
 # Test deletion of multiple choice options
 @pytest.mark.django_db
 def test_delete_option():
     assert MultipleChoiceOption.objects.all().count() == 0
-    text = 'Boiled'
-    id = create_multiple_choice_option(text)
+    question_id = get_mock_multiple_choice_question()
+    text = 'Fried'
+    explainer = 'In lots of oil'
+    id = create_multiple_choice_option(question_id, text, explainer)
     option = MultipleChoiceOption.objects.get(pk=id)
     assert option.text == text
     assert MultipleChoiceOption.objects.all().count() == 1
@@ -1048,7 +1066,7 @@ def test_delete_option():
 
 @pytest.mark.django_db
 def test_delete_option_with_non_existent_id():
-    with pytest.raises(ObjectDoesNotExist):
+    with pytest.raises(MultipleChoiceOption.DoesNotExist):
         delete_multiple_choice_option(7496854)
 
         

@@ -141,6 +141,7 @@ def create_multiple_choice_option(question_id, text, explainer):
     option.explainer = explainer
     option.full_clean()
     option.save()
+    return option.id
 
 def delete_multiple_choice_option(id):
     MultipleChoiceOption.objects.get(pk=id).delete()
