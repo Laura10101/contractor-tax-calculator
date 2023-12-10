@@ -124,7 +124,7 @@ def test_create_boolean_question_with_null_data():
     explainer = None
     is_mandatory = None
 
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ValidationError):
         id = create_boolean_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
 @pytest.mark.django_db

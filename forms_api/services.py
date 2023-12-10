@@ -84,21 +84,21 @@ def create_numeric_question(form_id, text, ordinal, explainer, is_mandatory, is_
 
 # Create new method to update questions 
 def update_boolean_question(id, text, ordinal, explainer, is_mandatory):
-    BooleanQuestion.objects.get(pk=id).update(
-        text=text,
-        ordinal=ordinal,
-        explainer=explainer,
-        is_mandatory=is_mandatory
-        )
+    question = BooleanQuestion.objects.get(pk=id)
+    question.text=text
+    question.ordinal=ordinal
+    question.explainer=explainer
+    question.is_mandatory=is_mandatory
+    question.save()
 
 def update_multiple_choice_question(id, text, ordinal, explainer, is_mandatory, is_multiselect=False):
-    MultipleChoiceQuestion.objects.get(pk=id).update(
-        text=text,
-        ordinal=ordinal,
-        explainer=explainer,
-        is_mandatory=is_mandatory,
-        is_multiselect=is_multiselect
-    )
+    question = MultipleChoiceQuestion.objects.get(pk=id)
+    question.text=text
+    question.ordinal=ordinal
+    question.explainer=explainer
+    question.is_mandatory=is_mandatory
+    question.is_multiselect=is_multiselect
+    question.save()
 
 def update_numeric_question(id, text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value):
     # Here I am updating two objects rather than one as the int/val fields are from the validation rule 
@@ -107,18 +107,17 @@ def update_numeric_question(id, text, ordinal, explainer, is_mandatory, is_integ
     # Create a variable to store the updated question info
     question = NumericQuestion.objects.get(pk=id)
     # Perform the update on the question
-    question.update(
-        text=text,
-        ordinal=ordinal,
-        explainer=explainer,
-        is_mandatory=is_mandatory
-    )
+    question.text=text
+    question.ordinal=ordinal
+    question.explainer=explainer
+    question.is_mandatory=is_mandatory
+    question.save()
+    
     # Second, perform the update on the validation rule
-    question.validation_rule.update(
-        is_integer=is_integer,
-        min_value=min_value, 
-        max_value=max_value
-    )
+    question.validation_rule.is_integer=is_integer
+    question.validation_rule.min_value=min_value
+    question.validation_rule.max_value=max_value
+    question.validation_rule.save()
 
 # Create new method to delete questions
 def delete_question(id):
