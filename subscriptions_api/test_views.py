@@ -150,7 +150,7 @@ def test_get_status_for_nonexistent_user_id():
 @pytest.mark.django_db
 def test_get_status_where_multiple_subscriptions_exists():
     user_id = 1
-    request_url = url + '/status/'
+    request_url = url + 'status/'
     subscription_option_id1 = SubscriptionOption.objects.create(
         subscription_months = 6,
         subscription_price = 9.99,
@@ -182,7 +182,7 @@ def test_get_status_where_multiple_subscriptions_exists():
 @pytest.mark.django_db
 def test_get_status_where_subscription_expired():
     user_id = 1
-    request_url = url + '/status/'
+    request_url = url + 'status/'
     months = 1
     subscription_option_id = SubscriptionOption.objects.create(
         subscription_months = months,
@@ -204,7 +204,8 @@ def test_get_status_where_subscription_expired():
 @pytest.mark.django_db
 def test_get_status_where_subscription_active():
     user_id = 1
-    request_url = url + '/status/'
+    request_url = url + 'status/'
+    print(request_url)
     months = 1
     subscription_option_id = SubscriptionOption.objects.create(
         subscription_months = months,
