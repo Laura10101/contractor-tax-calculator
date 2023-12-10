@@ -127,3 +127,20 @@ def update_numeric_question(id, text, ordinal, explainer, is_mandatory, is_integ
 # Create new method to delete questions
 def delete_question(id):
     Question.objects.get(pk=id).delete()
+
+# Services to add and remove multiple choice options
+def create_multiple_choice_option(question_id, text, explainer):
+    if question_id is None or not isinstance(question_id, int):
+        raise ValidationError('The question_id must be a valid integer when creating a multiple choice option')
+
+    question = Question.objects.get(pk=question_id)
+
+    option = MultipleChoiceOption()
+    option.question = question
+    option.text = text
+    option.explainer = explainer
+    option.full_clean()
+    option.save()
+
+def delete_multiple_choice_option(id):
+    MultipleChoiceOption.objects.get(pk=id).delete()
