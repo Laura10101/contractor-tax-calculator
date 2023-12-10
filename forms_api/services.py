@@ -25,7 +25,7 @@ def create_form(jurisdiction_id):
 
 # Create new method to delete forms 
 def delete_form(id): 
-    Form.objects.filter(pk__exact=id).delete()    
+    Form.objects.get(pk=id).delete()    
 
 # Create new method to create questions 
 # Requires 3 methods - one for each type of question
@@ -44,7 +44,7 @@ def create_boolean_question(form_id, text, ordinal, explainer, is_mandatory):
     # Return ID of newly created question
     return new_question.id
 
-def create_multiple_choice_question(form_id, text, ordinal, explainer, is_mandatory):
+def create_multiple_choice_question(form_id, text, ordinal, explainer, is_mandatory, is_multiselect=False):
     # Get form object by its primary key 
     form = Form.objects.get(pk=form_id)
     # Create new question in the database
@@ -53,7 +53,8 @@ def create_multiple_choice_question(form_id, text, ordinal, explainer, is_mandat
         text=text,
         ordinal=ordinal,
         explainer=explainer,
-        is_mandatory=is_mandatory
+        is_mandatory=is_mandatory,
+        is_multiselect=is_multiselect
         )
     # Return ID of newly created question
     return new_question.id
@@ -83,19 +84,20 @@ def create_numeric_question(form_id, text, ordinal, explainer, is_mandatory, is_
 
 # Create new method to update questions 
 def update_boolean_question(id, text, ordinal, explainer, is_mandatory):
-    BooleanQuestion.objects.filter(pk__exact=id).update(
+    BooleanQuestion.objects.get(pk=id).update(
         text=text,
         ordinal=ordinal,
         explainer=explainer,
         is_mandatory=is_mandatory
         )
 
-def update_multiple_choice_question(id, text, ordinal, explainer, is_mandatory):
-    MultipleChoiceQuestion.objects.filter(pk__exact=id).update(
+def update_multiple_choice_question(id, text, ordinal, explainer, is_mandatory, is_multiselect=False):
+    MultipleChoiceQuestion.objects.get(pk=id).update(
         text=text,
         ordinal=ordinal,
         explainer=explainer,
-        is_mandatory=is_mandatory
+        is_mandatory=is_mandatory,
+        is_multiselect=is_multiselect
     )
 
 def update_numeric_question(id, text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value):
@@ -103,7 +105,7 @@ def update_numeric_question(id, text, ordinal, explainer, is_mandatory, is_integ
     # class
     # First, update the question data
     # Create a variable to store the updated question info
-    question = NumericQuestion.objects.filter(pk__exact=id)
+    question = NumericQuestion.objects.get(pk=id)
     # Perform the update on the question
     question.update(
         text=text,
@@ -120,4 +122,4 @@ def update_numeric_question(id, text, ordinal, explainer, is_mandatory, is_integ
 
 # Create new method to delete questions
 def delete_question(id):
-    Question.objects.filter(pk__exact=id).delete()
+    Question.objects.get(pk=id).delete()

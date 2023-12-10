@@ -106,7 +106,7 @@ def test_delete_form():
 
 @pytest.mark.django_db
 def test_delete_form_with_non_existent_id():
-    with pytest.raises(ObjectDoesNotExist):
+    with pytest.raises(Form.DoesNotExist):
         delete_form(78)
 
 # Test creation of boolean questions
