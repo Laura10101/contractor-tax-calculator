@@ -1,9 +1,12 @@
 from datetime import datetime
 from .models import Subscription, SubscriptionOption
-from rest_framework.exceptions import *
+from django.core.exceptions import ValidationError
 
 # Create service method to create subscription 
 def create_subscription(user_id, subscription_option_id):
+    if user_id is None or user_id == '':
+        raise ValidationError('A valid username must be provided')
+
     # Load the subscription option
     subscription_option = SubscriptionOption.objects.get(pk=subscription_option_id)
     # Create new subscription in the database 

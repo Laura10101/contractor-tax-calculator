@@ -22,7 +22,7 @@ def test_create_subscription_with_null_user_id():
         subscription_price = 9.99,
         is_active = True
     ).id
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ValidationError):
         id = create_subscription(user_id, subscription_option_id)
 
 @pytest.mark.django_db
