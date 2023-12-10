@@ -1,5 +1,5 @@
 jurisdictions_api - Tests look good. Passing.
-subscriptions_api - Tests look good. Failing.
+subscriptions_api - Tests look good. Passing.
 
 
 forms_api - Tests look good. Failing.
