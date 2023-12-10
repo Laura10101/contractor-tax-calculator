@@ -1,6 +1,7 @@
 from datetime import datetime
 from .models import Subscription, SubscriptionOption
 from django.core.exceptions import ValidationError
+from django.db import IntegrityError
 
 # Create service method to create subscription 
 def create_subscription(user_id, subscription_option_id):
@@ -29,7 +30,7 @@ def check_subscription(user_id):
     # Return an error if more than one subscription 
     if len(subscriptions) > 1:
         print('More than one exception found for user ' + str(user_id))
-        raise Exception ("More than one subscription found for user")
+        raise IntegrityError("More than one subscription found for user")
     # Return false if no subscription for that user ID
     if len(subscriptions) <= 0:
         print('No subscription found for user ' + str(user_id))
