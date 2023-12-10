@@ -31,6 +31,8 @@ def delete_form(id):
 # Requires 3 methods - one for each type of question
 
 def create_boolean_question(form_id, text, ordinal, explainer, is_mandatory):
+    if form_id is None or not isinstance(form_id, int):
+        raise ValidationError('The form_id must be a valid integer when creating a question')
     # Get form object by its primary key 
     form = Form.objects.get(pk=form_id)
     # Create new question in the database
@@ -45,6 +47,8 @@ def create_boolean_question(form_id, text, ordinal, explainer, is_mandatory):
     return new_question.id
 
 def create_multiple_choice_question(form_id, text, ordinal, explainer, is_mandatory, is_multiselect=False):
+    if form_id is None or not isinstance(form_id, int):
+        raise ValidationError('The form_id must be a valid integer when creating a question')
     # Get form object by its primary key 
     form = Form.objects.get(pk=form_id)
     # Create new question in the database
@@ -60,6 +64,8 @@ def create_multiple_choice_question(form_id, text, ordinal, explainer, is_mandat
     return new_question.id
     
 def create_numeric_question(form_id, text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value):
+    if form_id is None or not isinstance(form_id, int):
+        raise ValidationError('The form_id must be a valid integer when creating a question')
     # Get form object by its primary key 
     form = Form.objects.get(pk=form_id)
     print("Form is: " + str(form))
@@ -112,7 +118,7 @@ def update_numeric_question(id, text, ordinal, explainer, is_mandatory, is_integ
     question.explainer=explainer
     question.is_mandatory=is_mandatory
     question.save()
-    
+
     # Second, perform the update on the validation rule
     question.validation_rule.is_integer=is_integer
     question.validation_rule.min_value=min_value

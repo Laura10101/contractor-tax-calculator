@@ -124,7 +124,7 @@ def test_create_boolean_question_with_null_data():
     explainer = None
     is_mandatory = None
 
-    with pytest.raises(ValidationError):
+    with pytest.raises(IntegrityError):
         id = create_boolean_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
 @pytest.mark.django_db
@@ -135,7 +135,7 @@ def test_create_boolean_question_with_null_form_id():
     explainer = 'A very serious tax-related question'
     is_mandatory = True
 
-    with pytest.raises(ObjectDoesNotExist):
+    with pytest.raises(ValidationError):
         id = create_boolean_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
 @pytest.mark.django_db
@@ -146,7 +146,7 @@ def test_create_boolean_question_with_non_existent_form_id():
     explainer = 'A very serious tax-related question'
     is_mandatory = True
 
-    with pytest.raises(ObjectDoesNotExist):
+    with pytest.raises(Form.DoesNotExist):
         id = create_boolean_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
 @pytest.mark.django_db
@@ -157,7 +157,7 @@ def test_create_boolean_question_with_non_numeric_form_id():
     explainer = 'A very serious tax-related question'
     is_mandatory = True
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValidationError):
         id = create_boolean_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
 @pytest.mark.django_db
@@ -402,7 +402,7 @@ def test_create_multiple_choice_question_with_null_form_id():
     explainer = 'A very serious tax-related question'
     is_mandatory = True
 
-    with pytest.raises(ObjectDoesNotExist):
+    with pytest.raises(ValidationError):
         id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
 @pytest.mark.django_db
@@ -413,7 +413,7 @@ def test_create_multiple_choice_question_with_non_existent_form_id():
     explainer = 'A very serious tax-related question'
     is_mandatory = True
 
-    with pytest.raises(ObjectDoesNotExist):
+    with pytest.raises(Form.DoesNotExist):
         id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
 @pytest.mark.django_db
@@ -424,7 +424,7 @@ def test_create_multiple_choice_question_with_non_numeric_form_id():
     explainer = 'A very serious tax-related question'
     is_mandatory = True
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValidationError):
         id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
 @pytest.mark.django_db
@@ -675,7 +675,7 @@ def test_create_numeric_question_with_null_form_id():
     min_value = 0
     max_value = 100
 
-    with pytest.raises(ObjectDoesNotExist):
+    with pytest.raises(ValidationError):
         id = create_numeric_question(form_id, question_text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value)
 
 @pytest.mark.django_db
@@ -689,7 +689,7 @@ def test_create_numeric_question_with_non_existent_form_id():
     min_value = 0
     max_value = 100
 
-    with pytest.raises(ObjectDoesNotExist):
+    with pytest.raises(Form.DoesNotExist):
         id = create_numeric_question(form_id, question_text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value)
 
 @pytest.mark.django_db
@@ -703,7 +703,7 @@ def test_create_numeric_question_with_non_numeric_form_id():
     min_value = 0
     max_value = 100
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValidationError):
         id = create_numeric_question(form_id, question_text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value)
 
 @pytest.mark.django_db
