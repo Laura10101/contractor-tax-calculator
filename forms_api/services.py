@@ -68,7 +68,6 @@ def create_numeric_question(form_id, text, ordinal, explainer, is_mandatory, is_
         raise ValidationError('The form_id must be a valid integer when creating a question')
     # Get form object by its primary key 
     form = Form.objects.get(pk=form_id)
-    print("Form is: " + str(form))
     # Create numeric validation rule for this question 
     validation_rule = NumericAnswerValidationRule.objects.create(
         is_integer=is_integer,
