@@ -124,7 +124,7 @@ def test_create_boolean_question_with_null_data():
     explainer = None
     is_mandatory = None
 
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ValidationError):
         id = create_boolean_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
 @pytest.mark.django_db
@@ -168,7 +168,7 @@ def test_create_boolean_question_with_null_text():
     explainer = 'A very serious tax-related question'
     is_mandatory = True
 
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ValidationError):
         id = create_boolean_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
 @pytest.mark.django_db
@@ -179,7 +179,7 @@ def test_create_boolean_question_with_null_ordinal():
     explainer = 'A very serious tax-related question'
     is_mandatory = True
 
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ValidationError):
         id = create_boolean_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
 @pytest.mark.django_db
@@ -190,7 +190,7 @@ def test_create_boolean_question_with_non_numeric_ordinal():
     explainer = 'A very serious tax-related question'
     is_mandatory = True
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValidationError):
         id = create_boolean_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
 @pytest.mark.django_db
@@ -201,7 +201,7 @@ def test_create_boolean_question_with_null_explainer():
     explainer = None
     is_mandatory = True
 
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ValidationError):
         id = create_boolean_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
 @pytest.mark.django_db
@@ -212,7 +212,7 @@ def test_create_boolean_question_with_null_is_mandatory():
     explainer = 'A very serious tax-related question'
     is_mandatory = None
 
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ValidationError):
         id = create_boolean_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
 @pytest.mark.django_db
@@ -247,7 +247,7 @@ def test_update_boolean_question_with_null_data():
     new_explainer = None
     new_is_mandatory = None
 
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ValidationError):
         update_boolean_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory)
 
 @pytest.mark.django_db
@@ -265,7 +265,7 @@ def test_update_boolean_question_with_null_text():
     new_explainer = 'Boiled or fried and whether or not you are satisfied by eggs alone.'
     new_is_mandatory = False
 
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ValidationError):
         update_boolean_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory)
 
 @pytest.mark.django_db
@@ -283,7 +283,7 @@ def test_update_boolean_question_with_null_ordinal():
     new_explainer = 'Boiled or fried and whether or not you are satisfied by eggs alone.'
     new_is_mandatory = False
 
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ValidationError):
         update_boolean_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory)
 
 @pytest.mark.django_db
@@ -301,7 +301,7 @@ def test_update_boolean_question_with_non_numeric_ordinal():
     new_explainer = 'Boiled or fried and whether or not you are satisfied by eggs alone.'
     new_is_mandatory = False
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValidationError):
         update_boolean_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory)
 
 @pytest.mark.django_db
@@ -319,7 +319,7 @@ def test_update_boolean_question_with_null_explainer():
     new_explainer = None
     new_is_mandatory = False
 
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ValidationError):
         update_boolean_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory)
 
 @pytest.mark.django_db
@@ -337,7 +337,7 @@ def test_update_boolean_question_with_null_is_mandatory():
     new_explainer = 'Boiled or fried and whether or not you are satisfied by eggs alone.'
     new_is_mandatory = None
 
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ValidationError):
         update_boolean_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory)
 
 @pytest.mark.django_db
@@ -391,7 +391,7 @@ def test_create_multiple_choice_question_with_null_data():
     explainer = None
     is_mandatory = None
 
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ValidationError):
         id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
 @pytest.mark.django_db
@@ -435,7 +435,7 @@ def test_create_multiple_choice_question_with_null_text():
     explainer = 'A very serious tax-related question'
     is_mandatory = True
 
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ValidationError):
         id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
 @pytest.mark.django_db
@@ -446,7 +446,7 @@ def test_create_multiple_choice_question_with_null_ordinal():
     explainer = 'A very serious tax-related question'
     is_mandatory = True
 
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ValidationError):
         id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
 @pytest.mark.django_db
@@ -457,7 +457,7 @@ def test_create_multiple_choice_question_with_non_numeric_ordinal():
     explainer = 'A very serious tax-related question'
     is_mandatory = True
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValidationError):
         id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
 @pytest.mark.django_db
@@ -468,7 +468,7 @@ def test_create_multiple_choice_question_with_null_explainer():
     explainer = None
     is_mandatory = True
 
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ValidationError):
         id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
 @pytest.mark.django_db
@@ -479,7 +479,7 @@ def test_create_multiple_choice_question_with_null_is_mandatory():
     explainer = 'A very serious tax-related question'
     is_mandatory = None
 
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ValidationError):
         id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, is_mandatory)
 
 @pytest.mark.django_db
@@ -514,7 +514,7 @@ def test_update_multiple_choice_question_with_null_data():
     new_explainer = None
     new_is_mandatory = None
 
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ValidationError):
         update_multiple_choice_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory)
 
 @pytest.mark.django_db
@@ -532,7 +532,7 @@ def test_update_multiple_choice_question_with_null_text():
     new_explainer = 'Boiled or fried and whether or not you are satisfied by eggs alone.'
     new_is_mandatory = False
 
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ValidationError):
         update_multiple_choice_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory)
 
 @pytest.mark.django_db
@@ -550,7 +550,7 @@ def test_update_multiple_choice_question_with_null_ordinal():
     new_explainer = 'Boiled or fried and whether or not you are satisfied by eggs alone.'
     new_is_mandatory = False
 
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ValidationError):
         update_multiple_choice_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory)
 
 @pytest.mark.django_db
@@ -568,7 +568,7 @@ def test_update_multiple_choice_question_with_non_numeric_ordinal():
     new_explainer = 'Boiled or fried and whether or not you are satisfied by eggs alone.'
     new_is_mandatory = False
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValidationError):
         update_multiple_choice_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory)
 
 @pytest.mark.django_db
@@ -586,7 +586,7 @@ def test_update_multiple_choice_question_with_null_explainer():
     new_explainer = None
     new_is_mandatory = False
 
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ValidationError):
         update_multiple_choice_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory)
 
 @pytest.mark.django_db
@@ -604,7 +604,7 @@ def test_update_multiple_choice_question_with_null_is_mandatory():
     new_explainer = 'Boiled or fried and whether or not you are satisfied by eggs alone.'
     new_is_mandatory = None
 
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ValidationError):
         update_multiple_choice_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory)
 
 @pytest.mark.django_db
@@ -661,7 +661,7 @@ def test_create_numeric_question_with_null_data():
     min_value = None
     max_value = None
 
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ValidationError):
         id = create_numeric_question(form_id, question_text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value)
 
 @pytest.mark.django_db
@@ -717,7 +717,7 @@ def test_create_numeric_question_with_null_text():
     min_value = 0
     max_value = 100
 
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ValidationError):
         id = create_numeric_question(form_id, question_text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value)
 
 @pytest.mark.django_db
@@ -731,7 +731,7 @@ def test_create_numeric_question_with_null_ordinal():
     min_value = 0
     max_value = 100
 
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ValidationError):
         id = create_numeric_question(form_id, question_text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value)
     
 @pytest.mark.django_db
@@ -745,7 +745,7 @@ def test_create_numeric_question_with_non_numeric_ordinal():
     min_value = 0
     max_value = 100
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValidationError):
         id = create_numeric_question(form_id, question_text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value)
 
 @pytest.mark.django_db
@@ -759,7 +759,7 @@ def test_create_numeric_question_with_null_explainer():
     min_value = 0
     max_value = 100
 
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ValidationError):
         id = create_numeric_question(form_id, question_text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value)
 
 @pytest.mark.django_db
@@ -773,7 +773,7 @@ def test_create_numeric_question_with_null_is_mandatory():
     min_value = 0
     max_value = 100
 
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ValidationError):
         id = create_numeric_question(form_id, question_text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value)
 
 @pytest.mark.django_db
@@ -817,7 +817,7 @@ def test_update_numeric_question_with_null_data():
     new_min_val = None
     new_max_val = None
 
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ValidationError):
         update_numeric_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory, new_is_integer, new_min_val, new_max_val)
 
 @pytest.mark.django_db
@@ -841,7 +841,7 @@ def test_update_numeric_question_with_null_text():
     new_min_val = -10
     new_max_val = 10
 
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ValidationError):
         update_numeric_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory, new_is_integer, new_min_val, new_max_val)
 
 @pytest.mark.django_db
@@ -865,7 +865,7 @@ def test_update_numeric_question_with_null_ordinal():
     new_min_val = -10
     new_max_val = 10
 
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ValidationError):
         update_numeric_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory, new_is_integer, new_min_val, new_max_val)
 
 @pytest.mark.django_db
@@ -889,7 +889,7 @@ def test_update_numeric_question_with_non_numeric_ordinal():
     new_min_val = -10
     new_max_val = 10
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValidationError):
         update_numeric_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory, new_is_integer, new_min_val, new_max_val)
 
 @pytest.mark.django_db
@@ -913,7 +913,7 @@ def test_update_numeric_question_with_null_explainer():
     new_min_val = -10
     new_max_val = 10
 
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ValidationError):
         update_numeric_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory, new_is_integer, new_min_val, new_max_val)
 
 @pytest.mark.django_db
@@ -937,7 +937,7 @@ def test_update_numeric_question_with_null_is_mandatory():
     new_min_val = -10
     new_max_val = 10
 
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ValidationError):
         update_numeric_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory, new_is_integer, new_min_val, new_max_val)
 
 @pytest.mark.django_db
@@ -961,8 +961,7 @@ def test_update_numeric_question():
     new_min_val = -10
     new_max_val = 10
 
-    with pytest.raises(IntegrityError):
-        update_numeric_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory, new_is_integer, new_min_val, new_max_val)
+    update_numeric_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory, new_is_integer, new_min_val, new_max_val)
 
     question = NumericQuestion.objects.get(pk=id)
     assert question is not None
@@ -971,8 +970,8 @@ def test_update_numeric_question():
     assert question.explainer == new_explainer
     assert question.is_mandatory == new_is_mandatory
     assert question.is_integer == new_is_integer
-    assert question.min_val == new_min_val
-    assert question.max_val == new_max_val
+    assert question.min_value == new_min_val
+    assert question.max_value == new_max_val
 
 @pytest.mark.django_db
 def test_update_numeric_question_with_non_existent_id():
