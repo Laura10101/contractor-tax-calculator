@@ -172,7 +172,7 @@ def test_get_status_where_multiple_subscriptions_exists():
     assert id is not None
     sub2 = Subscription.objects.get(pk=id2)
     assert sub2.user_id == user_id
-    assert sub2.subscription_option.subscription_months == 3
+    assert sub2.subscription_option.subscription_months == 9
 
     params = {'user_id': user_id}
     response = client.get(request_url, params)
