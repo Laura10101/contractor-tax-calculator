@@ -134,8 +134,7 @@ def test_patch_subscription():
     print(response.data)
     assert response is not None
     assert response.status_code == 200
-    id = response.data['id']
-    subscription = Subscription.objects.get(pk=id)
+    subscription = Subscription.objects.get(user_id__exact=id)
     assert subscription.subscription_option.subscription_months == new_subscription_months
 
 # Test getting the subscription status
