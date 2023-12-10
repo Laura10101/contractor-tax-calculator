@@ -197,9 +197,10 @@ def test_get_status_where_subscription_expired():
 
     params = {'user_id': user_id}
     response = client.get(request_url, params)
+    print(response.data)
     assert response is not None
     assert response.status_code == 200
-    assert response.data['status'] == False
+    assert response.data['has_active_subscription'] == False
 
 @pytest.mark.django_db
 def test_get_status_where_subscription_active():
@@ -219,6 +220,7 @@ def test_get_status_where_subscription_active():
 
     params = {'user_id': user_id}
     response = client.get(request_url, params)
+    print(response.data)
     assert response is not None
     assert response.status_code == 200
-    assert response.data['status'] == True
+    assert response.data['has_active_subscription'] == True
