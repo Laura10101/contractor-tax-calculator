@@ -1,7 +1,15 @@
 from .models import *
+from django.core.exceptions import ValidationError
 
 # Create new method to get forms by jurisidiction ids 
 def get_forms_by_jurisdiction_ids(jurisdiction_ids):
+    if not isinstance(jurisdiction_ids, list) or len(jurisdiction_ids) == 0:
+        raise ValidationError('A valid list of numeric jurisdiction_ids must be specified')
+
+    for jurisdiction_id in jurisdiction_ids:
+        if not isinstance(jurisdiction_id, int):
+            raise ValidationError('Only valid integers may be included in the list of jurisdiction_ids')
+
     forms = Form.objects.filter(jurisdiction_id__in=jurisdiction_ids)
     return forms
 

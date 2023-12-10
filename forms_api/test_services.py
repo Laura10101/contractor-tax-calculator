@@ -33,32 +33,32 @@ def test_create_second_form_for_jurisdiction():
 @pytest.mark.django_db
 def test_create_form_with_null_jurisdiction_id():
     jurisdiction_id = None
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ValidationError):
         id = create_form(jurisdiction_id)
 
 @pytest.mark.django_db
 def test_create_form_with_non_numeric_jurisdiction_id():
     jurisdiction_id = 'ABC'
-    with pytest.raises(ValueError):
+    with pytest.raises(ValidationError):
         id = create_form(jurisdiction_id)
 
 # Test retrieval of forms based on jurisdiction IDs
 @pytest.mark.django_db
 def test_get_forms_with_null_jurisdiction_ids_list():
     jurisdiction_ids = None
-    with pytest.raises(Exception):
+    with pytest.raises(ValidationError):
         forms = get_forms_by_jurisdiction_ids(jurisdiction_ids)
 
 @pytest.mark.django_db
 def test_get_forms_with_empty_jurisdiction_ids_list():
     jurisdiction_ids = []
-    with pytest.raises(Exception):
+    with pytest.raises(ValidationError):
         forms = get_forms_by_jurisdiction_ids(jurisdiction_ids)
 
 @pytest.mark.django_db
 def test_get_forms_with_non_numeric_jurisdiction_ids_in_list():
     jurisdiction_ids = ['A']
-    with pytest.raises(ValueError):
+    with pytest.raises(ValidationError):
         forms = get_forms_by_jurisdiction_ids(jurisdiction_ids)
 
 @pytest.mark.django_db
