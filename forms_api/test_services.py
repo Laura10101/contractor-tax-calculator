@@ -25,8 +25,10 @@ def test_create_second_form_for_jurisdiction():
     form = Form.objects.get(pk=id)
     assert form.jurisdiction_id == jurisdiction_id
 
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ValidationError):
+        print('Creating second')
         id = create_form(jurisdiction_id)
+        print('Second created')
 
 @pytest.mark.django_db
 def test_create_form_with_null_jurisdiction_id():

@@ -8,7 +8,7 @@ class Form(models.Model):
     # Questions - one to many so the code for this is in the Question class as that is where
     # the foreign key needs to be
     # Jurisdiction ID 
-    jurisdiction_id = models.IntegerField()
+    jurisdiction_id = models.IntegerField(unique=True)
 
     def __str__(self):
         return Jurisdiction.objects.get(pk=self.jurisdiction_id).name + '  Form'

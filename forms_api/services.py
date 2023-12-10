@@ -8,7 +8,10 @@ def get_forms_by_jurisdiction_ids(jurisdiction_ids):
 # Create new method to create forms 
 def create_form(jurisdiction_id):
     # Create new form in the database
-    new_form = Form.objects.create(jurisdiction_id=jurisdiction_id)
+    new_form = Form()
+    new_form.jurisdiction_id = jurisdiction_id
+    new_form.full_clean()
+    new_form.save()
     # Return ID of newly created form
     return new_form.id
 
