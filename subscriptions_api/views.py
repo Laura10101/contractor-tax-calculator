@@ -75,7 +75,23 @@ class SubscriptionsList(APIView):
         user_id = request.data['user_id']
         subscription_option_id = request.data['subscription_option_id']
         # Invoke service method
-        update_subscription(user_id, subscription_option_id)
+        try:
+            update_subscription(user_id, subscription_option_id)
+        except ValidationError as e:
+            return Response(
+                { 'error' : str(e) },
+                status=status.HTTP_400_BAD_REQUEST
+                )
+        except SubscriptionOption.DoesNotExist:
+            return Response(
+                { 'error' : 'Please supply a valid subcription option id' },
+                status=status.HTTP_400_BAD_REQUEST
+                )
+        except IntegrityError:
+            return Response(
+                { 'error' : 'Multiple subscriptions found for user. Please ask your administrator to resolve this.' },
+                status=status.HTTP_409_CONFLICT
+                )
         # Generate and return response 
         response = { }
         # Return response 

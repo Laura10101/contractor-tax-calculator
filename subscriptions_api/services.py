@@ -42,6 +42,8 @@ def check_subscription(user_id):
 
 # Create service method to update subscription 
 def update_subscription(user_id, subscription_option_id):
+    if user_id is None or user_id == '':
+        raise ValidationError('A valid username must be provided')
     # Load the subscription option
     subscription_option = SubscriptionOption.objects.get(pk=subscription_option_id)
     # Get the subscription from the database for the user ID 
