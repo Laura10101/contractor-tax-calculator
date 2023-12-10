@@ -59,25 +59,23 @@ class SubscriptionsList(APIView):
         return Response(response)
 
     def patch(self, request):
+        print(request.data)
         # Define the list of required attributes 
         required_attributes = [
+            'user_id',
             'subscription_option_id',
         ]
         # Validate data 
-        if not 'user_id' in request.query_params:
-            return Response(
-                { 'error' : 'Invalid request. Please supply the user''s id.' },
-                status=status.HTTP_400_BAD_REQUEST
-                )
         if not contains_required_attributes(request, required_attributes):
             return Response(
                 { 'error' : 'Invalid request. Please supply all required attributes.' },
                 status=status.HTTP_400_BAD_REQUEST
                 )
         # Extract data required for service method 
+        user_id = request.data['user_id']
         subscription_option_id = request.data['subscription_option_id']
         # Invoke service method
-        update_subscription(request.query_params['user_id'], subscription_option_id)
+        update_subscription(user_id, subscription_option_id)
         # Generate and return response 
         response = { }
         # Return response 
