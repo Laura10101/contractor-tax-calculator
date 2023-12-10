@@ -36,13 +36,14 @@ def create_boolean_question(form_id, text, ordinal, explainer, is_mandatory):
     # Get form object by its primary key 
     form = Form.objects.get(pk=form_id)
     # Create new question in the database
-    new_question = BooleanQuestion.objects.create(
-        form=form,
-        text=text,
-        ordinal=ordinal,
-        explainer=explainer,
-        is_mandatory=is_mandatory
-        )
+    new_question = BooleanQuestion()
+    new_question.form=form
+    new_question.text=text
+    new_question.ordinal=ordinal
+    new_question.explainer=explainer
+    new_question.is_mandatory=is_mandatory
+    new_question.full_clean()
+    new_question.save()
     # Return ID of newly created question
     return new_question.id
 
@@ -52,14 +53,16 @@ def create_multiple_choice_question(form_id, text, ordinal, explainer, is_mandat
     # Get form object by its primary key 
     form = Form.objects.get(pk=form_id)
     # Create new question in the database
-    new_question = MultipleChoiceQuestion.objects.create(
-        form=form,
-        text=text,
-        ordinal=ordinal,
-        explainer=explainer,
-        is_mandatory=is_mandatory,
-        is_multiselect=is_multiselect
-        )
+    new_question = MultipleChoiceQuestion()
+    new_question.form=form
+    new_question.text=text
+    new_question.ordinal=ordinal
+    new_question.explainer=explainer
+    new_question.is_mandatory=is_mandatory
+    new_question.is_multiselect=is_multiselect
+    new_question.full_clean()
+    new_question.save()
+
     # Return ID of newly created question
     return new_question.id
     
@@ -68,22 +71,19 @@ def create_numeric_question(form_id, text, ordinal, explainer, is_mandatory, is_
         raise ValidationError('The form_id must be a valid integer when creating a question')
     # Get form object by its primary key 
     form = Form.objects.get(pk=form_id)
-    # Create numeric validation rule for this question 
-    validation_rule = NumericAnswerValidationRule.objects.create(
-        is_integer=is_integer,
-        min_value=min_value,
-        max_value=max_value
-    )
 
     # Create new question in the database
-    new_question = NumericQuestion.objects.create(
-        form=form,
-        text=text,
-        ordinal=ordinal,
-        explainer=explainer,
-        is_mandatory=is_mandatory,
-        validation_rule=validation_rule
-        )
+    new_question = NumericQuestion()
+    new_question.form=form
+    new_question.text=text
+    new_question.ordinal=ordinal
+    new_question.explainer=explainer
+    new_question.is_mandatory=is_mandatory
+    new_question.is_integer=is_integer
+    new_question.min_value=min_value
+    new_question.max_value=max_value
+    new_question.full_clean()
+    new_question.save()
     # Return ID of newly created question
     return new_question.id
 
@@ -94,6 +94,7 @@ def update_boolean_question(id, text, ordinal, explainer, is_mandatory):
     question.ordinal=ordinal
     question.explainer=explainer
     question.is_mandatory=is_mandatory
+    question.full_clean()
     question.save()
 
 def update_multiple_choice_question(id, text, ordinal, explainer, is_mandatory, is_multiselect=False):
@@ -103,6 +104,7 @@ def update_multiple_choice_question(id, text, ordinal, explainer, is_mandatory, 
     question.explainer=explainer
     question.is_mandatory=is_mandatory
     question.is_multiselect=is_multiselect
+    question.full_clean()
     question.save()
 
 def update_numeric_question(id, text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value):
@@ -116,13 +118,11 @@ def update_numeric_question(id, text, ordinal, explainer, is_mandatory, is_integ
     question.ordinal=ordinal
     question.explainer=explainer
     question.is_mandatory=is_mandatory
+    question.is_integer=is_integer
+    question.min_value=min_value
+    question.max_value=max_value
+    question.full_clean()
     question.save()
-
-    # Second, perform the update on the validation rule
-    question.validation_rule.is_integer=is_integer
-    question.validation_rule.min_value=min_value
-    question.validation_rule.max_value=max_value
-    question.validation_rule.save()
 
 # Create new method to delete questions
 def delete_question(id):
