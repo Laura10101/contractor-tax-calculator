@@ -1,5 +1,7 @@
 - Complete calculations API
+- Updated automated tests for APIs
 - Complete calculation_results.html template
+- Automated testing for views
+- Fix all bugs
 - Look and feel for user apps
-- Update automated tests
 - Add custom jurisdiction management app
