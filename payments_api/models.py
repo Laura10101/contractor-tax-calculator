@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.validators import MinValueValidator
 
 from subscriptions_api.models import SubscriptionOption
 
@@ -37,11 +38,11 @@ from subscriptions_api.models import SubscriptionOption
 class Payment(models.Model):
     # Add class attributes
     subscription_id = models.IntegerField(null=True, blank=True)
-    subscription_option_id = models.IntegerField(null=False, blank=False)
+    subscription_option_id = models.IntegerField(null=False, blank=False, validators=[MinValueValidator(0.0)])
     stripe_pid = models.CharField(max_length=255, null=True, blank=True)
-    status = models.IntegerField(null=False, blank=False, default=1)
+    status = models.IntegerField(null=False, blank=False, default=1, validators=[MinValueValidator(0.0)])
     stripe_error = models.CharField(max_length=255, null=True, blank=True)
-    total = models.DecimalField(decimal_places=2, null=False, blank=False, max_digits=6)
+    total = models.FloatField(null=False, blank=False, validators=[MinValueValidator(0.0)])
     currency = models.CharField(max_length=3, null=False, blank=False)
     created_date = models.DateTimeField(auto_now_add=True, null=False, blank=False)
     intended_date = models.DateTimeField(null=True, blank=True)

@@ -1,5 +1,6 @@
 from .models import Payment 
 from .stripe import *
+from decimal import *
 from datetime import datetime, date
 
 
@@ -9,7 +10,7 @@ def create_payment(subscription_id, subscription_option_id, total, currency):
     new_payment.subscription_id=subscription_id
     new_payment.subscription_option_id=subscription_option_id
     new_payment.currency=currency
-    new_payment.total=total
+    new_payment.total=round(total, 2)
     new_payment.full_clean()
     new_payment.save()
 
@@ -18,6 +19,7 @@ def create_payment(subscription_id, subscription_option_id, total, currency):
     new_payment.stripe_pid, new_payment.client_secret = create_stripe_payment_intention(
         new_payment.total, new_payment.currency
         )
+    new_payment.intended_date=datetime.now()
     new_payment.status = 2
     new_payment.save()
 
