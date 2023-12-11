@@ -19,7 +19,7 @@ def test_post_form():
     data = {'jurisdiction_id': jurisdiction_id}
     response = client.post(url, data, format='json')
     assert response.status_code == 200
-    id = response.data['id']
+    id = response.data['form_id']
     assert id is not None
 
     form = Form.objects.get(pk=id)
@@ -365,6 +365,7 @@ def test_put_boolean_question_with_null_data():
         'is_mandatory': new_is_mandatory
     }
     request_url = url + str(id) + '/'
+    print(request_url)
     response = client.put(request_url, data, format='json')
     assert response.status_code == 400
 
@@ -1473,7 +1474,8 @@ def test_put_numeric_question():
 
 @pytest.mark.django_db
 def test_put_numeric_question_with_non_existent_id():
-    id = 5196
+    form_id = get_mock_form()
+    question_id = 5196
 
     new_text = 'Please describe how you like your eggs in the morning.'
     new_ordinal = 2
@@ -1493,7 +1495,7 @@ def test_put_numeric_question_with_non_existent_id():
         'min_value': new_min_val,
         'max_value': new_max_val
     }
-    request_url = url + str(id) + '/'
+    request_url = url + str(form_id) + '/questions' + str(question_id) + '/'
     response = client.put(request_url, data, format='json')
     assert response.status_code == 404
 
