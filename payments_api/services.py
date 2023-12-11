@@ -53,13 +53,13 @@ def confirm_payment(id, stripe_card_id):
 def complete_payment(stripe_pid):
     payment = Payment.objects.filter(stripe_pid__exact=id).update(
         status=4,
-        created_or_failed_date=date.today()
+        completed_or_failed_date=date.today()
         )
 
 def fail_payment(stripe_pid, reason):
     payment = Payment.objects.filter(stripe_pid__exact=id).update(
         status=-1,
-        created_or_failed_date=date.today(),
+        completed_or_failed_date=date.today(),
         stripe_error=reason
         )
 
