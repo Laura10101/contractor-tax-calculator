@@ -2,9 +2,13 @@ from .models import Payment
 from .stripe import *
 from decimal import *
 from datetime import datetime, date
+from django.core.exceptions import ValidationError
 
 
 def create_payment(subscription_id, subscription_option_id, total, currency):
+    if not isinstance(total, float):
+        raise ValidationError('Parameter total must be a valid float to 2 decimal places')
+
     # Create new payment in the database 
     new_payment = Payment()
     new_payment.subscription_id=subscription_id
