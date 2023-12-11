@@ -6,6 +6,7 @@ from .models import *
 from .services import *
 import pytest
 from .stripe import *
+from rest_framework.test import APIClient
 
 # Required fields on a payment
 # subscription_id - The ID of the associated subscription
