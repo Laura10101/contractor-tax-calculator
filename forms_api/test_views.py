@@ -1554,8 +1554,8 @@ def test_put_numeric_question():
     assert question.explainer == new_explainer
     assert question.is_mandatory == new_is_mandatory
     assert question.is_integer == new_is_integer
-    assert question.min_val == new_min_val
-    assert question.max_val == new_max_val
+    assert question.min_value == new_min_val
+    assert question.max_value == new_max_val
 
 @pytest.mark.django_db
 def test_put_numeric_question_with_non_existent_id():
