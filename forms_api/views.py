@@ -53,6 +53,7 @@ class FormsList(APIView):
         # List of jurisdiction ids will be provded as comma separated list in query string
         # Get value of ids parameter from http request (query string)
         if 'jurisdiction_ids' not in request.GET.keys():
+            print('No jurisdiction_ids found in request')
             # Code to return an HTTP 400 error
             # From: https://stackoverflow.com/questions/23492000/how-to-return-http-400-response-in-django
             return Response(
@@ -121,7 +122,12 @@ class FormDetail(APIView):
         # from the url pattern, so nothing to do here. 
 
         # Call apropriate services method
-        delete_form(pk)
+        try:
+            delete_form(pk)
+        except Form.DoesNotExist:
+            return Response(
+                status=status.HTTP_404_NOT_FOUND
+                )
         # Create response via empty JSON object
         response = { }
         # Return response 
@@ -229,7 +235,12 @@ class FormQuestionsDetail(APIView):
         # from the url pattern, so nothing to do here. 
 
         # Call apropriate services method
-        delete_question(pk)
+        try:
+            delete_question(pk)
+        except Question.DoesNotExist:
+            return Response(
+                status=status.HTTP_404_NOT_FOUND
+                )
         # Create response via empty JSON object
         response = { }
         # Return response 
