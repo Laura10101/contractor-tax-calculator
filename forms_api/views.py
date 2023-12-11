@@ -346,3 +346,63 @@ class FormQuestionsDetail(APIView):
             pk, text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value
             )
 
+# Create django rest multiple choice option list view
+class MultipleChoiceOptionsList(APIView):
+    def post(self, request, form_pk, question_pk):
+        # Validate common required attributes
+        common_attributes = [
+            'text',
+            'explainer',
+        ]
+        for attribute in common_attributes:
+            if attribute not in request.data.keys():
+                return Response(
+                    { 'error' : 'Invalid request. Please supply ' + attribute },
+                    status=status.HTTP_400_BAD_REQUEST
+                    )
+
+        # Extract relevant informaiton from JSON object into set of variables
+        text = request.data['text']
+        explainer = request.data['explainer']
+        
+        # Call the apropriate post method depending on Q type, using switch statement
+        try:
+            option_id = create_multiple_choice_option(question_pk, text, explainer)
+        except ValidationError as e:
+            print(str(e))
+            return Response(
+                { 'error' : str(e) },
+                status=status.HTTP_400_BAD_REQUEST
+                )
+        except IntegrityError as e:
+            print(str(e))
+            return Response(
+                { 'error' : str(e) },
+                status=status.HTTP_400_BAD_REQUEST
+                )
+        except MultipleChoiceQuestion.DoesNotExist as e:
+            print(str(e))
+            return Response(
+                status=status.HTTP_404_NOT_FOUND
+                )
+        if option_id == 0: 
+            print('Question ID == 0')
+            return Response(
+                { 'error' : 'Invalid request. Please supply all required attributes' },
+                status=status.HTTP_400_BAD_REQUEST
+                )
+        return Response({ 'option_id': option_id })
+
+class MultipleChoiceOptionDetail(APIView):
+    def delete(self, request, form_pk, question_pk, pk):
+        # Call apropriate services method
+        try:
+            delete_multiple_choice_option(pk)
+        except MultipleChoiceOption.DoesNotExist:
+            return Response(
+                status=status.HTTP_404_NOT_FOUND
+                )
+        # Create response via empty JSON object
+        response = { }
+        # Return response 
+        return Response(response)

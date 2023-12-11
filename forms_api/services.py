@@ -133,7 +133,7 @@ def create_multiple_choice_option(question_id, text, explainer):
     if question_id is None or not isinstance(question_id, int):
         raise ValidationError('The question_id must be a valid integer when creating a multiple choice option')
 
-    question = Question.objects.get(pk=question_id)
+    question = MultipleChoiceQuestion.objects.get(pk=question_id)
 
     option = MultipleChoiceOption()
     option.question = question

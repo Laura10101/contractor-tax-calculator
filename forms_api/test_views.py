@@ -1619,11 +1619,13 @@ def get_mock_multiple_choice_question(form_id):
 def test_post_option_with_null_text():
     form_id = get_mock_form()
     question_id = get_mock_multiple_choice_question(form_id)
-    request_url = url + str(form_id) + '/questions/' + str(question_id) + '/options'
+    request_url = url + str(form_id) + '/questions/' + str(question_id) + '/options/'
 
     text = None
+    explainer = 'Blah'
     data = {
         'question_id': question_id,
+        'explainer': explainer,
         'text': text
     }
     response = client.post(request_url, data, format='json')
@@ -1633,14 +1635,18 @@ def test_post_option_with_null_text():
 def test_post_option():
     form_id = get_mock_form()
     question_id = get_mock_multiple_choice_question(form_id)
-    request_url = url + str(form_id) + '/questions/' + str(question_id) + '/options'
+    request_url = url + str(form_id) + '/questions/' + str(question_id) + '/options/'
 
     text = 'My question'
+    explainer = 'Blah'
     data = {
         'question_id': question_id,
+        'explainer': explainer,
         'text': text
     }
     response = client.post(request_url, data, format='json')
+    print(response.data)
+    id = response.data['option_id']
     assert response.status_code == 200
     assert id is not None
     option = MultipleChoiceOption.objects.get(pk=id)
@@ -1654,13 +1660,15 @@ def get_mock_option(question_id):
 def test_delete_option():
     assert MultipleChoiceOption.objects.all().count() == 0
     text = 'Boiled'
+    explainer = 'Ham'
     form_id = get_mock_form()
     question_id = get_mock_multiple_choice_question(form_id)
-    id = create_multiple_choice_option(quetion_id, text)
+    id = create_multiple_choice_option(question_id, text, explainer)
     option = MultipleChoiceOption.objects.get(pk=id)
     assert option.text == text
     assert MultipleChoiceOption.objects.all().count() == 1
-    request_url = url + str(form_id) + '/questions/' + str(question_id) + '/options' + str(id) + '/'
+    request_url = url + str(form_id) + '/questions/' + str(question_id) + '/options/' + str(id) + '/'
+    print(request_url)
     response = client.delete(request_url)
     assert response.status_code == 200
     assert MultipleChoiceOption.objects.all().count() == 0
@@ -1670,8 +1678,8 @@ def test_delete_option_with_non_existent_id():
     form_id = get_mock_form()
     question_id = get_mock_multiple_choice_question(form_id)
     option_id = 1561561
-    request_url = url + str(form_id) + '/questions/' + str(question_id) + '/options' + str(option_id) + '/'
+    request_url = url + str(form_id) + '/questions/' + str(question_id) + '/options/' + str(option_id) + '/'
     response = client.delete(request_url)
-    assert response.status_code == 400
+    assert response.status_code == 404
 
         
