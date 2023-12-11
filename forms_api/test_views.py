@@ -559,6 +559,7 @@ def test_put_boolean_question():
 
 @pytest.mark.django_db
 def test_put_boolean_question_with_non_existent_id():
+    form_id = get_mock_form()
     id = 8496494
     new_text = 'Please describe how you like your eggs in the morning.'
     new_ordinal = 2
@@ -996,6 +997,7 @@ def test_put_multiple_choice_question():
 
 @pytest.mark.django_db
 def test_put_multiple_choice_question_with_non_existent_id():
+    form_id = get_mock_form()
     id = 519596
     new_text = 'Please describe how you like your eggs in the morning.'
     new_ordinal = 2
