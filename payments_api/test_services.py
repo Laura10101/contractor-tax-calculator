@@ -177,7 +177,7 @@ def test_process_payment_success():
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
-    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+    id, _ = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
 
     payment = Payment.objects.get(pk=id)
 
@@ -207,7 +207,7 @@ def test_process_payment_failure():
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
-    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+    id, _ = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
 
     payment = Payment.objects.get(pk=id)
 
