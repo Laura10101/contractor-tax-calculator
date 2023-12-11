@@ -173,13 +173,22 @@ def test_process_payment_success():
     client = APIClient()
     subs_url = '/api/subscriptions/'
 
-    subscription_id = 1
-    requested_subscription_months = 6
-    subtotal = 42.30
+    subscription_option_id = 1
+    
+    body = {
+        'user_id': 'charliebrown',
+        'subscription_option_id': subscription_option_id
+    }
+
+    response = client.post(subs_url, body, format='json')
+    print(response.data)
+    subscription_id = response.data['subscription_id']
+    total = 47.99
     currency = 'GBP'
-    id, _ = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+    id, _ = create_payment(subscription_id, subscription_option_id, total, currency)
 
     payment = Payment.objects.get(pk=id)
+    print(payment.stripe_pid)
 
     complete_payment(payment.stripe_pid)
 
@@ -189,8 +198,9 @@ def test_process_payment_success():
     subs_id = payment.subscription_id
 
     response = client.get(subs_url + str(subs_id) + '/')
+    print(response.data)
     assert response.data['is_active'] == True
-    assert response.data['subscription_months'] == payment.requested_subscription_months
+    assert response.data['subscription_option_id'] == payment.requested_subscription_months
     assert response.data['start_date'] == payment.completed_or_failed_date
 
 @pytest.mark.django_db
