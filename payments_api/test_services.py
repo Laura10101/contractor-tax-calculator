@@ -14,8 +14,7 @@ import pytest
 #        - 4 = 'complete' when payment completed and confirmed by Stripe
 #        - -1 = 'failed' when payment failed in Stripe
 # stripe_error - The details of the error from stripe
-# requested_subscription_months - The number of months by which to extend the subscription
-#   if payment is successful
+# subscription_option_id - The id of the subscription option being purchased
 # subtotal - The subtotal for the payment
 # vat - The amount of VAT payable
 # total - subtotal + vat
@@ -38,85 +37,82 @@ import pytest
 # subscription_id, requested_subscription_months, subtotal, currency
 @pytest.mark.django_db
 def test_create_payment_with_null_data():
-    susbcription_id = None
-    requested_subscription_months = None
-    subtotal = None
+    subscription_id = None
+    subscription_option_id = None
+    total = None
     currency = None
-    with pytest.raises(IntegrityError):
-        id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+    with pytest.raises(ValidationError):
+        id = create_payment(subscription_id, subscription_option_id, total, currency)
 
+@pytest.mark.django_db
 def test_create_payment_with_null_subscription_id():
-    susbcription_id = None
-    requested_subscription_months = 6
-    subtotal = 42.30
-    currency = 'GBP'
-    with pytest.raises(IntegrityError):
-        id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
-
-def test_create_payment_with_null_months():
-    susbcription_id = 1
-    requested_subscription_months = None
-    subtotal = 42.30
-    currency = 'GBP'
-    with pytest.raises(IntegrityError):
-        id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
-
-def test_create_payment_with_negative_months():
-    susbcription_id = 1
-    requested_subscription_months = -6
-    subtotal = 42.30
+    subscription_id = None
+    subscription_option_id = 1
+    total = 47.99
     currency = 'GBP'
     with pytest.raises(ValidationError):
-        id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+        id = create_payment(subscription_id, subscription_option_id, total, currency)
 
+@pytest.mark.django_db
+def test_create_payment_with_null_subscription_option_id():
+    subscription_id = 1
+    subscription_option_id = None
+    total = 47.99
+    currency = 'GBP'
+    with pytest.raises(ValidationError):
+        id = create_payment(subscription_id, subscription_option_id, total, currency)
+
+@pytest.mark.django_db
 def test_create_payment_with_null_subtotal():
-    susbcription_id = 1
-    requested_subscription_months = 6
-    subtotal = None
+    subscription_id = 1
+    subscription_option_id = 1
+    total = None
     currency = 'GBP'
-    with pytest.raises(IntegrityError):
-        id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+    with pytest.raises(ValidationError):
+        id = create_payment(subscription_id, subscription_option_id, total, currency)
 
+@pytest.mark.django_db
 def test_create_payment_with_negative_subtotal():
-    susbcription_id = 1
-    requested_subscription_months = 6
-    subtotal = -42.30
+    subscription_id = 1
+    subscription_option_id = 1
+    total = -47.99
     currency = 'GBP'
     with pytest.raises(ValidationError):
-        id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+        id = create_payment(subscription_id, subscription_option_id, total, currency)
 
+@pytest.mark.django_db
 def test_create_payment_with_invalid_currency_code():
-    susbcription_id = 1
-    requested_subscription_months = 6
-    subtotal = 42.30
-    currency = 'G'
+    subscription_id = 1
+    subscription_option_id = 1
+    total = 47.99
+    currency = 'Abracadabra'
     with pytest.raises(ValidationError):
-        id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+        id = create_payment(subscription_id, subscription_option_id, total, currency)
 
+@pytest.mark.django_db
 def test_create_valid_payment():
-    susbcription_id = 1
-    requested_subscription_months = 6
-    subtotal = 42.30
+    subscription_id = 1
+    subscription_option_id = 1
+    total = 47.99
     currency = 'GBP'
-    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+    id, _ = create_payment(subscription_id, subscription_option_id, total, currency)
     assert id is not None
-    payment = Payments.objects.get(pk=id)
+    payment = Payment.objects.get(pk=id)
     assert payment.subscription_id == subscription_id
-    assert payment.requested_subscription_months == requested_subscription_months
-    assert payment.subtotal == subtotal
-    assert payment.vat == (subtotal * 0.19)
-    assert payment.total == payment.subtotal + payment.vat
+    assert payment.subscription_option_id == subscription_option_id
+    assert payment.total == total
     assert payment.currency == currency
-    assert payment.status == 1
-    assert payment.created_date == date.today()
-    assert payment.intended_date == date.today()
+    assert payment.status == 2
+    assert payment.created_date.date() == date.today()
+    assert payment.intended_date.date() == date.today()
     assert payment.stripe_pid is not None
 
 # Test patching a payment with payment details
 # Requires the following fields:
 # billing_street_1, billing_street_2, town_or_city, county, country, postcode, card_number, expiry_date, ccv2
+@pytest.mark.django_db
 def test_update_payment_with_null_payment_data():
-    susbcription_id = 1
+    subscription_id = 1
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
@@ -131,15 +127,16 @@ def test_update_payment_with_null_payment_data():
     card_number = None
     expiry_date = None
     ccv2 = None
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ValidationError):
         confirm_payment(
             id,
             billing_street_1, billing_street_2, town_or_city, county, country, postcode,
             card_number, expiry_date, ccv2
         )
 
+@pytest.mark.django_db
 def test_update_payment_with_null_street1():
-    susbcription_id = 1
+    subscription_id = 1
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
@@ -154,15 +151,16 @@ def test_update_payment_with_null_street1():
     card_number = '1111 1111 1111 1111'
     expiry_date = date.today()
     ccv2 = 439
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ValidationError):
         confirm_payment(
             id,
             billing_street_1, billing_street_2, town_or_city, county, country, postcode,
             card_number, expiry_date, ccv2
         )
 
+@pytest.mark.django_db
 def test_update_payment_with_null_street2():
-    susbcription_id = 1
+    subscription_id = 1
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
@@ -177,15 +175,16 @@ def test_update_payment_with_null_street2():
     card_number = '1111 1111 1111 1111'
     expiry_date = date.today()
     ccv2 = 439
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ValidationError):
         confirm_payment(
             id,
             billing_street_1, billing_street_2, town_or_city, county, country, postcode,
             card_number, expiry_date, ccv2
         )
 
+@pytest.mark.django_db
 def test_update_payment_with_null_city():
-    susbcription_id = 1
+    subscription_id = 1
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
@@ -200,15 +199,16 @@ def test_update_payment_with_null_city():
     card_number = '1111 1111 1111 1111'
     expiry_date = date.today()
     ccv2 = 439
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ValidationError):
         confirm_payment(
             id,
             billing_street_1, billing_street_2, town_or_city, county, country, postcode,
             card_number, expiry_date, ccv2
         )
 
+@pytest.mark.django_db
 def test_update_payment_with_null_county():
-    susbcription_id = 1
+    subscription_id = 1
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
@@ -223,15 +223,16 @@ def test_update_payment_with_null_county():
     card_number = '1111 1111 1111 1111'
     expiry_date = date.today()
     ccv2 = 439
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ValidationError):
         confirm_payment(
             id,
             billing_street_1, billing_street_2, town_or_city, county, country, postcode,
             card_number, expiry_date, ccv2
         )
 
+@pytest.mark.django_db
 def test_update_payment_with_null_country():
-    susbcription_id = 1
+    subscription_id = 1
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
@@ -246,15 +247,16 @@ def test_update_payment_with_null_country():
     card_number = '1111 1111 1111 1111'
     expiry_date = date.today()
     ccv2 = 439
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ValidationError):
         confirm_payment(
             id,
             billing_street_1, billing_street_2, town_or_city, county, country, postcode,
             card_number, expiry_date, ccv2
         )
 
+@pytest.mark.django_db
 def test_update_payment_with_null_postcode():
-    susbcription_id = 1
+    subscription_id = 1
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
@@ -269,15 +271,16 @@ def test_update_payment_with_null_postcode():
     card_number = '1111 1111 1111 1111'
     expiry_date = date.today()
     ccv2 = 439
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ValidationError):
         confirm_payment(
             id,
             billing_street_1, billing_street_2, town_or_city, county, country, postcode,
             card_number, expiry_date, ccv2
         )
 
+@pytest.mark.django_db
 def test_update_payment_with_null_card_number():
-    susbcription_id = 1
+    subscription_id = 1
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
@@ -292,15 +295,16 @@ def test_update_payment_with_null_card_number():
     card_number = None
     expiry_date = date.today()
     ccv2 = 439
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ValidationError):
         confirm_payment(
             id,
             billing_street_1, billing_street_2, town_or_city, county, country, postcode,
             card_number, expiry_date, ccv2
         )
 
+@pytest.mark.django_db
 def test_update_payment_with_null_expiry():
-    susbcription_id = 1
+    subscription_id = 1
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
@@ -315,15 +319,16 @@ def test_update_payment_with_null_expiry():
     card_number = '1111 1111 1111 1111'
     expiry_date = None
     ccv2 = 439
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ValidationError):
         confirm_payment(
             id,
             billing_street_1, billing_street_2, town_or_city, county, country, postcode,
             card_number, expiry_date, ccv2
         )
 
+@pytest.mark.django_db
 def test_update_payment_with_null_ccv2():
-    susbcription_id = 1
+    subscription_id = 1
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
@@ -338,15 +343,16 @@ def test_update_payment_with_null_ccv2():
     card_number = '1111 1111 1111 1111'
     expiry_date = date.today()
     ccv2 = None
-    with pytest.raises(IntegrityError):
+    with pytest.raises(ValidationError):
         confirm_payment(
             id,
             billing_street_1, billing_street_2, town_or_city, county, country, postcode,
             card_number, expiry_date, ccv2
         )
 
+@pytest.mark.django_db
 def test_update_payment():
-    susbcription_id = 1
+    subscription_id = 1
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
@@ -382,8 +388,9 @@ def test_update_payment():
     assert payment.status == 3
     assert payment.stripe_pid is not None
 
+@pytest.mark.django_db
 def test_update_payment_with_short_card_number():
-    susbcription_id = 1
+    subscription_id = 1
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
@@ -405,8 +412,9 @@ def test_update_payment_with_short_card_number():
             card_number, expiry_date, ccv2
         )
 
+@pytest.mark.django_db
 def test_update_payment_with_long_card_number():
-    susbcription_id = 1
+    subscription_id = 1
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
@@ -428,8 +436,9 @@ def test_update_payment_with_long_card_number():
             card_number, expiry_date, ccv2
         )
 
+@pytest.mark.django_db
 def test_update_payment_with_non_date_expiry():
-    susbcription_id = 1
+    subscription_id = 1
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
@@ -451,8 +460,9 @@ def test_update_payment_with_non_date_expiry():
             card_number, expiry_date, ccv2
         )
 
+@pytest.mark.django_db
 def test_update_payment_with_non_numeric_ccv2():
-    susbcription_id = 1
+    subscription_id = 1
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
@@ -474,8 +484,9 @@ def test_update_payment_with_non_numeric_ccv2():
             card_number, expiry_date, ccv2
         )
 
+@pytest.mark.django_db
 def test_update_payment_with_nonexistent_payment_id():
-    susbcription_id = 1
+    subscription_id = 1
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
@@ -498,11 +509,12 @@ def test_update_payment_with_nonexistent_payment_id():
         )
 
 # Test posting the payment result
+@pytest.mark.django_db
 def test_process_payment_success():
     client = APIClient()
     subs_url = '/api/subscriptions/'
 
-    susbcription_id = 1
+    subscription_id = 1
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
@@ -522,15 +534,17 @@ def test_process_payment_success():
     assert response.data['subscription_months'] == payment.requested_subscription_months
     assert response.data['start_date'] == payment.completed_or_failed_date
 
+@pytest.mark.django_db
 def test_process_payment_success_with_unknown_stripe_pid():
     stripe_pid = 'pid_imadethisup'
     with pytest.raises(ObjectDoesNotExist):
         complete_payment(stripe_pid)
 
+@pytest.mark.django_db
 def test_process_payment_failure():
     reason = 'Some stripe reason'
 
-    susbcription_id = 1
+    subscription_id = 1
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
@@ -544,6 +558,7 @@ def test_process_payment_failure():
     assert payment.status == -1
     assert payment.stripe_error == reason
 
+@pytest.mark.django_db
 def test_process_payment_failure_with_unknown_stripe_pid():
     stripe_pid = 'pid_imadethisup'
     reason = 'Some stripe reason'
