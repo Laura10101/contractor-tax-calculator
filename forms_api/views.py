@@ -28,7 +28,18 @@ class FormsList(APIView):
                 )
         jurisdiction_id = request.data['jurisdiction_id']
         # Call apropriate services method
-        form_id = create_form(jurisdiction_id)
+        try:
+            form_id = create_form(jurisdiction_id)
+        except ValidationError as e:
+            return Response(
+                { 'error' : str(e) },
+                status=status.HTTP_400_BAD_REQUEST
+                )
+        except IntegrityError as e:
+            return Response(
+                { 'error' : str(e) },
+                status=status.HTTP_409_CONFLICT
+                )
         # Create response 
         response = { 'form_id' : form_id }
         # Return response 
