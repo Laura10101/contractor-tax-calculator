@@ -80,10 +80,9 @@ def test_get_single_form():
     id = create_form(1)
     assert id is not None
     jurisdiction_ids = [1]
-    
-    jurisdiction_ids = []
     jurisdiction_id_str = ','.join([str(id) for id in jurisdiction_ids])
     request_url = url + '?jurisdiction_ids=' + jurisdiction_id_str
+    print(request_url)
     response = client.get(request_url)
     assert response.status_code == 200
 
@@ -91,7 +90,7 @@ def test_get_single_form():
 
     assert forms is not None
     assert len(forms) == len(jurisdiction_ids)
-    assert forms[0]['id'] == id
+    assert forms[id]['id'] == id
 
 @pytest.mark.django_db
 def test_get_multiple_forms():
@@ -102,9 +101,9 @@ def test_get_multiple_forms():
     assert id2 is not None
     jurisdiction_ids = [1,2]
     
-    jurisdiction_ids = []
     jurisdiction_id_str = ','.join([str(id) for id in jurisdiction_ids])
     request_url = url + '?jurisdiction_ids=' + jurisdiction_id_str
+    print(request_url)
     response = client.get(request_url)
     assert response.status_code == 200
 
@@ -112,8 +111,8 @@ def test_get_multiple_forms():
 
     assert forms is not None
     assert len(forms) == len(jurisdiction_ids)
-    assert forms[0]['id'] == id1
-    assert forms[1]['id'] == id2
+    assert forms[id1]['id'] == id1
+    assert forms[id2]['id'] == id2
 
 # Test deletion of forms
 @pytest.mark.django_db
