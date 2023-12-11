@@ -51,13 +51,23 @@ def confirm_payment(id, stripe_card_id):
         return False, 'failed with reason:''' + status_or_error + '.'''
 
 def complete_payment(stripe_pid):
-    payment = Payment.objects.filter(stripe_pid__exact=id).update(
+    payments = Payment.objects.filter(stripe_pid__exact=id)
+
+    if payments.count() == 0:
+        raise Payment.DoesNotExist()
+
+    payments.update(
         status=4,
         completed_or_failed_date=date.today()
         )
 
 def fail_payment(stripe_pid, reason):
-    payment = Payment.objects.filter(stripe_pid__exact=id).update(
+    payments = Payment.objects.filter(stripe_pid__exact=id)
+
+    if payments.count() == 0:
+        raise Payment.DoesNotExist()
+
+    payments.update(
         status=-1,
         completed_or_failed_date=date.today(),
         stripe_error=reason

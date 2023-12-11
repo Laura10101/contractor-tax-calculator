@@ -196,7 +196,7 @@ def test_process_payment_success():
 @pytest.mark.django_db
 def test_process_payment_success_with_unknown_stripe_pid():
     stripe_pid = 'pid_imadethisup'
-    with pytest.raises(ObjectDoesNotExist):
+    with pytest.raises(Payment.DoesNotExist):
         complete_payment(stripe_pid)
 
 @pytest.mark.django_db
@@ -221,5 +221,5 @@ def test_process_payment_failure():
 def test_process_payment_failure_with_unknown_stripe_pid():
     stripe_pid = 'pid_imadethisup'
     reason = 'Some stripe reason'
-    with pytest.raises(ObjectDoesNotExist):
+    with pytest.raises(Payment.DoesNotExist):
         fail_payment(stripe_pid, reason)
