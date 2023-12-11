@@ -1,16 +1,18 @@
 from .models import Payment 
 from .stripe import *
-from datetime import datetime 
+from datetime import datetime, date
 
 
 def create_payment(subscription_id, subscription_option_id, total, currency):
     # Create new payment in the database 
-    new_payment = Payment.objects.create(
-        subscription_id=subscription_id,
-        subscription_option_id=subscription_option_id,
-        currency=currency,
-        total=total
-    )
+    new_payment = Payment()
+    new_payment.subscription_id=subscription_id
+    new_payment.subscription_option_id=subscription_option_id
+    new_payment.currency=currency
+    new_payment.total=total
+    new_payment.full_clean()
+    new_payment.save()
+
     # Create the payment intention in Stripe and update the local payment record 
     # with the payment ID from Stripe and with the intent created status
     new_payment.stripe_pid, new_payment.client_secret = create_stripe_payment_intention(
