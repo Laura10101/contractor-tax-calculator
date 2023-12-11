@@ -259,20 +259,51 @@ class FormQuestionsDetail(APIView):
         is_mandatory = request.data['is_mandatory']
         
         # Call the apropriate post method depending on Q type, using switch statement
-        match request.data['type']:
-            case "boolean":
-                question_id = update_boolean_question(pk, text, ordinal, explainer, is_mandatory)
+        try:
+            match request.data['type']:
+                case "boolean":
+                    question_id = update_boolean_question(pk, text, ordinal, explainer, is_mandatory)
 
-            case "numeric":
-                question_id = __post_numeric_question(request, form_pk, pk, text, ordinal, explainer, is_mandatory)
+                case "numeric":
+                    question_id = __post_numeric_question(request, form_pk, pk, text, ordinal, explainer, is_mandatory)
 
-            case "multiple_choice":
-                question_id = update_multiple_choice_question(pk, text, ordinal, explainer, is_mandatory)
+                case "multiple_choice":
+                    question_id = update_multiple_choice_question(pk, text, ordinal, explainer, is_mandatory)
 
-            case _:
-                return Response(
-                { 'error' : 'Invalid request. Type should be boolean, numeric or multiple_choice' },
+                case _:
+                    return Response(
+                    { 'error' : 'Invalid request. Type should be boolean, numeric or multiple_choice' },
+                    status=status.HTTP_400_BAD_REQUEST
+                    )
+        except ValidationError as e:
+            return Response(
+                { 'error' : str(e) },
                 status=status.HTTP_400_BAD_REQUEST
+                )
+        except IntegrityError as e:
+            return Response(
+                { 'error' : str(e) },
+                status=status.HTTP_400_BAD_REQUEST
+                )
+        except Form.DoesNotExist:
+            return Response(
+                status=status.HTTP_404_NOT_FOUND
+                )
+        except MultipleChoiceQuestion.DoesNotExist:
+            return Response(
+                status=status.HTTP_404_NOT_FOUND
+                )
+        except BooleanQuestion.DoesNotExist:
+            return Response(
+                status=status.HTTP_404_NOT_FOUND
+                )
+        except NumericQuestion.DoesNotExist:
+            return Response(
+                status=status.HTTP_404_NOT_FOUND
+                )
+        except Question.DoesNotExist:
+            return Response(
+                status=status.HTTP_404_NOT_FOUND
                 )
 
         return Response({ 'id': question_id })
