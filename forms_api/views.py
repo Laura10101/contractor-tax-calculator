@@ -265,7 +265,7 @@ class FormQuestionsDetail(APIView):
                     question_id = update_boolean_question(pk, text, ordinal, explainer, is_mandatory)
 
                 case "numeric":
-                    question_id = __post_numeric_question(request, form_pk, pk, text, ordinal, explainer, is_mandatory)
+                    question_id = self.__put_numeric_question(request, form_pk, pk, text, ordinal, explainer, is_mandatory)
 
                 case "multiple_choice":
                     question_id = update_multiple_choice_question(pk, text, ordinal, explainer, is_mandatory)

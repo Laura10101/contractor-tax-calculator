@@ -576,7 +576,7 @@ def test_put_boolean_question_with_non_existent_id():
     request_url = url + str(form_id) + '/questions/' + str(id) + '/'
     print(request_url)
     response = client.put(request_url, data, format='json')
-    assert response.status_code == 400
+    assert response.status_code == 404
 
 # Test creation of multiple_choice questions
 @pytest.mark.django_db
