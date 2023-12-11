@@ -410,7 +410,8 @@ def test_put_boolean_question_with_null_text():
         'explainer': new_explainer,
         'is_mandatory': new_is_mandatory
     }
-    request_url = url + str(id) + '/'
+    request_url = url + str(form_id) + '/questions/' + str(id) + '/'
+    print(request_url)
     response = client.put(request_url, data, format='json')
     assert response.status_code == 400
 
@@ -436,7 +437,8 @@ def test_put_boolean_question_with_null_ordinal():
         'explainer': new_explainer,
         'is_mandatory': new_is_mandatory
     }
-    request_url = url + str(id) + '/'
+    request_url = url + str(form_id) + '/questions/' + str(id) + '/'
+    print(request_url)
     response = client.put(request_url, data, format='json')
     assert response.status_code == 400
 
@@ -462,7 +464,8 @@ def test_put_boolean_question_with_non_numeric_ordinal():
         'explainer': new_explainer,
         'is_mandatory': new_is_mandatory
     }
-    request_url = url + str(id) + '/'
+    request_url = url + str(form_id) + '/questions/' + str(id) + '/'
+    print(request_url)
     response = client.put(request_url, data, format='json')
     assert response.status_code == 400
 
@@ -488,7 +491,8 @@ def test_put_boolean_question_with_null_explainer():
         'explainer': new_explainer,
         'is_mandatory': new_is_mandatory
     }
-    request_url = url + str(id) + '/'
+    request_url = url + str(form_id) + '/questions/' + str(id) + '/'
+    print(request_url)
     response = client.put(request_url, data, format='json')
     assert response.status_code == 400
 
@@ -514,7 +518,8 @@ def test_put_boolean_question_with_null_is_mandatory():
         'explainer': new_explainer,
         'is_mandatory': new_is_mandatory
     }
-    request_url = url + str(id) + '/'
+    request_url = url + str(form_id) + '/questions/' + str(id) + '/'
+    print(request_url)
     response = client.put(request_url, data, format='json')
     assert response.status_code == 400
 
@@ -540,7 +545,8 @@ def test_put_boolean_question():
         'explainer': new_explainer,
         'is_mandatory': new_is_mandatory
     }
-    request_url = url + str(id) + '/'
+    request_url = url + str(form_id) + '/questions/' + str(id) + '/'
+    print(request_url)
     response = client.put(request_url, data, format='json')
     assert response.status_code == 200
 
@@ -566,7 +572,8 @@ def test_put_boolean_question_with_non_existent_id():
         'explainer': new_explainer,
         'is_mandatory': new_is_mandatory
     }
-    request_url = url + str(id) + '/'
+    request_url = url + str(form_id) + '/questions/' + str(id) + '/'
+    print(request_url)
     response = client.put(request_url, data, format='json')
     assert response.status_code == 400
 
@@ -813,7 +820,8 @@ def test_put_multiple_choice_question_with_null_data():
         'explainer': new_explainer,
         'is_mandatory': new_is_mandatory
     }
-    request_url = url + str(id) + '/'
+    request_url = url + str(form_id) + '/questions/' + str(id) + '/'
+    print(request_url)
     response = client.put(request_url, data, format='json')
     assert response.status_code == 400
 
@@ -839,7 +847,8 @@ def test_put_multiple_choice_question_with_null_text():
         'explainer': new_explainer,
         'is_mandatory': new_is_mandatory
     }
-    request_url = url + str(id) + '/'
+    request_url = url + str(form_id) + '/questions/' + str(id) + '/'
+    print(request_url)
     response = client.put(request_url, data, format='json')
     assert response.status_code == 400
 
@@ -865,7 +874,8 @@ def test_put_multiple_choice_question_with_null_ordinal():
         'explainer': new_explainer,
         'is_mandatory': new_is_mandatory
     }
-    request_url = url + str(id) + '/'
+    request_url = url + str(form_id) + '/questions/' + str(id) + '/'
+    print(request_url)
     response = client.put(request_url, data, format='json')
     assert response.status_code == 400
 
@@ -891,7 +901,8 @@ def test_put_multiple_choice_question_with_non_numeric_ordinal():
         'explainer': new_explainer,
         'is_mandatory': new_is_mandatory
     }
-    request_url = url + str(id) + '/'
+    request_url = url + str(form_id) + '/questions/' + str(id) + '/'
+    print(request_url)
     response = client.put(request_url, data, format='json')
     assert response.status_code == 400
 
@@ -917,7 +928,8 @@ def test_put_multiple_choice_question_with_null_explainer():
         'explainer': new_explainer,
         'is_mandatory': new_is_mandatory
     }
-    request_url = url + str(id) + '/'
+    request_url = url + str(form_id) + '/questions/' + str(id) + '/'
+    print(request_url)
     response = client.put(request_url, data, format='json')
     assert response.status_code == 400
 
@@ -943,7 +955,8 @@ def test_put_multiple_choice_question_with_null_is_mandatory():
         'explainer': new_explainer,
         'is_mandatory': new_is_mandatory
     }
-    request_url = url + str(id) + '/'
+    request_url = url + str(form_id) + '/questions/' + str(id) + '/'
+    print(request_url)
     response = client.put(request_url, data, format='json')
     assert response.status_code == 400
 
@@ -969,7 +982,8 @@ def test_put_multiple_choice_question():
         'explainer': new_explainer,
         'is_mandatory': new_is_mandatory
     }
-    request_url = url + str(id) + '/'
+    request_url = url + str(form_id) + '/questions/' + str(id) + '/'
+    print(request_url)
     response = client.put(request_url, data, format='json')
     assert response.status_code == 200
 
@@ -995,7 +1009,8 @@ def test_put_multiple_choice_question_with_non_existent_id():
         'explainer': new_explainer,
         'is_mandatory': new_is_mandatory
     }
-    request_url = url + str(id) + '/'
+    request_url = url + str(form_id) + '/questions/' + str(id) + '/'
+    print(request_url)
     response = client.put(request_url, data, format='json')
     assert response.status_code == 404
 
@@ -1309,7 +1324,8 @@ def test_put_numeric_question_with_null_data():
         'min_value': new_min_val,
         'max_value': new_max_val
     }
-    request_url = url + str(id) + '/'
+    request_url = url + str(form_id) + '/questions/' + str(id) + '/'
+    print(request_url)
     response = client.put(request_url, data, format='json')
     assert response.status_code == 400
 
@@ -1344,7 +1360,8 @@ def test_put_numeric_question_with_null_text():
         'min_value': new_min_val,
         'max_value': new_max_val
     }
-    request_url = url + str(id) + '/'
+    request_url = url + str(form_id) + '/questions/' + str(id) + '/'
+    print(request_url)
     response = client.put(request_url, data, format='json')
     assert response.status_code == 400
 
@@ -1379,7 +1396,8 @@ def test_put_numeric_question_with_null_ordinal():
         'min_value': new_min_val,
         'max_value': new_max_val
     }
-    request_url = url + str(id) + '/'
+    request_url = url + str(form_id) + '/questions/' + str(id) + '/'
+    print(request_url)
     response = client.put(request_url, data, format='json')
     assert response.status_code == 400
 
@@ -1414,7 +1432,8 @@ def test_put_numeric_question_with_non_numeric_ordinal():
         'min_value': new_min_val,
         'max_value': new_max_val
     }
-    request_url = url + str(id) + '/'
+    request_url = url + str(form_id) + '/questions/' + str(id) + '/'
+    print(request_url)
     response = client.put(request_url, data, format='json')
     assert response.status_code == 400
 
@@ -1449,7 +1468,8 @@ def test_put_numeric_question_with_null_explainer():
         'min_value': new_min_val,
         'max_value': new_max_val
     }
-    request_url = url + str(id) + '/'
+    request_url = url + str(form_id) + '/questions/' + str(id) + '/'
+    print(request_url)
     response = client.put(request_url, data, format='json')
     assert response.status_code == 400
 
@@ -1484,7 +1504,8 @@ def test_put_numeric_question_with_null_is_mandatory():
         'min_value': new_min_val,
         'max_value': new_max_val
     }
-    request_url = url + str(id) + '/'
+    request_url = url + str(form_id) + '/questions/' + str(id) + '/'
+    print(request_url)
     response = client.put(request_url, data, format='json')
     assert response.status_code == 400
 
@@ -1519,7 +1540,8 @@ def test_put_numeric_question():
         'min_value': new_min_val,
         'max_value': new_max_val
     }
-    request_url = url + str(id) + '/'
+    request_url = url + str(form_id) + '/questions/' + str(id) + '/'
+    print(request_url)
     response = client.put(request_url, data, format='json')
     assert response.status_code == 200
 
@@ -1556,7 +1578,8 @@ def test_put_numeric_question_with_non_existent_id():
         'min_value': new_min_val,
         'max_value': new_max_val
     }
-    request_url = url + str(form_id) + '/questions/' + str(question_id) + '/'
+    request_url = url + str(form_id) + '/questions/' + str(id) + '/'
+    print(request_url)
     response = client.put(request_url, data, format='json')
     assert response.status_code == 404
 
