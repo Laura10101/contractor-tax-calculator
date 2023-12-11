@@ -5,6 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from django.db import IntegrityError 
 from django.core.exceptions import SuspiciousOperation
 import json
 from .serializers import *
@@ -153,20 +154,35 @@ class FormQuestionList(APIView):
         is_mandatory = request.data['is_mandatory']
         
         # Call the apropriate post method depending on Q type, using switch statement
-        match request.data['type']:
-            case "boolean":
-                question_id = create_boolean_question(form_pk, text, ordinal, explainer, is_mandatory)
+        try:
+            match request.data['type']:
+                case "boolean":
+                    question_id = create_boolean_question(form_pk, text, ordinal, explainer, is_mandatory)
 
-            case "numeric":
-                question_id = self.__post_numeric_question(request, form_pk, text, ordinal, explainer, is_mandatory)
+                case "numeric":
+                    question_id = self.__post_numeric_question(request, form_pk, text, ordinal, explainer, is_mandatory)
 
-            case "multiple_choice":
-                question_id = create_multiple_choice_question(form_pk, text, ordinal, explainer, is_mandatory)
+                case "multiple_choice":
+                    question_id = create_multiple_choice_question(form_pk, text, ordinal, explainer, is_mandatory)
 
-            case _:
-                return Response(
-                { 'error' : 'Invalid request. Type should be boolean, numeric or multiple_choice' },
+                case _:
+                    return Response(
+                    { 'error' : 'Invalid request. Type should be boolean, numeric or multiple_choice' },
+                    status=status.HTTP_400_BAD_REQUEST
+                    )
+        except ValidationError as e:
+            return Response(
+                { 'error' : str(e) },
                 status=status.HTTP_400_BAD_REQUEST
+                )
+        except IntegrityError as e:
+            return Response(
+                { 'error' : str(e) },
+                status=status.HTTP_400_BAD_REQUEST
+                )
+        except Form.DoesNotExist:
+            return Response(
+                status=status.HTTP_404_NOT_FOUND
                 )
         if question_id == 0: 
             return Response(

@@ -160,7 +160,9 @@ def test_post_boolean_question_with_null_data():
         'explainer': explainer,
         'is_mandatory': is_mandatory
     }
-    response = client.post(url, data, format='json')
+    request_url = url + str(form_id) + '/questions/'
+    print(request_url)
+    response = client.post(request_url, data, format='json')
     assert response.status_code == 400
 
 @pytest.mark.django_db
@@ -179,8 +181,10 @@ def test_post_boolean_question_with_null_form_id():
         'explainer': explainer,
         'is_mandatory': is_mandatory
     }
-    response = client.post(url, data, format='json')
-    assert response.status_code == 400
+    request_url = url + str(form_id) + '/questions/'
+    print(request_url)
+    response = client.post(request_url, data, format='json')
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_post_boolean_question_with_non_existent_form_id():
@@ -192,13 +196,14 @@ def test_post_boolean_question_with_non_existent_form_id():
 
     data = {
         'type': 'boolean',
-        'form_id': form_id,
         'text': question_text,
         'ordinal': ordinal,
         'explainer': explainer,
         'is_mandatory': is_mandatory
     }
-    response = client.post(url, data, format='json')
+    request_url = url + str(form_id) + '/questions/'
+    print(request_url)
+    response = client.post(request_url, data, format='json')
     assert response.status_code == 404
 
 @pytest.mark.django_db
@@ -217,8 +222,10 @@ def test_post_boolean_question_with_non_numeric_form_id():
         'explainer': explainer,
         'is_mandatory': is_mandatory
     }
-    response = client.post(url, data, format='json')
-    assert response.status_code == 400
+    request_url = url + str(form_id) + '/questions/'
+    print(request_url)
+    response = client.post(request_url, data, format='json')
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_post_boolean_question_with_null_text():
@@ -236,7 +243,9 @@ def test_post_boolean_question_with_null_text():
         'explainer': explainer,
         'is_mandatory': is_mandatory
     }
-    response = client.post(url, data, format='json')
+    request_url = url + str(form_id) + '/questions/'
+    print(request_url)
+    response = client.post(request_url, data, format='json')
     assert response.status_code == 400
 
 @pytest.mark.django_db
@@ -255,7 +264,9 @@ def test_post_boolean_question_with_null_ordinal():
         'explainer': explainer,
         'is_mandatory': is_mandatory
     }
-    response = client.post(url, data, format='json')
+    request_url = url + str(form_id) + '/questions/'
+    print(request_url)
+    response = client.post(request_url, data, format='json')
     assert response.status_code == 400
 
 @pytest.mark.django_db
@@ -274,7 +285,9 @@ def test_post_boolean_question_with_non_numeric_ordinal():
         'explainer': explainer,
         'is_mandatory': is_mandatory
     }
-    response = client.post(url, data, format='json')
+    request_url = url + str(form_id) + '/questions/'
+    print(request_url)
+    response = client.post(request_url, data, format='json')
     assert response.status_code == 400
 
 @pytest.mark.django_db
@@ -293,7 +306,9 @@ def test_post_boolean_question_with_null_explainer():
         'explainer': explainer,
         'is_mandatory': is_mandatory
     }
-    response = client.post(url, data, format='json')
+    request_url = url + str(form_id) + '/questions/'
+    print(request_url)
+    response = client.post(request_url, data, format='json')
     assert response.status_code == 400
 
 @pytest.mark.django_db
@@ -312,7 +327,9 @@ def test_post_boolean_question_with_null_is_mandatory():
         'explainer': explainer,
         'is_mandatory': is_mandatory
     }
-    response = client.post(url, data, format='json')
+    request_url = url + str(form_id) + '/questions/'
+    print(request_url)
+    response = client.post(request_url, data, format='json')
     assert response.status_code == 400
 
 @pytest.mark.django_db
@@ -331,7 +348,9 @@ def test_post_boolean_question():
         'explainer': explainer,
         'is_mandatory': is_mandatory
     }
-    response = client.post(url, data, format='json')
+    request_url = url + str(form_id) + '/questions/'
+    print(request_url)
+    response = client.post(request_url, data, format='json')
     assert response.status_code == 200
     id = response.data['id']
     assert id is not None
@@ -364,7 +383,7 @@ def test_put_boolean_question_with_null_data():
         'explainer': new_explainer,
         'is_mandatory': new_is_mandatory
     }
-    request_url = url + str(id) + '/'
+    request_url = url + str(form_id) + '/questions/' + str(id) + '/'
     print(request_url)
     response = client.put(request_url, data, format='json')
     assert response.status_code == 400
@@ -568,7 +587,9 @@ def test_post_multiple_choice_question_with_null_data():
         'explainer': explainer,
         'is_mandatory': is_mandatory
     }
-    response = client.post(url, data, format='json')
+    request_url = url + str(form_id) + '/questions/'
+    print(request_url)
+    response = client.post(request_url, data, format='json')
     assert response.status_code == 400
 
 @pytest.mark.django_db
@@ -587,8 +608,10 @@ def test_post_multiple_choice_question_with_null_form_id():
         'explainer': explainer,
         'is_mandatory': is_mandatory
     }
-    response = client.post(url, data, format='json')
-    assert response.status_code == 400
+    request_url = url + str(form_id) + '/questions/'
+    print(request_url)
+    response = client.post(request_url, data, format='json')
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_post_multiple_choice_question_with_non_existent_form_id():
@@ -606,7 +629,9 @@ def test_post_multiple_choice_question_with_non_existent_form_id():
         'explainer': explainer,
         'is_mandatory': is_mandatory
     }
-    response = client.post(url, data, format='json')
+    request_url = url + str(form_id) + '/questions/'
+    print(request_url)
+    response = client.post(request_url, data, format='json')
     assert response.status_code == 404
 
 @pytest.mark.django_db
@@ -625,8 +650,10 @@ def test_post_multiple_choice_question_with_non_numeric_form_id():
         'explainer': explainer,
         'is_mandatory': is_mandatory
     }
-    response = client.post(url, data, format='json')
-    assert response.status_code == 400
+    request_url = url + str(form_id) + '/questions/'
+    print(request_url)
+    response = client.post(request_url, data, format='json')
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_post_multiple_choice_question_with_null_text():
@@ -644,7 +671,9 @@ def test_post_multiple_choice_question_with_null_text():
         'explainer': explainer,
         'is_mandatory': is_mandatory
     }
-    response = client.post(url, data, format='json')
+    request_url = url + str(form_id) + '/questions/'
+    print(request_url)
+    response = client.post(request_url, data, format='json')
     assert response.status_code == 400
 
 @pytest.mark.django_db
@@ -663,7 +692,9 @@ def test_post_multiple_choice_question_with_null_ordinal():
         'explainer': explainer,
         'is_mandatory': is_mandatory
     }
-    response = client.post(url, data, format='json')
+    request_url = url + str(form_id) + '/questions/'
+    print(request_url)
+    response = client.post(request_url, data, format='json')
     assert response.status_code == 400
 
 @pytest.mark.django_db
@@ -682,7 +713,9 @@ def test_post_multiple_choice_question_with_non_numeric_ordinal():
         'explainer': explainer,
         'is_mandatory': is_mandatory
     }
-    response = client.post(url, data, format='json')
+    request_url = url + str(form_id) + '/questions/'
+    print(request_url)
+    response = client.post(request_url, data, format='json')
     assert response.status_code == 400
 
 @pytest.mark.django_db
@@ -701,7 +734,9 @@ def test_post_multiple_choice_question_with_null_explainer():
         'explainer': explainer,
         'is_mandatory': is_mandatory
     }
-    response = client.post(url, data, format='json')
+    request_url = url + str(form_id) + '/questions/'
+    print(request_url)
+    response = client.post(request_url, data, format='json')
     assert response.status_code == 400
 
 @pytest.mark.django_db
@@ -720,7 +755,9 @@ def test_post_multiple_choice_question_with_null_is_mandatory():
         'explainer': explainer,
         'is_mandatory': is_mandatory
     }
-    response = client.post(url, data, format='json')
+    request_url = url + str(form_id) + '/questions/'
+    print(request_url)
+    response = client.post(request_url, data, format='json')
     assert response.status_code == 400
 
 @pytest.mark.django_db
@@ -739,7 +776,9 @@ def test_post_multiple_choice_question():
         'explainer': explainer,
         'is_mandatory': is_mandatory
     }
-    response = client.post(url, data, format='json')
+    request_url = url + str(form_id) + '/questions/'
+    print(request_url)
+    response = client.post(request_url, data, format='json')
     assert response.status_code == 200
     id = response.data['id']
     assert id is not None
@@ -981,7 +1020,9 @@ def test_post_numeric_question_with_null_data():
         'min_value': min_value,
         'max_value': max_value
     }
-    response = client.post(url, data, format='json')
+    request_url = url + str(form_id) + '/questions/'
+    print(request_url)
+    response = client.post(request_url, data, format='json')
     assert response.status_code == 400
 
 @pytest.mark.django_db
@@ -1006,8 +1047,10 @@ def test_post_numeric_question_with_null_form_id():
         'min_value': min_value,
         'max_value': max_value
     }
-    response = client.post(url, data, format='json')
-    assert response.status_code == 400
+    request_url = url + str(form_id) + '/questions/'
+    print(request_url)
+    response = client.post(request_url, data, format='json')
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_post_numeric_question_with_non_existent_form_id():
@@ -1031,7 +1074,9 @@ def test_post_numeric_question_with_non_existent_form_id():
         'min_value': min_value,
         'max_value': max_value
     }
-    response = client.post(url, data, format='json')
+    request_url = url + str(form_id) + '/questions/'
+    print(request_url)
+    response = client.post(request_url, data, format='json')
     assert response.status_code == 404
 
 @pytest.mark.django_db
@@ -1056,8 +1101,10 @@ def test_post_numeric_question_with_non_numeric_form_id():
         'min_value': min_value,
         'max_value': max_value
     }
-    response = client.post(url, data, format='json')
-    assert response.status_code == 400
+    request_url = url + str(form_id) + '/questions/'
+    print(request_url)
+    response = client.post(request_url, data, format='json')
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_post_numeric_question_with_null_text():
@@ -1081,7 +1128,9 @@ def test_post_numeric_question_with_null_text():
         'min_value': min_value,
         'max_value': max_value
     }
-    response = client.post(url, data, format='json')
+    request_url = url + str(form_id) + '/questions/'
+    print(request_url)
+    response = client.post(request_url, data, format='json')
     assert response.status_code == 400
 
 @pytest.mark.django_db
@@ -1106,7 +1155,9 @@ def test_post_numeric_question_with_null_ordinal():
         'min_value': min_value,
         'max_value': max_value
     }
-    response = client.post(url, data, format='json')
+    request_url = url + str(form_id) + '/questions/'
+    print(request_url)
+    response = client.post(request_url, data, format='json')
     assert response.status_code == 400
     
 @pytest.mark.django_db
@@ -1131,7 +1182,9 @@ def test_post_numeric_question_with_non_numeric_ordinal():
         'min_value': min_value,
         'max_value': max_value
     }
-    response = client.post(url, data, format='json')
+    request_url = url + str(form_id) + '/questions/'
+    print(request_url)
+    response = client.post(request_url, data, format='json')
     assert response.status_code == 400
 
 @pytest.mark.django_db
@@ -1156,7 +1209,9 @@ def test_post_numeric_question_with_null_explainer():
         'min_value': min_value,
         'max_value': max_value
     }
-    response = client.post(url, data, format='json')
+    request_url = url + str(form_id) + '/questions/'
+    print(request_url)
+    response = client.post(request_url, data, format='json')
     assert response.status_code == 400
 
 @pytest.mark.django_db
@@ -1181,7 +1236,9 @@ def test_post_numeric_question_with_null_is_mandatory():
         'min_value': min_value,
         'max_value': max_value
     }
-    response = client.post(url, data, format='json')
+    request_url = url + str(form_id) + '/questions/'
+    print(request_url)
+    response = client.post(request_url, data, format='json')
     assert response.status_code == 400
 
 @pytest.mark.django_db
@@ -1206,7 +1263,9 @@ def test_post_numeric_question():
         'min_value': min_value,
         'max_value': max_value
     }
-    response = client.post(url, data, format='json')
+    request_url = url + str(form_id) + '/questions/'
+    print(request_url)
+    response = client.post(request_url, data, format='json')
     assert response.status_code == 200
     id = response.data['id']
     assert id is not None
@@ -1495,7 +1554,7 @@ def test_put_numeric_question_with_non_existent_id():
         'min_value': new_min_val,
         'max_value': new_max_val
     }
-    request_url = url + str(form_id) + '/questions' + str(question_id) + '/'
+    request_url = url + str(form_id) + '/questions/' + str(question_id) + '/'
     response = client.put(request_url, data, format='json')
     assert response.status_code == 404
 
