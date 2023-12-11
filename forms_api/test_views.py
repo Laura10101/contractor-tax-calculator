@@ -769,7 +769,7 @@ def test_post_multiple_choice_question():
     is_mandatory = True
 
     data = {
-        'type': 'boolean',
+        'type': 'multiple_choice',
         'form_id': form_id,
         'text': question_text,
         'ordinal': ordinal,
@@ -781,6 +781,8 @@ def test_post_multiple_choice_question():
     response = client.post(request_url, data, format='json')
     assert response.status_code == 200
     id = response.data['id']
+    print('id: ' + str(id))
+    print(type(id))
     assert id is not None
     question = MultipleChoiceQuestion.objects.get(pk=id)
     assert question.text == question_text
@@ -1010,7 +1012,7 @@ def test_post_numeric_question_with_null_data():
     max_value = None
 
     data = {
-        'type': 'multiple_choice',
+        'type': 'numeric',
         'form_id': form_id,
         'text': question_text,
         'ordinal': ordinal,
@@ -1037,7 +1039,7 @@ def test_post_numeric_question_with_null_form_id():
     max_value = 100
 
     data = {
-        'type': 'multiple_choice',
+        'type': 'numeric',
         'form_id': form_id,
         'text': question_text,
         'ordinal': ordinal,
@@ -1064,7 +1066,7 @@ def test_post_numeric_question_with_non_existent_form_id():
     max_value = 100
 
     data = {
-        'type': 'multiple_choice',
+        'type': 'numeric',
         'form_id': form_id,
         'text': question_text,
         'ordinal': ordinal,
@@ -1091,7 +1093,7 @@ def test_post_numeric_question_with_non_numeric_form_id():
     max_value = 100
 
     data = {
-        'type': 'multiple_choice',
+        'type': 'numeric',
         'form_id': form_id,
         'text': question_text,
         'ordinal': ordinal,
@@ -1118,7 +1120,7 @@ def test_post_numeric_question_with_null_text():
     max_value = 100
 
     data = {
-        'type': 'multiple_choice',
+        'type': 'numeric',
         'form_id': form_id,
         'text': question_text,
         'ordinal': ordinal,
@@ -1145,7 +1147,7 @@ def test_post_numeric_question_with_null_ordinal():
     max_value = 100
 
     data = {
-        'type': 'multiple_choice',
+        'type': 'numeric',
         'form_id': form_id,
         'text': question_text,
         'ordinal': ordinal,
@@ -1172,7 +1174,7 @@ def test_post_numeric_question_with_non_numeric_ordinal():
     max_value = 100
 
     data = {
-        'type': 'multiple_choice',
+        'type': 'numeric',
         'form_id': form_id,
         'text': question_text,
         'ordinal': ordinal,
@@ -1199,7 +1201,7 @@ def test_post_numeric_question_with_null_explainer():
     max_value = 100
 
     data = {
-        'type': 'multiple_choice',
+        'type': 'numeric',
         'form_id': form_id,
         'text': question_text,
         'ordinal': ordinal,
@@ -1226,7 +1228,7 @@ def test_post_numeric_question_with_null_is_mandatory():
     max_value = 100
 
     data = {
-        'type': 'multiple_choice',
+        'type': 'numeric',
         'form_id': form_id,
         'text': question_text,
         'ordinal': ordinal,
@@ -1253,7 +1255,7 @@ def test_post_numeric_question():
     max_value = 100
 
     data = {
-        'type': 'boolean',
+        'type': 'numeric',
         'form_id': form_id,
         'text': question_text,
         'ordinal': ordinal,
@@ -1298,7 +1300,7 @@ def test_put_numeric_question_with_null_data():
     new_max_val = None
 
     data = {
-        'type': 'multiple_choice',
+        'type': 'numeric',
         'text': new_text,
         'ordinal': new_ordinal,
         'explainer': new_explainer,
@@ -1333,7 +1335,7 @@ def test_put_numeric_question_with_null_text():
     new_max_val = 10
 
     data = {
-        'type': 'multiple_choice',
+        'type': 'numeric',
         'text': new_text,
         'ordinal': new_ordinal,
         'explainer': new_explainer,
@@ -1368,7 +1370,7 @@ def test_put_numeric_question_with_null_ordinal():
     new_max_val = 10
 
     data = {
-        'type': 'multiple_choice',
+        'type': 'numeric',
         'text': new_text,
         'ordinal': new_ordinal,
         'explainer': new_explainer,
@@ -1403,7 +1405,7 @@ def test_put_numeric_question_with_non_numeric_ordinal():
     new_max_val = 10
 
     data = {
-        'type': 'multiple_choice',
+        'type': 'numeric',
         'text': new_text,
         'ordinal': new_ordinal,
         'explainer': new_explainer,
@@ -1438,7 +1440,7 @@ def test_put_numeric_question_with_null_explainer():
     new_max_val = 10
 
     data = {
-        'type': 'multiple_choice',
+        'type': 'numeric',
         'text': new_text,
         'ordinal': new_ordinal,
         'explainer': new_explainer,
@@ -1473,7 +1475,7 @@ def test_put_numeric_question_with_null_is_mandatory():
     new_max_val = 10
 
     data = {
-        'type': 'multiple_choice',
+        'type': 'numeric',
         'text': new_text,
         'ordinal': new_ordinal,
         'explainer': new_explainer,
@@ -1508,7 +1510,7 @@ def test_put_numeric_question():
     new_max_val = 10
 
     data = {
-        'type': 'multiple_choice',
+        'type': 'numeric',
         'text': new_text,
         'ordinal': new_ordinal,
         'explainer': new_explainer,
@@ -1545,7 +1547,7 @@ def test_put_numeric_question_with_non_existent_id():
     new_max_val = 10
 
     data = {
-        'type': 'multiple_choice',
+        'type': 'numeric',
         'text': new_text,
         'ordinal': new_ordinal,
         'explainer': new_explainer,
