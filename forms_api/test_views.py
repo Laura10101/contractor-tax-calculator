@@ -83,7 +83,7 @@ def test_get_single_form():
     
     jurisdiction_ids = []
     jurisdiction_id_str = ','.join([str(id) for id in jurisdiction_ids])
-    request_url = url + '?ids=' + jurisdiction_id_str
+    request_url = url + '?jurisdiction_ids=' + jurisdiction_id_str
     response = client.get(request_url)
     assert response.status_code == 200
 
@@ -104,7 +104,7 @@ def test_get_multiple_forms():
     
     jurisdiction_ids = []
     jurisdiction_id_str = ','.join([str(id) for id in jurisdiction_ids])
-    request_url = url + '?ids=' + jurisdiction_id_str
+    request_url = url + '?jurisdiction_ids=' + jurisdiction_id_str
     response = client.get(request_url)
     assert response.status_code == 200
 
