@@ -1,9 +1,11 @@
 from datetime import date
 from django.db import IntegrityError
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
+from stripe.error import InvalidRequestError
 from .models import *
 from .services import *
 import pytest
+from .stripe import *
 
 # Required fields on a payment
 # subscription_id - The ID of the associated subscription
@@ -31,6 +33,13 @@ import pytest
 # created_date - The date on which the payment was created
 # intended_date - The date on which the payment intention was confirmed in stripe
 # completed_or_failed_date - The date on which the payment completed in Stripe
+def get_mock_payment_id():
+    subscription_id = 1
+    subscription_option_id = 1
+    total = 47.99
+    currency = 'GBP'
+    id, _ = create_payment(subscription_id, subscription_option_id, total, currency)
+    return id
 
 # Test creating a payment
 # Payment creation only requires the following fields:
@@ -118,404 +127,44 @@ def test_create_valid_payment():
 
 # Test patching a payment with payment details
 # Requires the following fields:
-# billing_street_1, billing_street_2, town_or_city, county, country, postcode, card_number, expiry_date, ccv2
 @pytest.mark.django_db
-def test_update_payment_with_null_payment_data():
-    subscription_id = 1
-    requested_subscription_months = 6
-    subtotal = 42.30
-    currency = 'GBP'
-    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+def test_update_payment_with_null_payment_id():
+    #confirm_payment(id, stripe_card_id)
+    id = None
+    stripe_card_id = 'pm_card_gb'
 
-    billing_street_1 = None
-    billing_street_2 = None
-    town_or_city = None
-    county = None
-    country = None
-    postcode = None
-    card_number = None
-    expiry_date = None
-    ccv2 = None
-    with pytest.raises(ValidationError):
-        confirm_payment(
-            id,
-            billing_street_1, billing_street_2, town_or_city, county, country, postcode,
-            card_number, expiry_date, ccv2
-        )
+    with pytest.raises(Payment.DoesNotExist):
+        confirm_payment(id, stripe_card_id)
 
 @pytest.mark.django_db
-def test_update_payment_with_null_street1():
-    subscription_id = 1
-    requested_subscription_months = 6
-    subtotal = 42.30
-    currency = 'GBP'
-    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
-    
-    billing_street_1 = '4 Maine Street'
-    billing_street_2 = 'St Leonards'
-    town_or_city = 'Exeter'
-    county = 'Devon'
-    country = 'United Kingdom'
-    postcode = 'EX2 7ST'
-    card_number = '1111 1111 1111 1111'
-    expiry_date = date.today()
-    ccv2 = 439
-    with pytest.raises(ValidationError):
-        confirm_payment(
-            id,
-            billing_street_1, billing_street_2, town_or_city, county, country, postcode,
-            card_number, expiry_date, ccv2
-        )
+def test_update_payment_with_non_existent_payment_id():
+    #confirm_payment(id, stripe_card_id)
+    id = 57912
+    stripe_card_id = 'pm_card_gb'
+
+    with pytest.raises(Payment.DoesNotExist):
+        confirm_payment(id, stripe_card_id)
 
 @pytest.mark.django_db
-def test_update_payment_with_null_street2():
-    subscription_id = 1
-    requested_subscription_months = 6
-    subtotal = 42.30
-    currency = 'GBP'
-    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+def test_update_payment_with_null_card_id():
+    #confirm_payment(id, stripe_card_id)
+    id = get_mock_payment_id()
+    stripe_card_id = None
 
-    billing_street_1 = '4 Maine Street'
-    billing_street_2 = None
-    town_or_city = 'Exeter'
-    county = 'Devon'
-    country = 'United Kingdom'
-    postcode = 'EX2 7ST'
-    card_number = '1111 1111 1111 1111'
-    expiry_date = date.today()
-    ccv2 = 439
-    with pytest.raises(ValidationError):
-        confirm_payment(
-            id,
-            billing_street_1, billing_street_2, town_or_city, county, country, postcode,
-            card_number, expiry_date, ccv2
-        )
-
-@pytest.mark.django_db
-def test_update_payment_with_null_city():
-    subscription_id = 1
-    requested_subscription_months = 6
-    subtotal = 42.30
-    currency = 'GBP'
-    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
-
-    billing_street_1 = '4 Maine Street'
-    billing_street_2 = 'St Leonards'
-    town_or_city = None
-    county = 'Devon'
-    country = 'United Kingdom'
-    postcode = 'EX2 7ST'
-    card_number = '1111 1111 1111 1111'
-    expiry_date = date.today()
-    ccv2 = 439
-    with pytest.raises(ValidationError):
-        confirm_payment(
-            id,
-            billing_street_1, billing_street_2, town_or_city, county, country, postcode,
-            card_number, expiry_date, ccv2
-        )
-
-@pytest.mark.django_db
-def test_update_payment_with_null_county():
-    subscription_id = 1
-    requested_subscription_months = 6
-    subtotal = 42.30
-    currency = 'GBP'
-    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
-
-    billing_street_1 = '4 Maine Street'
-    billing_street_2 = 'St Leonards'
-    town_or_city = 'Exeter'
-    county = None
-    country = 'United Kingdom'
-    postcode = 'EX2 7ST'
-    card_number = '1111 1111 1111 1111'
-    expiry_date = date.today()
-    ccv2 = 439
-    with pytest.raises(ValidationError):
-        confirm_payment(
-            id,
-            billing_street_1, billing_street_2, town_or_city, county, country, postcode,
-            card_number, expiry_date, ccv2
-        )
-
-@pytest.mark.django_db
-def test_update_payment_with_null_country():
-    subscription_id = 1
-    requested_subscription_months = 6
-    subtotal = 42.30
-    currency = 'GBP'
-    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
-
-    billing_street_1 = '4 Maine Street'
-    billing_street_2 = 'St Leonards'
-    town_or_city = 'Exeter'
-    county = 'Devon'
-    country = None
-    postcode = 'EX2 7ST'
-    card_number = '1111 1111 1111 1111'
-    expiry_date = date.today()
-    ccv2 = 439
-    with pytest.raises(ValidationError):
-        confirm_payment(
-            id,
-            billing_street_1, billing_street_2, town_or_city, county, country, postcode,
-            card_number, expiry_date, ccv2
-        )
-
-@pytest.mark.django_db
-def test_update_payment_with_null_postcode():
-    subscription_id = 1
-    requested_subscription_months = 6
-    subtotal = 42.30
-    currency = 'GBP'
-    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
-
-    billing_street_1 = '4 Maine Street'
-    billing_street_2 = 'St Leonards'
-    town_or_city = 'Exeter'
-    county = 'Devon'
-    country = 'United Kingdom'
-    postcode = None
-    card_number = '1111 1111 1111 1111'
-    expiry_date = date.today()
-    ccv2 = 439
-    with pytest.raises(ValidationError):
-        confirm_payment(
-            id,
-            billing_street_1, billing_street_2, town_or_city, county, country, postcode,
-            card_number, expiry_date, ccv2
-        )
-
-@pytest.mark.django_db
-def test_update_payment_with_null_card_number():
-    subscription_id = 1
-    requested_subscription_months = 6
-    subtotal = 42.30
-    currency = 'GBP'
-    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
-
-    billing_street_1 = '4 Maine Street'
-    billing_street_2 = 'St Leonards'
-    town_or_city = 'Exeter'
-    county = 'Devon'
-    country = 'United Kingdom'
-    postcode = 'EX2 7ST'
-    card_number = None
-    expiry_date = date.today()
-    ccv2 = 439
-    with pytest.raises(ValidationError):
-        confirm_payment(
-            id,
-            billing_street_1, billing_street_2, town_or_city, county, country, postcode,
-            card_number, expiry_date, ccv2
-        )
-
-@pytest.mark.django_db
-def test_update_payment_with_null_expiry():
-    subscription_id = 1
-    requested_subscription_months = 6
-    subtotal = 42.30
-    currency = 'GBP'
-    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
-
-    billing_street_1 = '4 Maine Street'
-    billing_street_2 = 'St Leonards'
-    town_or_city = 'Exeter'
-    county = 'Devon'
-    country = 'United Kingdom'
-    postcode = 'EX2 7ST'
-    card_number = '1111 1111 1111 1111'
-    expiry_date = None
-    ccv2 = 439
-    with pytest.raises(ValidationError):
-        confirm_payment(
-            id,
-            billing_street_1, billing_street_2, town_or_city, county, country, postcode,
-            card_number, expiry_date, ccv2
-        )
-
-@pytest.mark.django_db
-def test_update_payment_with_null_ccv2():
-    subscription_id = 1
-    requested_subscription_months = 6
-    subtotal = 42.30
-    currency = 'GBP'
-    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
-
-    billing_street_1 = '4 Maine Street'
-    billing_street_2 = 'St Leonards'
-    town_or_city = 'Exeter'
-    county = 'Devon'
-    country = 'United Kingdom'
-    postcode = 'EX2 7ST'
-    card_number = '1111 1111 1111 1111'
-    expiry_date = date.today()
-    ccv2 = None
-    with pytest.raises(ValidationError):
-        confirm_payment(
-            id,
-            billing_street_1, billing_street_2, town_or_city, county, country, postcode,
-            card_number, expiry_date, ccv2
-        )
+    with pytest.raises(InvalidRequestError):
+        confirm_payment(id, stripe_card_id)
 
 @pytest.mark.django_db
 def test_update_payment():
-    subscription_id = 1
-    requested_subscription_months = 6
-    subtotal = 42.30
-    currency = 'GBP'
-    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
-
-    billing_street_1 = '4 Maine Street'
-    billing_street_2 = 'St Leonards'
-    town_or_city = 'Exeter'
-    county = 'Devon'
-    country = 'United Kingdom'
-    postcode = 'EX2 7ST'
-    card_number = '1111 1111 1111 1111'
-    expiry_date = date.today()
-    ccv2 = 439
+    id = get_mock_payment_id()
+    stripe_card_id = 'pm_card_gb'
     
-    confirm_payment(
-        id,
-        billing_street_1, billing_street_2, town_or_city, county, country, postcode,
-        card_number, expiry_date, ccv2
-    )
+    confirm_payment(id, stripe_card_id)
 
     payment = Payment.objects.get(pk=id)
-    assert payment is not None
-    assert payment.billing_street_1 == billing_street_1
-    assert payment.billing_street_2 == billing_street_2
-    assert payment.town_or_city == town_or_city
-    assert payment.county == county
-    assert payment.country == country
-    assert payment.postcode == postcode
-    assert payment.card_number == card_number
-    assert payment.expiry_date == expiry_date
-    assert payment.ccv2 == ccv2
     assert payment.status == 3
+    assert payment.stripe_error is None
     assert payment.stripe_pid is not None
-
-@pytest.mark.django_db
-def test_update_payment_with_short_card_number():
-    subscription_id = 1
-    requested_subscription_months = 6
-    subtotal = 42.30
-    currency = 'GBP'
-    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
-
-    billing_street_1 = '4 Maine Street'
-    billing_street_2 = 'St Leonards'
-    town_or_city = 'Exeter'
-    county = 'Devon'
-    country = 'United Kingdom'
-    postcode = 'EX2 7ST'
-    card_number = '1111 1111 1111 111'
-    expiry_date = date.today()
-    ccv2 = 439
-    with pytest.raises(ValidationError):
-        confirm_payment(
-            id,
-            billing_street_1, billing_street_2, town_or_city, county, country, postcode,
-            card_number, expiry_date, ccv2
-        )
-
-@pytest.mark.django_db
-def test_update_payment_with_long_card_number():
-    subscription_id = 1
-    requested_subscription_months = 6
-    subtotal = 42.30
-    currency = 'GBP'
-    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
-
-    billing_street_1 = '4 Maine Street'
-    billing_street_2 = 'St Leonards'
-    town_or_city = 'Exeter'
-    county = 'Devon'
-    country = 'United Kingdom'
-    postcode = 'EX2 7ST'
-    card_number = '1111 1111 1111 1111 1'
-    expiry_date = date.today()
-    ccv2 = 439
-    with pytest.raises(ValidationError):
-        confirm_payment(
-            id,
-            billing_street_1, billing_street_2, town_or_city, county, country, postcode,
-            card_number, expiry_date, ccv2
-        )
-
-@pytest.mark.django_db
-def test_update_payment_with_non_date_expiry():
-    subscription_id = 1
-    requested_subscription_months = 6
-    subtotal = 42.30
-    currency = 'GBP'
-    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
-
-    billing_street_1 = '4 Maine Street'
-    billing_street_2 = 'St Leonards'
-    town_or_city = 'Exeter'
-    county = 'Devon'
-    country = 'United Kingdom'
-    postcode = 'EX2 7ST'
-    card_number = '1111 1111 1111 1111 1'
-    expiry_date = 51085
-    ccv2 = 439
-    with pytest.raises(ValidationError):
-        confirm_payment(
-            id,
-            billing_street_1, billing_street_2, town_or_city, county, country, postcode,
-            card_number, expiry_date, ccv2
-        )
-
-@pytest.mark.django_db
-def test_update_payment_with_non_numeric_ccv2():
-    subscription_id = 1
-    requested_subscription_months = 6
-    subtotal = 42.30
-    currency = 'GBP'
-    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
-
-    billing_street_1 = '4 Maine Street'
-    billing_street_2 = 'St Leonards'
-    town_or_city = 'Exeter'
-    county = 'Devon'
-    country = 'United Kingdom'
-    postcode = 'EX2 7ST'
-    card_number = '1111 1111 1111 1111 1'
-    expiry_date = date.today()
-    ccv2 = '439'
-    with pytest.raises(ValidationError):
-        confirm_payment(
-            id,
-            billing_street_1, billing_street_2, town_or_city, county, country, postcode,
-            card_number, expiry_date, ccv2
-        )
-
-@pytest.mark.django_db
-def test_update_payment_with_nonexistent_payment_id():
-    subscription_id = 1
-    requested_subscription_months = 6
-    subtotal = 42.30
-    currency = 'GBP'
-    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
-
-    billing_street_1 = '4 Maine Street'
-    billing_street_2 = 'St Leonards'
-    town_or_city = 'Exeter'
-    county = 'Devon'
-    country = 'United Kingdom'
-    postcode = 'EX2 7ST'
-    card_number = '1111 1111 1111 1111 1'
-    expiry_date = date.today()
-    ccv2 = '439'
-    with pytest.raises(ValidationError):
-        confirm_payment(
-            id,
-            billing_street_1, billing_street_2, town_or_city, county, country, postcode,
-            card_number, expiry_date, ccv2
-        )
 
 # Test posting the payment result
 @pytest.mark.django_db
