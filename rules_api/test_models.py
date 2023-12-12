@@ -82,53 +82,53 @@ def test_rule_tier_calculate_where_income_below_boundary():
 
 @pytest.mark.django_db
 def test_rule_tier_calculate_where_income_on_lower_boundary():
-    primary_income = 10000
-    tier = RuleTier(min_value=10000, max_value=45000, tier_rate=10)
+    rule = create_mock_simple_tiered_rate_rule(9000, 45000, 'salary', 20)
+    variables = create_mock_variable_table()
     results = create_mock_test_calculation_result()
-    tier.calculate(primary_income, results)
-    assert len(results) == 1
-    assert results[0] is not None
-    assert results[0]['tax_subtotal'] == round((primary_income - tier.min_value) * (tier.tier_rate / 100), 2)
+    rule.calculate(variables, results)
+    assert len(results.results.values()) == 1
+    assert results.results.values()[0] is not None
+    assert results.results.values()[0]['tax_payable'] == round((variables['salary'] - 9000) * (20 / 100), 2)
 
 @pytest.mark.django_db
 def test_rule_tier_calculate_where_income_within_boundaries():
-    primary_income = 25000
-    tier = RuleTier(min_value=10000, max_value=45000, tier_rate=10)
+    rule = create_mock_simple_tiered_rate_rule(9000, 45000, 'salary', 20)
+    variables = create_mock_variable_table(salary=25000)
     results = create_mock_test_calculation_result()
-    tier.calculate(primary_income, results)
-    assert len(results) == 1
-    assert results[0] is not None
-    assert results[0]['tax_subtotal'] == round((primary_income - tier.min_value) * (tier.tier_rate / 100), 2)
+    rule.calculate(variables, results)
+    assert len(results.results.values()) == 1
+    assert results.results.values()[0] is not None
+    assert results.results.values()[0]['tax_payable'] == round((25000 - 9000) * (20 / 100), 2)
 
 @pytest.mark.django_db
 def test_rule_tier_calculate_where_income_on_upper_boundary():
-    primary_income = 45000
-    tier = RuleTier(min_value=10000, max_value=45000, tier_rate=10)
+    rule = create_mock_simple_tiered_rate_rule(9000, 45000, 'salary', 20)
+    variables = create_mock_variable_table(salary=45000)
     results = create_mock_test_calculation_result()
-    tier.calculate(primary_income, results)
-    assert len(results) == 1
-    assert results[0] is not None
-    assert results[0]['tax_subtotal'] == round((tier.max_value - tier.min_value) * (tier.tier_rate / 100), 2)
+    rule.calculate(variables, results)
+    assert len(results.results.values()) == 1
+    assert results.results.values()[0] is not None
+    assert results.results.values()[0]['tax_payable'] == round((45000 - 9000) * (20 / 100), 2)
 
 @pytest.mark.django_db
 def test_rule_tier_calculate_where_income_above_upper_boundary():
-    primary_income = 45001
-    tier = RuleTier(min_value=10000, max_value=45000, tier_rate=10)
+    rule = create_mock_simple_tiered_rate_rule(9000, 45000, 'salary', 20)
+    variables = create_mock_variable_table(salary=45001)
     results = create_mock_test_calculation_result()
-    tier.calculate(primary_income, results)
-    assert len(results) == 1
-    assert results[0] is not None
-    assert results[0]['tax_subtotal'] == round((tier.max_value - tier.min_value) * (tier.tier_rate / 100), 2)
+    rule.calculate(variables, results)
+    assert len(results.results.values()) == 1
+    assert results.results.values()[0] is not None
+    assert results.results.values()[0]['tax_payable'] == round((45000 - 9000) * (20 / 100), 2)
 
 @pytest.mark.django_db
 def test_rule_tier_calculate_where_no_upper_boundary_and_income_above_lower_boundary():
-    primary_income = 45001
-    tier = RuleTier(min_value=10000, tier_rate=10)
+    rule = create_mock_simple_tiered_rate_rule(9000, None, 'salary', 20)
+    variables = create_mock_variable_table(salary=45000)
     results = create_mock_test_calculation_result()
-    tier.calculate(primary_income, results)
-    assert len(results) == 1
-    assert results[0] is not None
-    assert results[0]['tax_subtotal'] == round((primary_income - tier.min_value) * (tier.tier_rate / 100), 2)
+    rule.calculate(variables, results)
+    assert len(results.results.values()) == 1
+    assert results.results.values()[0] is not None
+    assert results.results.values()[0]['tax_payable'] == round((45000 - 9000) * (20 / 100), 2)
 
 # Test secondary rule tier calculations
 @pytest.mark.django_db
