@@ -1,6 +1,7 @@
 from django.db import models
 from polymorphic.models import PolymorphicModel
 from jurisdictions_api.models import Jurisdiction
+from django.core.validators import MinValueValidator
 # Create your models here.
 # This class contains the results for a given calculation across all jurisdictions in the comparison
 class TaxCalculationResult(models.Model):
@@ -56,10 +57,10 @@ class TaxRuleTierResult(models.Model):
     tier_name = models.CharField(max_length=255, null=True, blank=False)
 
     variable_name = models.CharField(max_length=255, null=False, blank=False)
-    variable_value = models.DecimalField(decimal_places=2, max_digits=10)
-    taxable_amount = models.DecimalField(decimal_places=2, max_digits=10)
-    tax_rate = models.DecimalField(decimal_places=2, max_digits=4)
-    tax_payable = models.DecimalField(decimal_places=2, max_digits=10)
+    variable_value = models.FloatField(null=False, blank=False, validators=[MinValueValidator(0.0)])
+    taxable_amount = models.FloatField(null=False, blank=False, validators=[MinValueValidator(0.0)])
+    tax_rate = models.FloatField(null=False, blank=False, validators=[MinValueValidator(0.0)])
+    tax_payable = models.FloatField(null=False, blank=False, validators=[MinValueValidator(0.0)])
     ordinal = models.IntegerField()
 
 # This class contains the types of tax categories
@@ -148,7 +149,7 @@ class RuleTier(models.Model):
     # This has to allow null as there will be no max value for some objects
     max_value = models.IntegerField(blank=True, null=True)
     ordinal = models.IntegerField()
-    tier_rate = models.DecimalField(decimal_places=2, max_digits=5)
+    tier_rate = models.FloatField(null=False, blank=False, validators=[MinValueValidator(0.0)])
 
     def calculate(self, variable, ruleset_results):
         max_value = self.max_value
@@ -174,9 +175,9 @@ class RuleTier(models.Model):
                 tier_name = str(self),
                 variable_name = self.rule.variable_name,
                 variable_value = variable,
-                taxable_amount = taxable_amount,
+                taxable_amount = round(taxable_amount, 2),
                 tax_rate = self.tier_rate,
-                tax_payable = tax_subtotal
+                tax_payable = round(tax_subtotal, 2)
             )
 
     def __str__(self):
@@ -204,7 +205,7 @@ class SecondaryTieredRateRule(Rule):
 class SecondaryRuleTier(models.Model):
     secondary_rule = models.ForeignKey(SecondaryTieredRateRule, on_delete=models.CASCADE, related_name='tiers')
     primary_tier = models.ForeignKey(RuleTier, on_delete=models.CASCADE, related_name='+')
-    tier_rate = models.DecimalField(decimal_places=2, max_digits=5)
+    tier_rate = models.FloatField(null=False, blank=False, validators=[MinValueValidator(0.0)])
 
     def calculate(self, primary_income, secondary_income, ruleset_results):
         # Get the tier max and mins from the primary tier
@@ -255,9 +256,9 @@ class SecondaryRuleTier(models.Model):
                 tier_name = str(self),
                 variable_name = self.secondary_rule.variable_name,
                 variable_value = secondary_income,
-                taxable_amount = taxable_amount,
+                taxable_amount = round(taxable_amount, 2),
                 tax_rate = self.tier_rate,
-                tax_payable = tax_subtotal
+                tax_payable = round(tax_subtotal, 2)
             )
 
     def __str__(self):
