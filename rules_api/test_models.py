@@ -8,8 +8,11 @@ import pytest
 # This validation is tested in test_services.py and test_views.py respectively.
 
 # Helper functions
-def create_mock_test_calculation_result():
-    tax_calculation_result = TaxCalculationResult.objects.create(username='bob')
+def create_mock_tax_calculation_result(username='bob'):
+    return TaxCalculationResult.objects.create(username=username)
+
+def create_mock_ruleset_calculation_result():
+    tax_calculation_result = create_mock_tax_calculation_result()
     return TaxRuleSetResult.objects.create(
         tax_calculation_result=tax_calculation_result,
         jurisdiction_id=1,
@@ -36,12 +39,26 @@ def create_mock_ruleset():
     )
     return ruleset
 
-def create_mock_tiered_rate_rule(variable_name):
+def create_mock_flat_rate_Rule(variable_name, rate, ruleset=None):
+    if ruleset is None:
+        ruleset = create_mock_ruleset()
+
+    return FlatRateRule.objects.create(
+        ruleset=ruleset,
+        variable_name=variable_name,
+        name='Rule Test',
+        ordinal=1,
+        flat_rate=rate
+    )
+
+def create_mock_tiered_rate_rule(variable_name, ordinal=1, ruleset=None):
+    if ruleset is None:
+        ruleset = create_mock_ruleset()
     rule = TieredRateRule.objects.create(
         variable_name=variable_name,
-        ruleset=create_mock_ruleset(),
+        ruleset=ruleset,
         name='Rule Test',
-        ordinal=1
+        ordinal=ordinal
     )
     return rule
 
@@ -93,7 +110,7 @@ def test_flat_rate_calculate():
         ordinal=1
     )
     variables = create_mock_variable_table()
-    results = create_mock_test_calculation_result()
+    results = create_mock_ruleset_calculation_result()
     rule.calculate(variables, results)
     assert len(results.results.values()) == 1
     assert results.results.values()[0] is not None
@@ -105,7 +122,7 @@ def test_flat_rate_calculate():
 def test_rule_tier_calculate_where_income_below_boundary():
     rule = create_mock_simple_tiered_rate_rule(10000, 45000, 'salary', 20)
     variables = create_mock_variable_table()
-    results = create_mock_test_calculation_result()
+    results = create_mock_ruleset_calculation_result()
     rule.calculate(variables, results)
     assert len(results.results.values()) == 0
 
@@ -113,7 +130,7 @@ def test_rule_tier_calculate_where_income_below_boundary():
 def test_rule_tier_calculate_where_income_on_lower_boundary():
     rule = create_mock_simple_tiered_rate_rule(9000, 45000, 'salary', 20)
     variables = create_mock_variable_table()
-    results = create_mock_test_calculation_result()
+    results = create_mock_ruleset_calculation_result()
     rule.calculate(variables, results)
     assert len(results.results.values()) == 1
     assert results.results.values()[0] is not None
@@ -123,7 +140,7 @@ def test_rule_tier_calculate_where_income_on_lower_boundary():
 def test_rule_tier_calculate_where_income_within_boundaries():
     rule = create_mock_simple_tiered_rate_rule(9000, 45000, 'salary', 20)
     variables = create_mock_variable_table(salary=25000)
-    results = create_mock_test_calculation_result()
+    results = create_mock_ruleset_calculation_result()
     rule.calculate(variables, results)
     assert len(results.results.values()) == 1
     assert results.results.values()[0] is not None
@@ -133,7 +150,7 @@ def test_rule_tier_calculate_where_income_within_boundaries():
 def test_rule_tier_calculate_where_income_on_upper_boundary():
     rule = create_mock_simple_tiered_rate_rule(9000, 45000, 'salary', 20)
     variables = create_mock_variable_table(salary=45000)
-    results = create_mock_test_calculation_result()
+    results = create_mock_ruleset_calculation_result()
     rule.calculate(variables, results)
     assert len(results.results.values()) == 1
     assert results.results.values()[0] is not None
@@ -143,7 +160,7 @@ def test_rule_tier_calculate_where_income_on_upper_boundary():
 def test_rule_tier_calculate_where_income_above_upper_boundary():
     rule = create_mock_simple_tiered_rate_rule(9000, 45000, 'salary', 20)
     variables = create_mock_variable_table(salary=45001)
-    results = create_mock_test_calculation_result()
+    results = create_mock_ruleset_calculation_result()
     rule.calculate(variables, results)
     assert len(results.results.values()) == 1
     assert results.results.values()[0] is not None
@@ -153,7 +170,7 @@ def test_rule_tier_calculate_where_income_above_upper_boundary():
 def test_rule_tier_calculate_where_no_upper_boundary_and_income_above_lower_boundary():
     rule = create_mock_simple_tiered_rate_rule(9000, None, 'salary', 20)
     variables = create_mock_variable_table(salary=45000)
-    results = create_mock_test_calculation_result()
+    results = create_mock_ruleset_calculation_result()
     rule.calculate(variables, results)
     assert len(results.results.values()) == 1
     assert results.results.values()[0] is not None
@@ -164,7 +181,7 @@ def test_rule_tier_calculate_where_no_upper_boundary_and_income_above_lower_boun
 def test_secondary_tier_calculate_where_total_income_below_lower_boundary():
     rule = create_mock_simple_secondary_tiered_rate_rule(1000000, 4000000, 'salary', 'dividends', 20, 8)
     variables = create_mock_variable_table()
-    results = create_mock_test_calculation_result()
+    results = create_mock_ruleset_calculation_result()
     rule.calculate(variables, results)
     assert len(results.results.values()) == 0
 
@@ -176,7 +193,7 @@ def test_secondary_tier_calculate_where_primary_income_on_lower_boundary_and_no_
     tier_max = 45000
     rule = create_mock_simple_secondary_tiered_rate_rule(tier_min, tier_max, 'salary', 'dividends', 20, 8)
     variables = create_mock_variable_table(salary=primary_income, dividends=secondary_income)
-    results = create_mock_test_calculation_result()
+    results = create_mock_ruleset_calculation_result()
     rule.calculate(variables, results)
     assert len(results.results.values()) == 0
 
@@ -188,7 +205,7 @@ def test_secondary_tier_calculate_where_primary_income_on_lower_boundary_and_tot
     tier_max = 45000
     rule = create_mock_simple_secondary_tiered_rate_rule(tier_min, tier_max, 'salary', 'dividends', 20, 8)
     variables = create_mock_variable_table(salary=primary_income, dividends=secondary_income)
-    results = create_mock_test_calculation_result()
+    results = create_mock_ruleset_calculation_result()
     rule.calculate(variables, results)
     assert len(results.results.values()) == 1
     assert results.results.values()[0] is not None
@@ -202,7 +219,7 @@ def test_secondary_tier_calculate_where_primary_income_and_total_within_boundari
     tier_max = 45000
     rule = create_mock_simple_secondary_tiered_rate_rule(tier_min, tier_max, 'salary', 'dividends', 20, 8)
     variables = create_mock_variable_table(salary=primary_income, dividends=secondary_income)
-    results = create_mock_test_calculation_result()
+    results = create_mock_ruleset_calculation_result()
     rule.calculate(variables, results)
     assert len(results.results.values()) == 1
     assert results.results.values()[0] is not None
@@ -219,7 +236,7 @@ def test_secondary_tier_calculate_where_primary_income_within_boundaries_and_tot
 
     rule = create_mock_simple_secondary_tiered_rate_rule(tier_min, tier_max, 'salary', 'dividends', 20, 8)
     variables = create_mock_variable_table(salary=primary_income, dividends=secondary_income)
-    results = create_mock_test_calculation_result()
+    results = create_mock_ruleset_calculation_result()
     rule.calculate(variables, results)
     assert len(results.results.values()) == 1
     assert results.results.values()[0] is not None
@@ -233,7 +250,7 @@ def test_secondary_tier_calculate_where_primary_income_on_upper_boundary_and_tot
     tier_max = 45000
     rule = create_mock_simple_secondary_tiered_rate_rule(tier_min, tier_max, 'salary', 'dividends', 20, 8)
     variables = create_mock_variable_table(salary=primary_income, dividends=secondary_income)
-    results = create_mock_test_calculation_result()
+    results = create_mock_ruleset_calculation_result()
     rule.calculate(variables, results)
     assert len(results.results.values()) == 0
 
@@ -245,7 +262,7 @@ def test_secondary_tier_calculate_where_primary_income_above_upper_boundary():
     tier_max = 45000
     rule = create_mock_simple_secondary_tiered_rate_rule(tier_min, tier_max, 'salary', 'dividends', 20, 8)
     variables = create_mock_variable_table(salary=primary_income, dividends=secondary_income)
-    results = create_mock_test_calculation_result()
+    results = create_mock_ruleset_calculation_result()
     rule.calculate(variables, results)
     assert len(results.results.values()) == 0
 
@@ -254,7 +271,7 @@ def test_secondary_tier_calculate_where_primary_income_above_upper_boundary():
 def test_tiered_rule_iteration_with_no_tiers_defined():
     rule = create_mock_tiered_rate_rule('salary')
     variables = create_mock_variable_table()
-    results = create_mock_test_calculation_result()
+    results = create_mock_ruleset_calculation_result()
     rule.calculate(variables, results)
     assert len(results.results.values()) == 0
 
@@ -262,7 +279,7 @@ def test_tiered_rule_iteration_with_no_tiers_defined():
 def test_tiered_rule_iteration_with_single_tier_defined():
     rule = create_mock_simple_tiered_rate_rule(9000, 45000, 'salary', 20)
     variables = create_mock_variable_table(salary=25000)
-    results = create_mock_test_calculation_result()
+    results = create_mock_ruleset_calculation_result()
     rule.calculate(variables, results)
     assert len(results.results.values()) == 1
     assert results.results.values()[0] is not None
@@ -273,7 +290,7 @@ def test_tiered_rule_iteration_with_multiple_tiers_defined():
     rule = create_mock_simple_tiered_rate_rule(9000, 45000, 'salary', 20)
     second_tier = create_mock_rule_tier(rule, 45001, 100000, 45)
     variables = create_mock_variable_table(salary=75000)
-    results = create_mock_test_calculation_result()
+    results = create_mock_ruleset_calculation_result()
     rule.calculate(variables, results)
     assert len(results.results.values()) == 2
 
@@ -331,30 +348,57 @@ def test_secondary_tiered_rule_iteration_with_multiple_tiers_defined():
 # Test iteration over rules within a ruleset/
 @pytest.mark.django_db
 def test_ruleset_iteration_with_no_rules_defined():
-    rs = RuleSet()
-    assert rs.next() is None
-    rs.reset()
-    assert rs.next() is None
+    ruleset = create_mock_ruleset()
+    variables = create_mock_variable_table(salary=75000)
+    results = create_mock_tax_calculation_result()
+    ruleset.calculate(variables, results)
+    assert len(results.results.values()) == 0
+
 
 @pytest.mark.django_db
 def test_ruleset_iteration_with_single_rule_defined():
-    rule1 = FlatRateRule(name='A')
-    rs = RuleSet(first_rule=rule1)
-    assert rs.next() is None
-    rs.reset()
-    next_rule = rs.next()
-    assert next_rule.name == 'A'
-    assert rs.next() is None
+    ruleset = create_mock_ruleset()
+    variables = create_mock_variable_table()
+    results = create_mock_tax_calculation_result()
+
+    dividend_rule = create_mock_flat_rate_Rule('dividends', 8, ruleset)
+    ruleset.calculate(variables, results)
+    assert len(results.results.values()) == 1
+
+    ruleset_result = results.results.first()
+
+    assert len(ruleset_result.results.values()) == 1
+    assert ruleset_result.results.values()[0] is not None
+    assert ruleset_result.results.values()[0]['tax_payable'] == round(variables['dividends'] * (8 / 100), 2)
+
 
 @pytest.mark.django_db
 def test_ruleset_iteration_with_multiple_rules_defined():
-    rule2 = FlatRateRule(name='B')
-    rule1 = FlatRateRule(name='A', next=rule2)
-    rs = RuleSet(first_rule=rule1)
-    assert rs.next() is None
-    rs.reset()
-    next_rule = rs.next()
-    assert next_rule.name == 'A'
-    next_rule = rs.next()
-    assert next_rule.name == 'B'
-    assert rs.next() is None
+    ruleset = create_mock_ruleset()
+    variables = create_mock_variable_table(salary=30000)
+    results = create_mock_tax_calculation_result()
+
+    dividend_rule = create_mock_flat_rate_Rule('dividends', 8, ruleset)
+    print(ruleset.rules.count())
+
+    salary_rule = create_mock_tiered_rate_rule('salary', 2, ruleset)
+    print(ruleset.rules.count())
+
+    tier1 = create_mock_rule_tier(salary_rule, 10000, 45000, 20)
+    assert ruleset.rules.count() == 2
+
+    ruleset.calculate(variables, results)
+
+    valid_results = [
+        round(variables['dividends'] * (8 / 100), 2),
+        round((variables['salary'] - 10000) * (20/100), 2)
+    ]
+    ruleset_result = results.results.first()
+
+    for tier_result in ruleset_result.results.all():
+        print(tier_result)
+        assert tier_result is not None
+        assert tier_result.tax_payable in valid_results
+    
+    assert ruleset_result.results.count() == 2
+    

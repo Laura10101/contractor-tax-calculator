@@ -79,15 +79,16 @@ class RuleSet(models.Model):
     ordinal = models.IntegerField()
 
     def calculate(self, variable_table, calculation_result):
-        ruleset_result = calculation_result.add_ruleset_result(
-            jurisdiction_id = self.jurisdiction_id,
-            tax_category_id = self.tax_category.id,
-            tax_category_name = self.tax_category.name
-        )
+        if self.rules.count() > 0:
+            ruleset_result = calculation_result.add_ruleset_result(
+                jurisdiction_id = self.jurisdiction_id,
+                tax_category_id = self.tax_category.id,
+                tax_category_name = self.tax_category.name
+            )
 
-        rules = self.rules.order_by('ordinal')
-        for rule in rules:
-            rule.calculate(variable_table, ruleset_result)
+            rules = self.rules.order_by('ordinal')
+            for rule in rules:
+                rule.calculate(variable_table, ruleset_result)
 
 
     def __str__(self):
@@ -116,9 +117,9 @@ class FlatRateRule(Rule):
     def calculate(self, variable_table, ruleset_results):
         variable_value = variable_table[self.variable_name]
         tax_total = variable_value * (self.flat_rate / 100)
-        print(self.flat_rate)
 
         # Add to the results dictionary
+        print('Adding flat rate rule result')
         ruleset_results.add_result(
             rule_id=self.id,
             rule_model_name='FlatRateRule',
@@ -166,6 +167,7 @@ class RuleTier(models.Model):
             taxable_amount = max_value - min_value
             tax_subtotal = taxable_amount * (self.tier_rate / 100)
 
+            print('Adding rule tier result')
             ruleset_results.add_result(
                 rule_id = self.rule.id,
                 rule_model_name = 'TieredRateRule',
