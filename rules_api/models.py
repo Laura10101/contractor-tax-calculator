@@ -152,29 +152,32 @@ class RuleTier(models.Model):
 
     def calculate(self, variable, ruleset_results):
         max_value = self.max_value
+        min_value = self.min_value
+        print('variable=' + str(variable) + ', min_val=' + str(min_value))
+        if variable >= min_value:
+            print('Processing tier...')
+            if max_value == None:
+                max_value = variable
 
-        if max_value == None:
-            max_value = variable
+            if variable < max_value:
+                max_value = variable
 
-        if variable < max_value:
-            max_value = variable
+            taxable_amount = max_value - min_value
+            tax_subtotal = taxable_amount * (self.tier_rate / 100)
 
-        taxable_amount = max_value - self.min_value
-        tax_subtotal = taxable_amount * (self.tier_rate / 100)
-
-        ruleset_results.add_result(
-            rule_id = self.rule.id,
-            rule_model_name = 'TieredRateRule',
-            rule_name = str(self.rule),
-            tier_id = self.id,
-            tier_model_name = 'RuleTier',
-            tier_name = str(self),
-            variable_name = self.rule.variable_name,
-            variable_value = variable,
-            taxable_amount = taxable_amount,
-            tax_rate = self.tier_rate,
-            tax_payable = tax_subtotal
-        )
+            ruleset_results.add_result(
+                rule_id = self.rule.id,
+                rule_model_name = 'TieredRateRule',
+                rule_name = str(self.rule),
+                tier_id = self.id,
+                tier_model_name = 'RuleTier',
+                tier_name = str(self),
+                variable_name = self.rule.variable_name,
+                variable_value = variable,
+                taxable_amount = taxable_amount,
+                tax_rate = self.tier_rate,
+                tax_payable = tax_subtotal
+            )
 
     def __str__(self):
         return str(self.rule) + ' - Tier ' + str(self.min_value)  + ' to ' + str(self.max_value)
