@@ -198,58 +198,56 @@ def test_secondary_tier_calculate_where_primary_income_on_lower_boundary_and_tot
 def test_secondary_tier_calculate_where_primary_income_and_total_within_boundaries():
     primary_income = 20000
     secondary_income = 10000
-    tier = RuleTier(min_value=10000, max_value=45000, tier_rate=10)
-    secondary_tier = SecondaryRuleTier(primary_tier=tier, tier_rate=10)
+    tier_min = 10000
+    tier_max = 45000
+    rule = create_mock_simple_secondary_tiered_rate_rule(tier_min, tier_max, 'salary', 'dividends', 20, 8)
+    variables = create_mock_variable_table(salary=primary_income, dividends=secondary_income)
     results = create_mock_test_calculation_result()
-    secondary_tier.calculate(secondary_income, primary_income, results)
-    assert len(results) == 1
-    assert results[0] is not None
-    assert results[0]['tax_subtotal'] == round(secondary_income * (tier.tier_rate / 100), 2)
+    rule.calculate(variables, results)
+    assert len(results.results.values()) == 1
+    assert results.results.values()[0] is not None
+    assert results.results.values()[0]['tax_payable'] == round(secondary_income * (8 / 100), 2)
 
 @pytest.mark.django_db
 def test_secondary_tier_calculate_where_primary_income_within_boundaries_and_total_exceeds():
     primary_income = 35000
     secondary_income = 20000
-    tier = RuleTier(min_value=10000, max_value=45000, tier_rate=10)
-    secondary_tier = SecondaryRuleTier(primary_tier=tier, tier_rate=10)
+    tier_min = 10000
+    tier_max = 45000
+    tier_amount = tier_max - tier_min
+    tier_amount_remaining = tier_amount - (primary_income - tier_min)
+
+    rule = create_mock_simple_secondary_tiered_rate_rule(tier_min, tier_max, 'salary', 'dividends', 20, 8)
+    variables = create_mock_variable_table(salary=primary_income, dividends=secondary_income)
     results = create_mock_test_calculation_result()
-    secondary_tier.calculate(secondary_income, primary_income, results)
-
-    tier_amount = tier.max_value - tier.min_value
-    tier_amount_remaining = tier_amount - (primary_income - tier.min_value)
-
-    assert len(results) == 1
-    assert results[0] is not None
-    assert results[0]['tax_subtotal'] == round(tier_amount_remaining * (tier.tier_rate / 100), 2)
+    rule.calculate(variables, results)
+    assert len(results.results.values()) == 1
+    assert results.results.values()[0] is not None
+    assert results.results.values()[0]['tax_payable'] == round(tier_amount_remaining * (8 / 100), 2)
 
 @pytest.mark.django_db
 def test_secondary_tier_calculate_where_primary_income_on_upper_boundary_and_total_exceeds():
     primary_income = 45000
     secondary_income = 20000
-    tier = RuleTier(min_value=10000, max_value=45000, tier_rate=10)
-    secondary_tier = SecondaryRuleTier(primary_tier=tier, tier_rate=10)
+    tier_min = 10000
+    tier_max = 45000
+    rule = create_mock_simple_secondary_tiered_rate_rule(tier_min, tier_max, 'salary', 'dividends', 20, 8)
+    variables = create_mock_variable_table(salary=primary_income, dividends=secondary_income)
     results = create_mock_test_calculation_result()
-    secondary_tier.calculate(secondary_income, primary_income, results)
-
-    tier_amount = tier.max_value - tier.min_value
-    tier_amount_remaining = tier_amount - (primary_income - tier.min_value)
-
-    assert len(results) == 1
-    assert results[0] is not None
-    assert results[0]['tax_subtotal'] == round(tier_amount_remaining * (tier.tier_rate / 100), 2)
+    rule.calculate(variables, results)
+    assert len(results.results.values()) == 0
 
 @pytest.mark.django_db
 def test_secondary_tier_calculate_where_primary_income_above_upper_boundary():
     primary_income = 45001
     secondary_income = 20000
-    tier = RuleTier(min_value=10000, max_value=45000, tier_rate=10)
-    secondary_tier = SecondaryRuleTier(primary_tier=tier, tier_rate=10)
+    tier_min = 10000
+    tier_max = 45000
+    rule = create_mock_simple_secondary_tiered_rate_rule(tier_min, tier_max, 'salary', 'dividends', 20, 8)
+    variables = create_mock_variable_table(salary=primary_income, dividends=secondary_income)
     results = create_mock_test_calculation_result()
-    secondary_tier.calculate(secondary_income, primary_income, results)
-
-    tier_amount = tier.max_value - tier.min_value
-    tier_amount_remaining = tier_amount - (primary_income - tier.min_value)
-    assert len(results) == 0
+    rule.calculate(variables, results)
+    assert len(results.results.values()) == 0
 
 # Test iteration over rule tiers
 @pytest.mark.django_db
