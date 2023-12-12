@@ -35,14 +35,16 @@ def create_mock_ruleset():
     )
     return ruleset
 
-def create_mock_simple_tiered_rate_rule(min_value, max_value, variable_name, tax_rate):
+def create_mock_tiered_rate_rule(variable_name):
     rule = TieredRateRule.objects.create(
         variable_name=variable_name,
         ruleset=create_mock_ruleset(),
-        name='Flat Rate Test',
+        name='Rule Test',
         ordinal=1
     )
+    return rule
 
+def create_mock_rule_tier(rule, min_value, max_value, tax_rate):
     rule_tier = RuleTier.objects.create(
         rule=rule,
         min_value=min_value,
@@ -50,7 +52,26 @@ def create_mock_simple_tiered_rate_rule(min_value, max_value, variable_name, tax
         ordinal=1,
         tier_rate=tax_rate
     )
+    return rule_tier
+
+def create_mock_simple_tiered_rate_rule(min_value, max_value, variable_name, tax_rate):
+    rule = create_mock_tiered_rate_rule(variable_name)
+    rule_tier = create_mock_rule_tier(rule, min_value, max_value, tax_rate)
     return rule
+
+def create_mock_secondary_tiered_rate_rule(primary_rule):
+    return SecondaryTieredRateRule.objects.create(primary_rule=primary_rule)
+
+def create_mock_secondary_rule_tier(secondary_rule, primary_tier, tier_rate):
+    return SecondaryRuleTier.objects.create(secondary_rule=secondary_rule, primary_tier=primary_tier, tier_rate=tier_rate)
+
+def create_mock_simple_secondary_tiered_rate_rule(min_value, max_value, variable_name, primary_rate, secondary_rate):
+    primary_rule = create_mock_tiered_rate_rule(variable_name)
+    primary_tier = create_mock_rule_tier(primary_rule, min_value, max_value, primary_rate)
+    secondary_rule = create_mock_secondary_tiered_rate_rule(primary_rule)
+    secondary_tier = create_mock_secondary_rule_tier(secondary_rule, primary_tier, secondary_rate)
+    return secondary_rule
+
 
 # Test flat rate calculations
 @pytest.mark.django_db
@@ -133,12 +154,10 @@ def test_rule_tier_calculate_where_no_upper_boundary_and_income_above_lower_boun
 # Test secondary rule tier calculations
 @pytest.mark.django_db
 def test_secondary_tier_calculate_where_total_income_below_lower_boundary():
-    primary_income = 9999
-    secondary_income = 0
-    tier = RuleTier(min_value=10000, max_value=45000, tier_rate=10)
-    secondary_tier = SecondaryRuleTier(primary_tier=tier, tier_rate=10)
+    rule = create_mock_simple_secondary_tiered_rate_rule(10000, 45000, 'salary', 20, 8)
+    variables = create_mock_variable_table()
     results = create_mock_test_calculation_result()
-    secondary_tier.calculate(secondary_income, primary_income, results)
+    rule.calculate(variables, results)
     assert len(results) == 0
 
 @pytest.mark.django_db
