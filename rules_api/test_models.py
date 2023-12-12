@@ -252,40 +252,38 @@ def test_secondary_tier_calculate_where_primary_income_above_upper_boundary():
 # Test iteration over rule tiers
 @pytest.mark.django_db
 def test_tiered_rule_iteration_with_no_tiers_defined():
-    rule = TieredRateRule()
-    rule.reset()
-    assert rule.next() is None
+    rule = create_mock_tiered_rate_rule('salary')
+    variables = create_mock_variable_table()
+    results = create_mock_test_calculation_result()
+    rule.calculate(variables, results)
+    assert len(results.results.values()) == 0
 
 @pytest.mark.django_db
 def test_tiered_rule_iteration_with_single_tier_defined():
-    tier = RuleTier(min_value=0, max_value=100)
-    rule = TieredRateRule(first_tier=tier)
-    assert rule.next() is None
-    rule.reset()
-    next_tier = rule.next()
-    assert next_tier is not None
-    assert next_tier.min_value == 0
-    assert next_tier.max_value == 100
-    next_tier = rule.next()
-    assert next_tier is None
+    rule = create_mock_simple_tiered_rate_rule(9000, 45000, 'salary', 20)
+    variables = create_mock_variable_table(salary=25000)
+    results = create_mock_test_calculation_result()
+    rule.calculate(variables, results)
+    assert len(results.results.values()) == 1
+    assert results.results.values()[0] is not None
+    assert results.results.values()[0]['tax_payable'] == round((25000 - 9000) * (20 / 100), 2)
 
 @pytest.mark.django_db
 def test_tiered_rule_iteration_with_multiple_tiers_defined():
-    tier2 = RuleTier(min_value=101, max_value=200)
-    tier1 = RuleTier(min_value=0, max_value=100, next=tier2)
-    rule = TieredRateRule(first_tier=tier1)
-    assert rule.next() is None
-    rule.reset()
-    next_tier = rule.next()
-    assert next_tier is not None
-    assert next_tier.min_value == 0
-    assert next_tier.max_value == 100
-    next_tier = rule.next()
-    assert next_tier is not None
-    assert next_tier.min_value == 101
-    assert next_tier.max_value == 200
-    next_tier = rule.next()
-    assert next_tier is None
+    rule = create_mock_simple_tiered_rate_rule(9000, 45000, 'salary', 20)
+    second_tier = create_mock_rule_tier(rule, 45001, 100000, 45)
+    variables = create_mock_variable_table(salary=75000)
+    results = create_mock_test_calculation_result()
+    rule.calculate(variables, results)
+    assert len(results.results.values()) == 2
+
+    # Calculate the amount of tax payable under the first tier 20% rate
+    assert results.results.values()[0] is not None
+    assert results.results.values()[0]['tax_payable'] == round((45000 - 9000) * (20 / 100), 2)
+
+    # Calculate the amount of tax payable under the second tier 45% rate
+    assert results.results.values()[1] is not None
+    assert results.results.values()[1]['tax_payable'] == round((75000 - 45001) * (45 / 100), 2)
 
 # Test iteration over secondary rule tiers
 @pytest.mark.django_db
