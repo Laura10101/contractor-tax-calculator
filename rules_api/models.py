@@ -192,11 +192,13 @@ class SecondaryTieredRateRule(Rule):
     primary_rule = models.ForeignKey(TieredRateRule, on_delete=models.CASCADE)
 
     def calculate(self, variable_table, ruleset_results):
-        tiers = self.tiers.order_by('ordinal')
+        tiers = self.tiers.order_by('primary_tier__ordinal')
         variable = variable_table[self.variable_name]
 
         for tier in tiers:
-            tier.calculate(variable_table, ruleset_results)
+            primary_income = variable_table[self.primary_rule.variable_name]
+            secondary_income = variable_table[self.variable_name]
+            tier.calculate(primary_income, secondary_income, ruleset_results)
 
 # This class represents a tier of a secondary tiered rate rule 
 class SecondaryRuleTier(models.Model):
@@ -228,7 +230,7 @@ class SecondaryRuleTier(models.Model):
             # and the primary income gives the amount of the secondary income
             # that has been taxed by lower tiers
             if primary_income < tier_min:
-                secondary_income_remaining = secondary_income - (lower_limit - primary_income)
+                secondary_income_remaining = secondary_income - (tier_min - primary_income)
             else:
                 secondary_income_remaining = secondary_income
 
@@ -252,6 +254,7 @@ class SecondaryRuleTier(models.Model):
                 tier_model_name = 'SecondaryRuleTier',
                 tier_name = str(self),
                 variable_name = self.secondary_rule.variable_name,
+                variable_value = secondary_income,
                 taxable_amount = taxable_amount,
                 tax_rate = self.tier_rate,
                 tax_payable = tax_subtotal

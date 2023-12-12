@@ -26,7 +26,8 @@ def create_mock_variable_table(salary=9000, dividends=50000, company_profit=1000
     }
 
 def create_mock_ruleset():
-    jurisdiction = Jurisdiction.objects.create(name='Test Jurisdiction')
+    jurisdiction_count = Jurisdiction.objects.count()
+    jurisdiction = Jurisdiction.objects.create(name='Test Jurisdiction ' + str(jurisdiction_count))
     tax_category = TaxCategory.objects.create(name='Test Category')
     ruleset = RuleSet.objects.create(
         jurisdiction_id=jurisdiction.id,
@@ -59,16 +60,23 @@ def create_mock_simple_tiered_rate_rule(min_value, max_value, variable_name, tax
     rule_tier = create_mock_rule_tier(rule, min_value, max_value, tax_rate)
     return rule
 
-def create_mock_secondary_tiered_rate_rule(primary_rule):
-    return SecondaryTieredRateRule.objects.create(primary_rule=primary_rule)
+def create_mock_secondary_tiered_rate_rule(primary_rule, variable_name):
+    return SecondaryTieredRateRule.objects.create(
+        primary_rule=primary_rule,
+        ruleset=create_mock_ruleset(),
+        name='Secondary Tiered Rule Test',
+        ordinal=1,
+        variable_name=variable_name
+    )
 
 def create_mock_secondary_rule_tier(secondary_rule, primary_tier, tier_rate):
     return SecondaryRuleTier.objects.create(secondary_rule=secondary_rule, primary_tier=primary_tier, tier_rate=tier_rate)
 
-def create_mock_simple_secondary_tiered_rate_rule(min_value, max_value, variable_name, primary_rate, secondary_rate):
-    primary_rule = create_mock_tiered_rate_rule(variable_name)
+def create_mock_simple_secondary_tiered_rate_rule(min_value, max_value, primary_variable,
+            secondary_variable, primary_rate, secondary_rate):
+    primary_rule = create_mock_tiered_rate_rule(primary_variable)
     primary_tier = create_mock_rule_tier(primary_rule, min_value, max_value, primary_rate)
-    secondary_rule = create_mock_secondary_tiered_rate_rule(primary_rule)
+    secondary_rule = create_mock_secondary_tiered_rate_rule(primary_rule, secondary_variable)
     secondary_tier = create_mock_secondary_rule_tier(secondary_rule, primary_tier, secondary_rate)
     return secondary_rule
 
@@ -154,11 +162,11 @@ def test_rule_tier_calculate_where_no_upper_boundary_and_income_above_lower_boun
 # Test secondary rule tier calculations
 @pytest.mark.django_db
 def test_secondary_tier_calculate_where_total_income_below_lower_boundary():
-    rule = create_mock_simple_secondary_tiered_rate_rule(10000, 45000, 'salary', 20, 8)
+    rule = create_mock_simple_secondary_tiered_rate_rule(1000000, 4000000, 'salary', 'dividends', 20, 8)
     variables = create_mock_variable_table()
     results = create_mock_test_calculation_result()
     rule.calculate(variables, results)
-    assert len(results) == 0
+    assert len(results.results.values()) == 0
 
 @pytest.mark.django_db
 def test_secondary_tier_calculate_where_primary_income_on_lower_boundary_and_no_secondary_income():
