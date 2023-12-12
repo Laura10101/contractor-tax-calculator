@@ -37,6 +37,7 @@ class TaxRuleSetResult(models.Model):
             variable_name=variable_name,
             variable_value=variable_value,
             taxable_amount=taxable_amount,
+            tax_rate=tax_rate,
             tax_payable=tax_payable,
             ordinal=self.results.count()
         )
@@ -114,6 +115,7 @@ class FlatRateRule(Rule):
     def calculate(self, variable_table, ruleset_results):
         variable_value = variable_table[self.variable_name]
         tax_total = variable_value * (self.flat_rate / 100)
+        print(self.flat_rate)
 
         # Add to the results dictionary
         ruleset_results.add_result(
