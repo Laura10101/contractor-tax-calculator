@@ -49,19 +49,33 @@ def test_flat_rate_calculate():
     variables = create_mock_variable_table()
     results = create_mock_test_calculation_result()
     rule.calculate(variables, results)
-    assert len(results) == 1
-    assert results[0] is not None
-    assert results[0]['tax_subtotal'] == variables['company_profit'] * (flat_rate / 100)
+    assert len(results.results.values()) == 1
+    assert results.results.values()[0] is not None
+    assert results.results.values()[0]['tax_payable'] == variables['company_profit'] * (flat_rate / 100)
 
 
 # Test rule tier calculations
 @pytest.mark.django_db
 def test_rule_tier_calculate_where_income_below_boundary():
-    primary_income = 9999
-    tier = RuleTier(min_value=10000, max_value=45000, tier_rate=10)
+    flat_rate = 20
+    rule = TieredRateRule.objects.create(
+        variable_name='salary',
+        ruleset=create_mock_ruleset(),
+        name='Flat Rate Test',
+        ordinal=1
+    )
+
+    rule_tier = RuleTier.objects.create(
+        rule=rule,
+        min_value=10000,
+        max_value=45000,
+        ordinal=1,
+        tier_rate=20
+    )
+    variables = create_mock_variable_table()
     results = create_mock_test_calculation_result()
-    tier.calculate(primary_income, results)
-    assert len(results) == 0
+    rule.calculate(variables, results)
+    assert len(results.results.values()) == 0
 
 @pytest.mark.django_db
 def test_rule_tier_calculate_where_income_on_lower_boundary():
