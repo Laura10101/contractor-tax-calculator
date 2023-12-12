@@ -137,7 +137,7 @@ class TieredRateRule(Rule):
         variable = variable_table[self.variable_name]
 
         for tier in tiers:
-            tier.calculate(variable_table, ruleset_results)
+            tier.calculate(variable, ruleset_results)
 
 # This class represents a single tax tier within a tiered rate rule
 class RuleTier(models.Model):
@@ -170,6 +170,7 @@ class RuleTier(models.Model):
             tier_model_name = 'RuleTier',
             tier_name = str(self),
             variable_name = self.rule.variable_name,
+            variable_value = variable,
             taxable_amount = taxable_amount,
             tax_rate = self.tier_rate,
             tax_payable = tax_subtotal
