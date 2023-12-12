@@ -172,11 +172,13 @@ def test_secondary_tier_calculate_where_total_income_below_lower_boundary():
 def test_secondary_tier_calculate_where_primary_income_on_lower_boundary_and_no_secondary_income():
     primary_income = 10000
     secondary_income = 0
-    tier = RuleTier(min_value=10000, max_value=45000, tier_rate=10)
-    secondary_tier = SecondaryRuleTier(primary_tier=tier, tier_rate=10)
+    tier_min = primary_income
+    tier_max = 45000
+    rule = create_mock_simple_secondary_tiered_rate_rule(tier_min, tier_max, 'salary', 'dividends', 20, 8)
+    variables = create_mock_variable_table(salary=primary_income, dividends=secondary_income)
     results = create_mock_test_calculation_result()
-    secondary_tier.calculate(secondary_income, primary_income, results)
-    assert len(results) == 0
+    rule.calculate(variables, results)
+    assert len(results.results.values()) == 0
 
 @pytest.mark.django_db
 def test_secondary_tier_calculate_where_primary_income_on_lower_boundary_and_total_within_boundaries():

@@ -192,13 +192,13 @@ class SecondaryTieredRateRule(Rule):
     primary_rule = models.ForeignKey(TieredRateRule, on_delete=models.CASCADE)
 
     def calculate(self, variable_table, ruleset_results):
-        tiers = self.tiers.order_by('primary_tier__ordinal')
-        variable = variable_table[self.variable_name]
+        primary_income = variable_table[self.primary_rule.variable_name]
+        secondary_income = variable_table[self.variable_name]
 
-        for tier in tiers:
-            primary_income = variable_table[self.primary_rule.variable_name]
-            secondary_income = variable_table[self.variable_name]
-            tier.calculate(primary_income, secondary_income, ruleset_results)
+        if secondary_income > 0:
+            tiers = self.tiers.order_by('primary_tier__ordinal')
+            for tier in tiers:
+                tier.calculate(primary_income, secondary_income, ruleset_results)
 
 # This class represents a tier of a secondary tiered rate rule 
 class SecondaryRuleTier(models.Model):
