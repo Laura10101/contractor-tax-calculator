@@ -35,6 +35,23 @@ def create_mock_ruleset():
     )
     return ruleset
 
+def create_mock_simple_tiered_rate_rule(min_value, max_value, variable_name, tax_rate):
+    rule = TieredRateRule.objects.create(
+        variable_name=variable_name,
+        ruleset=create_mock_ruleset(),
+        name='Flat Rate Test',
+        ordinal=1
+    )
+
+    rule_tier = RuleTier.objects.create(
+        rule=rule,
+        min_value=min_value,
+        max_value=max_value,
+        ordinal=1,
+        tier_rate=tax_rate
+    )
+    return rule
+
 # Test flat rate calculations
 @pytest.mark.django_db
 def test_flat_rate_calculate():
@@ -57,21 +74,7 @@ def test_flat_rate_calculate():
 # Test rule tier calculations
 @pytest.mark.django_db
 def test_rule_tier_calculate_where_income_below_boundary():
-    flat_rate = 20
-    rule = TieredRateRule.objects.create(
-        variable_name='salary',
-        ruleset=create_mock_ruleset(),
-        name='Flat Rate Test',
-        ordinal=1
-    )
-
-    rule_tier = RuleTier.objects.create(
-        rule=rule,
-        min_value=10000,
-        max_value=45000,
-        ordinal=1,
-        tier_rate=20
-    )
+    rule = create_mock_simple_tiered_rate_rule(10000, 45000, 'salary', 20)
     variables = create_mock_variable_table()
     results = create_mock_test_calculation_result()
     rule.calculate(variables, results)
