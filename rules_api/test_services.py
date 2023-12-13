@@ -793,51 +793,175 @@ def test_create_secondary_tiered_rate_rule_with_null_data():
 
 @pytest.mark.django_db
 def test_create_secondary_tiered_rate_rule_with_null_ruleset_id():
-    pass
+    ruleset = create_mock_ruleset()
+    ruleset_id = None
+    primary_rule_id = create_mock_tiered_rate_rule('Test Tiered Rule', 1, ruleset).id
+    name = 'Test Rule'
+    ordinal = 1
+    explainer = 'Test explainer'
+    variable_name = 'salary'
+
+    with pytest.raises(RuleSet.DoesNotExist):
+        id = create_secondary_tiered_rate_rule(ruleset_id, primary_rule_id, name, ordinal, explainer, variable_name)
 
 @pytest.mark.django_db
 def test_create_secondary_tiered_rate_rule_with_non_existent_ruleset_id():
-    pass
+    ruleset = create_mock_ruleset()
+    ruleset_id = 479
+    primary_rule_id = create_mock_tiered_rate_rule('Test Tiered Rule', 1, ruleset).id
+    name = 'Test Rule'
+    ordinal = 1
+    explainer = 'Test explainer'
+    variable_name = 'salary'
+
+    with pytest.raises(RuleSet.DoesNotExist):
+        id = create_secondary_tiered_rate_rule(ruleset_id, primary_rule_id, name, ordinal, explainer, variable_name)
 
 @pytest.mark.django_db
 def test_create_secondary_tiered_rate_rule_with_non_numeric_ruleset_id():
-    pass
+    ruleset = create_mock_ruleset()
+    ruleset_id = 'ABC'
+    primary_rule_id = create_mock_tiered_rate_rule('Test Tiered Rule', 1, ruleset).id
+    name = 'Test Rule'
+    ordinal = 1
+    explainer = 'Test explainer'
+    variable_name = 'salary'
+
+    with pytest.raises(RuleSet.DoesNotExist):
+        id = create_secondary_tiered_rate_rule(ruleset_id, primary_rule_id, name, ordinal, explainer, variable_name)
 
 @pytest.mark.django_db
 def test_create_secondary_tiered_rate_rule_with_null_primary_rule_id():
-    pass
+    ruleset = create_mock_ruleset()
+    ruleset_id = ruleset.id
+    primary_rule_id = None
+    name = 'Test Rule'
+    ordinal = 1
+    explainer = 'Test explainer'
+    variable_name = 'salary'
+
+    with pytest.raises(TieredRateRule.DoesNotExist):
+        id = create_secondary_tiered_rate_rule(ruleset_id, primary_rule_id, name, ordinal, explainer, variable_name)
 
 @pytest.mark.django_db
 def test_create_secondary_tiered_rate_rule_with_non_existent_primary_rule_id():
-    pass
+    ruleset = create_mock_ruleset()
+    ruleset_id = ruleset.id
+    primary_rule_id = 479
+    name = 'Test Rule'
+    ordinal = 1
+    explainer = 'Test explainer'
+    variable_name = 'salary'
+
+    with pytest.raises(TieredRateRule.DoesNotExist):
+        id = create_secondary_tiered_rate_rule(ruleset_id, primary_rule_id, name, ordinal, explainer, variable_name)
 
 @pytest.mark.django_db
 def test_create_secondary_tiered_rate_rule_with_non_numeric_primary_rule_id():
-    pass
+    ruleset = create_mock_ruleset()
+    ruleset_id = ruleset.id
+    primary_rule_id = 'ABC'
+    name = 'Test Rule'
+    ordinal = 1
+    explainer = 'Test explainer'
+    variable_name = 'salary'
+
+    with pytest.raises(TieredRateRule.DoesNotExist):
+        id = create_secondary_tiered_rate_rule(ruleset_id, primary_rule_id, name, ordinal, explainer, variable_name)
 
 @pytest.mark.django_db
-def test_crete_secondary_iered_rate_rule_with_null_name():
-    pass
+def test_crete_secondary_tiered_rate_rule_with_null_name():
+    ruleset = create_mock_ruleset()
+    ruleset_id = ruleset.id
+    primary_rule_id = create_mock_tiered_rate_rule('Test Tiered Rule', 1, ruleset).id
+    name = None
+    ordinal = 1
+    explainer = 'Test explainer'
+    variable_name = 'salary'
+
+    with pytest.raises(ValidationError):
+        id = create_secondary_tiered_rate_rule(ruleset_id, primary_rule_id, name, ordinal, explainer, variable_name)
 
 @pytest.mark.django_db
 def test_create_secondary_tiered_rate_rule_with_null_ordinal():
-    pass
+    ruleset = create_mock_ruleset()
+    ruleset_id = ruleset.id
+    primary_rule_id = create_mock_tiered_rate_rule('Test Tiered Rule', 1, ruleset).id
+    name = 'Test Rule'
+    ordinal = None
+    explainer = 'Test explainer'
+    variable_name = 'salary'
+
+    with pytest.raises(ValidationError):
+        id = create_secondary_tiered_rate_rule(ruleset_id, primary_rule_id, name, ordinal, explainer, variable_name)
 
 @pytest.mark.django_db
 def test_create_secondary_tiered_rate_rule_with_non_numeric_ordinal():
-    pass
+    ruleset = create_mock_ruleset()
+    ruleset_id = ruleset.id
+    primary_rule_id = create_mock_tiered_rate_rule('Test Tiered Rule', 1, ruleset).id
+    name = 'Test Rule'
+    ordinal = 'ABC'
+    explainer = 'Test explainer'
+    variable_name = 'salary'
+
+    with pytest.raises(ValidationError):
+        id = create_secondary_tiered_rate_rule(ruleset_id, primary_rule_id, name, ordinal, explainer, variable_name)
 
 @pytest.mark.django_db
 def test_create_secondary_tiered_rate_rule_with_nulL_explainer():
-    pass
+    ruleset = create_mock_ruleset()
+    ruleset_id = ruleset.id
+    primary_rule_id = create_mock_tiered_rate_rule('Test Tiered Rule', 1, ruleset).id
+    name = 'Test Rule'
+    ordinal = 1
+    explainer = None
+    variable_name = 'salary'
+
+    id = create_secondary_tiered_rate_rule(ruleset_id, primary_rule_id, name, ordinal, explainer, variable_name)
+
+    assert id is not None
+
+    rule = SecondaryTieredRateRule.objects.get(id)
+
+    assert rule.name == name
+    assert rule.ordinal == ordinal
+    assert rule.explainer == explainer
+    assert rule.variable_name == variable_name
 
 @pytest.mark.django_db
 def test_create_secondary_tiered_rate_rule_with_null_variable_name():
-    pass
+    ruleset = create_mock_ruleset()
+    ruleset_id = ruleset.id
+    primary_rule_id = create_mock_tiered_rate_rule('Test Tiered Rule', 1, ruleset).id
+    name = 'Test Rule'
+    ordinal = 1
+    explainer = 'Test explainer'
+    variable_name = None
+
+    with pytest.raises(ValidationError):
+        id = create_secondary_tiered_rate_rule(ruleset_id, primary_rule_id, name, ordinal, explainer, variable_name)
 
 @pytest.mark.django_db
 def test_create_valid_secondary_tiered_rate_rule():
-    pass
+    ruleset = create_mock_ruleset()
+    ruleset_id = ruleset.id
+    primary_rule_id = create_mock_tiered_rate_rule('Test Tiered Rule', 1, ruleset).id
+    name = 'Test Rule'
+    ordinal = 1
+    explainer = 'Test explainer'
+    variable_name = 'salary'
+
+    id = create_secondary_tiered_rate_rule(ruleset_id, primary_rule_id, name, ordinal, explainer, variable_name)
+
+    assert id is not None
+
+    rule = SecondaryTieredRateRule.objects.get(id)
+
+    assert rule.name == name
+    assert rule.ordinal == ordinal
+    assert rule.explainer == explainer
+    assert rule.variable_name == variable_name
 
 # Secondary tiered rate rule updates
 @pytest.mark.django_db
