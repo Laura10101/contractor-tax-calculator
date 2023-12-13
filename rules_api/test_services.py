@@ -331,55 +331,185 @@ def test_create_valid_flat_rate_rule():
 # Flat rate rule updates
 @pytest.mark.django_db
 def test_update_flat_rate_rule_with_null_data():
-    pass
+    rule_id = None
+    name = None
+    ordinal = None
+    explainer = None
+    variable_name = None
+    flat_rate = None
+
+    with pytest.raises(FlatRateRule.DoesNotExist):
+        update_flat_rate_rule(rule_id, name, ordinal, explainer, variable_name, flat_rate)
 
 @pytest.mark.django_db
 def test_update_flat_rate_rule_with_null_rule_id():
-    pass
+    rule_id = None
+    name = 'Test rule'
+    ordinal = 1
+    explainer = 'Test explainer'
+    variable_name = 'salary'
+    flat_rate = 20
+
+    with pytest.raises(FlatRateRule.DoesNotExist):
+        update_flat_rate_rule(rule_id, name, ordinal, explainer, variable_name, flat_rate)
 
 @pytest.mark.django_db
 def test_update_flat_rate_rule_with_non_existent_rule_id():
-    pass
+    rule_id = 479
+    name = 'Test rule'
+    ordinal = 1
+    explainer = 'Test explainer'
+    variable_name = 'salary'
+    flat_rate = 20
+
+    with pytest.raises(FlatRateRule.DoesNotExist):
+        update_flat_rate_rule(rule_id, name, ordinal, explainer, variable_name, flat_rate)
 
 @pytest.mark.django_db
 def test_update_flat_rate_rule_with_non_numeric_rule_id():
-    pass
+    rule_id = 'ABC'
+    name = 'Test rule'
+    ordinal = 1
+    explainer = 'Test explainer'
+    variable_name = 'salary'
+    flat_rate = 20
+
+    with pytest.raises(FlatRateRule.DoesNotExist):
+        update_flat_rate_rule(rule_id, name, ordinal, explainer, variable_name, flat_rate)
 
 @pytest.mark.django_db
 def test_update_flat_rate_rule_with_null_name():
-    pass
+    rule_id = create_mock_flat_rate_Rule('salary', 20, create_mock_ruleset()).id
+    assert rule_id is not None
+
+    name = None
+    ordinal = 1
+    explainer = 'Test explainer'
+    variable_name = 'salary'
+    flat_rate = 20
+
+    with pytest.raises(ValidationError):
+        update_flat_rate_rule(rule_id, name, ordinal, explainer, variable_name, flat_rate)
 
 @pytest.mark.django_db
 def test_update_flat_rate_rule_with_null_ordinal():
-    pass
+    rule_id = create_mock_flat_rate_Rule('salary', 20, create_mock_ruleset()).id
+    assert rule_id is not None
+
+    name = 'Test rule'
+    ordinal = None
+    explainer = 'Test explainer'
+    variable_name = 'salary'
+    flat_rate = 20
+
+    with pytest.raises(ValidationError):
+        update_flat_rate_rule(rule_id, name, ordinal, explainer, variable_name, flat_rate)
 
 @pytest.mark.django_db
 def test_update_flat_rate_rule_with_non_numeric_ordinal():
-    pass
+    rule_id = create_mock_flat_rate_Rule('salary', 20, create_mock_ruleset()).id
+    assert rule_id is not None
+
+    name = 'Test rule'
+    ordinal = 'ABC'
+    explainer = 'Test explainer'
+    variable_name = 'salary'
+    flat_rate = 20
+
+    with pytest.raises(ValidationError):
+        update_flat_rate_rule(rule_id, name, ordinal, explainer, variable_name, flat_rate)
 
 @pytest.mark.django_db
 def test_update_flat_rate_rule_with_nulL_explainer():
-    pass
+    rule_id = create_mock_flat_rate_Rule('salary', 20, create_mock_ruleset()).id
+    assert rule_id is not None
+
+    name = 'Test rule'
+    ordinal = 1
+    explainer = None
+    variable_name = 'salary'
+    flat_rate = 20
+
+    update_flat_rate_rule(rule_id, name, ordinal, explainer, variable_name, flat_rate)
+
+    rule = FlatRateRule.objects.get(pk=id)
+    assert rule.name == name
+    assert rule.variable_name == variable_name
+    assert rule.flat_rate == flat_rate
 
 @pytest.mark.django_db
 def test_update_flat_rate_rule_with_null_variable_name():
-    pass
+    rule_id = create_mock_flat_rate_Rule('salary', 20, create_mock_ruleset()).id
+    assert rule_id is not None
+
+    name = 'Test rule'
+    ordinal = 1
+    explainer = 'Test explainer'
+    variable_name = None
+    flat_rate = 20
+
+    with pytest.raises(ValidationError):
+        update_flat_rate_rule(rule_id, name, ordinal, explainer, variable_name, flat_rate)
 
 @pytest.mark.django_db
 def test_update_flat_rate_rule_with_null_flat_rate():
-    pass
+    rule_id = create_mock_flat_rate_Rule('salary', 20, create_mock_ruleset()).id
+    assert rule_id is not None
+
+    name = 'Test rule'
+    ordinal = 1
+    explainer = 'Test explainer'
+    variable_name = 'salary'
+    flat_rate = None
+
+    with pytest.raises(ValidationError):
+        update_flat_rate_rule(rule_id, name, ordinal, explainer, variable_name, flat_rate)
 
 @pytest.mark.django_db
 def test_update_flat_rate_rule_with_non_numeric_flat_rate():
-    pass
+    rule_id = create_mock_flat_rate_Rule('salary', 20, create_mock_ruleset()).id
+    assert rule_id is not None
+
+    name = 'Test rule'
+    ordinal = 1
+    explainer = 'Test explainer'
+    variable_name = 'salary'
+    flat_rate = 'ABC'
+
+    with pytest.raises(ValidationError):
+        update_flat_rate_rule(rule_id, name, ordinal, explainer, variable_name, flat_rate)
 
 @pytest.mark.django_db
 def test_update_flat_rate_rule_with_negative_flat_rate():
-    pass
+    rule_id = create_mock_flat_rate_Rule('salary', 20, create_mock_ruleset()).id
+    assert rule_id is not None
+
+    name = 'Test rule'
+    ordinal = 1
+    explainer = 'Test explainer'
+    variable_name = 'salary'
+    flat_rate = -20
+
+    with pytest.raises(ValidationError):
+        update_flat_rate_rule(rule_id, name, ordinal, explainer, variable_name, flat_rate)
 
 @pytest.mark.django_db
 def test_update_valid_flat_rate_rule():
-    pass
+    rule_id = create_mock_flat_rate_Rule('salary', 20, create_mock_ruleset()).id
+    assert rule_id is not None
+
+    name = 'Test rule'
+    ordinal = 1
+    explainer = 'Test explainer'
+    variable_name = 'salary'
+    flat_rate = 20
+
+    update_flat_rate_rule(rule_id, name, ordinal, explainer, variable_name, flat_rate)
+
+    rule = FlatRateRule.objects.get(pk=id)
+    assert rule.name == name
+    assert rule.variable_name == variable_name
+    assert rule.flat_rate == flat_rate
 
 
 # Tiered rate rule creation
