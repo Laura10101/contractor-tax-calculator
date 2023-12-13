@@ -77,10 +77,12 @@ def create_mock_simple_tiered_rate_rule(min_value, max_value, variable_name, tax
     rule_tier = create_mock_rule_tier(rule, min_value, max_value, tax_rate)
     return rule
 
-def create_mock_secondary_tiered_rate_rule(primary_rule, variable_name):
+def create_mock_secondary_tiered_rate_rule(primary_rule, variable_name, ruleset=None):
+    if ruleset is None:
+        ruleset = primary_rule.ruleset
     return SecondaryTieredRateRule.objects.create(
         primary_rule=primary_rule,
-        ruleset=create_mock_ruleset(),
+        ruleset=ruleset,
         name='Secondary Tiered Rule Test',
         ordinal=1,
         variable_name=variable_name
@@ -93,6 +95,7 @@ def create_mock_simple_secondary_tiered_rate_rule(min_value, max_value, primary_
             secondary_variable, primary_rate, secondary_rate):
     primary_rule = create_mock_tiered_rate_rule(primary_variable)
     primary_tier = create_mock_rule_tier(primary_rule, min_value, max_value, primary_rate)
+
     secondary_rule = create_mock_secondary_tiered_rate_rule(primary_rule, secondary_variable)
     secondary_tier = create_mock_secondary_rule_tier(secondary_rule, primary_tier, secondary_rate)
     return secondary_rule
@@ -305,45 +308,66 @@ def test_tiered_rule_iteration_with_multiple_tiers_defined():
 # Test iteration over secondary rule tiers
 @pytest.mark.django_db
 def test_secondary_tiered_rule_iteration_with_no_tiers_defined():
-    rule = SecondaryTieredRateRule()
-    rule.reset()
-    assert rule.next() is None
+    ruleset = create_mock_ruleset()
+    primary_rule = create_mock_tiered_rate_rule('salary', 1, ruleset)
+    secondary_rule = create_mock_secondary_tiered_rate_rule(primary_rule, 'dividends')
+    variables = create_mock_variable_table()
+    results = create_mock_ruleset_calculation_result()
+    secondary_rule.calculate(variables, results)
+    assert len(results.results.values()) == 0
 
 @pytest.mark.django_db
 def test_secondary_tiered_rule_iteration_with_single_tier_defined():
-    ptier1 = RuleTier(min_value=0, max_value=100)
+    secondary_rate_rule = create_mock_simple_secondary_tiered_rate_rule(10000, 45000, 'salary', 'dividends', 20, 8)
 
-    tier1 = SecondaryRuleTier(primary_tier=ptier1)
-    rule = SecondaryTieredRateRule(first_tier=tier1)
-    assert rule.next() is None
-    rule.reset()
-    next_tier = rule.next()
-    assert next_tier is not None
-    assert next_tier.primary_rule.min_value == 0
-    assert next_tier.primary_rule.max_value == 100
-    next_tier = rule.next()
-    assert next_tier is None
+    variables = create_mock_variable_table(salary=9000, dividends=50000)
+    results = create_mock_ruleset_calculation_result()
+    secondary_rate_rule.calculate(variables, results)
+    
+    # None of this tier has been used by the primary income
+    # Calculate tier remaining for use by secondary income as max - min
+    tier_remaining = 45000 - 10000
+    # Dividends is 50000 so all of this tier will be used up
+    # Taxable amount is therefore just the tier remaining
+    taxable_amount = tier_remaining
+    tax_payable = round(taxable_amount * (8/100), 2)
+
+    assert len(results.results.values()) == 1
+    assert results.results.values()[0] is not None
+    assert results.results.values()[0]['tax_payable'] == tax_payable
 
 @pytest.mark.django_db
 def test_secondary_tiered_rule_iteration_with_multiple_tiers_defined():
-    ptier2 = RuleTier(min_value=101, max_value=200)
-    ptier1 = RuleTier(min_value=0, max_value=100, next=ptier2)
+    secondary_rate_rule = create_mock_simple_secondary_tiered_rate_rule(10000, 45000, 'salary', 'dividends', 20, 8)
 
-    tier2 = SecondaryRuleTier(primary_tier=ptier1)
-    tier1 = SecondaryRuleTier(primary_tier=ptier1, next=tier2)
-    rule = SecondaryTieredRateRule(first_tier=tier1)
-    assert rule.next() is None
-    rule.reset()
-    next_tier = rule.next()
-    assert next_tier is not None
-    assert next_tier.primary_rule.min_value == 0
-    assert next_tier.primary_rule.max_value == 100
-    next_tier = rule.next()
-    assert next_tier is not None
-    assert next_tier.primary_rule.min_value == 101
-    assert next_tier.primary_rule.max_value == 200
-    next_tier = rule.next()
-    assert next_tier is None
+    second_primary_tier = create_mock_rule_tier(secondary_rate_rule.primary_rule, 45001, 100000, 45)
+    second_secondary_tier = create_mock_secondary_rule_tier(secondary_rate_rule, second_primary_tier, 40)
+
+    variables = create_mock_variable_table(salary=9000, dividends=50000)
+    results = create_mock_ruleset_calculation_result()
+    secondary_rate_rule.calculate(variables, results)
+    
+    # None of this tier has been used by the primary income
+    # Calculate tier remaining for use by secondary income as max - min
+    tier_remaining = 45000 - 10000
+    # Dividends is 50000 so all of this tier will be used up
+    # Taxable amount is therefore just the tier remaining
+    taxable_amount = tier_remaining
+    tax_payable = round(taxable_amount * (8/100), 2)
+
+    assert len(results.results.values()) == 2
+    assert results.results.values()[0] is not None
+    assert results.results.values()[0]['tax_payable'] == tax_payable
+
+    # Similarly none of the second secondary tier has been used by primary income
+    # However, dividends is not enough to use all of this up
+    tier_remaining = 100000 - 45001
+    dividends_remaining = variables['dividends'] - (45001 - variables['salary'])
+    taxable_amount = dividends_remaining
+    tax_payable = round(taxable_amount * (40/100), 2)
+
+    assert results.results.values()[1] is not None
+    assert results.results.values()[1]['tax_payable'] == tax_payable
 
 # Test iteration over rules within a ruleset/
 @pytest.mark.django_db
