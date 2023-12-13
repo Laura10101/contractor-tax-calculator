@@ -1,13 +1,17 @@
 from .models import *
-from jurisdictions_api.models import Jurisdiction
-import math
 import pytest
+
+from jurisdictions_api.models import Jurisdiction
 
 # Model tests assume that invalid models are prevented from being created
 # by validation in the views and services layers.
 # This validation is tested in test_services.py and test_views.py respectively.
 
 # Helper functions
+def create_mock_jurisdiction():
+    jurisdiction_count = Jurisdiction.objects.count()
+    return Jurisdiction.objects.create(name='Test Jurisdiction ' + str(jurisdiction_count))
+
 def create_mock_tax_calculation_result(username='bob'):
     return TaxCalculationResult.objects.create(username=username)
 
