@@ -515,43 +515,129 @@ def test_update_valid_flat_rate_rule():
 # Tiered rate rule creation
 @pytest.mark.django_db
 def test_create_tiered_rate_rule_with_null_data():
-    pass
+    ruleset_id = None
+    name = None
+    ordinal = None
+    explainer = None
+    variable_name = None
+
+    with pytest.raises(RuleSet.DoesNotExist):
+        id = create_tiered_rate_rule(ruleset_id, name, ordinal, explainer, variable_name)
 
 @pytest.mark.django_db
 def test_create_tiered_rate_rule_with_null_ruleset_id():
-    pass
+    ruleset_id = None
+    name = 'Test Rule'
+    ordinal = 1
+    explainer = 'Test explainer'
+    variable_name = 'salary'
+
+    with pytest.raises(RuleSet.DoesNotExist):
+        id = create_tiered_rate_rule(ruleset_id, name, ordinal, explainer, variable_name)
 
 @pytest.mark.django_db
 def test_create_tiered_rate_rule_with_non_existent_ruleset_id():
-    pass
+    ruleset_id = 479
+    name = 'Test Rule'
+    ordinal = 1
+    explainer = 'Test explainer'
+    variable_name = 'salary'
+
+    with pytest.raises(RuleSet.DoesNotExist):
+        id = create_tiered_rate_rule(ruleset_id, name, ordinal, explainer, variable_name)
 
 @pytest.mark.django_db
 def test_create_tiered_rate_rule_with_non_numeric_ruleset_id():
-    pass
+    ruleset_id = 'ABC'
+    name = 'Test Rule'
+    ordinal = 1
+    explainer = 'Test explainer'
+    variable_name = 'salary'
+
+    with pytest.raises(RuleSet.DoesNotExist):
+        id = create_tiered_rate_rule(ruleset_id, name, ordinal, explainer, variable_name)
 
 @pytest.mark.django_db
 def test_crete_tiered_rate_rule_with_null_name():
-    pass
+    ruleset_id = create_mock_ruleset()
+    name = None
+    ordinal = 1
+    explainer = 'Test explainer'
+    variable_name = 'salary'
+
+    with pytest.raises(ValidationError):
+        id = create_tiered_rate_rule(ruleset_id, name, ordinal, explainer, variable_name)
 
 @pytest.mark.django_db
 def test_create_tiered_rate_rule_with_null_ordinal():
-    pass
+    ruleset_id = create_mock_ruleset()
+    name = 'Test Rule'
+    ordinal = None
+    explainer = 'Test explainer'
+    variable_name = 'salary'
+
+    with pytest.raises(ValidationError):
+        id = create_tiered_rate_rule(ruleset_id, name, ordinal, explainer, variable_name)
 
 @pytest.mark.django_db
 def test_create_tiered_rate_rule_with_non_numeric_ordinal():
-    pass
+    ruleset_id = create_mock_ruleset()
+    name = 'Test Rule'
+    ordinal = 'ABC'
+    explainer = 'Test explainer'
+    variable_name = 'salary'
+
+    with pytest.raises(ValidationError):
+        id = create_tiered_rate_rule(ruleset_id, name, ordinal, explainer, variable_name)
 
 @pytest.mark.django_db
 def test_create_tiered_rate_rule_with_nulL_explainer():
-    pass
+    ruleset_id = create_mock_ruleset()
+    name = 'Test Rule'
+    ordinal = 1
+    explainer = None
+    variable_name = 'salary'
+
+    id = create_tiered_rate_rule(ruleset_id, name, ordinal, explainer, variable_name)
+
+    assert id is not None
+
+    rule = TieredRateRule.objects.get(id)
+
+    assert rule.name == name
+    assert rule.ordinal == ordinal
+    assert rule.explainer == explainer
+    assert rule.variable_name == variable_name
 
 @pytest.mark.django_db
 def test_create_tiered_rate_rule_with_null_variable_name():
-    pass
+    ruleset_id = create_mock_ruleset()
+    name = 'Test Rule'
+    ordinal = 1
+    explainer = 'Test explainer'
+    variable_name = None
+
+    with pytest.raises(ValidationError):
+        id = create_tiered_rate_rule(ruleset_id, name, ordinal, explainer, variable_name)
 
 @pytest.mark.django_db
 def test_create_valid_tiered_rate_rule():
-    pass
+    ruleset_id = create_mock_ruleset()
+    name = 'Test Rule'
+    ordinal = 1
+    explainer = 'Test explainer'
+    variable_name = 'salary'
+
+    id = create_tiered_rate_rule(ruleset_id, name, ordinal, explainer, variable_name)
+
+    assert id is not None
+
+    rule = TieredRateRule.objects.get(id)
+
+    assert rule.name == name
+    assert rule.ordinal == ordinal
+    assert rule.explainer == explainer
+    assert rule.variable_name == variable_name
 
 # Tiered rate rule updates
 @pytest.mark.django_db
