@@ -1,45 +1,92 @@
 from .models import *
+from .test_models import *
 from .services import *
 from .views import *
+from django.core.exceptions import ValidationError
 import pytest
 
 # Ruleset creation
 @pytest.mark.django_db
 def test_create_ruleset_with_null_data():
-    pass
+    jurisdiction_id = None
+    tax_category_id = None
+    with pytest.raises(ValidationError):
+        id = create_ruleset(jurisdiction_id, tax_category_id)
 
 @pytest.mark.django_db
 def test_create_ruleset_with_null_jurisdiction_id():
-    pass
+    jurisdiction_id = None
+    tax_category_id = TaxCategory.objects.create('Test Category').id
+    
+    with pytest.raises(ValidationError):
+        id = create_ruleset(jurisdiction_id, tax_category_id)
 
 @pytest.mark.django_db
 def test_create_ruleset_with_null_tax_category_id():
-    pass
+    jurisdiction_id = create_mock_jurisdiction()
+    tax_category_id = None
+    
+    with pytest.raises(TaxCategory.DoesNotExist):
+        id = create_ruleset(jurisdiction_id, tax_category_id)
 
 @pytest.mark.django_db
 def test_create_ruleset_with_non_existent_tax_category_id():
-    pass
+    jurisdiction_id = create_mock_jurisdiction()
+    tax_category_id = 479
+    
+    with pytest.raises(TaxCategory.DoesNotExist):
+        id = create_ruleset(jurisdiction_id, tax_category_id)
 
 @pytest.mark.django_db
 def test_create_ruleset_with_duplicate_tax_category_jurisdiction_combination():
-    pass
+    jurisdiction_id = create_mock_jurisdiction()
+    tax_category_id = TaxCategory.objects.create('Test Category').id
+    
+    id = create_ruleset(jurisdiction_id, tax_category_id)
+    
+    with pytest.raises(ValidationError):
+        id = create_ruleset(jurisdiction_id, tax_category_id)
 
 @pytest.mark.django_db
 def test_create_valid_ruleset():
-    pass
+    jurisdiction_id = create_mock_jurisdiction()
+    tax_category_id = TaxCategory.objects.create('Test Category').id
+    
+    id = create_ruleset(jurisdiction_id, tax_category_id)
+    
+    assert id is not None
+    ruleset = RuleSet.objects.get(pk=id)
+    assert ruleset.jurisdiction_id == jurisdiction_id
+    assert ruleset.tax_category.id == tax_category_id
 
 # Ruleset deletion
 @pytest.mark.django_db
 def test_delete_ruleset_with_null_id():
-    pass
+    with pytest.raises(RuleSet.DoesNotExist):
+        delete_ruleset(None)
 
 @pytest.mark.django_db
 def test_delete_ruleset_with_non_existent_id():
-    pass
+    with pytest.raises(RuleSet.DoesNotExist):
+        delete_ruleset(479)
 
 @pytest.mark.django_db
 def test_delete_ruleset():
-    pass
+    jurisdiction_id = create_mock_jurisdiction()
+    tax_category_id = TaxCategory.objects.create('Test Category').id
+    
+    id = create_ruleset(jurisdiction_id, tax_category_id)
+    
+    assert id is not None
+    ruleset = RuleSet.objects.get(pk=id)
+    assert ruleset.jurisdiction_id == jurisdiction_id
+    assert ruleset.tax_category.id == tax_category_id
+
+    delete_ruleset(id)
+
+    assert id is not None
+    with pytest.raises(RuleSet.DoesNotExist):
+        ruleset = RuleSet.objects.get(pk=id)
 
 # Tax category creation
 @pytest.mark.django_db
