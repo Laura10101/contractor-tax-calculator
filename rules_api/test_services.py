@@ -91,28 +91,53 @@ def test_delete_ruleset():
 # Tax category creation
 @pytest.mark.django_db
 def test_create_tax_category_with_null_name():
-    pass
+    name = None
+    with pytest.raises(ValidationError):
+        id = create_tax_category(name)
 
 @pytest.mark.django_db
 def test_create_tax_category_with_duplicate_name():
-    pass
+    name = 'Test Category'
+    create_tax_category(name)
+    
+    with pytest.raises(ValidationError):
+        id = create_tax_category(name)
 
 @pytest.mark.django_db
 def test_create_valid_tax_category():
-    pass
+    name = 'Test Category'
+    id = create_tax_category(name)
+
+    assert id is not None
+
+    category = TaxCategory.objects.get(pk=id)
+    assert category.name == name
 
 #  Tax category deletion
 @pytest.mark.django_db
 def test_delete_tax_category_with_null_id():
-    pass
+    with pytest.raises(TaxCategory.DoesNotExist):
+        delete_tax_category(None)
 
 @pytest.mark.django_db
 def test_delete_tax_category_with_non_existent_id():
-    pass
+    with pytest.raises(TaxCategory.DoesNotExist):
+        delete_tax_category(479)
 
 @pytest.mark.django_db
 def test_delete_tax_category():
-    pass
+    name = 'Test Category'
+    id = create_tax_category(name)
+
+    assert id is not None
+
+    category = TaxCategory.objects.get(pk=id)
+    assert category.name == name
+
+    delete_tax_category(id)
+
+    with pytest.raises(TaxCategory.DoesNotExist):
+        category = TaxCategory.objects.get(pk=id)
 
 # Rule deletion
 @pytest.mark.django_db
