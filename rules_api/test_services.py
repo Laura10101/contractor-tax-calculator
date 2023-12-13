@@ -142,15 +142,24 @@ def test_delete_tax_category():
 # Rule deletion
 @pytest.mark.django_db
 def test_delete_rule_with_null_id():
-    pass
+    with pytest.raises(Rule.DoesNotExist):
+        delete_rule(None)
 
 @pytest.mark.django_db
 def test_delete_rule_with_non_existent_id():
-    pass
+    with pytest.raises(Rule.DoesNotExist):
+        delete_rule(479)
 
 @pytest.mark.django_db
 def test_delete_rule():
-    pass
+    rule_id = create_mock_flat_rate_Rule('salary', 20, create_mock_ruleset())
+    assert rule_id is not None
+    rule = FlatRateRule.objects.get(pk=rule_id)
+    assert rule is not None
+    assert rule.variable_name == 'salary'
+    delete_rule(rule_id)
+    with pytest.raises(FlatRateRule.DoesNotExist):
+        rule = FlatRateRule.objects.get(pk=rule_id)
 
 # Flat rate rule creation
 @pytest.mark.django_db
