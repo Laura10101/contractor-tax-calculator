@@ -3078,40 +3078,214 @@ def test_post_valid_secondary_rule_tier():
 # Secondary rule tier updates
 @pytest.mark.django_db
 def test_patch_secondary_rule_tier_with_null_data():
-    pass
+    primary_rule = create_mock_tiered_rate_rule('salary', 1, create_mock_ruleset())
+    secondary_rule = create_mock_secondary_tiered_rate_rule(primary_rule, 'dividends', primary_rule.ruleset)
+    primary_tier = create_mock_rule_tier(primary_rule, 10000, 45000, 20)
+
+
+    ruleset_id = primary_rule.ruleset.id
+    rule_id = secondary_rule.id
+    primary_tier_id = primary_tier.id
+    tier_rate = 20
+
+    tier_id = create_secondary_rule_tier(rule_id, primary_tier_id, tier_rate)
+    assert tier_id is not None
+
+    ruleset_id = None
+    rule_id = None
+    tier_rate = None
+
+    body = {
+        'tax_rate': tier_rate,
+    }
+
+    request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/secondarytiers/' + str(None) + '/'
+    response = client.patch(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 404
 
 @pytest.mark.django_db
 def test_patch_secondary_rule_tier_with_null_tier_id():
-    pass
+    primary_rule = create_mock_tiered_rate_rule('salary', 1, create_mock_ruleset())
+    secondary_rule = create_mock_secondary_tiered_rate_rule(primary_rule, 'dividends', primary_rule.ruleset)
+    primary_tier = create_mock_rule_tier(primary_rule, 10000, 45000, 20)
+
+
+    ruleset_id = primary_rule.ruleset.id
+    rule_id = secondary_rule.id
+    primary_tier_id = primary_tier.id
+    tier_rate = 20
+
+    tier_id = create_secondary_rule_tier(rule_id, primary_tier_id, tier_rate)
+    assert tier_id is not None
+
+    ruleset_id = primary_rule.ruleset.id
+    rule_id = secondary_rule.id
+    primary_tier_id = primary_tier.id
+    tier_rate = 30
+
+    body = {
+        'tax_rate': tier_rate,
+    }
+
+    request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/secondarytiers/' + str(None) + '/'
+    response = client.patch(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 404
 
 @pytest.mark.django_db
 def test_patch_secondary_rule_tier_with_non_existent_tier_id():
-    pass
+    primary_rule = create_mock_tiered_rate_rule('salary', 1, create_mock_ruleset())
+    secondary_rule = create_mock_secondary_tiered_rate_rule(primary_rule, 'dividends', primary_rule.ruleset)
+    primary_tier = create_mock_rule_tier(primary_rule, 10000, 45000, 20)
+
+
+    ruleset_id = primary_rule.ruleset.id
+    rule_id = secondary_rule.id
+    primary_tier_id = primary_tier.id
+    tier_rate = 20
+
+    tier_id = create_secondary_rule_tier(rule_id, primary_tier_id, tier_rate)
+    assert tier_id is not None
+
+    ruleset_id = primary_rule.ruleset.id
+    rule_id = secondary_rule.id
+    primary_tier_id = primary_tier.id
+    tier_rate = 30
+
+    body = {
+        'tax_rate': tier_rate,
+    }
+
+    request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/secondarytiers/' + str(479) + '/'
+    response = client.patch(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 200
 
 @pytest.mark.django_db
 def test_patch_secondary_rule_tier_with_non_numeric_tier_id():
-    pass
+    primary_rule = create_mock_tiered_rate_rule('salary', 1, create_mock_ruleset())
+    secondary_rule = create_mock_secondary_tiered_rate_rule(primary_rule, 'dividends', primary_rule.ruleset)
+    primary_tier = create_mock_rule_tier(primary_rule, 10000, 45000, 20)
 
-@pytest.mark.django_db
-def test_patch_secondary_rule_tier_with_null_primary_tier_id():
-    pass
 
-@pytest.mark.django_db
-def test_patch_secondary_rule_tier_with_non_existent_primary_tier_id():
-    pass
+    ruleset_id = primary_rule.ruleset.id
+    rule_id = secondary_rule.id
+    primary_tier_id = primary_tier.id
+    tier_rate = 20
 
-@pytest.mark.django_db
-def test_patch_secondary_rule_tier_with_non_numeric_primary_tier_id():
-    pass
+    tier_id = create_secondary_rule_tier(rule_id, primary_tier_id, tier_rate)
+    assert tier_id is not None
+
+    ruleset_id = primary_rule.ruleset.id
+    rule_id = secondary_rule.id
+    primary_tier_id = primary_tier.id
+    tier_rate = 30
+
+    body = {
+        'tax_rate': tier_rate,
+    }
+
+    request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/secondarytiers/' + str('ABC') + '/'
+    response = client.patch(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 200
 
 @pytest.mark.django_db
 def test_patch_secondary_rule_tier_with_null_tier_rate():
-    pass
+    primary_rule = create_mock_tiered_rate_rule('salary', 1, create_mock_ruleset())
+    secondary_rule = create_mock_secondary_tiered_rate_rule(primary_rule, 'dividends', primary_rule.ruleset)
+    primary_tier = create_mock_rule_tier(primary_rule, 10000, 45000, 20)
+
+
+    ruleset_id = primary_rule.ruleset.id
+    rule_id = secondary_rule.id
+    primary_tier_id = primary_tier.id
+    tier_rate = 20
+
+    tier_id = create_secondary_rule_tier(rule_id, primary_tier_id, tier_rate)
+    assert tier_id is not None
+
+    ruleset_id = primary_rule.ruleset.id
+    rule_id = secondary_rule.id
+    primary_tier_id = primary_tier.id
+    tier_rate = None
+
+    body = {
+        'tax_rate': tier_rate,
+    }
+
+    request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/secondarytiers/' + str(tier_id) + '/'
+    response = client.patch(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 200
 
 @pytest.mark.django_db
 def test_patch_secondary_rule_tier_with_non_numeric_tier_rate():
-    pass
+    primary_rule = create_mock_tiered_rate_rule('salary', 1, create_mock_ruleset())
+    secondary_rule = create_mock_secondary_tiered_rate_rule(primary_rule, 'dividends', primary_rule.ruleset)
+    primary_tier = create_mock_rule_tier(primary_rule, 10000, 45000, 20)
+
+
+    ruleset_id = primary_rule.ruleset.id
+    rule_id = secondary_rule.id
+    primary_tier_id = primary_tier.id
+    tier_rate = 20
+
+    tier_id = create_secondary_rule_tier(rule_id, primary_tier_id, tier_rate)
+    assert tier_id is not None
+
+    ruleset_id = primary_rule.ruleset.id
+    rule_id = secondary_rule.id
+    primary_tier_id = primary_tier.id
+    tier_rate = 'ABC'
+
+    body = {
+        'tax_rate': tier_rate,
+    }
+
+    request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/secondarytiers/' + str(tier_id) + '/'
+    response = client.patch(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 200
 
 @pytest.mark.django_db
 def test_patch_valid_secondary_rule_tier():
-    pass
+    primary_rule = create_mock_tiered_rate_rule('salary', 1, create_mock_ruleset())
+    secondary_rule = create_mock_secondary_tiered_rate_rule(primary_rule, 'dividends', primary_rule.ruleset)
+    primary_tier = create_mock_rule_tier(primary_rule, 10000, 45000, 20)
+
+
+    ruleset_id = primary_rule.ruleset.id
+    rule_id = secondary_rule.id
+    primary_tier_id = primary_tier.id
+    tier_rate = 20
+
+    tier_id = create_secondary_rule_tier(rule_id, primary_tier_id, tier_rate)
+    assert tier_id is not None
+
+    ruleset_id = primary_rule.ruleset.id
+    rule_id = secondary_rule.id
+    primary_tier_id = primary_tier.id
+    tier_rate = 30
+
+    body = {
+        'tax_rate': tier_rate,
+    }
+
+    request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/secondarytiers/' + str(tier_id) + '/'
+    response = client.patch(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 200
+
+    tier = SecondaryRuleTier.objects.get(pk=tier_id)
+
+    assert tier.rule.id == rule_id
+    assert tier.tier_rate == tier_rate
