@@ -143,6 +143,9 @@ def test_delete_ruleset():
     assert response is not None
     assert response.status == 200
 
+    with pytest.raises(RuleSet.DoesNotExist):
+        RuleSet.objects.get(pk=ruleset_id)
+
 # Tax category creation
 @pytest.mark.django_db
 def test_post_tax_category_with_null_name():
@@ -221,18 +224,42 @@ def test_delete_tax_category():
     assert response is not None
     assert response.status == 200
 
+    with pytest.raises(TaxCategory.DoesNotExist):
+        TaxCategory.objects.get(pk=id)
+
 # Rule deletion
 @pytest.mark.django_db
 def test_delete_rule_with_null_id():
-    pass
+    id = None
+
+    request_url = url + str(id) + '/'
+    response = client.delete(request_url, format='json')
+
+    assert response is not None
+    assert response.status == 404
 
 @pytest.mark.django_db
 def test_delete_rule_with_non_existent_id():
-    pass
+    id = 479
+
+    request_url = url + str(id) + '/'
+    response = client.delete(request_url, format='json')
+
+    assert response is not None
+    assert response.status == 404
 
 @pytest.mark.django_db
 def test_delete_rule():
-    pass
+    id = create_mock_flat_rate_Rule('salary', 10, create_mock_ruleset())
+
+    request_url = url + str(id) + '/'
+    response = client.delete(request_url, format='json')
+
+    assert response is not None
+    assert response.status == 200
+
+    with pytest.raises(FlatRateRule.DoesNotExist):
+        FlatRateRule.objects.get(pk=id)
 
 # Flat rate rule creation
 @pytest.mark.django_db
