@@ -588,55 +588,385 @@ def test_post_valid_flat_rate_rule():
 # Flat rate rule updates
 @pytest.mark.django_db
 def test_patch_flat_rate_rule_with_null_data():
-    pass
+    rule = create_mock_flat_rate_Rule('salary', 20, create_mock_ruleset())
+
+    assert rule is not None
+    assert rule.variable_name == 'salary'
+
+    name = 'Test rule updated'
+    ordinal = 2
+    explainer = 'Test explainer updated'
+    variable_name = 'salary'
+    flat_rate = 30
+
+    body = {
+        'type': 'flat_rate',
+        'name': None,
+        'ordinal': None,
+        'explainer': None,
+        'variable_name': None,
+        'flat_rate': None,
+    }
+
+    request_url = url + 'rulesets/' + str(None) + '/rules/'
+    response = client.patch(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 404
 
 @pytest.mark.django_db
 def test_patch_flat_rate_rule_with_null_rule_id():
-    pass
+    rule = create_mock_flat_rate_Rule('salary', 20, create_mock_ruleset())
+
+    assert rule is not None
+    assert rule.variable_name == 'salary'
+
+    name = 'Test rule updated'
+    ordinal = 2
+    explainer = 'Test explainer updated'
+    variable_name = 'salary'
+    flat_rate = 30
+
+    body = {
+        'type': 'flat_rate',
+        'name': name,
+        'ordinal': ordinal,
+        'explainer': explainer,
+        'variable_name': variable_name,
+        'flat_rate': flat_rate,
+    }
+
+    request_url = url + 'rulesets/' + str(None) + '/rules/'
+    response = client.patch(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 404
 
 @pytest.mark.django_db
 def test_patch_flat_rate_rule_with_non_existent_rule_id():
-    pass
+    rule = create_mock_flat_rate_Rule('salary', 20, create_mock_ruleset())
+
+    assert rule is not None
+    assert rule.variable_name == 'salary'
+
+    name = 'Test rule updated'
+    ordinal = 2
+    explainer = 'Test explainer updated'
+    variable_name = 'salary'
+    flat_rate = 30
+
+    body = {
+        'type': 'flat_rate',
+        'name': name,
+        'ordinal': ordinal,
+        'explainer': explainer,
+        'variable_name': variable_name,
+        'flat_rate': flat_rate,
+    }
+
+    request_url = url + 'rulesets/' + str(479) + '/rules/'
+    response = client.patch(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 404
 
 @pytest.mark.django_db
 def test_patch_flat_rate_rule_with_non_numeric_rule_id():
-    pass
+    rule = create_mock_flat_rate_Rule('salary', 20, create_mock_ruleset())
+
+    assert rule is not None
+    assert rule.variable_name == 'salary'
+
+    name = 'Test rule updated'
+    ordinal = 2
+    explainer = 'Test explainer updated'
+    variable_name = 'salary'
+    flat_rate = 30
+
+    body = {
+        'type': 'flat_rate',
+        'name': name,
+        'ordinal': ordinal,
+        'explainer': explainer,
+        'variable_name': variable_name,
+        'flat_rate': flat_rate,
+    }
+
+    request_url = url + 'rulesets/' + str('abc') + '/rules/'
+    response = client.patch(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 404
 
 @pytest.mark.django_db
 def test_patch_flat_rate_rule_with_null_name():
-    pass
+    rule = create_mock_flat_rate_Rule('salary', 20, create_mock_ruleset())
+
+    assert rule is not None
+    assert rule.variable_name == 'salary'
+
+    name = None
+    ordinal = 2
+    explainer = 'Test explainer updated'
+    variable_name = 'salary'
+    flat_rate = 30
+
+    body = {
+        'type': 'flat_rate',
+        'name': name,
+        'ordinal': ordinal,
+        'explainer': explainer,
+        'variable_name': variable_name,
+        'flat_rate': flat_rate,
+    }
+
+    request_url = url + 'rulesets/' + str(rule.ruleset.id) + '/rules/'
+    response = client.patch(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 400
 
 @pytest.mark.django_db
 def test_patch_flat_rate_rule_with_null_ordinal():
-    pass
+    rule = create_mock_flat_rate_Rule('salary', 20, create_mock_ruleset())
+
+    assert rule is not None
+    assert rule.variable_name == 'salary'
+
+    name = 'Test rule updated'
+    ordinal = None
+    explainer = 'Test explainer updated'
+    variable_name = 'salary'
+    flat_rate = 30
+
+    body = {
+        'type': 'flat_rate',
+        'name': name,
+        'ordinal': ordinal,
+        'explainer': explainer,
+        'variable_name': variable_name,
+        'flat_rate': flat_rate,
+    }
+
+    request_url = url + 'rulesets/' + str(rule.ruleset.id) + '/rules/'
+    response = client.patch(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 400
 
 @pytest.mark.django_db
 def test_patch_flat_rate_rule_with_non_numeric_ordinal():
-    pass
+    rule = create_mock_flat_rate_Rule('salary', 20, create_mock_ruleset())
+
+    assert rule is not None
+    assert rule.variable_name == 'salary'
+
+    name = 'Test rule updated'
+    ordinal = 'ABC'
+    explainer = 'Test explainer updated'
+    variable_name = 'salary'
+    flat_rate = 30
+
+    body = {
+        'type': 'flat_rate',
+        'name': name,
+        'ordinal': ordinal,
+        'explainer': explainer,
+        'variable_name': variable_name,
+        'flat_rate': flat_rate,
+    }
+
+    request_url = url + 'rulesets/' + str(rule.ruleset.id) + '/rules/'
+    response = client.patch(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 400
 
 @pytest.mark.django_db
 def test_patch_flat_rate_rule_with_nulL_explainer():
-    pass
+    rule = create_mock_flat_rate_Rule('salary', 20, create_mock_ruleset())
+
+    assert rule is not None
+    assert rule.variable_name == 'salary'
+
+    name = 'Test rule updated'
+    ordinal = 2
+    explainer = 'Test explainer updated'
+    variable_name = 'salary'
+    flat_rate = 30
+
+    body = {
+        'type': 'flat_rate',
+        'name': name,
+        'ordinal': ordinal,
+        'explainer': None,
+        'variable_name': variable_name,
+        'flat_rate': flat_rate,
+    }
+
+    request_url = url + 'rulesets/' + str(rule.ruleset.id) + '/rules/'
+    response = client.patch(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 200
+    assert response.data['rule_id'] is not None
+
+    rule_id = response.data['rule_id']
+    rule = FlatRateRule.objects.get(pk=rule_id)
+    assert rule.name == name
+    assert rule.ordinal == ordinal
+    assert rule.explainer == explainer
+    assert rule.variable_name == variable_name
+    assert rule.flat_rate == flat_rate
 
 @pytest.mark.django_db
 def test_patch_flat_rate_rule_with_null_variable_name():
-    pass
+    rule = create_mock_flat_rate_Rule('salary', 20, create_mock_ruleset())
+
+    assert rule is not None
+    assert rule.variable_name == 'salary'
+
+    name = 'Test rule updated'
+    ordinal = 2
+    explainer = 'Test explainer updated'
+    variable_name = None
+    flat_rate = 30
+
+    body = {
+        'type': 'flat_rate',
+        'name': name,
+        'ordinal': ordinal,
+        'explainer': explainer,
+        'variable_name': variable_name,
+        'flat_rate': flat_rate,
+    }
+
+    request_url = url + 'rulesets/' + str(rule.ruleset.id) + '/rules/'
+    response = client.patch(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 400
 
 @pytest.mark.django_db
 def test_patch_flat_rate_rule_with_null_flat_rate():
-    pass
+    rule = create_mock_flat_rate_Rule('salary', 20, create_mock_ruleset())
+
+    assert rule is not None
+    assert rule.variable_name == 'salary'
+
+    name = 'Test rule updated'
+    ordinal = 2
+    explainer = 'Test explainer updated'
+    variable_name = 'salary'
+    flat_rate = None
+
+    body = {
+        'type': 'flat_rate',
+        'name': name,
+        'ordinal': ordinal,
+        'explainer': explainer,
+        'variable_name': variable_name,
+        'flat_rate': flat_rate,
+    }
+
+    request_url = url + 'rulesets/' + str(rule.ruleset.id) + '/rules/'
+    response = client.patch(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 400
 
 @pytest.mark.django_db
 def test_patch_flat_rate_rule_with_non_numeric_flat_rate():
-    pass
+    rule = create_mock_flat_rate_Rule('salary', 20, create_mock_ruleset())
+
+    assert rule is not None
+    assert rule.variable_name == 'salary'
+
+    name = 'Test rule updated'
+    ordinal = 2
+    explainer = 'Test explainer updated'
+    variable_name = 'salary'
+    flat_rate = 'ABC'
+
+    body = {
+        'type': 'flat_rate',
+        'name': name,
+        'ordinal': ordinal,
+        'explainer': explainer,
+        'variable_name': variable_name,
+        'flat_rate': flat_rate,
+    }
+
+    request_url = url + 'rulesets/' + str(rule.ruleset.id) + '/rules/'
+    response = client.patch(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 400
 
 @pytest.mark.django_db
 def test_patch_flat_rate_rule_with_negative_flat_rate():
-    pass
+    rule = create_mock_flat_rate_Rule('salary', 20, create_mock_ruleset())
+
+    assert rule is not None
+    assert rule.variable_name == 'salary'
+
+    name = 'Test rule updated'
+    ordinal = 2
+    explainer = 'Test explainer updated'
+    variable_name = 'salary'
+    flat_rate = -30
+
+    body = {
+        'type': 'flat_rate',
+        'name': name,
+        'ordinal': ordinal,
+        'explainer': explainer,
+        'variable_name': variable_name,
+        'flat_rate': flat_rate,
+    }
+
+    request_url = url + 'rulesets/' + str(rule.ruleset.id) + '/rules/'
+    response = client.patch(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 400
 
 @pytest.mark.django_db
 def test_patch_valid_flat_rate_rule():
-    pass
+    rule = create_mock_flat_rate_Rule('salary', 20, create_mock_ruleset())
+
+    assert rule is not None
+    assert rule.variable_name == 'salary'
+
+    name = 'Test rule updated'
+    ordinal = 2
+    explainer = 'Test explainer updated'
+    variable_name = 'salary'
+    flat_rate = 30
+
+    body = {
+        'type': 'flat_rate',
+        'name': name,
+        'ordinal': ordinal,
+        'explainer': explainer,
+        'variable_name': variable_name,
+        'flat_rate': flat_rate,
+    }
+
+    request_url = url + 'rulesets/' + str(rule.ruleset.id) + '/rules/'
+    response = client.patch(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 200
+    assert response.data['rule_id'] is not None
+
+    rule_id = response.data['rule_id']
+    rule = FlatRateRule.objects.get(pk=rule_id)
+    assert rule.name == name
+    assert rule.ordinal == ordinal
+    assert rule.explainer == explainer
+    assert rule.variable_name == variable_name
+    assert rule.flat_rate == flat_rate
 
 
 # Tiered rate rule creation
