@@ -964,55 +964,310 @@ def test_create_valid_rule_tier():
 # Rule tier updates
 @pytest.mark.django_db
 def test_update_rule_tier_with_null_data():
-    pass
+    rule = create_mock_tiered_rate_rule('salary', 1, create_mock_ruleset())
+    rule_id = rule.id
+    min_value = 10000
+    max_value = 45000
+    ordinal = 1
+    tier_rate = 20
+
+    id = create_rule_tier(rule_id, min_value, max_value, ordinal, tier_rate)
+    assert id is not None
+
+    tier = RuleTier.objects.get(pk=id)
+    assert tier is not None
+
+    id = None
+    min_value = None
+    max_value = None
+    ordinal = None
+    tier_rate = None
+
+    with pytest.raises(RuleTier.DoesNotExist):
+        update_rule_tier(id, min_value, max_value, ordinal, tier_rate)
 
 @pytest.mark.django_db
 def test_update_rule_tier_with_null_tier_id():
-    pass
+    rule = create_mock_tiered_rate_rule('salary', 1, create_mock_ruleset())
+    rule_id = rule.id
+    min_value = 10000
+    max_value = 45000
+    ordinal = 1
+    tier_rate = 20
+
+    id = create_rule_tier(rule_id, min_value, max_value, ordinal, tier_rate)
+    assert id is not None
+
+    tier = RuleTier.objects.get(pk=id)
+    assert tier is not None
+
+    id = None
+    min_value = 9000
+    max_value = 50000
+    ordinal = 1
+    tier_rate = 25
+
+    with pytest.raises(RuleTier.DoesNotExist):
+        update_rule_tier(id, min_value, max_value, ordinal, tier_rate)
 
 @pytest.mark.django_db
 def test_update_rule_tier_with_non_existent_tier_id():
-    pass
+    rule = create_mock_tiered_rate_rule('salary', 1, create_mock_ruleset())
+    rule_id = rule.id
+    min_value = 10000
+    max_value = 45000
+    ordinal = 1
+    tier_rate = 20
+
+    id = create_rule_tier(rule_id, min_value, max_value, ordinal, tier_rate)
+    assert id is not None
+
+    tier = RuleTier.objects.get(pk=id)
+    assert tier is not None
+
+    id = 479
+    min_value = 9000
+    max_value = 50000
+    ordinal = 1
+    tier_rate = 25
+
+    with pytest.raises(RuleTier.DoesNotExist):
+        update_rule_tier(id, min_value, max_value, ordinal, tier_rate)
 
 @pytest.mark.django_db
 def test_update_rule_tier_with_non_numeric_tier_id():
-    pass
+    rule = create_mock_tiered_rate_rule('salary', 1, create_mock_ruleset())
+    rule_id = rule.id
+    min_value = 10000
+    max_value = 45000
+    ordinal = 1
+    tier_rate = 20
+
+    id = create_rule_tier(rule_id, min_value, max_value, ordinal, tier_rate)
+    assert id is not None
+
+    tier = RuleTier.objects.get(pk=id)
+    assert tier is not None
+
+    id = 'ABC'
+    min_value = 9000
+    max_value = 50000
+    ordinal = 1
+    tier_rate = 25
+
+    with pytest.raises(RuleTier.DoesNotExist):
+        update_rule_tier(id, min_value, max_value, ordinal, tier_rate)
 
 @pytest.mark.django_db
 def test_update_rule_tier_with_null_min_value():
-    pass
+    rule = create_mock_tiered_rate_rule('salary', 1, create_mock_ruleset())
+    rule_id = rule.id
+    min_value = 10000
+    max_value = 45000
+    ordinal = 1
+    tier_rate = 20
+
+    id = create_rule_tier(rule_id, min_value, max_value, ordinal, tier_rate)
+    assert id is not None
+
+    tier = RuleTier.objects.get(pk=id)
+    assert tier is not None
+
+    min_value = None
+    max_value = 50000
+    ordinal = 1
+    tier_rate = 25
+
+    with pytest.raises(ValidationError):
+        update_rule_tier(id, min_value, max_value, ordinal, tier_rate)
 
 @pytest.mark.django_db
 def test_update_rule_tier_with_non_numeric_min_value():
-    pass
+    rule = create_mock_tiered_rate_rule('salary', 1, create_mock_ruleset())
+    rule_id = rule.id
+    min_value = 10000
+    max_value = 45000
+    ordinal = 1
+    tier_rate = 20
+
+    id = create_rule_tier(rule_id, min_value, max_value, ordinal, tier_rate)
+    assert id is not None
+
+    tier = RuleTier.objects.get(pk=id)
+    assert tier is not None
+
+    min_value = 'ABC'
+    max_value = 50000
+    ordinal = 1
+    tier_rate = 25
+
+    with pytest.raises(ValidationError):
+        update_rule_tier(id, min_value, max_value, ordinal, tier_rate)
 
 @pytest.mark.django_db
 def test_update_rule_tier_with_null_max_value():
-    pass
+    rule = create_mock_tiered_rate_rule('salary', 1, create_mock_ruleset())
+    rule_id = rule.id
+    min_value = 10000
+    max_value = 45000
+    ordinal = 1
+    tier_rate = 20
+
+    id = create_rule_tier(rule_id, min_value, max_value, ordinal, tier_rate)
+    assert id is not None
+
+    tier = RuleTier.objects.get(pk=id)
+    assert tier is not None
+
+    min_value = 9000
+    max_value = None
+    ordinal = 1
+    tier_rate = 25
+
+    with pytest.raises(ValidationError):
+        update_rule_tier(id, min_value, max_value, ordinal, tier_rate)
 
 @pytest.mark.django_db
 def test_update_rule_tier_with_non_numeric_max_value():
-    pass
+    rule = create_mock_tiered_rate_rule('salary', 1, create_mock_ruleset())
+    rule_id = rule.id
+    min_value = 10000
+    max_value = 45000
+    ordinal = 1
+    tier_rate = 20
+
+    id = create_rule_tier(rule_id, min_value, max_value, ordinal, tier_rate)
+    assert id is not None
+
+    tier = RuleTier.objects.get(pk=id)
+    assert tier is not None
+
+    min_value = 9000
+    max_value = 'ABC'
+    ordinal = 1
+    tier_rate = 25
+
+    with pytest.raises(ValidationError):
+        update_rule_tier(id, min_value, max_value, ordinal, tier_rate)
 
 @pytest.mark.django_db
 def test_update_rule_tier_with_null_ordinal():
-    pass
+    rule = create_mock_tiered_rate_rule('salary', 1, create_mock_ruleset())
+    rule_id = rule.id
+    min_value = 10000
+    max_value = 45000
+    ordinal = 1
+    tier_rate = 20
+
+    id = create_rule_tier(rule_id, min_value, max_value, ordinal, tier_rate)
+    assert id is not None
+
+    tier = RuleTier.objects.get(pk=id)
+    assert tier is not None
+
+    min_value = 9000
+    max_value = 50000
+    ordinal = None
+    tier_rate = 25
+
+    with pytest.raises(ValidationError):
+        update_rule_tier(id, min_value, max_value, ordinal, tier_rate)
 
 @pytest.mark.django_db
 def test_update_rule_tier_with_non_numeric_ordinal():
-    pass
+    rule = create_mock_tiered_rate_rule('salary', 1, create_mock_ruleset())
+    rule_id = rule.id
+    min_value = 10000
+    max_value = 45000
+    ordinal = 1
+    tier_rate = 20
+
+    id = create_rule_tier(rule_id, min_value, max_value, ordinal, tier_rate)
+    assert id is not None
+
+    tier = RuleTier.objects.get(pk=id)
+    assert tier is not None
+
+    min_value = 9000
+    max_value = 50000
+    ordinal = 'ABC'
+    tier_rate = 25
+
+    with pytest.raises(ValidationError):
+        update_rule_tier(id, min_value, max_value, ordinal, tier_rate)
 
 @pytest.mark.django_db
 def test_update_rule_tier_with_null_tier_rate():
-    pass
+    rule = create_mock_tiered_rate_rule('salary', 1, create_mock_ruleset())
+    rule_id = rule.id
+    min_value = 10000
+    max_value = 45000
+    ordinal = 1
+    tier_rate = 20
+
+    id = create_rule_tier(rule_id, min_value, max_value, ordinal, tier_rate)
+    assert id is not None
+
+    tier = RuleTier.objects.get(pk=id)
+    assert tier is not None
+
+    min_value = 9000
+    max_value = 50000
+    ordinal = 1
+    tier_rate = None
+
+    with pytest.raises(ValidationError):
+        update_rule_tier(id, min_value, max_value, ordinal, tier_rate)
 
 @pytest.mark.django_db
 def test_update_rule_tier_with_non_numeric_tier_rate():
-    pass
+    rule = create_mock_tiered_rate_rule('salary', 1, create_mock_ruleset())
+    rule_id = rule.id
+    min_value = 10000
+    max_value = 45000
+    ordinal = 1
+    tier_rate = 20
+
+    id = create_rule_tier(rule_id, min_value, max_value, ordinal, tier_rate)
+    assert id is not None
+
+    tier = RuleTier.objects.get(pk=id)
+    assert tier is not None
+
+    min_value = 9000
+    max_value = 50000
+    ordinal = 1
+    tier_rate = 'ABC'
+
+    with pytest.raises(ValidationError):
+        update_rule_tier(id, min_value, max_value, ordinal, tier_rate)
 
 @pytest.mark.django_db
 def test_update_valid_rule_tier():
-    pass
+    rule = create_mock_tiered_rate_rule('salary', 1, create_mock_ruleset())
+    rule_id = rule.id
+    min_value = 10000
+    max_value = 45000
+    ordinal = 1
+    tier_rate = 20
+
+    id = create_rule_tier(rule_id, min_value, max_value, ordinal, tier_rate)
+    assert id is not None
+
+    tier = RuleTier.objects.get(pk=id)
+    assert tier is not None
+
+    min_value = 9000
+    max_value = 50000
+    ordinal = 1
+    tier_rate = 25
+
+    update_rule_tier(id, min_value, max_value, ordinal, tier_rate)
+
+    assert tier.min_value == min_value
+    assert tier.max_value == max_value
+    assert tier.ordinal == ordinal
+    assert tier.tier_rate == tier_rate
 
 # Secondary tiered rate rule creation
 @pytest.mark.django_db
