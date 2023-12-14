@@ -1026,55 +1026,347 @@ def test_patch_valid_rule_tier():
 # Secondary tiered rate rule creation
 @pytest.mark.django_db
 def test_post_secondary_tiered_rate_rule_with_null_data():
-    pass
+    primary_rule = create_mock_simple_tiered_rate_rule(9000, 45000, 'salary', 20)
+    primary_rule_id = None
+    ruleset_id = None
+    name = None
+    ordinal = None
+    explainer = None
+    variable_name = None
+
+    body = {
+        'type': 'secondary_tiered_rate',
+        'primary_rule_id': primary_rule_id,
+        'name': name,
+        'ordinal': ordinal,
+        'explainer': explainer,
+        'variable_name': variable_name,
+    }
+
+    request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/'
+    response = client.post(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 404
 
 @pytest.mark.django_db
 def test_post_secondary_tiered_rate_rule_with_null_ruleset_id():
-    pass
+    primary_rule = create_mock_simple_tiered_rate_rule(9000, 45000, 'salary', 20)
+    primary_rule_id = primary_rule.id
+    ruleset_id = None
+    name = 'Test rule'
+    ordinal = 1
+    explainer = 'Test explainer'
+    variable_name = 'salary'
+
+    body = {
+        'type': 'secondary_tiered_rate',
+        'primary_rule_id': primary_rule_id,
+        'name': name,
+        'ordinal': ordinal,
+        'explainer': explainer,
+        'variable_name': variable_name,
+    }
+
+    request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/'
+    response = client.post(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 404
 
 @pytest.mark.django_db
 def test_post_secondary_tiered_rate_rule_with_non_existent_ruleset_id():
-    pass
+    primary_rule = create_mock_simple_tiered_rate_rule(9000, 45000, 'salary', 20)
+    primary_rule_id = primary_rule.id
+    ruleset_id = 479
+    name = 'Test rule'
+    ordinal = 1
+    explainer = 'Test explainer'
+    variable_name = 'salary'
+
+    body = {
+        'type': 'secondary_tiered_rate',
+        'primary_rule_id': primary_rule_id,
+        'name': name,
+        'ordinal': ordinal,
+        'explainer': explainer,
+        'variable_name': variable_name,
+    }
+
+    request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/'
+    response = client.post(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 404
 
 @pytest.mark.django_db
 def test_post_secondary_tiered_rate_rule_with_non_numeric_ruleset_id():
-    pass
+    primary_rule = create_mock_simple_tiered_rate_rule(9000, 45000, 'salary', 20)
+    primary_rule_id = primary_rule.id
+    ruleset_id = 'ABC'
+    name = 'Test rule'
+    ordinal = 1
+    explainer = 'Test explainer'
+    variable_name = 'salary'
+
+    body = {
+        'type': 'secondary_tiered_rate',
+        'primary_rule_id': primary_rule_id,
+        'name': name,
+        'ordinal': ordinal,
+        'explainer': explainer,
+        'variable_name': variable_name,
+    }
+
+    request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/'
+    response = client.post(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 404
 
 @pytest.mark.django_db
 def test_post_secondary_tiered_rate_rule_with_null_primary_rule_id():
-    pass
+    primary_rule = create_mock_simple_tiered_rate_rule(9000, 45000, 'salary', 20)
+    primary_rule_id = None
+    ruleset_id = primary_rule_id.ruleset.id
+    name = 'Test rule'
+    ordinal = 1
+    explainer = 'Test explainer'
+    variable_name = 'salary'
+
+    body = {
+        'type': 'secondary_tiered_rate',
+        'primary_rule_id': primary_rule_id,
+        'name': name,
+        'ordinal': ordinal,
+        'explainer': explainer,
+        'variable_name': variable_name,
+    }
+
+    request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/'
+    response = client.post(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 404
 
 @pytest.mark.django_db
 def test_post_secondary_tiered_rate_rule_with_non_existent_primary_rule_id():
-    pass
+    primary_rule = create_mock_simple_tiered_rate_rule(9000, 45000, 'salary', 20)
+    primary_rule_id = 479
+    ruleset_id = primary_rule_id.ruleset.id
+    name = 'Test rule'
+    ordinal = 1
+    explainer = 'Test explainer'
+    variable_name = 'salary'
+
+    body = {
+        'type': 'secondary_tiered_rate',
+        'primary_rule_id': primary_rule_id,
+        'name': name,
+        'ordinal': ordinal,
+        'explainer': explainer,
+        'variable_name': variable_name,
+    }
+
+    request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/'
+    response = client.post(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 404
 
 @pytest.mark.django_db
 def test_post_secondary_tiered_rate_rule_with_non_numeric_primary_rule_id():
-    pass
+    primary_rule = create_mock_simple_tiered_rate_rule(9000, 45000, 'salary', 20)
+    primary_rule_id = 'ABC'
+    ruleset_id = primary_rule_id.ruleset.id
+    name = 'Test rule'
+    ordinal = 1
+    explainer = 'Test explainer'
+    variable_name = 'salary'
+
+    body = {
+        'type': 'secondary_tiered_rate',
+        'primary_rule_id': primary_rule_id,
+        'name': name,
+        'ordinal': ordinal,
+        'explainer': explainer,
+        'variable_name': variable_name,
+    }
+
+    request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/'
+    response = client.post(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 404
 
 @pytest.mark.django_db
-def test_crete_secondary_iered_rate_rule_with_null_name():
-    pass
+def test_crete_secondary_tiered_rate_rule_with_null_name():
+    primary_rule = create_mock_simple_tiered_rate_rule(9000, 45000, 'salary', 20)
+    primary_rule_id = primary_rule.id
+    ruleset_id = primary_rule_id.ruleset.id
+    name = None
+    ordinal = 1
+    explainer = 'Test explainer'
+    variable_name = 'salary'
+
+    body = {
+        'type': 'secondary_tiered_rate',
+        'primary_rule_id': primary_rule_id,
+        'name': name,
+        'ordinal': ordinal,
+        'explainer': explainer,
+        'variable_name': variable_name,
+    }
+
+    request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/'
+    response = client.post(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 400
 
 @pytest.mark.django_db
 def test_post_secondary_tiered_rate_rule_with_null_ordinal():
-    pass
+    primary_rule = create_mock_simple_tiered_rate_rule(9000, 45000, 'salary', 20)
+    primary_rule_id = primary_rule.id
+    ruleset_id = primary_rule_id.ruleset.id
+    name = 'Test rule'
+    ordinal = None
+    explainer = 'Test explainer'
+    variable_name = 'salary'
+
+    body = {
+        'type': 'secondary_tiered_rate',
+        'primary_rule_id': primary_rule_id,
+        'name': name,
+        'ordinal': ordinal,
+        'explainer': explainer,
+        'variable_name': variable_name,
+    }
+
+    request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/'
+    response = client.post(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 400
 
 @pytest.mark.django_db
 def test_post_secondary_tiered_rate_rule_with_non_numeric_ordinal():
-    pass
+    primary_rule = create_mock_simple_tiered_rate_rule(9000, 45000, 'salary', 20)
+    primary_rule_id = primary_rule.id
+    ruleset_id = primary_rule_id.ruleset.id
+    name = 'Test rule'
+    ordinal = 'ABC'
+    explainer = 'Test explainer'
+    variable_name = 'salary'
+
+    body = {
+        'type': 'secondary_tiered_rate',
+        'primary_rule_id': primary_rule_id,
+        'name': name,
+        'ordinal': ordinal,
+        'explainer': explainer,
+        'variable_name': variable_name,
+    }
+
+    request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/'
+    response = client.post(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 400
 
 @pytest.mark.django_db
 def test_post_secondary_tiered_rate_rule_with_nulL_explainer():
-    pass
+    primary_rule = create_mock_simple_tiered_rate_rule(9000, 45000, 'salary', 20)
+    primary_rule_id = primary_rule.id
+    ruleset_id = primary_rule_id.ruleset.id
+    name = 'Test rule'
+    ordinal = 1
+    explainer = None
+    variable_name = 'salary'
+
+    body = {
+        'type': 'secondary_tiered_rate',
+        'primary_rule_id': primary_rule_id,
+        'name': name,
+        'ordinal': ordinal,
+        'explainer': explainer,
+        'variable_name': variable_name,
+    }
+
+    request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/'
+    response = client.post(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 200
+    assert response.data['rule_id'] is not None
+
+    rule_id = response.data['rule_id']
+    rule = SecondaryTieredRateRule.objects.get(pk=rule_id)
+    assert rule.primary_rule.id == primary_rule_id
+    assert rule.name == name
+    assert rule.ordinal == ordinal
+    assert rule.explainer == explainer
+    assert rule.variable_name == variable_name
+
 
 @pytest.mark.django_db
 def test_post_secondary_tiered_rate_rule_with_null_variable_name():
-    pass
+    primary_rule = create_mock_simple_tiered_rate_rule(9000, 45000, 'salary', 20)
+    primary_rule_id = primary_rule.id
+    ruleset_id = primary_rule_id.ruleset.id
+    name = 'Test rule'
+    ordinal = 1
+    explainer = 'Test explainer'
+    variable_name = None
+
+    body = {
+        'type': 'secondary_tiered_rate',
+        'primary_rule_id': primary_rule_id,
+        'name': name,
+        'ordinal': ordinal,
+        'explainer': explainer,
+        'variable_name': variable_name,
+    }
+
+    request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/'
+    response = client.post(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 404
 
 @pytest.mark.django_db
 def test_post_valid_secondary_tiered_rate_rule():
-    pass
+    primary_rule = create_mock_simple_tiered_rate_rule(9000, 45000, 'salary', 20)
+    primary_rule_id = primary_rule.id
+    ruleset_id = primary_rule_id.ruleset.id
+    name = 'Test rule'
+    ordinal = 1
+    explainer = 'Test explainer'
+    variable_name = 'salary'
+
+    body = {
+        'type': 'secondary_tiered_rate',
+        'primary_rule_id': primary_rule_id,
+        'name': name,
+        'ordinal': ordinal,
+        'explainer': explainer,
+        'variable_name': variable_name,
+    }
+
+    request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/'
+    response = client.post(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 200
+    assert response.data['rule_id'] is not None
+
+    rule_id = response.data['rule_id']
+    rule = SecondaryTieredRateRule.objects.get(pk=rule_id)
+    assert rule.primary_rule.id == primary_rule_id
+    assert rule.name == name
+    assert rule.ordinal == ordinal
+    assert rule.explainer == explainer
+    assert rule.variable_name == variable_name
 
 # Secondary tiered rate rule updates
 @pytest.mark.django_db
