@@ -3,7 +3,6 @@ from .autocompletes import JurisdictionAutocomplete
 from .views import *
 
 urlpatterns = [
-    path('', JurisdictionList.as_view(), name='jurisdictions'),
     path('', RuleList.as_view()),
     path('<int:pk>/', RuleDetail.as_view()),
     path('<int:rule_pk>/tiers/', RuleTiersList.as_view()),
