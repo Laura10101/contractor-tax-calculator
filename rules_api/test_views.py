@@ -146,15 +146,49 @@ def test_delete_ruleset():
 # Tax category creation
 @pytest.mark.django_db
 def test_post_tax_category_with_null_name():
-    pass
+    name = None
+
+    body = {
+        'name': name,
+    }
+
+    request_url = url + 'taxcategories/'
+    response = client.post(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 400
 
 @pytest.mark.django_db
 def test_post_tax_category_with_duplicate_name():
-    pass
+    name = 'Test category'
+
+    id = create_tax_category(name)
+    assert id is not None
+
+    body = {
+        'name': name,
+    }
+
+    request_url = url + 'taxcategories/'
+    response = client.post(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 409
 
 @pytest.mark.django_db
 def test_post_valid_tax_category():
-    pass
+    name = 'Test category'
+
+    body = {
+        'name': name,
+    }
+
+    request_url = url + 'taxcategories/'
+    response = client.post(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 200
+    assert response.data['tax_category_id'] is not None
 
 #  Tax category deletion
 @pytest.mark.django_db
