@@ -1,30 +1,116 @@
 from .models import *
+from .services import *
+from .views import *
+from .test_models import *
 import pytest
+from rest_framework.test import APIClient
+
+client = APIClient()
+url = '/api/rules/'
 
 # Ruleset creation
 @pytest.mark.django_db
 def test_post_ruleset_with_null_data():
-    pass
+    jurisdiction_id = None
+    tax_category_id = None
+
+    body = {
+        'jurisdiction_id': jurisdiction_id,
+        'tax_category_id': tax_category_id,
+    }
+
+    request_url = url + 'rulesets/'
+    response = client.post(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 400
 
 @pytest.mark.django_db
 def test_post_ruleset_with_null_jurisdiction_id():
-    pass
+    jurisdiction_id = None
+    tax_category_id = create_tax_category('Test category')
+
+    body = {
+        'jurisdiction_id': jurisdiction_id,
+        'tax_category_id': tax_category_id,
+    }
+
+    request_url = url + 'rulesets/'
+    response = client.post(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 400
 
 @pytest.mark.django_db
 def test_post_ruleset_with_null_tax_category_id():
-    pass
+    jurisdiction_id = create_mock_jurisdiction()
+    tax_category_id = None
+
+    body = {
+        'jurisdiction_id': jurisdiction_id,
+        'tax_category_id': tax_category_id,
+    }
+
+    request_url = url + 'rulesets/'
+    response = client.post(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 400
 
 @pytest.mark.django_db
 def test_post_ruleset_with_non_existent_tax_category_id():
-    pass
+    jurisdiction_id = create_mock_jurisdiction()
+    tax_category_id = 479
+
+    body = {
+        'jurisdiction_id': jurisdiction_id,
+        'tax_category_id': tax_category_id,
+    }
+
+    request_url = url + 'rulesets/'
+    response = client.post(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 400
 
 @pytest.mark.django_db
 def test_post_ruleset_with_duplicate_tax_category_jurisdiction_combination():
-    pass
+    jurisdiction_id = create_mock_jurisdiction()
+    tax_category_id = create_tax_category('Test category')
+
+    body = {
+        'jurisdiction_id': jurisdiction_id,
+        'tax_category_id': tax_category_id,
+    }
+
+    request_url = url + 'rulesets/'
+    response = client.post(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 200
+    assert response.data['tax_category_id'] is not None
+
+    response = client.post(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 409
 
 @pytest.mark.django_db
 def test_post_valid_ruleset():
-    pass
+    jurisdiction_id = create_mock_jurisdiction()
+    tax_category_id = create_tax_category('Test category')
+
+    body = {
+        'jurisdiction_id': jurisdiction_id,
+        'tax_category_id': tax_category_id,
+    }
+
+    request_url = url + 'rulesets/'
+    response = client.post(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 200
+    assert response.data['tax_category_id'] is not None
 
 # Ruleset deletion
 @pytest.mark.django_db
