@@ -1486,55 +1486,312 @@ def test_patch_valid_tiered_rate_rule():
 # Rule tier creation
 @pytest.mark.django_db
 def test_post_rule_tier_with_null_data():
-    pass
+    rule = create_mock_tiered_rate_rule('salary', 1, create_mock_ruleset())
+    ruleset_id = None
+    rule_id = None
+    min_value = None
+    max_value = None
+    ordinal = None
+    tier_rate = None
+
+    body = {
+        'min_value': min_value,
+        'max_value': max_value,
+        'ordinal': ordinal,
+        'tier_rate': tier_rate,
+    }
+
+    request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/tiers/'
+    response = client.post(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 404
 
 @pytest.mark.django_db
 def test_post_rule_tier_with_null_rule_id():
-    pass
+    rule = create_mock_tiered_rate_rule('salary', 1, create_mock_ruleset())
+    ruleset_id = rule.ruleset.id
+    rule_id = None
+    min_value = 10000
+    max_value = 45000
+    ordinal = 1
+    tier_rate = 20
+
+    body = {
+        'min_value': min_value,
+        'max_value': max_value,
+        'ordinal': ordinal,
+        'tier_rate': tier_rate,
+    }
+
+    request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/tiers/'
+    response = client.post(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 404
 
 @pytest.mark.django_db
 def test_post_rule_tier_with_non_existent_rule_id():
-    pass
+    rule = create_mock_tiered_rate_rule('salary', 1, create_mock_ruleset())
+    ruleset_id = rule.ruleset.id
+    rule_id = 479
+    min_value = 10000
+    max_value = 45000
+    ordinal = 1
+    tier_rate = 20
+
+    body = {
+        'min_value': min_value,
+        'max_value': max_value,
+        'ordinal': ordinal,
+        'tier_rate': tier_rate,
+    }
+
+    request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/tiers/'
+    response = client.post(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 404
 
 @pytest.mark.django_db
 def test_post_rule_tier_with_non_numeric_rule_id():
-    pass
+    rule = create_mock_tiered_rate_rule('salary', 1, create_mock_ruleset())
+    ruleset_id = rule.ruleset.id
+    rule_id = 'ABC'
+    min_value = 10000
+    max_value = 45000
+    ordinal = 1
+    tier_rate = 20
+
+    body = {
+        'min_value': min_value,
+        'max_value': max_value,
+        'ordinal': ordinal,
+        'tier_rate': tier_rate,
+    }
+
+    request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/tiers/'
+    response = client.post(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 404
 
 @pytest.mark.django_db
 def test_post_rule_tier_with_null_min_value():
-    pass
+    rule = create_mock_tiered_rate_rule('salary', 1, create_mock_ruleset())
+    ruleset_id = rule.ruleset.id
+    rule_id = rule.id
+    min_value = None
+    max_value = 45000
+    ordinal = 1
+    tier_rate = 20
+
+    body = {
+        'min_value': min_value,
+        'max_value': max_value,
+        'ordinal': ordinal,
+        'tier_rate': tier_rate,
+    }
+
+    request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/tiers/'
+    response = client.post(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 400
 
 @pytest.mark.django_db
 def test_post_rule_tier_with_non_numeric_min_value():
-    pass
+    rule = create_mock_tiered_rate_rule('salary', 1, create_mock_ruleset())
+    ruleset_id = rule.ruleset.id
+    rule_id = rule.id
+    min_value = 'ABC'
+    max_value = 45000
+    ordinal = 1
+    tier_rate = 20
+
+    body = {
+        'min_value': min_value,
+        'max_value': max_value,
+        'ordinal': ordinal,
+        'tier_rate': tier_rate,
+    }
+
+    request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/tiers/'
+    response = client.post(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 400
 
 @pytest.mark.django_db
 def test_post_rule_tier_with_null_max_value():
-    pass
+    rule = create_mock_tiered_rate_rule('salary', 1, create_mock_ruleset())
+    ruleset_id = rule.ruleset.id
+    rule_id = rule.id
+    min_value = 10000
+    max_value = None
+    ordinal = 1
+    tier_rate = 20
+
+    body = {
+        'min_value': min_value,
+        'max_value': max_value,
+        'ordinal': ordinal,
+        'tier_rate': tier_rate,
+    }
+
+    request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/tiers/'
+    response = client.post(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 400
 
 @pytest.mark.django_db
 def test_post_rule_tier_with_non_numeric_max_value():
-    pass
+    rule = create_mock_tiered_rate_rule('salary', 1, create_mock_ruleset())
+    ruleset_id = rule.ruleset.id
+    rule_id = rule.id
+    min_value = 10000
+    max_value = 'ABC'
+    ordinal = 1
+    tier_rate = 20
+
+    body = {
+        'min_value': min_value,
+        'max_value': max_value,
+        'ordinal': ordinal,
+        'tier_rate': tier_rate,
+    }
+
+    request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/tiers/'
+    response = client.post(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 400
 
 @pytest.mark.django_db
 def test_post_rule_tier_with_null_ordinal():
-    pass
+    rule = create_mock_tiered_rate_rule('salary', 1, create_mock_ruleset())
+    ruleset_id = rule.ruleset.id
+    rule_id = rule.id
+    min_value = 10000
+    max_value = 45000
+    ordinal = None
+    tier_rate = 20
+
+    body = {
+        'min_value': min_value,
+        'max_value': max_value,
+        'ordinal': ordinal,
+        'tier_rate': tier_rate,
+    }
+
+    request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/tiers/'
+    response = client.post(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 400
 
 @pytest.mark.django_db
 def test_post_rule_tier_with_non_numeric_ordinal():
-    pass
+    rule = create_mock_tiered_rate_rule('salary', 1, create_mock_ruleset())
+    ruleset_id = rule.ruleset.id
+    rule_id = rule.id
+    min_value = 10000
+    max_value = 45000
+    ordinal = 'ABC'
+    tier_rate = 20
+
+    body = {
+        'min_value': min_value,
+        'max_value': max_value,
+        'ordinal': ordinal,
+        'tier_rate': tier_rate,
+    }
+
+    request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/tiers/'
+    response = client.post(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 400
 
 @pytest.mark.django_db
 def test_post_rule_tier_with_null_tier_rate():
-    pass
+    rule = create_mock_tiered_rate_rule('salary', 1, create_mock_ruleset())
+    ruleset_id = rule.ruleset.id
+    rule_id = rule.id
+    min_value = 10000
+    max_value = 45000
+    ordinal = 1
+    tier_rate = None
+
+    body = {
+        'min_value': min_value,
+        'max_value': max_value,
+        'ordinal': ordinal,
+        'tier_rate': tier_rate,
+    }
+
+    request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/tiers/'
+    response = client.post(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 400
 
 @pytest.mark.django_db
 def test_post_rule_tier_with_non_numeric_tier_rate():
-    pass
+    rule = create_mock_tiered_rate_rule('salary', 1, create_mock_ruleset())
+    ruleset_id = rule.ruleset.id
+    rule_id = rule.id
+    min_value = 10000
+    max_value = 45000
+    ordinal = 1
+    tier_rate = 'ABC'
+
+    body = {
+        'min_value': min_value,
+        'max_value': max_value,
+        'ordinal': ordinal,
+        'tier_rate': tier_rate,
+    }
+
+    request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/tiers/'
+    response = client.post(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 400
 
 @pytest.mark.django_db
 def test_post_valid_rule_tier():
-    pass
+    rule = create_mock_tiered_rate_rule('salary', 1, create_mock_ruleset())
+    ruleset_id = rule.ruleset.id
+    rule_id = rule.id
+    min_value = 10000
+    max_value = 45000
+    ordinal = 1
+    tier_rate = 20
+
+    body = {
+        'min_value': min_value,
+        'max_value': max_value,
+        'ordinal': ordinal,
+        'tier_rate': tier_rate,
+    }
+
+    request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/tiers/'
+    response = client.post(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status == 200
+    assert response.data['tier_id'] is not None
+
+    tier_id = response.data['tier_id']
+    tier = RuleTier.objects.get(pk=tier_id)
+
+    assert tier.rule.id == rule_id
+    assert tier.min_value == min_value
+    assert tier.max_value == max_value
+    assert tier.ordinal == ordinal
+    assert tier.tier_rate == tier_rate
 
 # Rule tier updates
 @pytest.mark.django_db
