@@ -193,15 +193,33 @@ def test_post_valid_tax_category():
 #  Tax category deletion
 @pytest.mark.django_db
 def test_delete_tax_category_with_null_id():
-    pass
+    id = None
+
+    request_url = url + 'taxcategories/' + str(id) + '/'
+    response = client.delete(request_url, format='json')
+
+    assert response is not None
+    assert response.status == 404
 
 @pytest.mark.django_db
 def test_delete_tax_category_with_non_existent_id():
-    pass
+    id = 479
+
+    request_url = url + 'taxcategories/' + str(id) + '/'
+    response = client.delete(request_url, format='json')
+
+    assert response is not None
+    assert response.status == 404
 
 @pytest.mark.django_db
 def test_delete_tax_category():
-    pass
+    id = create_tax_category('Test category')
+
+    request_url = url + 'taxcategories/' + str(id) + '/'
+    response = client.delete(request_url, format='json')
+
+    assert response is not None
+    assert response.status == 200
 
 # Rule deletion
 @pytest.mark.django_db
