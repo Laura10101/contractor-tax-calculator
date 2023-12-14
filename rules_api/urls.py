@@ -1,5 +1,4 @@
 from django.urls import path, re_path
-from .autocompletes import JurisdictionAutocomplete
 from .views import *
 
 urlpatterns = [
