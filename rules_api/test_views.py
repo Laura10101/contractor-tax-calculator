@@ -115,15 +115,33 @@ def test_post_valid_ruleset():
 # Ruleset deletion
 @pytest.mark.django_db
 def test_delete_ruleset_with_null_id():
-    pass
+    ruleset_id = None
+
+    request_url = url + 'rulesets/' + str(ruleset_id) + '/'
+    response = client.delete(request_url, format='json')
+
+    assert response is not None
+    assert response.status == 404
 
 @pytest.mark.django_db
 def test_delete_ruleset_with_non_existent_id():
-    pass
+    ruleset_id = 479
+
+    request_url = url + 'rulesets/' + str(ruleset_id) + '/'
+    response = client.delete(request_url, format='json')
+
+    assert response is not None
+    assert response.status == 404
 
 @pytest.mark.django_db
 def test_delete_ruleset():
-    pass
+    ruleset_id = create_mock_ruleset().id
+
+    request_url = url + 'rulesets/' + str(ruleset_id) + '/'
+    response = client.delete(request_url, format='json')
+
+    assert response is not None
+    assert response.status == 200
 
 # Tax category creation
 @pytest.mark.django_db
