@@ -65,7 +65,7 @@ class TaxRuleTierResult(models.Model):
 
 # This class contains the types of tax categories
 class TaxCategory(models.Model):
-    name = models.CharField(max_length=255, null=False, blank=False)
+    name = models.CharField(max_length=255, null=False, blank=False, unique=True)
 
     def __str__(self):
         return self.name
