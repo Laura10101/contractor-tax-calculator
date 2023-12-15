@@ -76,7 +76,7 @@ class RuleSet(models.Model):
     jurisdiction_id = models.IntegerField()
     # Create foreign key for RuleSet/TaxCategory relationship 
     tax_category = models.ForeignKey(TaxCategory, on_delete=models.CASCADE)
-    ordinal = models.IntegerField()
+    ordinal = models.IntegerField(validators=[MinValueValidator(0)])
 
     def calculate(self, variable_table, calculation_result):
         if self.rules.count() > 0:

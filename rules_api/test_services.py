@@ -43,6 +43,9 @@ def test_create_ruleset_with_duplicate_tax_category_jurisdiction_combination():
     jurisdiction_id = create_mock_jurisdiction().id
     tax_category_id = TaxCategory.objects.create(name='Test Category').id
     ordinal = 1
+    id = create_ruleset(jurisdiction_id, tax_category_id, ordinal)
+    assert id is not None
+
     with pytest.raises(ValidationError):
         id = create_ruleset(jurisdiction_id, tax_category_id, ordinal)
 
