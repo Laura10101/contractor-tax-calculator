@@ -4,7 +4,7 @@ from django.core.exceptions import ValidationError
 ### RULE SETS ###
 # Create rule set
 def create_ruleset(jurisdiction_id, tax_category_id, ordinal):
-    if not isinstance(jurisdiction_id, int) or jurisdiction_id < 0:
+    if not isinstance(jurisdiction_id, int):
         raise ValidationError('jurisdiction_id must be a valid (non-negative, non-null) integer')
     
     if RuleSet.objects.filter(jurisdiction_id__exact=jurisdiction_id, tax_category_id__exact=tax_category_id).count() > 0:
@@ -48,7 +48,7 @@ def delete_rule(id):
 ### FLAT RATE RULES ###
 # Create rule 
 def create_flat_rate_rule(ruleset_id, name, ordinal, explainer, variable_name, tax_rate):
-    if not isinstance(ruleset_id, int) or ruleset_id < 0:
+    if not isinstance(ruleset_id, int):
         raise RuleSet.DoesNotExist('ruleset_id must be a non-negative integer value')
     
     if not isinstance(ordinal, int):
@@ -72,7 +72,7 @@ def create_flat_rate_rule(ruleset_id, name, ordinal, explainer, variable_name, t
 
 # Update rule 
 def update_flat_rate_rule(id, name, ordinal, explainer, variable_name, tax_rate):
-    if not isinstance(id, int) or id < 0:
+    if not isinstance(id, int):
         raise FlatRateRule.DoesNotExist('rule_id must be a non-negative integer value')
     
     if not isinstance(ordinal, int):
@@ -92,7 +92,7 @@ def update_flat_rate_rule(id, name, ordinal, explainer, variable_name, tax_rate)
 
 ### TIERED RATE RULES ###
 def create_tiered_rate_rule(ruleset_id, name, ordinal, explainer, variable_name):
-    if not isinstance(ruleset_id, int) or ruleset_id < 0:
+    if not isinstance(ruleset_id, int):
         raise RuleSet.DoesNotExist('ruleset_id must be a non-negative integer value')
     
     if not isinstance(ordinal, int):
@@ -111,7 +111,7 @@ def create_tiered_rate_rule(ruleset_id, name, ordinal, explainer, variable_name)
     return tiered_rate_rule.id
 
 def update_tiered_rate_rule(id, name, ordinal, explainer, variable_name):
-    if not isinstance(id, int) or id < 0:
+    if not isinstance(id, int):
         raise TieredRateRule.DoesNotExist('rule_id must be a non-negative integer value')
     
     if not isinstance(ordinal, int):
@@ -128,7 +128,7 @@ def update_tiered_rate_rule(id, name, ordinal, explainer, variable_name):
 ### RULE TIER ###
 # create a method to create rule tier
 def create_rule_tier(rule_id, min_value, max_value, ordinal, tier_rate):
-    if not isinstance(rule_id, int) or id < 0:
+    if not isinstance(rule_id, int):
         raise TieredRateRule.DoesNotExist('rule_id must be a non-negative integer value')
     
     if not isinstance(ordinal, int):
@@ -147,7 +147,7 @@ def create_rule_tier(rule_id, min_value, max_value, ordinal, tier_rate):
     return rule_tier.id
 
 def update_rule_tier(id, min_value, max_value, ordinal, tier_rate):
-    if not isinstance(id, int) or id < 0:
+    if not isinstance(id, int):
         raise RuleTier.DoesNotExist('tier_id must be a non-negative integer value')
     
     if not isinstance(ordinal, int):
@@ -167,7 +167,7 @@ def delete_rule_tier(id):
 
 ### SECONDARY TIERED RATE RULES ###
 def create_secondary_tiered_rate_rule(ruleset_id, primary_rule_id, name, ordinal, explainer, variable_name):
-    if not isinstance(ruleset_id, int) or ruleset_id < 0:
+    if not isinstance(ruleset_id, int):
         raise RuleSet.DoesNotExist('ruleset_id must be a non-negative integer value')
     
     if not isinstance(ordinal, int):
@@ -188,7 +188,7 @@ def create_secondary_tiered_rate_rule(ruleset_id, primary_rule_id, name, ordinal
     return secondary_tiered_rate_rule.id
 
 def update_secondary_tiered_rate_rule(id, name, ordinal, explainer, variable_name, tax_rate):
-    if not isinstance(id, int) or id < 0:
+    if not isinstance(id, int):
         raise FlatRateRule.DoesNotExist('rule_id must be a non-negative integer value')
     
     if not isinstance(ordinal, int):
@@ -204,7 +204,7 @@ def update_secondary_tiered_rate_rule(id, name, ordinal, explainer, variable_nam
 
 ### SECONDARY RULE TIER ###
 def create_secondary_rule_tier(secondary_rule_id, primary_tier_id, tier_rate):
-    if not isinstance(secondary_rule_id, int) or id < 0:
+    if not isinstance(secondary_rule_id, int):
         raise SecondaryTieredRateRule.DoesNotExist('rule_id must be a non-negative integer value')
     
     # Get the primary rule object from the database based on the rule tier id
@@ -219,7 +219,7 @@ def create_secondary_rule_tier(secondary_rule_id, primary_tier_id, tier_rate):
     return secondary_rule_tier.id
 
 def update_secondary_rule_tier(id, tier_rate):
-    if not isinstance(id, int) or id < 0:
+    if not isinstance(id, int):
         raise SecondaryRuleTier.DoesNotExist('tier_id must be a non-negative integer value')
     
     secondary_rule_tier = SecondaryRuleTier.objects.get(pk=id)
