@@ -1,5 +1,3 @@
-- Complete calculations API
-- Updated automated tests for APIs
 - Complete calculation_results.html template
 - Automated testing for views
 - Fix all bugs
