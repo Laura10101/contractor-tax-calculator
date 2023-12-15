@@ -197,7 +197,7 @@ def test_create_flat_rate_rule_with_null_data():
     variable_name = None
     flat_rate = None
 
-    with pytest.raises(ValidationError):
+    with pytest.raises(RuleSet.DoesNotExist):
         id = create_flat_rate_rule(ruleset_id, name, ordinal, explainer, variable_name, flat_rate)
 
 @pytest.mark.django_db
