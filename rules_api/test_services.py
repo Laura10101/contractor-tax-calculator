@@ -197,7 +197,7 @@ def test_create_flat_rate_rule_with_null_data():
     variable_name = None
     flat_rate = None
 
-    with pytest.raises(RuleSet.DoesNotExist):
+    with pytest.raises(ValidationError):
         id = create_flat_rate_rule(ruleset_id, name, ordinal, explainer, variable_name, flat_rate)
 
 @pytest.mark.django_db
@@ -209,7 +209,7 @@ def test_create_flat_rate_rule_with_null_ruleset_id():
     variable_name = 'salary'
     flat_rate = 20
 
-    with pytest.raises(RuleSet.DoesNotExist):
+    with pytest.raises(ValidationError):
         id = create_flat_rate_rule(ruleset_id, name, ordinal, explainer, variable_name, flat_rate)
 
 @pytest.mark.django_db
@@ -233,7 +233,7 @@ def test_create_flat_rate_rule_with_non_numeric_ruleset_id():
     variable_name = 'salary'
     flat_rate = 20
 
-    with pytest.raises(RuleSet.DoesNotExist):
+    with pytest.raises(ValidationError):
         id = create_flat_rate_rule(ruleset_id, name, ordinal, explainer, variable_name, flat_rate)
 
 @pytest.mark.django_db
@@ -364,7 +364,7 @@ def test_update_flat_rate_rule_with_null_data():
     variable_name = None
     flat_rate = None
 
-    with pytest.raises(FlatRateRule.DoesNotExist):
+    with pytest.raises(ValidationError):
         update_flat_rate_rule(rule_id, name, ordinal, explainer, variable_name, flat_rate)
 
 @pytest.mark.django_db
@@ -376,7 +376,7 @@ def test_update_flat_rate_rule_with_null_rule_id():
     variable_name = 'salary'
     flat_rate = 20
 
-    with pytest.raises(FlatRateRule.DoesNotExist):
+    with pytest.raises(ValidationError):
         update_flat_rate_rule(rule_id, name, ordinal, explainer, variable_name, flat_rate)
 
 @pytest.mark.django_db
@@ -400,7 +400,7 @@ def test_update_flat_rate_rule_with_non_numeric_rule_id():
     variable_name = 'salary'
     flat_rate = 20
 
-    with pytest.raises(FlatRateRule.DoesNotExist):
+    with pytest.raises(ValidationError):
         update_flat_rate_rule(rule_id, name, ordinal, explainer, variable_name, flat_rate)
 
 @pytest.mark.django_db
