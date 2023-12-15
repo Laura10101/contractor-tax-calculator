@@ -48,6 +48,15 @@ def delete_rule(id):
 ### FLAT RATE RULES ###
 # Create rule 
 def create_flat_rate_rule(ruleset_id, name, ordinal, explainer, variable_name, tax_rate):
+    if not isinstance(ruleset_id, int) or ruleset_id < 0:
+        raise ValidationError('ruleset_id must be a non-negative integer value')
+    
+    if not isinstance(ordinal, int):
+        raise ValidationError('ordinal must be a non-negative integer value')
+    
+    if not isinstance(tax_rate, float):
+        raise ValidationError('tax_rate must be a non-negative floating point value')
+
     ruleset = RuleSet.objects.get(pk=ruleset_id)
 
     flat_rate_rule = FlatRateRule()
@@ -63,6 +72,15 @@ def create_flat_rate_rule(ruleset_id, name, ordinal, explainer, variable_name, t
 
 # Update rule 
 def update_flat_rate_rule(id, name, ordinal, explainer, variable_name, tax_rate):
+    if not isinstance(id, int) or id < 0:
+        raise ValidationError('rule_id must be a non-negative integer value')
+    
+    if not isinstance(ordinal, int):
+        raise ValidationError('ordinal must be a non-negative integer value')
+    
+    if not isinstance(tax_rate, float):
+        raise ValidationError('tax_rate must be a non-negative integer value')
+    
     rule = FlatRateRule.objects.get(pk=id)
     rule.name=name
     rule.ordinal=ordinal
