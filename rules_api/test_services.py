@@ -458,7 +458,7 @@ def test_update_flat_rate_rule_with_nulL_explainer():
 
     update_flat_rate_rule(rule_id, name, ordinal, explainer, variable_name, flat_rate)
 
-    rule = FlatRateRule.objects.get(pk=id)
+    rule = FlatRateRule.objects.get(pk=rule_id)
     assert rule.name == name
     assert rule.variable_name == variable_name
     assert rule.flat_rate == flat_rate
@@ -532,7 +532,7 @@ def test_update_valid_flat_rate_rule():
 
     update_flat_rate_rule(rule_id, name, ordinal, explainer, variable_name, flat_rate)
 
-    rule = FlatRateRule.objects.get(pk=id)
+    rule = FlatRateRule.objects.get(pk=rule_id)
     assert rule.name == name
     assert rule.variable_name == variable_name
     assert rule.flat_rate == flat_rate
