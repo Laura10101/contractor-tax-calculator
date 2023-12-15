@@ -91,8 +91,17 @@ def update_flat_rate_rule(id, name, ordinal, explainer, variable_name, tax_rate)
     rule.save()
 
 ### TIERED RATE RULES ###
-def create_tiered_rate_rule(name, ordinal, explainer, variable_name):
+def create_tiered_rate_rule(ruleset_id, name, ordinal, explainer, variable_name):
+    if not isinstance(ruleset_id, int) or ruleset_id < 0:
+        raise ValidationError('ruleset_id must be a non-negative integer value')
+    
+    if not isinstance(ordinal, int):
+        raise ValidationError('ordinal must be a non-negative integer value')
+    
+    ruleset = RuleSet.objects.get(pk=ruleset_id)
+    
     tiered_rate_rule = TieredRateRule()
+    tiered_rate_rule.ruleset=ruleset
     tiered_rate_rule.name=name
     tiered_rate_rule.ordinal=ordinal
     tiered_rate_rule.explainer=explainer
@@ -139,9 +148,18 @@ def delete_rule_tier(id):
     tier.delete()
 
 ### SECONDARY TIERED RATE RULES ###
-def create_secondary_tiered_rate_rule(primary_rule_id, name, ordinal, explainer, variable_name):
+def create_secondary_tiered_rate_rule(ruleset_id, primary_rule_id, name, ordinal, explainer, variable_name):
+    if not isinstance(ruleset_id, int) or ruleset_id < 0:
+        raise ValidationError('ruleset_id must be a non-negative integer value')
+    
+    if not isinstance(ordinal, int):
+        raise ValidationError('ordinal must be a non-negative integer value')
+    
+    ruleset = RuleSet.objects.get(pk=ruleset_id)
+
     primary_rule = TieredRateRule.objects.get(pk=primary_rule_id)
     secondary_tiered_rate_rule = SecondaryTieredRateRule()
+    secondary_tiered_rate_rule.ruleset=ruleset
     secondary_tiered_rate_rule.primary_rule = primary_rule
     secondary_tiered_rate_rule.name=name
     secondary_tiered_rate_rule.ordinal=ordinal

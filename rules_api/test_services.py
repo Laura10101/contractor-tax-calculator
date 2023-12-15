@@ -584,7 +584,7 @@ def test_create_tiered_rate_rule_with_non_numeric_ruleset_id():
         id = create_tiered_rate_rule(ruleset_id, name, ordinal, explainer, variable_name)
 
 @pytest.mark.django_db
-def test_crete_tiered_rate_rule_with_null_name():
+def test_create_tiered_rate_rule_with_null_name():
     ruleset_id = create_mock_ruleset()
     name = None
     ordinal = 1
@@ -685,7 +685,7 @@ def test_update_tiered_rate_rule_with_null_data():
 @pytest.mark.django_db
 def test_update_tiered_rate_rule_with_null_rule_id():
     ruleset = create_mock_ruleset()
-    ruleset_id = None
+    ruleset_id = ruleset.id
     name = 'Test rule'
     ordinal = 1
     explainer = 'Test explainer'
