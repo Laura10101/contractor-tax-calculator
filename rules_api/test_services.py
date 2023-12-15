@@ -10,49 +10,72 @@ import pytest
 def test_create_ruleset_with_null_data():
     jurisdiction_id = None
     tax_category_id = None
+    ordinal = None
     with pytest.raises(ValidationError):
-        id = create_ruleset(jurisdiction_id, tax_category_id)
+        id = create_ruleset(jurisdiction_id, tax_category_id, ordinal)
         
 @pytest.mark.django_db
 def test_create_ruleset_with_null_jurisdiction_id():
     jurisdiction_id = None
     tax_category_id = TaxCategory.objects.create(name='Test Category').id
-    
+    ordinal = 1    
     with pytest.raises(ValidationError):
-        id = create_ruleset(jurisdiction_id, tax_category_id)
+        id = create_ruleset(jurisdiction_id, tax_category_id, ordinal)
 
 @pytest.mark.django_db
 def test_create_ruleset_with_null_tax_category_id():
     jurisdiction_id = create_mock_jurisdiction().id
     tax_category_id = None
-    
+    ordinal = 1
     with pytest.raises(TaxCategory.DoesNotExist):
-        id = create_ruleset(jurisdiction_id, tax_category_id)
+        id = create_ruleset(jurisdiction_id, tax_category_id, ordinal)
 
 @pytest.mark.django_db
 def test_create_ruleset_with_non_existent_tax_category_id():
     jurisdiction_id = create_mock_jurisdiction().id
     tax_category_id = 479
-    
+    ordinal = 1
     with pytest.raises(TaxCategory.DoesNotExist):
-        id = create_ruleset(jurisdiction_id, tax_category_id)
+        id = create_ruleset(jurisdiction_id, tax_category_id, ordinal)
 
 @pytest.mark.django_db
 def test_create_ruleset_with_duplicate_tax_category_jurisdiction_combination():
     jurisdiction_id = create_mock_jurisdiction().id
     tax_category_id = TaxCategory.objects.create(name='Test Category').id
-    
-    id = create_ruleset(jurisdiction_id, tax_category_id)
-    
+    ordinal = 1
     with pytest.raises(ValidationError):
-        id = create_ruleset(jurisdiction_id, tax_category_id)
+        id = create_ruleset(jurisdiction_id, tax_category_id, ordinal)
+
+@pytest.mark.django_db
+def test_create_ruleset_with_null_ordinal():
+    jurisdiction_id = create_mock_jurisdiction().id
+    tax_category_id = TaxCategory.objects.create(name='Test Category').id
+    ordinal = None
+    with pytest.raises(ValidationError):
+        id = create_ruleset(jurisdiction_id, tax_category_id, ordinal)
+
+@pytest.mark.django_db
+def test_create_ruleset_with_non_numeric_ordinal():
+    jurisdiction_id = create_mock_jurisdiction().id
+    tax_category_id = TaxCategory.objects.create(name='Test Category').id
+    ordinal = 'ABC'
+    with pytest.raises(ValidationError):
+        id = create_ruleset(jurisdiction_id, tax_category_id, ordinal)
+
+@pytest.mark.django_db
+def test_create_ruleset_with_negative_ordinal():
+    jurisdiction_id = create_mock_jurisdiction().id
+    tax_category_id = TaxCategory.objects.create(name='Test Category').id
+    ordinal = -1    
+    with pytest.raises(ValidationError):
+        id = create_ruleset(jurisdiction_id, tax_category_id, ordinal)
 
 @pytest.mark.django_db
 def test_create_valid_ruleset():
     jurisdiction_id = create_mock_jurisdiction().id
     tax_category_id = TaxCategory.objects.create(name='Test Category').id
-    
-    id = create_ruleset(jurisdiction_id, tax_category_id)
+    ordinal = 1
+    id = create_ruleset(jurisdiction_id, tax_category_id, ordinal)
     
     assert id is not None
     ruleset = RuleSet.objects.get(pk=id)

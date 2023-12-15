@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 
 ### RULE SETS ###
 # Create rule set
-def create_ruleset(jurisdiction_id, tax_category_id):
+def create_ruleset(jurisdiction_id, tax_category_id, ordinal):
     if not isinstance(jurisdiction_id, int) or jurisdiction_id < 0:
         raise ValidationError('jurisdiction_id must be a valid (non-negative, non-null) integer')
     # Assign tax category id to new rule set 
@@ -12,6 +12,7 @@ def create_ruleset(jurisdiction_id, tax_category_id):
     new_ruleset = RuleSet()
     new_ruleset.jurisdiction_id=jurisdiction_id
     new_ruleset.tax_category=tax_category
+    new_ruleset.ordinal=ordinal
     new_ruleset.full_clean()
     new_ruleset.save()
     # Return ID of newly created ruleset
