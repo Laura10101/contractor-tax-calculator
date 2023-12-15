@@ -47,8 +47,11 @@ def delete_rule(id):
 
 ### FLAT RATE RULES ###
 # Create rule 
-def create_flat_rate_rule(name, ordinal, explainer, variable_name, tax_rate):
+def create_flat_rate_rule(ruleset_id, name, ordinal, explainer, variable_name, tax_rate):
+    ruleset = RuleSet.objects.get(pk=ruleset_id)
+
     flat_rate_rule = FlatRateRule()
+    flat_rate_rule.ruleset = ruleset
     flat_rate_rule.name=name
     flat_rate_rule.ordinal=ordinal
     flat_rate_rule.explainer=explainer
