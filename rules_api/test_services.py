@@ -100,8 +100,8 @@ def test_delete_ruleset_with_non_existent_id():
 def test_delete_ruleset():
     jurisdiction_id = create_mock_jurisdiction().id
     tax_category_id = TaxCategory.objects.create(name='Test Category').id
-    
-    id = create_ruleset(jurisdiction_id, tax_category_id)
+    ordinal = 1
+    id = create_ruleset(jurisdiction_id, tax_category_id, ordinal)
     
     assert id is not None
     ruleset = RuleSet.objects.get(pk=id)

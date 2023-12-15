@@ -23,7 +23,8 @@ def create_ruleset(jurisdiction_id, tax_category_id, ordinal):
 
 # Delete rule set 
 def delete_ruleset(id):
-    RuleSet.objects.filter(pk__exact=id).delete()
+    ruleset = RuleSet.objects.get(pk=id)
+    ruleset.delete()
 
 ### TAX CATEGORIES ###
 # Create tax category
