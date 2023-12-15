@@ -99,7 +99,7 @@ class Rule(PolymorphicModel):
     ruleset = models.ForeignKey(RuleSet, on_delete=models.CASCADE, related_name='rules')
     name = models.CharField(max_length=255, null=False, blank=False)
     # ordinal to indicate order in which rules are applied  
-    ordinal = models.IntegerField()
+    ordinal = models.IntegerField(validators=[MinValueValidator(0)])
     # Explanatory text box 
     explainer = models.CharField(max_length=255, null=True, blank=True)
     # Indicates which value from the form submitted by the user this rule 
@@ -112,7 +112,7 @@ class Rule(PolymorphicModel):
 
 # This class applies flat tax rates 
 class FlatRateRule(Rule):
-    flat_rate = models.DecimalField(decimal_places=2, max_digits=5)
+    flat_rate = models.FloatField(null=False, blank=False, validators=[MinValueValidator(0)])
 
     def calculate(self, variable_table, ruleset_results):
         variable_value = variable_table[self.variable_name]
@@ -146,7 +146,7 @@ class RuleTier(models.Model):
     # Identify the rule to which this tier belongs
     rule = models.ForeignKey(TieredRateRule, on_delete=models.CASCADE, related_name='tiers')
     # Create min and max value attributes for each tier 
-    min_value = models.IntegerField()
+    min_value = models.IntegerField(null=False, blank=False, validators=[MinValueValidator(0)])
     # This has to allow null as there will be no max value for some objects
     max_value = models.IntegerField(blank=True, null=True)
     ordinal = models.IntegerField()
