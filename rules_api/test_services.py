@@ -23,7 +23,7 @@ def test_create_ruleset_with_null_jurisdiction_id():
 
 @pytest.mark.django_db
 def test_create_ruleset_with_null_tax_category_id():
-    jurisdiction_id = create_mock_jurisdiction()
+    jurisdiction_id = create_mock_jurisdiction().id
     tax_category_id = None
     
     with pytest.raises(TaxCategory.DoesNotExist):
@@ -31,7 +31,7 @@ def test_create_ruleset_with_null_tax_category_id():
 
 @pytest.mark.django_db
 def test_create_ruleset_with_non_existent_tax_category_id():
-    jurisdiction_id = create_mock_jurisdiction()
+    jurisdiction_id = create_mock_jurisdiction().id
     tax_category_id = 479
     
     with pytest.raises(TaxCategory.DoesNotExist):
@@ -39,8 +39,8 @@ def test_create_ruleset_with_non_existent_tax_category_id():
 
 @pytest.mark.django_db
 def test_create_ruleset_with_duplicate_tax_category_jurisdiction_combination():
-    jurisdiction_id = create_mock_jurisdiction()
-    tax_category_id = TaxCategory.objects.create('Test Category').id
+    jurisdiction_id = create_mock_jurisdiction().id
+    tax_category_id = TaxCategory.objects.create(name='Test Category').id
     
     id = create_ruleset(jurisdiction_id, tax_category_id)
     
@@ -49,8 +49,8 @@ def test_create_ruleset_with_duplicate_tax_category_jurisdiction_combination():
 
 @pytest.mark.django_db
 def test_create_valid_ruleset():
-    jurisdiction_id = create_mock_jurisdiction()
-    tax_category_id = TaxCategory.objects.create('Test Category').id
+    jurisdiction_id = create_mock_jurisdiction().id
+    tax_category_id = TaxCategory.objects.create(name='Test Category').id
     
     id = create_ruleset(jurisdiction_id, tax_category_id)
     
@@ -72,8 +72,8 @@ def test_delete_ruleset_with_non_existent_id():
 
 @pytest.mark.django_db
 def test_delete_ruleset():
-    jurisdiction_id = create_mock_jurisdiction()
-    tax_category_id = TaxCategory.objects.create('Test Category').id
+    jurisdiction_id = create_mock_jurisdiction().id
+    tax_category_id = TaxCategory.objects.create(name='Test Category').id
     
     id = create_ruleset(jurisdiction_id, tax_category_id)
     
