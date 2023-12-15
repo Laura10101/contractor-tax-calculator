@@ -37,11 +37,13 @@ def create_tax_category(name):
 
 # Delete tax category
 def delete_tax_category(id):
-    TaxCategory.objects.filter(pk__exact=id).delete()
+    tax_category = TaxCategory.objects.get(pk=id)
+    tax_category.delete()
 
 ### GENERIC RULES ###
 def delete_rule(id):
-    Rule.objects.filter(pk__exact=id).delete()
+    rule = Rule.objects.get(pk=id)
+    rule.delete()
 
 ### FLAT RATE RULES ###
 # Create rule 
@@ -112,7 +114,8 @@ def update_rule_tier(id, min_value, max_value, ordinal, tier_rate):
     rule_tier.save()
     
 def delete_rule_tier(id):
-    RuleTier.objects.filter(pk__exact=id).delete()
+    tier = RuleTier.objects.get(pk=id)
+    tier.delete()
 
 ### SECONDARY TIERED RATE RULES ###
 def create_secondary_tiered_rate_rule(primary_rule_id, name, ordinal, explainer, variable_name):
@@ -156,7 +159,8 @@ def update_secondary_rule_tier(id, tier_rate):
     secondary_rule_tier.save()
 
 def delete_secondary_rule_tier(id):
-    SecondaryRuleTier.objects.filter(pk__exact=id).delete()
+    tier = SecondaryRuleTier.objects.get(pk=id)
+    tier.delete()
 
 # Calculations
 def create_calculation(username, jurisdiction_ids, variable_table):
