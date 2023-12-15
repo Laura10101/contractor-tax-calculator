@@ -1,8 +1,11 @@
 from .models import *
+from django.core.exceptions import ValidationError
 
 ### RULE SETS ###
 # Create rule set
 def create_ruleset(jurisdiction_id, tax_category_id):
+    if not isinstance(jurisdiction_id, int) or jurisdiction_id < 0:
+        raise ValidationError('jurisdiction_id must be a valid (non-negative, non-null) integer')
     # Assign tax category id to new rule set 
     tax_category = TaxCategory.objects.get(pk=tax_category_id)
     # Create new ruleset in the database

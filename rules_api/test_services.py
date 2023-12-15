@@ -12,11 +12,11 @@ def test_create_ruleset_with_null_data():
     tax_category_id = None
     with pytest.raises(ValidationError):
         id = create_ruleset(jurisdiction_id, tax_category_id)
-
+        
 @pytest.mark.django_db
 def test_create_ruleset_with_null_jurisdiction_id():
     jurisdiction_id = None
-    tax_category_id = TaxCategory.objects.create('Test Category').id
+    tax_category_id = TaxCategory.objects.create(name='Test Category').id
     
     with pytest.raises(ValidationError):
         id = create_ruleset(jurisdiction_id, tax_category_id)
