@@ -101,7 +101,7 @@ class Rule(PolymorphicModel):
     # ordinal to indicate order in which rules are applied  
     ordinal = models.IntegerField()
     # Explanatory text box 
-    explainer = models.CharField(max_length=255, null=False, blank=False)
+    explainer = models.CharField(max_length=255, null=True, blank=True)
     # Indicates which value from the form submitted by the user this rule 
     # should be applied to 
     variable_name = models.CharField(max_length=255, null=False, blank=False)
