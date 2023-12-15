@@ -178,7 +178,7 @@ def test_delete_rule_with_non_existent_id():
 
 @pytest.mark.django_db
 def test_delete_rule():
-    rule_id = create_mock_flat_rate_Rule('salary', 20, create_mock_ruleset())
+    rule_id = create_mock_flat_rate_Rule('salary', 20, create_mock_ruleset()).id
     assert rule_id is not None
     rule = FlatRateRule.objects.get(pk=rule_id)
     assert rule is not None
