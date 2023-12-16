@@ -857,7 +857,7 @@ def test_put_flat_rate_rule_with_nulL_explainer():
     rule_id = rule.id
     name = 'Test rule updated'
     ordinal = 2
-    explainer = 'Test explainer updated'
+    explainer = None
     variable_name = 'salary'
     flat_rate = 30
 
@@ -865,7 +865,7 @@ def test_put_flat_rate_rule_with_nulL_explainer():
         'type': 'flat_rate',
         'name': name,
         'ordinal': ordinal,
-        'explainer': None,
+        'explainer': explainer,
         'variable_name': variable_name,
         'tax_rate': flat_rate,
     }
