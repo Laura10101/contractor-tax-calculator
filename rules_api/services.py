@@ -8,7 +8,7 @@ def create_ruleset(jurisdiction_id, tax_category_id, ordinal):
         raise ValidationError('jurisdiction_id must be a valid (non-negative, non-null) integer')
     
     if RuleSet.objects.filter(jurisdiction_id__exact=jurisdiction_id, tax_category_id__exact=tax_category_id).count() > 0:
-        raise ValidationError('A rule already exists with for this tax category in this jurisdiction')
+        raise ValidationError('A ruleset already exists for this tax category in this jurisdiction')
     # Assign tax category id to new rule set 
     tax_category = TaxCategory.objects.get(pk=tax_category_id)
     # Create new ruleset in the database
