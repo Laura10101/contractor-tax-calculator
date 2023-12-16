@@ -794,7 +794,7 @@ def test_update_tiered_rate_rule_with_non_numeric_ordinal():
         update_tiered_rate_rule(rule_id, name, ordinal, explainer, variable_name)
 
 @pytest.mark.django_db
-def test_update_tiered_rate_rule_with_nulL_explainer():
+def test_update_tiered_rate_rule_with_null_explainer():
     ruleset = create_mock_ruleset()
     ruleset_id = ruleset.id
     name = 'Test rule'
@@ -812,11 +812,11 @@ def test_update_tiered_rate_rule_with_nulL_explainer():
 
     update_tiered_rate_rule(rule_id, name, ordinal, explainer, variable_name)
 
-    rule = TieredRateRule.objects.get(pk=id)
+    rule = TieredRateRule.objects.get(pk=rule_id)
     assert rule.name == name
     assert rule.ordinal == ordinal
     assert rule.variable_name == variable_name
-    assert rule.exlainer == explainer
+    assert rule.explainer == explainer
 
 @pytest.mark.django_db
 def test_update_tiered_rate_rule_with_null_variable_name():
@@ -857,11 +857,11 @@ def test_update_valid_tiered_rate_rule():
 
     update_tiered_rate_rule(rule_id, name, ordinal, explainer, variable_name)
 
-    rule = TieredRateRule.objects.get(pk=id)
+    rule = TieredRateRule.objects.get(pk=rule_id)
     assert rule.name == name
     assert rule.ordinal == ordinal
     assert rule.variable_name == variable_name
-    assert rule.exlainer == explainer
+    assert rule.explainer == explainer
 
 # Rule tier creation
 @pytest.mark.django_db
@@ -1616,7 +1616,7 @@ def test_update_secondary_tiered_rate_rule_with_non_numeric_rule_id():
 def test_update_secondary_iered_rate_rule_with_null_name():
     ruleset = create_mock_ruleset()
     ruleset_id = ruleset.id
-    primary_rule_id = create_mock_tiered_rate_rule('salary', 20, ruleset)
+    primary_rule_id = create_mock_tiered_rate_rule('salary', 20, ruleset).id
     name = 'Test rule'
     ordinal = 1
     explainer = 'Test explainer'
@@ -1695,7 +1695,7 @@ def test_update_secondary_tiered_rate_rule_with_nulL_explainer():
 
     update_secondary_tiered_rate_rule(rule_id, name, ordinal, explainer, variable_name)
 
-    rule = SecondaryTieredRateRule.objects.get(pk=id)
+    rule = SecondaryTieredRateRule.objects.get(pk=rule_id)
     assert rule.name == name
     assert rule.ordinal == ordinal
     assert rule.variable_name == variable_name
@@ -1743,7 +1743,7 @@ def test_update_valid_secondary_tiered_rate_rule():
 
     update_secondary_tiered_rate_rule(rule_id, name, ordinal, explainer, variable_name)
 
-    rule = SecondaryTieredRateRule.objects.get(pk=id)
+    rule = SecondaryTieredRateRule.objects.get(pk=rule_id)
     assert rule.name == name
     assert rule.ordinal == ordinal
     assert rule.variable_name == variable_name

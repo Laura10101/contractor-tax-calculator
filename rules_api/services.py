@@ -170,6 +170,9 @@ def create_secondary_tiered_rate_rule(ruleset_id, primary_rule_id, name, ordinal
     if not isinstance(ruleset_id, int):
         raise RuleSet.DoesNotExist('ruleset_id must be a non-negative integer value')
     
+    if not isinstance(primary_rule_id, int):
+        raise TieredRateRule.DoesNotExist('primary_rule_id must be a non-negative integer value')
+    
     if not isinstance(ordinal, int):
         raise ValidationError('ordinal must be a non-negative integer value')
     
@@ -206,6 +209,9 @@ def update_secondary_tiered_rate_rule(id, name, ordinal, explainer, variable_nam
 def create_secondary_rule_tier(secondary_rule_id, primary_tier_id, tier_rate):
     if not isinstance(secondary_rule_id, int):
         raise SecondaryTieredRateRule.DoesNotExist('rule_id must be a non-negative integer value')
+    
+    if not isinstance(primary_tier_id, int):
+        raise RuleTier.DoesNotExist('primary_tier_id must be a non-negative integer value')
     
     # Get the primary rule object from the database based on the rule tier id
     secondary_rule = SecondaryTieredRateRule.objects.get(pk=secondary_rule_id)
