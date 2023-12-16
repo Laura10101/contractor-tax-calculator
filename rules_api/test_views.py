@@ -1818,7 +1818,7 @@ def test_put_rule_tier_with_null_data():
     ordinal = 1
     tier_rate = 20
 
-    tier = create_rule_tier(rule.id, min_value, max_value, ordinal, tier_rate)
+    tier_id = create_rule_tier(rule.id, min_value, max_value, ordinal, tier_rate)
     tier_id = None
 
     min_value = None
@@ -1849,7 +1849,7 @@ def test_put_rule_tier_with_null_tier_id():
     ordinal = 1
     tier_rate = 20
 
-    tier = create_rule_tier(rule.id, min_value, max_value, ordinal, tier_rate)
+    tier_id = create_rule_tier(rule.id, min_value, max_value, ordinal, tier_rate)
     tier_id = None
 
     min_value = 9000
@@ -1880,7 +1880,7 @@ def test_put_rule_tier_with_non_existent_tier_id():
     ordinal = 1
     tier_rate = 20
 
-    tier = create_rule_tier(rule.id, min_value, max_value, ordinal, tier_rate)
+    tier_id = create_rule_tier(rule.id, min_value, max_value, ordinal, tier_rate)
     tier_id = 479
 
     min_value = 9000
@@ -1911,7 +1911,7 @@ def test_put_rule_tier_with_non_numeric_tier_id():
     ordinal = 1
     tier_rate = 20
 
-    tier = create_rule_tier(rule.id, min_value, max_value, ordinal, tier_rate)
+    tier_id = create_rule_tier(rule.id, min_value, max_value, ordinal, tier_rate)
     tier_id = 'tier.id'
 
     min_value = 9000
@@ -1942,8 +1942,7 @@ def test_put_rule_tier_with_null_min_value():
     ordinal = 1
     tier_rate = 20
 
-    tier = create_rule_tier(rule.id, min_value, max_value, ordinal, tier_rate)
-    tier_id = tier.id
+    tier_id = create_rule_tier(rule.id, min_value, max_value, ordinal, tier_rate)
 
     min_value = None
     max_value = 50000
@@ -1973,8 +1972,7 @@ def test_put_rule_tier_with_non_numeric_min_value():
     ordinal = 1
     tier_rate = 20
 
-    tier = create_rule_tier(rule.id, min_value, max_value, ordinal, tier_rate)
-    tier_id = tier.id
+    tier_id = create_rule_tier(rule.id, min_value, max_value, ordinal, tier_rate)
 
     min_value = 'abc'
     max_value = 50000
@@ -2004,8 +2002,7 @@ def test_put_rule_tier_with_null_max_value():
     ordinal = 1
     tier_rate = 20
 
-    tier = create_rule_tier(rule.id, min_value, max_value, ordinal, tier_rate)
-    tier_id = tier.id
+    tier_id = create_rule_tier(rule.id, min_value, max_value, ordinal, tier_rate)
 
     min_value = 9000
     max_value = None
@@ -2035,8 +2032,7 @@ def test_put_rule_tier_with_non_numeric_max_value():
     ordinal = 1
     tier_rate = 20
 
-    tier = create_rule_tier(rule.id, min_value, max_value, ordinal, tier_rate)
-    tier_id = tier.id
+    tier_id = create_rule_tier(rule.id, min_value, max_value, ordinal, tier_rate)
 
     min_value = 9000
     max_value = 'abc'
@@ -2066,8 +2062,7 @@ def test_put_rule_tier_with_null_ordinal():
     ordinal = 1
     tier_rate = 20
 
-    tier = create_rule_tier(rule.id, min_value, max_value, ordinal, tier_rate)
-    tier_id = tier.id
+    tier_id = create_rule_tier(rule.id, min_value, max_value, ordinal, tier_rate)
 
     min_value = 9000
     max_value = 50000
@@ -2097,8 +2092,7 @@ def test_put_rule_tier_with_non_numeric_ordinal():
     ordinal = 1
     tier_rate = 20
 
-    tier = create_rule_tier(rule.id, min_value, max_value, ordinal, tier_rate)
-    tier_id = tier.id
+    tier_id = create_rule_tier(rule.id, min_value, max_value, ordinal, tier_rate)
 
     min_value = 9000
     max_value = 50000
@@ -2128,8 +2122,7 @@ def test_put_rule_tier_with_null_tier_rate():
     ordinal = 1
     tier_rate = 20
 
-    tier = create_rule_tier(rule.id, min_value, max_value, ordinal, tier_rate)
-    tier_id = tier.id
+    tier_id = create_rule_tier(rule.id, min_value, max_value, ordinal, tier_rate)
 
     min_value = 9000
     max_value = 50000
@@ -2159,8 +2152,7 @@ def test_put_rule_tier_with_non_numeric_tier_rate():
     ordinal = 1
     tier_rate = 20
 
-    tier = create_rule_tier(rule.id, min_value, max_value, ordinal, tier_rate)
-    tier_id = tier.id
+    tier_id = create_rule_tier(rule.id, min_value, max_value, ordinal, tier_rate)
 
     min_value = 9000
     max_value = 50000
@@ -2190,8 +2182,7 @@ def test_put_valid_rule_tier():
     ordinal = 1
     tier_rate = 20
 
-    tier = create_rule_tier(rule.id, min_value, max_value, ordinal, tier_rate)
-    tier_id = tier.id
+    tier_id = create_rule_tier(rule.id, min_value, max_value, ordinal, tier_rate)
 
     min_value = 9000
     max_value = 50000
