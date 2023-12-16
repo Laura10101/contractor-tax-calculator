@@ -239,12 +239,18 @@ def delete_secondary_rule_tier(id):
 
 # Calculations
 def create_calculation(username, jurisdiction_ids, variable_table):
+    if not isinstance(jurisdiction_ids, list) or len(jurisdiction_ids) == 0:
+        raise ValidationError('jurisdictions_ids must be a non-empty list of integers')
+
     calculation_result = TaxCalculationResult()
     calculation_result.username=username
     calculation_result.full_clean()
     calculation_result.save()
     
     for jurisdiction_id in jurisdiction_ids:
+        if not isinstance(jurisdiction_id, int):
+            raise ValidationError('jurisdiction_ids must be a valid list of integers')
+        
         rulesets = RuleSet.objects.filter(jurisdiction_id__exact=jurisdiction_id).order_by('ordinal')
         for ruleset in rulesets:
             ruleset.calculate(variable_table, calculation_result)
