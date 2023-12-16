@@ -91,7 +91,7 @@ class TaxCategoryDetail(APIView):
 
 # Create Django REST rules list view
 class RuleList(APIView):
-    def post(self, request):
+    def post(self, request, ruleset_pk):
         # Define the list of required attributes 
         required_attributes = [
             'type',
@@ -119,16 +119,16 @@ class RuleList(APIView):
                 status=status.HTTP_400_BAD_REQUEST
                 )
         if rule_type == 'flat_rate':
-            rule_id = self.__post_flat_rate_rule(name, ordinal, variable_name, explainer, request)
+            rule_id = self.__post_flat_rate_rule(ruleset_pk, name, ordinal, variable_name, explainer, request)
         elif rule_type == 'tiered_rate':
-            rule_id = create_tiered_rate_rule(name, ordinal, variable_name, explainer)
+            rule_id = create_tiered_rate_rule(ruleset_pk, name, ordinal, variable_name, explainer)
         elif rule_type == 'secondary_tiered_rate':
-            rule_id = self.__post_secondary_tiered_rate_rule(name, ordinal, variable_name, explainer, request)
+            rule_id = self.__post_secondary_tiered_rate_rule(ruleset_pk, name, ordinal, variable_name, explainer, request)
         # Generate and return response 
         response = { 'rule_id': rule_id }
         return Response(response)
     
-    def __post_flat_rate_rule(self, name, ordinal, variable_name, explainer, request):
+    def __post_flat_rate_rule(self, ruleset_pk, name, ordinal, variable_name, explainer, request):
         # Valid that request contains additional required attributes
         required_attributes = ['tax_rate']
         if not contains_required_attributes(request, required_attributes):
@@ -140,11 +140,11 @@ class RuleList(APIView):
         # Extract additional variables from request
         tax_rate = data.request['tax_rate']
         # Invoke service method
-        rule_id = create_flat_rate_rule(name, ordinal, variable_name, explainer, tax_rate)
+        rule_id = create_flat_rate_rule(name, ruleset_pk, ordinal, variable_name, explainer, tax_rate)
         # Return ID
         return rule_id
 
-    def __post_secondary_tiered_rate_rule(self, name, ordinal, variable_name, explainer, request):
+    def __post_secondary_tiered_rate_rule(self, ruleset_pk, name, ordinal, variable_name, explainer, request):
         # Valid that request contains additional required attributes
         required_attributes = ['primary_rule_id']
         if not contains_required_attributes(request, required_attributes):
@@ -156,7 +156,7 @@ class RuleList(APIView):
         # Extract additional variables from request
         primary_rule_id = request.data['primary_rule_id']
         # Invoke service method
-        rule_id = create_flat_rate_rule(primary_rule_id, name, ordinal, variable_name, explainer)
+        rule_id = create_flat_rate_rule(ruleset_pk, primary_rule_id, name, ordinal, variable_name, explainer)
         # Return ID
         return rule_id
 
@@ -229,10 +229,9 @@ class RuleDetail(APIView):
 # Create django rest rule tiers list view 
 # Django rest views are classes inheriting APIView 
 class RuleTiersList(APIView):
-    def post(self, request):
+    def post(self, request, ruleset_pk, rule_pk):
         # Define the list of required attributes 
         required_attributes = [
-            'rule_id',
             'min_value',
             'max_value',
             'ordinal',
@@ -245,14 +244,13 @@ class RuleTiersList(APIView):
                 status=status.HTTP_400_BAD_REQUEST
                 )
         # Extract data required for service method
-        rule_id = request.data['rule_id']
         min_value = request.data['min_value']
         max_value = request.data['max_value']
         ordinal = request.data['ordinal']
         tax_rate = request.data['tax_rate'] 
         # Invoke service method 
         rule_tier_id = create_rule_tier(
-            rule_id,
+            rule_pk,
             min_value,
             max_value,
             ordinal,
@@ -303,7 +301,7 @@ class RuleTierDetail(APIView):
 # Create django rest secondary rule tiers list view 
 # Django rest views are classes inheriting APIView 
 class SecondaryRuleTiersList(APIView):
-    def post(self, request):
+    def post(self, request, ruleset_pk, rule_pk):
         # Define the list of required attributes 
         required_attributes = [
             'primary_tier_id',
@@ -321,7 +319,7 @@ class SecondaryRuleTiersList(APIView):
         # Invoke service method 
         secondary_tier_id = create_secondary_rule_tier(
             primary_tier_id,
-            secondary_rule_id,
+            rule_pk,
             tax_rate
         )
         # Generate and return response 
