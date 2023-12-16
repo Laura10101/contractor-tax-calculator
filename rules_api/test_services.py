@@ -1202,6 +1202,7 @@ def test_update_rule_tier_with_null_max_value():
     tier_rate = 25
 
     update_rule_tier(id, min_value, max_value, ordinal, tier_rate)
+    tier = RuleTier.objects.get(pk=id)
 
     assert tier.min_value == min_value
     assert tier.max_value == max_value
@@ -1344,6 +1345,7 @@ def test_update_valid_rule_tier():
     tier_rate = 25
 
     update_rule_tier(id, min_value, max_value, ordinal, tier_rate)
+    tier = RuleTier.objects.get(pk=id)
 
     assert tier.min_value == min_value
     assert tier.max_value == max_value
