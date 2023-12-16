@@ -48,7 +48,6 @@ class RuleSetsList(APIView):
                     status=status.HTTP_400_BAD_REQUEST
                     )
         except TaxCategory.DoesNotExist:
-            print('Not found!')
             return Response(
                 status=status.HTTP_404_NOT_FOUND
                 )
@@ -133,12 +132,13 @@ class RuleList(APIView):
                 )
         try:
             if rule_type == 'flat_rate':
-                rule_id = self.__post_flat_rate_rule(ruleset_pk, name, ordinal, variable_name, explainer, request)
+                rule_id = self.__post_flat_rate_rule(ruleset_pk, name, ordinal, explainer, variable_name, request)
             elif rule_type == 'tiered_rate':
-                rule_id = create_tiered_rate_rule(ruleset_pk, name, ordinal, variable_name, explainer)
+                rule_id = create_tiered_rate_rule(ruleset_pk, name, ordinal, explainer, variable_name)
             elif rule_type == 'secondary_tiered_rate':
-                rule_id = self.__post_secondary_tiered_rate_rule(ruleset_pk, name, ordinal, variable_name, explainer, request)
+                rule_id = self.__post_secondary_tiered_rate_rule(ruleset_pk, name, ordinal, explainer, variable_name, request)
         except ValidationError as e:
+            print(str(e))
             return Response(
                 { 'error': str(e) },
                 status=status.HTTP_400_BAD_REQUEST
@@ -150,7 +150,7 @@ class RuleList(APIView):
         response = { 'rule_id': rule_id }
         return Response(response)
     
-    def __post_flat_rate_rule(self, ruleset_pk, name, ordinal, variable_name, explainer, request):
+    def __post_flat_rate_rule(self, ruleset_pk, name, ordinal, explainer, variable_name, request):
         # Valid that request contains additional required attributes
         required_attributes = ['tax_rate']
         if not contains_required_attributes(request, required_attributes):
@@ -159,11 +159,11 @@ class RuleList(APIView):
         # Extract additional variables from request
         tax_rate = request.data['tax_rate']
         # Invoke service method
-        rule_id = create_flat_rate_rule(name, ruleset_pk, ordinal, variable_name, explainer, tax_rate)
+        rule_id = create_flat_rate_rule(ruleset_pk, name, ordinal, explainer, variable_name, tax_rate)
         # Return ID
         return rule_id
 
-    def __post_secondary_tiered_rate_rule(self, ruleset_pk, name, ordinal, variable_name, explainer, request):
+    def __post_secondary_tiered_rate_rule(self, ruleset_pk, name, ordinal, explainer, variable_name, request):
         # Valid that request contains additional required attributes
         required_attributes = ['primary_rule_id']
         if not contains_required_attributes(request, required_attributes):
@@ -172,7 +172,7 @@ class RuleList(APIView):
         # Extract additional variables from request
         primary_rule_id = request.data['primary_rule_id']
         # Invoke service method
-        rule_id = create_flat_rate_rule(ruleset_pk, primary_rule_id, name, ordinal, variable_name, explainer)
+        rule_id = create_secondary_tiered_rate_rule(ruleset_pk, primary_rule_id, name, ordinal, explainer, variable_name)
         # Return ID
         return rule_id
 

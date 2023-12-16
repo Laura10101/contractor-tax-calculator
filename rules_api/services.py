@@ -59,6 +59,7 @@ def create_flat_rate_rule(ruleset_id, name, ordinal, explainer, variable_name, t
 
     ruleset = RuleSet.objects.get(pk=ruleset_id)
 
+    print(variable_name)
     flat_rate_rule = FlatRateRule()
     flat_rate_rule.ruleset = ruleset
     flat_rate_rule.name=name

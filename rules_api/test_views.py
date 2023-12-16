@@ -375,7 +375,7 @@ def test_post_flat_rate_rule_with_non_existent_ruleset_id():
         'ordinal': ordinal,
         'explainer': explainer,
         'variable_name': variable_name,
-        'flat_rate': flat_rate,
+        'tax_rate': flat_rate,
     }
 
     request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/'
@@ -399,7 +399,7 @@ def test_post_flat_rate_rule_with_non_numeric_ruleset_id():
         'ordinal': ordinal,
         'explainer': explainer,
         'variable_name': variable_name,
-        'flat_rate': flat_rate,
+        'tax_rate': flat_rate,
     }
 
     request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/'
@@ -423,7 +423,7 @@ def test_crete_flat_rate_rule_with_null_name():
         'ordinal': ordinal,
         'explainer': explainer,
         'variable_name': variable_name,
-        'flat_rate': flat_rate,
+        'tax_rate': flat_rate,
     }
 
     request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/'
@@ -435,6 +435,7 @@ def test_crete_flat_rate_rule_with_null_name():
 @pytest.mark.django_db
 def test_post_flat_rate_rule_with_null_ordinal():
     ruleset_id = create_mock_ruleset().id
+    print(ruleset_id)
     name = 'Test rule'
     ordinal = None
     explainer = 'Test explainer'
@@ -447,7 +448,7 @@ def test_post_flat_rate_rule_with_null_ordinal():
         'ordinal': ordinal,
         'explainer': explainer,
         'variable_name': variable_name,
-        'flat_rate': flat_rate,
+        'tax_rate': flat_rate,
     }
 
     request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/'
@@ -471,7 +472,7 @@ def test_post_flat_rate_rule_with_non_numeric_ordinal():
         'ordinal': ordinal,
         'explainer': explainer,
         'variable_name': variable_name,
-        'flat_rate': flat_rate,
+        'tax_rate': flat_rate,
     }
 
     request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/'
@@ -495,14 +496,23 @@ def test_post_flat_rate_rule_with_nulL_explainer():
         'ordinal': ordinal,
         'explainer': explainer,
         'variable_name': variable_name,
-        'flat_rate': flat_rate,
+        'tax_rate': flat_rate,
     }
 
     request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/'
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status_code == 400
+    assert response.status_code == 200
+    assert response.data['rule_id'] is not None
+
+    rule_id = response.data['rule_id']
+    rule = FlatRateRule.objects.get(pk=rule_id)
+    assert rule.name == name
+    assert rule.ordinal == ordinal
+    assert rule.explainer == explainer
+    assert rule.variable_name == variable_name
+    assert rule.flat_rate == flat_rate
 
 @pytest.mark.django_db
 def test_post_flat_rate_rule_with_null_variable_name():
@@ -519,7 +529,7 @@ def test_post_flat_rate_rule_with_null_variable_name():
         'ordinal': ordinal,
         'explainer': explainer,
         'variable_name': variable_name,
-        'flat_rate': flat_rate,
+        'tax_rate': flat_rate,
     }
 
     request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/'
@@ -543,7 +553,7 @@ def test_post_flat_rate_rule_with_null_flat_rate():
         'ordinal': ordinal,
         'explainer': explainer,
         'variable_name': variable_name,
-        'flat_rate': flat_rate,
+        'tax_rate': flat_rate,
     }
 
     request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/'
@@ -567,7 +577,7 @@ def test_post_flat_rate_rule_with_non_numeric_flat_rate():
         'ordinal': ordinal,
         'explainer': explainer,
         'variable_name': variable_name,
-        'flat_rate': flat_rate,
+        'tax_rate': flat_rate,
     }
 
     request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/'
@@ -591,7 +601,7 @@ def test_post_flat_rate_rule_with_negative_flat_rate():
         'ordinal': ordinal,
         'explainer': explainer,
         'variable_name': variable_name,
-        'flat_rate': flat_rate,
+        'tax_rate': flat_rate,
     }
 
     request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/'
@@ -615,7 +625,7 @@ def test_post_valid_flat_rate_rule():
         'ordinal': ordinal,
         'explainer': explainer,
         'variable_name': variable_name,
-        'flat_rate': flat_rate,
+        'tax_rate': flat_rate,
     }
 
     request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/'
@@ -654,7 +664,7 @@ def test_put_flat_rate_rule_with_null_data():
         'ordinal': None,
         'explainer': None,
         'variable_name': None,
-        'flat_rate': None,
+        'tax_rate': None,
     }
 
     request_url = url + 'rulesets/' + str(None) + '/rules/'
@@ -683,7 +693,7 @@ def test_put_flat_rate_rule_with_null_rule_id():
         'ordinal': ordinal,
         'explainer': explainer,
         'variable_name': variable_name,
-        'flat_rate': flat_rate,
+        'tax_rate': flat_rate,
     }
 
     request_url = url + 'rulesets/' + str(rule.ruleset.id) + '/rules/' + str(rule_id) + '/'
@@ -712,7 +722,7 @@ def test_put_flat_rate_rule_with_non_existent_rule_id():
         'ordinal': ordinal,
         'explainer': explainer,
         'variable_name': variable_name,
-        'flat_rate': flat_rate,
+        'tax_rate': flat_rate,
     }
 
     request_url = url + 'rulesets/' + str(rule.ruleset.id) + '/rules/' + str(rule_id) + '/'
@@ -741,7 +751,7 @@ def test_put_flat_rate_rule_with_non_numeric_rule_id():
         'ordinal': ordinal,
         'explainer': explainer,
         'variable_name': variable_name,
-        'flat_rate': flat_rate,
+        'tax_rate': flat_rate,
     }
 
     request_url = url + 'rulesets/' + str(rule.ruleset.id) + '/rules/' + str(rule_id) + '/'
@@ -770,7 +780,7 @@ def test_put_flat_rate_rule_with_null_name():
         'ordinal': ordinal,
         'explainer': explainer,
         'variable_name': variable_name,
-        'flat_rate': flat_rate,
+        'tax_rate': flat_rate,
     }
 
     request_url = url + 'rulesets/' + str(rule.ruleset.id) + '/rules/' + str(rule_id) + '/'
@@ -799,7 +809,7 @@ def test_put_flat_rate_rule_with_null_ordinal():
         'ordinal': ordinal,
         'explainer': explainer,
         'variable_name': variable_name,
-        'flat_rate': flat_rate,
+        'tax_rate': flat_rate,
     }
 
     request_url = url + 'rulesets/' + str(rule.ruleset.id) + '/rules/' + str(rule_id) + '/'
@@ -828,7 +838,7 @@ def test_put_flat_rate_rule_with_non_numeric_ordinal():
         'ordinal': ordinal,
         'explainer': explainer,
         'variable_name': variable_name,
-        'flat_rate': flat_rate,
+        'tax_rate': flat_rate,
     }
 
     request_url = url + 'rulesets/' + str(rule.ruleset.id) + '/rules/' + str(rule_id) + '/'
@@ -857,7 +867,7 @@ def test_put_flat_rate_rule_with_nulL_explainer():
         'ordinal': ordinal,
         'explainer': None,
         'variable_name': variable_name,
-        'flat_rate': flat_rate,
+        'tax_rate': flat_rate,
     }
 
     request_url = url + 'rulesets/' + str(rule.ruleset.id) + '/rules/' + str(rule_id) + '/'
@@ -895,7 +905,7 @@ def test_put_flat_rate_rule_with_null_variable_name():
         'ordinal': ordinal,
         'explainer': explainer,
         'variable_name': variable_name,
-        'flat_rate': flat_rate,
+        'tax_rate': flat_rate,
     }
 
     request_url = url + 'rulesets/' + str(rule.ruleset.id) + '/rules/' + str(rule_id) + '/'
@@ -924,7 +934,7 @@ def test_put_flat_rate_rule_with_null_flat_rate():
         'ordinal': ordinal,
         'explainer': explainer,
         'variable_name': variable_name,
-        'flat_rate': flat_rate,
+        'tax_rate': flat_rate,
     }
 
     request_url = url + 'rulesets/' + str(rule.ruleset.id) + '/rules/' + str(rule_id) + '/'
@@ -953,7 +963,7 @@ def test_put_flat_rate_rule_with_non_numeric_flat_rate():
         'ordinal': ordinal,
         'explainer': explainer,
         'variable_name': variable_name,
-        'flat_rate': flat_rate,
+        'tax_rate': flat_rate,
     }
 
     request_url = url + 'rulesets/' + str(rule.ruleset.id) + '/rules/' + str(rule_id) + '/'
@@ -982,7 +992,7 @@ def test_put_flat_rate_rule_with_negative_flat_rate():
         'ordinal': ordinal,
         'explainer': explainer,
         'variable_name': variable_name,
-        'flat_rate': flat_rate,
+        'tax_rate': flat_rate,
     }
 
     request_url = url + 'rulesets/' + str(rule.ruleset.id) + '/rules/' + str(rule_id) + '/'
@@ -1011,7 +1021,7 @@ def test_put_valid_flat_rate_rule():
         'ordinal': ordinal,
         'explainer': explainer,
         'variable_name': variable_name,
-        'flat_rate': flat_rate,
+        'tax_rate': flat_rate,
     }
 
     request_url = url + 'rulesets/' + str(rule.ruleset.id) + '/rules/' + str(rule_id) + '/'
@@ -1120,7 +1130,7 @@ def test_post_tiered_rate_rule_with_non_numeric_ruleset_id():
     assert response.status_code == 404
 
 @pytest.mark.django_db
-def test_crete_tiered_rate_rule_with_null_name():
+def test_create_tiered_rate_rule_with_null_name():
     ruleset_id = create_mock_ruleset().id
     name = None
     ordinal = 1
