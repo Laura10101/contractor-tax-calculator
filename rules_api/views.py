@@ -87,7 +87,16 @@ class TaxCategoriesList(APIView):
         # Extract data required for service method 
         name = request.data['name']
         # Invoke service method 
-        tax_category_id = create_tax_category(name)
+        try:
+            tax_category_id = create_tax_category(name)
+        except ValidationError as e:
+            if str(e) == "{'name': ['Tax category with this Name already exists.']}":
+                return Response(status=status.HTTP_409_CONFLICT)
+            else:
+                return Response(
+                    { 'error' : str(e) },
+                    status=status.HTTP_400_BAD_REQUEST
+                    )
         # Create response 
         response = { 'tax_category_id' : tax_category_id }
         # Return response 
