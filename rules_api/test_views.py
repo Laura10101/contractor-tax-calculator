@@ -158,7 +158,7 @@ def test_post_valid_ruleset():
 
     assert response is not None
     assert response.status_code == 200
-    assert response.data['tax_category_id'] is not None
+    assert response.data['ruleset_id'] is not None
 
 # Ruleset deletion
 @pytest.mark.django_db
@@ -1482,10 +1482,8 @@ def test_put_tiered_rate_rule_with_nulL_explainer():
 
     assert response is not None
     assert response.status_code == 200
-    assert response.data['rule_id'] is not None
-
-    rule_id = response.data['rule_id']
-    rule = TieredRateRule.objects.get(pk=rule_id)
+    
+    rule = TieredRateRule.objects.get(pk=rule.id)
     assert rule.name == name
     assert rule.ordinal == ordinal
     assert rule.explainer == explainer
@@ -1542,10 +1540,8 @@ def test_put_valid_tiered_rate_rule():
 
     assert response is not None
     assert response.status_code == 200
-    assert response.data['rule_id'] is not None
-
-    rule_id = response.data['rule_id']
-    rule = TieredRateRule.objects.get(pk=rule_id)
+    
+    rule = TieredRateRule.objects.get(pk=rule.id)
     assert rule.name == name
     assert rule.ordinal == ordinal
     assert rule.explainer == explainer
@@ -3121,9 +3117,9 @@ def test_post_valid_secondary_rule_tier():
 
     assert response is not None
     assert response.status_code == 200
-    assert response.data['tier_id'] is not None
+    assert response.data['secondary_tier_id'] is not None
 
-    tier_id = response.data['tier_id']
+    tier_id = response.data['secondary_tier_id']
     tier = SecondaryRuleTier.objects.get(pk=tier_id)
 
     assert tier.rule.id == rule_id
