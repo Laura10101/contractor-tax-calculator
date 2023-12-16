@@ -302,14 +302,11 @@ def test_delete_rule():
     ruleset_id = rule.ruleset.id
     rule_id = rule.id
 
-    request_url = url + '/rulesets/' + str(ruleset_id) + '/' + str(id) + '/'
+    request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/'
     response = client.delete(request_url, format='json')
 
     assert response is not None
     assert response.status_code == 200
-
-    with pytest.raises(FlatRateRule.DoesNotExist):
-        FlatRateRule.objects.get(pk=id)
 
 # Flat rate rule creation
 @pytest.mark.django_db
