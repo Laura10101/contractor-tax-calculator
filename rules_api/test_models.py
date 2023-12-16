@@ -35,7 +35,7 @@ def create_mock_variable_table(salary=9000, dividends=50000, company_profit=1000
 def create_mock_ruleset():
     jurisdiction_count = Jurisdiction.objects.count()
     jurisdiction = Jurisdiction.objects.create(name='Test Jurisdiction ' + str(jurisdiction_count))
-    tax_category = TaxCategory.objects.create(name='Test Category')
+    tax_category = TaxCategory.objects.create(name='Test Category ' + str(TaxCategory.objects.count()))
     ruleset = RuleSet.objects.create(
         jurisdiction_id=jurisdiction.id,
         tax_category=tax_category,
