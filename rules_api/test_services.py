@@ -1637,7 +1637,7 @@ def test_update_secondary_iered_rate_rule_with_null_name():
 def test_update_secondary_tiered_rate_rule_with_null_ordinal():
     ruleset = create_mock_ruleset()
     ruleset_id = ruleset.id
-    primary_rule_id = create_mock_tiered_rate_rule('salary', 20, ruleset)
+    primary_rule_id = create_mock_tiered_rate_rule('salary', 20, ruleset).id
     name = 'Test rule'
     ordinal = 1
     explainer = 'Test explainer'
@@ -1658,7 +1658,7 @@ def test_update_secondary_tiered_rate_rule_with_null_ordinal():
 def test_update_secondary_tiered_rate_rule_with_non_numeric_ordinal():
     ruleset = create_mock_ruleset()
     ruleset_id = ruleset.id
-    primary_rule_id = create_mock_tiered_rate_rule('salary', 20, ruleset)
+    primary_rule_id = create_mock_tiered_rate_rule('salary', 20, ruleset).id
     name = 'Test rule'
     ordinal = 1
     explainer = 'Test explainer'
@@ -1679,7 +1679,7 @@ def test_update_secondary_tiered_rate_rule_with_non_numeric_ordinal():
 def test_update_secondary_tiered_rate_rule_with_nulL_explainer():
     ruleset = create_mock_ruleset()
     ruleset_id = ruleset.id
-    primary_rule_id = create_mock_tiered_rate_rule('salary', 1, ruleset)
+    primary_rule_id = create_mock_tiered_rate_rule('salary', 1, ruleset).id
     name = 'Test rule'
     ordinal = 1
     explainer = 'Test explainer'
@@ -1706,7 +1706,7 @@ def test_update_secondary_tiered_rate_rule_with_nulL_explainer():
 def test_update_secondary_tiered_rate_rule_with_null_variable_name():
     ruleset = create_mock_ruleset()
     ruleset_id = ruleset.id
-    primary_rule_id = create_mock_tiered_rate_rule('salary', 20, ruleset)
+    primary_rule_id = create_mock_tiered_rate_rule('salary', 20, ruleset).id
     name = 'Test rule'
     ordinal = 1
     explainer = 'Test explainer'
@@ -1727,7 +1727,7 @@ def test_update_secondary_tiered_rate_rule_with_null_variable_name():
 def test_update_valid_secondary_tiered_rate_rule():
     ruleset = create_mock_ruleset()
     ruleset_id = ruleset.id
-    primary_rule_id = create_mock_tiered_rate_rule('salary', 1, ruleset)
+    primary_rule_id = create_mock_tiered_rate_rule('salary', 1, ruleset).id
     name = 'Test rule'
     ordinal = 1
     explainer = 'Test explainer'
