@@ -135,7 +135,7 @@ def create_rule_tier(rule_id, min_value, max_value, ordinal, tier_rate):
         raise ValidationError('ordinal must be a non-negative integer value')
     
     # Get the rule from the database based on the rule id
-    rule = Rule.objects.get(pk=rule_id)
+    rule = TieredRateRule.objects.get(pk=rule_id)
     rule_tier = RuleTier()
     rule_tier.rule=rule
     rule_tier.min_value=min_value
@@ -189,7 +189,7 @@ def create_secondary_tiered_rate_rule(ruleset_id, primary_rule_id, name, ordinal
 
 def update_secondary_tiered_rate_rule(id, name, ordinal, explainer, variable_name, tax_rate):
     if not isinstance(id, int):
-        raise FlatRateRule.DoesNotExist('rule_id must be a non-negative integer value')
+        raise SecondaryTieredRateRule.DoesNotExist('rule_id must be a non-negative integer value')
     
     if not isinstance(ordinal, int):
         raise ValidationError('ordinal must be a non-negative integer value')
