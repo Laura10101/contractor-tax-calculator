@@ -145,6 +145,8 @@ class RuleList(APIView):
             )
         except RuleSet.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
+        except TieredRateRule.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
         
         # Generate and return response         
         response = { 'rule_id': rule_id }
@@ -400,11 +402,9 @@ class SecondaryRuleTierDetail(APIView):
                 { 'error' : str(e) },
                 status=status.HTTP_400_BAD_REQUEST
                 )
-        except SecondaryTieredRateRule.DoesNotExist:
-            print('No secondary tiered rate rule')
+        except SecondaryRuleTier.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
         except RuleTier.DoesNotExist:
-            print('No rule tier')
             return Response(status=status.HTTP_404_NOT_FOUND)
         # Generate and return response 
         response = { }

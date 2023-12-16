@@ -3218,7 +3218,7 @@ def test_put_secondary_rule_tier_with_non_existent_tier_id():
     response = client.put(request_url, body, format='json')
 
     assert response is not None
-    assert response.status_code == 200
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_put_secondary_rule_tier_with_non_numeric_tier_id():
