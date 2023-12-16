@@ -41,7 +41,7 @@ def test_create_calculation_with_no_jurisdictions():
 
 @pytest.mark.django_db
 def test_create_calculation_with_single_jurisdiction():
-    rule = create_mock_simple_tiered_rate_rule(10000, 45000, 'salary', 20)
+    rule = create_mock_simple_tiered_rate_rule(8000, 45000, 'salary', 20)
     jursdiction_id = rule.ruleset.jurisdiction_id
     variable_table = create_mock_variable_table()
     calculation = create_calculation('bob', [jursdiction_id], variable_table)
@@ -53,7 +53,7 @@ def test_create_calculation_with_single_jurisdiction():
     ruleset_result = calculation.results.first()
     tier_result = ruleset_result.results.first()
 
-    assert tier_result.tax_payable == round(variable_table['salary'] * (20/100), 2)
+    assert tier_result.tax_payable == round(1000 * (20/100), 2)
 
 @pytest.mark.django_db
 def test_create_calculation_with_multiple_single_rule_jurisdictions():
