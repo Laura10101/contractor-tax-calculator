@@ -23,7 +23,7 @@ def test_post_ruleset_with_null_data():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 400
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_post_ruleset_with_null_jurisdiction_id():
@@ -39,7 +39,7 @@ def test_post_ruleset_with_null_jurisdiction_id():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 400
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_post_ruleset_with_null_tax_category_id():
@@ -55,7 +55,7 @@ def test_post_ruleset_with_null_tax_category_id():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 400
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_post_ruleset_with_non_existent_tax_category_id():
@@ -71,7 +71,7 @@ def test_post_ruleset_with_non_existent_tax_category_id():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 400
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_post_ruleset_with_duplicate_tax_category_jurisdiction_combination():
@@ -87,13 +87,13 @@ def test_post_ruleset_with_duplicate_tax_category_jurisdiction_combination():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 200
+    assert response.status_code == 200
     assert response.data['tax_category_id'] is not None
 
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 409
+    assert response.status_code == 409
 
 @pytest.mark.django_db
 def test_post_valid_ruleset():
@@ -109,7 +109,7 @@ def test_post_valid_ruleset():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 200
+    assert response.status_code == 200
     assert response.data['tax_category_id'] is not None
 
 # Ruleset deletion
@@ -121,7 +121,7 @@ def test_delete_ruleset_with_null_id():
     response = client.delete(request_url, format='json')
 
     assert response is not None
-    assert response.status == 404
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_delete_ruleset_with_non_existent_id():
@@ -131,7 +131,7 @@ def test_delete_ruleset_with_non_existent_id():
     response = client.delete(request_url, format='json')
 
     assert response is not None
-    assert response.status == 404
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_delete_ruleset():
@@ -141,7 +141,7 @@ def test_delete_ruleset():
     response = client.delete(request_url, format='json')
 
     assert response is not None
-    assert response.status == 200
+    assert response.status_code == 200
 
     with pytest.raises(RuleSet.DoesNotExist):
         RuleSet.objects.get(pk=ruleset_id)
@@ -159,7 +159,7 @@ def test_post_tax_category_with_null_name():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 400
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_post_tax_category_with_duplicate_name():
@@ -176,7 +176,7 @@ def test_post_tax_category_with_duplicate_name():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 409
+    assert response.status_code == 409
 
 @pytest.mark.django_db
 def test_post_valid_tax_category():
@@ -190,7 +190,7 @@ def test_post_valid_tax_category():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 200
+    assert response.status_code == 200
     assert response.data['tax_category_id'] is not None
 
 #  Tax category deletion
@@ -202,7 +202,7 @@ def test_delete_tax_category_with_null_id():
     response = client.delete(request_url, format='json')
 
     assert response is not None
-    assert response.status == 404
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_delete_tax_category_with_non_existent_id():
@@ -212,7 +212,7 @@ def test_delete_tax_category_with_non_existent_id():
     response = client.delete(request_url, format='json')
 
     assert response is not None
-    assert response.status == 404
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_delete_tax_category():
@@ -222,7 +222,7 @@ def test_delete_tax_category():
     response = client.delete(request_url, format='json')
 
     assert response is not None
-    assert response.status == 200
+    assert response.status_code == 200
 
     with pytest.raises(TaxCategory.DoesNotExist):
         TaxCategory.objects.get(pk=id)
@@ -236,7 +236,7 @@ def test_delete_rule_with_null_id():
     response = client.delete(request_url, format='json')
 
     assert response is not None
-    assert response.status == 404
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_delete_rule_with_non_existent_id():
@@ -246,7 +246,7 @@ def test_delete_rule_with_non_existent_id():
     response = client.delete(request_url, format='json')
 
     assert response is not None
-    assert response.status == 404
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_delete_rule():
@@ -258,7 +258,7 @@ def test_delete_rule():
     response = client.delete(request_url, format='json')
 
     assert response is not None
-    assert response.status == 200
+    assert response.status_code == 200
 
     with pytest.raises(FlatRateRule.DoesNotExist):
         FlatRateRule.objects.get(pk=id)
@@ -286,7 +286,7 @@ def test_post_flat_rate_rule_with_null_data():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 404
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_post_flat_rate_rule_with_null_ruleset_id():
@@ -310,7 +310,7 @@ def test_post_flat_rate_rule_with_null_ruleset_id():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 404
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_post_flat_rate_rule_with_non_existent_ruleset_id():
@@ -334,7 +334,7 @@ def test_post_flat_rate_rule_with_non_existent_ruleset_id():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 404
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_post_flat_rate_rule_with_non_numeric_ruleset_id():
@@ -358,7 +358,7 @@ def test_post_flat_rate_rule_with_non_numeric_ruleset_id():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 404
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_crete_flat_rate_rule_with_null_name():
@@ -382,7 +382,7 @@ def test_crete_flat_rate_rule_with_null_name():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 400
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_post_flat_rate_rule_with_null_ordinal():
@@ -406,7 +406,7 @@ def test_post_flat_rate_rule_with_null_ordinal():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 400
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_post_flat_rate_rule_with_non_numeric_ordinal():
@@ -430,7 +430,7 @@ def test_post_flat_rate_rule_with_non_numeric_ordinal():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 400
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_post_flat_rate_rule_with_nulL_explainer():
@@ -454,7 +454,7 @@ def test_post_flat_rate_rule_with_nulL_explainer():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 400
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_post_flat_rate_rule_with_null_variable_name():
@@ -478,7 +478,7 @@ def test_post_flat_rate_rule_with_null_variable_name():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 400
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_post_flat_rate_rule_with_null_flat_rate():
@@ -502,7 +502,7 @@ def test_post_flat_rate_rule_with_null_flat_rate():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 400
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_post_flat_rate_rule_with_non_numeric_flat_rate():
@@ -526,7 +526,7 @@ def test_post_flat_rate_rule_with_non_numeric_flat_rate():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 400
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_post_flat_rate_rule_with_negative_flat_rate():
@@ -550,7 +550,7 @@ def test_post_flat_rate_rule_with_negative_flat_rate():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 400
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_post_valid_flat_rate_rule():
@@ -574,7 +574,7 @@ def test_post_valid_flat_rate_rule():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 200
+    assert response.status_code == 200
     assert response.data['rule_id'] is not None
 
     rule_id = response.data['rule_id']
@@ -612,7 +612,7 @@ def test_patch_flat_rate_rule_with_null_data():
     response = client.patch(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 404
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_patch_flat_rate_rule_with_null_rule_id():
@@ -640,7 +640,7 @@ def test_patch_flat_rate_rule_with_null_rule_id():
     response = client.patch(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 404
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_patch_flat_rate_rule_with_non_existent_rule_id():
@@ -668,7 +668,7 @@ def test_patch_flat_rate_rule_with_non_existent_rule_id():
     response = client.patch(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 404
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_patch_flat_rate_rule_with_non_numeric_rule_id():
@@ -696,7 +696,7 @@ def test_patch_flat_rate_rule_with_non_numeric_rule_id():
     response = client.patch(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 404
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_patch_flat_rate_rule_with_null_name():
@@ -724,7 +724,7 @@ def test_patch_flat_rate_rule_with_null_name():
     response = client.patch(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 400
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_patch_flat_rate_rule_with_null_ordinal():
@@ -752,7 +752,7 @@ def test_patch_flat_rate_rule_with_null_ordinal():
     response = client.patch(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 400
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_patch_flat_rate_rule_with_non_numeric_ordinal():
@@ -780,7 +780,7 @@ def test_patch_flat_rate_rule_with_non_numeric_ordinal():
     response = client.patch(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 400
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_patch_flat_rate_rule_with_nulL_explainer():
@@ -808,7 +808,7 @@ def test_patch_flat_rate_rule_with_nulL_explainer():
     response = client.patch(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 200
+    assert response.status_code == 200
     assert response.data['rule_id'] is not None
 
     rule_id = response.data['rule_id']
@@ -845,7 +845,7 @@ def test_patch_flat_rate_rule_with_null_variable_name():
     response = client.patch(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 400
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_patch_flat_rate_rule_with_null_flat_rate():
@@ -873,7 +873,7 @@ def test_patch_flat_rate_rule_with_null_flat_rate():
     response = client.patch(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 400
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_patch_flat_rate_rule_with_non_numeric_flat_rate():
@@ -901,7 +901,7 @@ def test_patch_flat_rate_rule_with_non_numeric_flat_rate():
     response = client.patch(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 400
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_patch_flat_rate_rule_with_negative_flat_rate():
@@ -929,7 +929,7 @@ def test_patch_flat_rate_rule_with_negative_flat_rate():
     response = client.patch(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 400
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_patch_valid_flat_rate_rule():
@@ -957,7 +957,7 @@ def test_patch_valid_flat_rate_rule():
     response = client.patch(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 200
+    assert response.status_code == 200
     assert response.data['rule_id'] is not None
 
     rule_id = response.data['rule_id']
@@ -990,7 +990,7 @@ def test_post_tiered_rate_rule_with_null_data():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 404
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_post_tiered_rate_rule_with_null_ruleset_id():
@@ -1012,7 +1012,7 @@ def test_post_tiered_rate_rule_with_null_ruleset_id():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 404
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_post_tiered_rate_rule_with_non_existent_ruleset_id():
@@ -1034,7 +1034,7 @@ def test_post_tiered_rate_rule_with_non_existent_ruleset_id():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 404
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_post_tiered_rate_rule_with_non_numeric_ruleset_id():
@@ -1056,7 +1056,7 @@ def test_post_tiered_rate_rule_with_non_numeric_ruleset_id():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 404
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_crete_tiered_rate_rule_with_null_name():
@@ -1078,7 +1078,7 @@ def test_crete_tiered_rate_rule_with_null_name():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 400
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_post_tiered_rate_rule_with_null_ordinal():
@@ -1100,7 +1100,7 @@ def test_post_tiered_rate_rule_with_null_ordinal():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 400
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_post_tiered_rate_rule_with_non_numeric_ordinal():
@@ -1122,7 +1122,7 @@ def test_post_tiered_rate_rule_with_non_numeric_ordinal():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 400
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_post_tiered_rate_rule_with_nulL_explainer():
@@ -1144,7 +1144,7 @@ def test_post_tiered_rate_rule_with_nulL_explainer():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 200
+    assert response.status_code == 200
     assert response.data['rule_id'] is not None
 
     rule_id = response.data['rule_id']
@@ -1174,7 +1174,7 @@ def test_post_tiered_rate_rule_with_null_variable_name():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 400
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_post_valid_tiered_rate_rule():
@@ -1196,7 +1196,7 @@ def test_post_valid_tiered_rate_rule():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 200
+    assert response.status_code == 200
     assert response.data['rule_id'] is not None
 
     rule_id = response.data['rule_id']
@@ -1231,7 +1231,7 @@ def test_patch_tiered_rate_rule_with_null_data():
     response = client.patch(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 404
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_patch_tiered_rate_rule_with_null_rule_id():
@@ -1257,7 +1257,7 @@ def test_patch_tiered_rate_rule_with_null_rule_id():
     response = client.patch(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 404
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_patch_tiered_rate_rule_with_non_existent_rule_id():
@@ -1283,7 +1283,7 @@ def test_patch_tiered_rate_rule_with_non_existent_rule_id():
     response = client.patch(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 404
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_patch_tiered_rate_rule_with_non_numeric_rule_id():
@@ -1309,7 +1309,7 @@ def test_patch_tiered_rate_rule_with_non_numeric_rule_id():
     response = client.patch(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 404
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_patch_tiered_rate_rule_with_null_name():
@@ -1335,7 +1335,7 @@ def test_patch_tiered_rate_rule_with_null_name():
     response = client.patch(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 400
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_patch_tiered_rate_rule_with_null_ordinal():
@@ -1361,7 +1361,7 @@ def test_patch_tiered_rate_rule_with_null_ordinal():
     response = client.patch(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 400
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_patch_tiered_rate_rule_with_non_numeric_ordinal():
@@ -1387,7 +1387,7 @@ def test_patch_tiered_rate_rule_with_non_numeric_ordinal():
     response = client.patch(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 400
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_patch_tiered_rate_rule_with_nulL_explainer():
@@ -1413,7 +1413,7 @@ def test_patch_tiered_rate_rule_with_nulL_explainer():
     response = client.patch(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 200
+    assert response.status_code == 200
     assert response.data['rule_id'] is not None
 
     rule_id = response.data['rule_id']
@@ -1447,7 +1447,7 @@ def test_patch_tiered_rate_rule_with_null_variable_name():
     response = client.patch(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 400
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_patch_valid_tiered_rate_rule():
@@ -1473,7 +1473,7 @@ def test_patch_valid_tiered_rate_rule():
     response = client.patch(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 200
+    assert response.status_code == 200
     assert response.data['rule_id'] is not None
 
     rule_id = response.data['rule_id']
@@ -1505,7 +1505,7 @@ def test_post_rule_tier_with_null_data():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 404
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_post_rule_tier_with_null_rule_id():
@@ -1528,7 +1528,7 @@ def test_post_rule_tier_with_null_rule_id():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 404
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_post_rule_tier_with_non_existent_rule_id():
@@ -1551,7 +1551,7 @@ def test_post_rule_tier_with_non_existent_rule_id():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 404
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_post_rule_tier_with_non_numeric_rule_id():
@@ -1574,7 +1574,7 @@ def test_post_rule_tier_with_non_numeric_rule_id():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 404
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_post_rule_tier_with_null_min_value():
@@ -1597,7 +1597,7 @@ def test_post_rule_tier_with_null_min_value():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 400
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_post_rule_tier_with_non_numeric_min_value():
@@ -1620,7 +1620,7 @@ def test_post_rule_tier_with_non_numeric_min_value():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 400
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_post_rule_tier_with_null_max_value():
@@ -1643,7 +1643,7 @@ def test_post_rule_tier_with_null_max_value():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 400
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_post_rule_tier_with_non_numeric_max_value():
@@ -1666,7 +1666,7 @@ def test_post_rule_tier_with_non_numeric_max_value():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 400
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_post_rule_tier_with_null_ordinal():
@@ -1689,7 +1689,7 @@ def test_post_rule_tier_with_null_ordinal():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 400
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_post_rule_tier_with_non_numeric_ordinal():
@@ -1712,7 +1712,7 @@ def test_post_rule_tier_with_non_numeric_ordinal():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 400
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_post_rule_tier_with_null_tier_rate():
@@ -1735,7 +1735,7 @@ def test_post_rule_tier_with_null_tier_rate():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 400
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_post_rule_tier_with_non_numeric_tier_rate():
@@ -1758,7 +1758,7 @@ def test_post_rule_tier_with_non_numeric_tier_rate():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 400
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_post_valid_rule_tier():
@@ -1781,7 +1781,7 @@ def test_post_valid_rule_tier():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 200
+    assert response.status_code == 200
     assert response.data['tier_id'] is not None
 
     tier_id = response.data['tier_id']
@@ -1823,7 +1823,7 @@ def test_patch_rule_tier_with_null_data():
     response = client.patch(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 404
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_patch_rule_tier_with_null_tier_id():
@@ -1854,7 +1854,7 @@ def test_patch_rule_tier_with_null_tier_id():
     response = client.patch(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 404
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_patch_rule_tier_with_non_existent_tier_id():
@@ -1885,7 +1885,7 @@ def test_patch_rule_tier_with_non_existent_tier_id():
     response = client.patch(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 404
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_patch_rule_tier_with_non_numeric_tier_id():
@@ -1916,7 +1916,7 @@ def test_patch_rule_tier_with_non_numeric_tier_id():
     response = client.patch(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 404
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_patch_rule_tier_with_null_min_value():
@@ -1947,7 +1947,7 @@ def test_patch_rule_tier_with_null_min_value():
     response = client.patch(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 400
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_patch_rule_tier_with_non_numeric_min_value():
@@ -1978,7 +1978,7 @@ def test_patch_rule_tier_with_non_numeric_min_value():
     response = client.patch(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 400
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_patch_rule_tier_with_null_max_value():
@@ -2009,7 +2009,7 @@ def test_patch_rule_tier_with_null_max_value():
     response = client.patch(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 400
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_patch_rule_tier_with_non_numeric_max_value():
@@ -2040,7 +2040,7 @@ def test_patch_rule_tier_with_non_numeric_max_value():
     response = client.patch(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 400
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_patch_rule_tier_with_null_ordinal():
@@ -2071,7 +2071,7 @@ def test_patch_rule_tier_with_null_ordinal():
     response = client.patch(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 400
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_patch_rule_tier_with_non_numeric_ordinal():
@@ -2102,7 +2102,7 @@ def test_patch_rule_tier_with_non_numeric_ordinal():
     response = client.patch(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 400
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_patch_rule_tier_with_null_tier_rate():
@@ -2133,7 +2133,7 @@ def test_patch_rule_tier_with_null_tier_rate():
     response = client.patch(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 400
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_patch_rule_tier_with_non_numeric_tier_rate():
@@ -2164,7 +2164,7 @@ def test_patch_rule_tier_with_non_numeric_tier_rate():
     response = client.patch(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 400
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_patch_valid_rule_tier():
@@ -2195,7 +2195,7 @@ def test_patch_valid_rule_tier():
     response = client.patch(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 200
+    assert response.status_code == 200
 
     tier = RuleTier.objects.get(pk=tier_id)
 
@@ -2228,7 +2228,7 @@ def test_post_secondary_tiered_rate_rule_with_null_data():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 404
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_post_secondary_tiered_rate_rule_with_null_ruleset_id():
@@ -2253,7 +2253,7 @@ def test_post_secondary_tiered_rate_rule_with_null_ruleset_id():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 404
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_post_secondary_tiered_rate_rule_with_non_existent_ruleset_id():
@@ -2278,7 +2278,7 @@ def test_post_secondary_tiered_rate_rule_with_non_existent_ruleset_id():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 404
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_post_secondary_tiered_rate_rule_with_non_numeric_ruleset_id():
@@ -2303,7 +2303,7 @@ def test_post_secondary_tiered_rate_rule_with_non_numeric_ruleset_id():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 404
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_post_secondary_tiered_rate_rule_with_null_primary_rule_id():
@@ -2328,7 +2328,7 @@ def test_post_secondary_tiered_rate_rule_with_null_primary_rule_id():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 404
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_post_secondary_tiered_rate_rule_with_non_existent_primary_rule_id():
@@ -2353,7 +2353,7 @@ def test_post_secondary_tiered_rate_rule_with_non_existent_primary_rule_id():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 404
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_post_secondary_tiered_rate_rule_with_non_numeric_primary_rule_id():
@@ -2378,7 +2378,7 @@ def test_post_secondary_tiered_rate_rule_with_non_numeric_primary_rule_id():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 404
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_crete_secondary_tiered_rate_rule_with_null_name():
@@ -2403,7 +2403,7 @@ def test_crete_secondary_tiered_rate_rule_with_null_name():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 400
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_post_secondary_tiered_rate_rule_with_null_ordinal():
@@ -2428,7 +2428,7 @@ def test_post_secondary_tiered_rate_rule_with_null_ordinal():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 400
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_post_secondary_tiered_rate_rule_with_non_numeric_ordinal():
@@ -2453,7 +2453,7 @@ def test_post_secondary_tiered_rate_rule_with_non_numeric_ordinal():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 400
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_post_secondary_tiered_rate_rule_with_nulL_explainer():
@@ -2478,7 +2478,7 @@ def test_post_secondary_tiered_rate_rule_with_nulL_explainer():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 200
+    assert response.status_code == 200
     assert response.data['rule_id'] is not None
 
     rule_id = response.data['rule_id']
@@ -2513,7 +2513,7 @@ def test_post_secondary_tiered_rate_rule_with_null_variable_name():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 404
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_post_valid_secondary_tiered_rate_rule():
@@ -2538,7 +2538,7 @@ def test_post_valid_secondary_tiered_rate_rule():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 200
+    assert response.status_code == 200
     assert response.data['rule_id'] is not None
 
     rule_id = response.data['rule_id']
@@ -2575,7 +2575,7 @@ def test_patch_secondary_tiered_rate_rule_with_null_data():
     response = client.patch(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 404
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_patch_secondary_tiered_rate_rule_with_null_rule_id():
@@ -2602,7 +2602,7 @@ def test_patch_secondary_tiered_rate_rule_with_null_rule_id():
     response = client.patch(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 404
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_patch_secondary_tiered_rate_rule_with_non_existent_rule_id():
@@ -2629,7 +2629,7 @@ def test_patch_secondary_tiered_rate_rule_with_non_existent_rule_id():
     response = client.patch(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 404
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_patch_secondary_tiered_rate_rule_with_non_numeric_rule_id():
@@ -2656,7 +2656,7 @@ def test_patch_secondary_tiered_rate_rule_with_non_numeric_rule_id():
     response = client.patch(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 404
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_patch_secondary_iered_rate_rule_with_null_name():
@@ -2683,7 +2683,7 @@ def test_patch_secondary_iered_rate_rule_with_null_name():
     response = client.patch(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 400
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_patch_secondary_tiered_rate_rule_with_null_ordinal():
@@ -2710,7 +2710,7 @@ def test_patch_secondary_tiered_rate_rule_with_null_ordinal():
     response = client.patch(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 400
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_patch_secondary_tiered_rate_rule_with_non_numeric_ordinal():
@@ -2737,7 +2737,7 @@ def test_patch_secondary_tiered_rate_rule_with_non_numeric_ordinal():
     response = client.patch(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 400
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_patch_secondary_tiered_rate_rule_with_nulL_explainer():
@@ -2764,7 +2764,7 @@ def test_patch_secondary_tiered_rate_rule_with_nulL_explainer():
     response = client.patch(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 200
+    assert response.status_code == 200
     assert response.data['rule_id'] is not None
 
     rule_id = response.data['rule_id']
@@ -2799,7 +2799,7 @@ def test_patch_secondary_tiered_rate_rule_with_null_variable_name():
     response = client.patch(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 400
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_patch_valid_secondary_tiered_rate_rule():
@@ -2826,7 +2826,7 @@ def test_patch_valid_secondary_tiered_rate_rule():
     response = client.patch(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 200
+    assert response.status_code == 200
     assert response.data['rule_id'] is not None
 
     rule_id = response.data['rule_id']
@@ -2858,7 +2858,7 @@ def test_post_secondary_rule_tier_with_null_data():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 404
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_post_secondary_rule_tier_with_null_rule_id():
@@ -2881,7 +2881,7 @@ def test_post_secondary_rule_tier_with_null_rule_id():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 404
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_post_secondary_rule_tier_with_non_existent_rule_id():
@@ -2904,7 +2904,7 @@ def test_post_secondary_rule_tier_with_non_existent_rule_id():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 404
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_post_secondary_rule_tier_with_non_numeric_rule_id():
@@ -2927,7 +2927,7 @@ def test_post_secondary_rule_tier_with_non_numeric_rule_id():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 404
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_post_secondary_rule_tier_with_null_primary_tier_id():
@@ -2950,7 +2950,7 @@ def test_post_secondary_rule_tier_with_null_primary_tier_id():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 404
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_post_secondary_rule_tier_with_non_existent_primary_tier_id():
@@ -2973,7 +2973,7 @@ def test_post_secondary_rule_tier_with_non_existent_primary_tier_id():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 404
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_post_secondary_rule_tier_with_non_numeric_primary_tier_id():
@@ -2996,7 +2996,7 @@ def test_post_secondary_rule_tier_with_non_numeric_primary_tier_id():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 404
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_post_secondary_rule_tier_with_null_tier_rate():
@@ -3019,7 +3019,7 @@ def test_post_secondary_rule_tier_with_null_tier_rate():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 400
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_post_secondary_rule_tier_with_non_numeric_tier_rate():
@@ -3042,7 +3042,7 @@ def test_post_secondary_rule_tier_with_non_numeric_tier_rate():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 400
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_post_valid_secondary_rule_tier():
@@ -3065,7 +3065,7 @@ def test_post_valid_secondary_rule_tier():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 200
+    assert response.status_code == 200
     assert response.data['tier_id'] is not None
 
     tier_id = response.data['tier_id']
@@ -3103,7 +3103,7 @@ def test_patch_secondary_rule_tier_with_null_data():
     response = client.patch(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 404
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_patch_secondary_rule_tier_with_null_tier_id():
@@ -3133,7 +3133,7 @@ def test_patch_secondary_rule_tier_with_null_tier_id():
     response = client.patch(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 404
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_patch_secondary_rule_tier_with_non_existent_tier_id():
@@ -3163,7 +3163,7 @@ def test_patch_secondary_rule_tier_with_non_existent_tier_id():
     response = client.patch(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 200
+    assert response.status_code == 200
 
 @pytest.mark.django_db
 def test_patch_secondary_rule_tier_with_non_numeric_tier_id():
@@ -3193,7 +3193,7 @@ def test_patch_secondary_rule_tier_with_non_numeric_tier_id():
     response = client.patch(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 200
+    assert response.status_code == 200
 
 @pytest.mark.django_db
 def test_patch_secondary_rule_tier_with_null_tier_rate():
@@ -3223,7 +3223,7 @@ def test_patch_secondary_rule_tier_with_null_tier_rate():
     response = client.patch(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 200
+    assert response.status_code == 200
 
 @pytest.mark.django_db
 def test_patch_secondary_rule_tier_with_non_numeric_tier_rate():
@@ -3253,7 +3253,7 @@ def test_patch_secondary_rule_tier_with_non_numeric_tier_rate():
     response = client.patch(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 200
+    assert response.status_code == 200
 
 @pytest.mark.django_db
 def test_patch_valid_secondary_rule_tier():
@@ -3283,7 +3283,7 @@ def test_patch_valid_secondary_rule_tier():
     response = client.patch(request_url, body, format='json')
 
     assert response is not None
-    assert response.status == 200
+    assert response.status_code == 200
 
     tier = SecondaryRuleTier.objects.get(pk=tier_id)
 
