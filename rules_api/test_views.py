@@ -13,10 +13,12 @@ url = '/api/rules/'
 def test_post_ruleset_with_null_data():
     jurisdiction_id = None
     tax_category_id = None
+    ordinal = None
 
     body = {
         'jurisdiction_id': jurisdiction_id,
         'tax_category_id': tax_category_id,
+        'ordinal': ordinal,
     }
 
     request_url = url + 'rulesets/'
@@ -29,10 +31,12 @@ def test_post_ruleset_with_null_data():
 def test_post_ruleset_with_null_jurisdiction_id():
     jurisdiction_id = None
     tax_category_id = create_tax_category('Test category')
+    ordinal = 1
 
     body = {
         'jurisdiction_id': jurisdiction_id,
         'tax_category_id': tax_category_id,
+        'ordinal': ordinal,
     }
 
     request_url = url + 'rulesets/'
@@ -45,10 +49,12 @@ def test_post_ruleset_with_null_jurisdiction_id():
 def test_post_ruleset_with_null_tax_category_id():
     jurisdiction_id = create_mock_jurisdiction()
     tax_category_id = None
+    ordinal = 1
 
     body = {
         'jurisdiction_id': jurisdiction_id,
         'tax_category_id': tax_category_id,
+        'ordinal': ordinal,
     }
 
     request_url = url + 'rulesets/'
@@ -61,10 +67,48 @@ def test_post_ruleset_with_null_tax_category_id():
 def test_post_ruleset_with_non_existent_tax_category_id():
     jurisdiction_id = create_mock_jurisdiction()
     tax_category_id = 479
+    ordinal = 1
 
     body = {
         'jurisdiction_id': jurisdiction_id,
         'tax_category_id': tax_category_id,
+        'ordinal': ordinal,
+    }
+
+    request_url = url + 'rulesets/'
+    response = client.post(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status_code == 400
+
+@pytest.mark.django_db
+def test_post_ruleset_with_null_ordinal():
+    jurisdiction_id = create_mock_jurisdiction()
+    tax_category_id = 479
+    ordinal = None
+
+    body = {
+        'jurisdiction_id': jurisdiction_id,
+        'tax_category_id': tax_category_id,
+        'ordinal': ordinal,
+    }
+
+    request_url = url + 'rulesets/'
+    response = client.post(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status_code == 400
+
+@pytest.mark.django_db
+def test_post_ruleset_with_non_numeric_ordinal():
+    jurisdiction_id = create_mock_jurisdiction()
+    tax_category_id = 479
+    ordinal = 'ABC'
+
+    body = {
+        'jurisdiction_id': jurisdiction_id,
+        'tax_category_id': tax_category_id,
+        'ordinal': ordinal,
     }
 
     request_url = url + 'rulesets/'
@@ -77,10 +121,12 @@ def test_post_ruleset_with_non_existent_tax_category_id():
 def test_post_ruleset_with_duplicate_tax_category_jurisdiction_combination():
     jurisdiction_id = create_mock_jurisdiction()
     tax_category_id = create_tax_category('Test category')
+    ordinal = 1
 
     body = {
         'jurisdiction_id': jurisdiction_id,
         'tax_category_id': tax_category_id,
+        'ordinal': ordinal,
     }
 
     request_url = url + 'rulesets/'
@@ -99,10 +145,12 @@ def test_post_ruleset_with_duplicate_tax_category_jurisdiction_combination():
 def test_post_valid_ruleset():
     jurisdiction_id = create_mock_jurisdiction()
     tax_category_id = create_tax_category('Test category')
+    ordinal = 1
 
     body = {
         'jurisdiction_id': jurisdiction_id,
         'tax_category_id': tax_category_id,
+        'ordinal': ordinal,
     }
 
     request_url = url + 'rulesets/'

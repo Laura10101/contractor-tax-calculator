@@ -21,6 +21,7 @@ class RuleSetsList(APIView):
         required_attributes = [
             'jurisdiction_id',
             'tax_category_id',
+            'ordinal',
         ]
         # Validate data 
         if not contains_required_attributes(request, required_attributes):
@@ -31,8 +32,19 @@ class RuleSetsList(APIView):
         # Extract data required for service method 
         jurisdiction_id = request.data['jurisdiction_id']
         tax_category_id = request.data['tax_category_id']
+        ordinal = request.data['ordinal']
         # Invoke service method 
-        ruleset_id = create_ruleset(jurisdiction_id, tax_category_id)
+        try:
+            ruleset_id = create_ruleset(jurisdiction_id, tax_category_id, ordinal)
+        except ValidationError as e:
+            return Response(
+                { 'error' : str(e) },
+                status=status.HTTP_400_BAD_REQUEST
+                )
+        except TaxCategory.DoesNotExist:
+            return Response(
+                status=status.HTTP_404_NOT_FOUND
+                )
         # Create response 
         response = { 'ruleset_id' : ruleset_id }
         # Return response 
