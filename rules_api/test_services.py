@@ -628,7 +628,7 @@ def test_create_tiered_rate_rule_with_nulL_explainer():
 
     assert id is not None
 
-    rule = TieredRateRule.objects.get(id)
+    rule = TieredRateRule.objects.get(pk=id)
 
     assert rule.name == name
     assert rule.ordinal == ordinal
@@ -658,7 +658,7 @@ def test_create_valid_tiered_rate_rule():
 
     assert id is not None
 
-    rule = TieredRateRule.objects.get(id)
+    rule = TieredRateRule.objects.get(pk=id)
 
     assert rule.name == name
     assert rule.ordinal == ordinal
@@ -945,8 +945,17 @@ def test_create_rule_tier_with_null_max_value():
     ordinal = 1
     tier_rate = 20
 
-    with pytest.raises(ValidationError):
-        id = create_rule_tier(rule_id, min_value, max_value, ordinal, tier_rate)
+    id = create_rule_tier(rule_id, min_value, max_value, ordinal, tier_rate)
+    assert id is not None
+
+    tier = RuleTier.objects.get(pk=id)
+    assert tier is not None
+
+    assert tier.rule.id == rule_id
+    assert tier.min_value == min_value
+    assert tier.max_value == max_value
+    assert tier.ordinal == ordinal
+    assert tier.tier_rate == tier_rate
 
 @pytest.mark.django_db
 def test_create_rule_tier_with_non_numeric_max_value():
@@ -1192,8 +1201,12 @@ def test_update_rule_tier_with_null_max_value():
     ordinal = 1
     tier_rate = 25
 
-    with pytest.raises(ValidationError):
-        update_rule_tier(id, min_value, max_value, ordinal, tier_rate)
+    update_rule_tier(id, min_value, max_value, ordinal, tier_rate)
+
+    assert tier.min_value == min_value
+    assert tier.max_value == max_value
+    assert tier.ordinal == ordinal
+    assert tier.tier_rate == tier_rate
 
 @pytest.mark.django_db
 def test_update_rule_tier_with_non_numeric_max_value():
@@ -1482,7 +1495,7 @@ def test_create_secondary_tiered_rate_rule_with_nulL_explainer():
 
     assert id is not None
 
-    rule = SecondaryTieredRateRule.objects.get(id)
+    rule = SecondaryTieredRateRule.objects.get(pk=id)
 
     assert rule.name == name
     assert rule.ordinal == ordinal
@@ -1516,7 +1529,7 @@ def test_create_valid_secondary_tiered_rate_rule():
 
     assert id is not None
 
-    rule = SecondaryTieredRateRule.objects.get(id)
+    rule = SecondaryTieredRateRule.objects.get(pk=id)
 
     assert rule.name == name
     assert rule.ordinal == ordinal
