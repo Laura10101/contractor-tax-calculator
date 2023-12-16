@@ -37,10 +37,16 @@ class RuleSetsList(APIView):
         try:
             ruleset_id = create_ruleset(jurisdiction_id, tax_category_id, ordinal)
         except ValidationError as e:
-            return Response(
-                { 'error' : str(e) },
-                status=status.HTTP_400_BAD_REQUEST
+            if str(e) == 'A rule already exists with for this tax category in this jurisdiction':
+                return Response(
+                    { 'error': str(e) },
+                    status=status.HTTP_409_CONFLICT
                 )
+            else:
+                return Response(
+                    { 'error' : str(e) },
+                    status=status.HTTP_400_BAD_REQUEST
+                    )
         except TaxCategory.DoesNotExist:
             return Response(
                 status=status.HTTP_404_NOT_FOUND
