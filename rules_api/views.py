@@ -215,12 +215,13 @@ class RuleDetail(APIView):
                 )
         try:
             if rule_type == 'flat_rate':
-                self.___put_flat_rate_rule(request, pk, name, ordinal, variable_name, explainer)
+                self.___put_flat_rate_rule(request, pk, name, ordinal, explainer, variable_name)
             elif rule_type == 'tiered_rate':
-                update_tiered_rate_rule(pk, name, ordinal, variable_name, explainer)
+                update_tiered_rate_rule(pk, name, ordinal, explainer, variable_name)
             elif rule_type == 'secondary_tiered_rate':
-                update_secondary_tiered_rate_rule(pk, name, ordinal, variable_name, explainer)
+                update_secondary_tiered_rate_rule(pk, name, ordinal, explainer, variable_name)
         except ValidationError as e:
+            print(str(e))
             return Response(
                 { 'error' : str(e) },
                 status=status.HTTP_400_BAD_REQUEST
@@ -337,6 +338,7 @@ class SecondaryRuleTiersList(APIView):
         ]
         # Validate data 
         if not contains_required_attributes(request, required_attributes):
+            print('Missing required attributes')
             return Response(
                 { 'error' : 'Invalid request. Please supply all required attributes.' },
                 status=status.HTTP_400_BAD_REQUEST
@@ -344,12 +346,23 @@ class SecondaryRuleTiersList(APIView):
         # Extract data required for service method 
         primary_tier_id = request.data['primary_tier_id']
         tax_rate = request.data['tax_rate']
-        # Invoke service method 
-        secondary_tier_id = create_secondary_rule_tier(
-            primary_tier_id,
-            rule_pk,
-            tax_rate
-        )
+        # Invoke service method
+        print('rule_pk = ' + str(rule_pk))
+        try:
+            secondary_tier_id = create_secondary_rule_tier(
+                rule_pk,
+                primary_tier_id,
+                tax_rate
+            )
+        except ValidationError as e:
+            return Response(
+                { 'error' : str(e) },
+                status=status.HTTP_400_BAD_REQUEST
+                )
+        except SecondaryTieredRateRule.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        except RuleTier.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
         # Generate and return response 
         response = { 'secondary_tier_id' : secondary_tier_id }
         # Return response 
@@ -379,8 +392,20 @@ class SecondaryRuleTierDetail(APIView):
                 )
         # Extract data required for service method 
         tax_rate = request.data['tax_rate']
-        # Invoke service method 
-        update_secondary_rule_tier(pk, tax_rate)
+        # Invoke service method
+        try:
+            update_secondary_rule_tier(pk, tax_rate)
+        except ValidationError as e:
+            return Response(
+                { 'error' : str(e) },
+                status=status.HTTP_400_BAD_REQUEST
+                )
+        except SecondaryTieredRateRule.DoesNotExist:
+            print('No secondary tiered rate rule')
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        except RuleTier.DoesNotExist:
+            print('No rule tier')
+            return Response(status=status.HTTP_404_NOT_FOUND)
         # Generate and return response 
         response = { }
         # Return response 

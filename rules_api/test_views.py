@@ -2572,7 +2572,7 @@ def test_post_secondary_tiered_rate_rule_with_null_variable_name():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status_code == 404
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_post_valid_secondary_tiered_rate_rule():
@@ -2799,7 +2799,7 @@ def test_put_secondary_tiered_rate_rule_with_non_numeric_ordinal():
     assert response.status_code == 400
 
 @pytest.mark.django_db
-def test_put_secondary_tiered_rate_rule_with_nulL_explainer():
+def test_put_secondary_tiered_rate_rule_with_null_explainer():
     primary_rule = create_mock_tiered_rate_rule('salary', 1, create_mock_ruleset())
     rule = create_mock_secondary_tiered_rate_rule(primary_rule, 'dividends', primary_rule.ruleset)
 
@@ -2824,10 +2824,8 @@ def test_put_secondary_tiered_rate_rule_with_nulL_explainer():
 
     assert response is not None
     assert response.status_code == 200
-    assert response.data['rule_id'] is not None
 
-    rule_id = response.data['rule_id']
-    rule = SecondaryTieredRateRule.objects.get(pk=rule_id)
+    rule = SecondaryTieredRateRule.objects.get(pk=rule.id)
     assert rule.name == name
     assert rule.ordinal == ordinal
     assert rule.explainer == explainer
@@ -2886,10 +2884,8 @@ def test_put_valid_secondary_tiered_rate_rule():
 
     assert response is not None
     assert response.status_code == 200
-    assert response.data['rule_id'] is not None
-
-    rule_id = response.data['rule_id']
-    rule = SecondaryTieredRateRule.objects.get(pk=rule_id)
+    
+    rule = SecondaryTieredRateRule.objects.get(pk=rule.id)
     assert rule.name == name
     assert rule.ordinal == ordinal
     assert rule.explainer == explainer
@@ -2910,7 +2906,7 @@ def test_post_secondary_rule_tier_with_null_data():
 
     body = {
         'primary_tier_id': primary_tier_id,
-        'tier_rate': tier_rate,
+        'tax_rate': tier_rate,
     }
 
     request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/secondarytiers/'
@@ -2933,7 +2929,7 @@ def test_post_secondary_rule_tier_with_null_rule_id():
 
     body = {
         'primary_tier_id': primary_tier_id,
-        'tier_rate': tier_rate,
+        'tax_rate': tier_rate,
     }
 
     request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/secondarytiers/'
@@ -2956,7 +2952,7 @@ def test_post_secondary_rule_tier_with_non_existent_rule_id():
 
     body = {
         'primary_tier_id': primary_tier_id,
-        'tier_rate': tier_rate,
+        'tax_rate': tier_rate,
     }
 
     request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/secondarytiers/'
@@ -2979,7 +2975,7 @@ def test_post_secondary_rule_tier_with_non_numeric_rule_id():
 
     body = {
         'primary_tier_id': primary_tier_id,
-        'tier_rate': tier_rate,
+        'tax_rate': tier_rate,
     }
 
     request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/secondarytiers/'
@@ -3002,7 +2998,7 @@ def test_post_secondary_rule_tier_with_null_primary_tier_id():
 
     body = {
         'primary_tier_id': primary_tier_id,
-        'tier_rate': tier_rate,
+        'tax_rate': tier_rate,
     }
 
     request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/secondarytiers/'
@@ -3025,7 +3021,7 @@ def test_post_secondary_rule_tier_with_non_existent_primary_tier_id():
 
     body = {
         'primary_tier_id': primary_tier_id,
-        'tier_rate': tier_rate,
+        'tax_rate': tier_rate,
     }
 
     request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/secondarytiers/'
@@ -3048,7 +3044,7 @@ def test_post_secondary_rule_tier_with_non_numeric_primary_tier_id():
 
     body = {
         'primary_tier_id': primary_tier_id,
-        'tier_rate': tier_rate,
+        'tax_rate': tier_rate,
     }
 
     request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/secondarytiers/'
@@ -3071,7 +3067,7 @@ def test_post_secondary_rule_tier_with_null_tier_rate():
 
     body = {
         'primary_tier_id': primary_tier_id,
-        'tier_rate': tier_rate,
+        'tax_rate': tier_rate,
     }
 
     request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/secondarytiers/'
@@ -3094,7 +3090,7 @@ def test_post_secondary_rule_tier_with_non_numeric_tier_rate():
 
     body = {
         'primary_tier_id': primary_tier_id,
-        'tier_rate': tier_rate,
+        'tax_rate': tier_rate,
     }
 
     request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/secondarytiers/'
@@ -3117,7 +3113,7 @@ def test_post_valid_secondary_rule_tier():
 
     body = {
         'primary_tier_id': primary_tier_id,
-        'tier_rate': tier_rate,
+        'tax_rate': tier_rate,
     }
 
     request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/secondarytiers/'
@@ -3233,6 +3229,7 @@ def test_put_secondary_rule_tier_with_non_numeric_tier_id():
 
     ruleset_id = primary_rule.ruleset.id
     rule_id = secondary_rule.id
+    print(str(rule_id))
     primary_tier_id = primary_tier.id
     tier_rate = 20
 
@@ -3252,7 +3249,7 @@ def test_put_secondary_rule_tier_with_non_numeric_tier_id():
     response = client.put(request_url, body, format='json')
 
     assert response is not None
-    assert response.status_code == 200
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_put_secondary_rule_tier_with_null_tier_rate():
@@ -3261,7 +3258,7 @@ def test_put_secondary_rule_tier_with_null_tier_rate():
     primary_tier = create_mock_rule_tier(primary_rule, 10000, 45000, 20)
 
 
-    ruleset_id = primary_rule.ruleset.id
+    ruleset_id = secondary_rule.ruleset.id
     rule_id = secondary_rule.id
     primary_tier_id = primary_tier.id
     tier_rate = 20
@@ -3282,7 +3279,7 @@ def test_put_secondary_rule_tier_with_null_tier_rate():
     response = client.put(request_url, body, format='json')
 
     assert response is not None
-    assert response.status_code == 200
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_put_secondary_rule_tier_with_non_numeric_tier_rate():
@@ -3312,7 +3309,7 @@ def test_put_secondary_rule_tier_with_non_numeric_tier_rate():
     response = client.put(request_url, body, format='json')
 
     assert response is not None
-    assert response.status_code == 200
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_put_valid_secondary_rule_tier():
