@@ -240,7 +240,7 @@ class RuleDetail(APIView):
         # Return response 
         return Response(response)
 
-    def ___put_flat_rate_rule(self, request, pk, name, ordinal, variable_name, explainer):
+    def ___put_flat_rate_rule(self, request, pk, name, ordinal, explainer, variable_name):
         # Valid that request contains additional required attributes
         required_attributes = ['tax_rate']
         if not contains_required_attributes(request, required_attributes):

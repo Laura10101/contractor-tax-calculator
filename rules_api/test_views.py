@@ -3122,7 +3122,7 @@ def test_post_valid_secondary_rule_tier():
     tier_id = response.data['secondary_tier_id']
     tier = SecondaryRuleTier.objects.get(pk=tier_id)
 
-    assert tier.rule.id == rule_id
+    assert tier.secondary_rule.id == rule_id
     assert tier.primary_tier.id == primary_tier_id
     assert tier.tier_rate == tier_rate
 
@@ -3339,5 +3339,5 @@ def test_put_valid_secondary_rule_tier():
 
     tier = SecondaryRuleTier.objects.get(pk=tier_id)
 
-    assert tier.rule.id == rule_id
+    assert tier.secondary_rule.id == rule_id
     assert tier.tier_rate == tier_rate
