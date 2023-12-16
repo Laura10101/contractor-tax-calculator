@@ -7,13 +7,13 @@ import pytest
 # Retrieving calculations
 @pytest.mark.django_db
 def test_get_calculations_for_null_username():
-    with pytest.raises(TaxCalculationResult.DoesNotExist):
-        get_calculations_for_user(None)
+    calculations = get_calculations_for_user(None)
+    assert calculations.count() == 0
 
 @pytest.mark.django_db
 def test_get_calculations_for_non_existent_username():
-    with pytest.raises(TaxCalculationResult.DoesNotExist):
-        get_calculations_for_user('Jimbo')
+    calculations = get_calculations_for_user('Jimbo')
+    assert calculations.count() == 0
 
 @pytest.mark.django_db
 def test_get_calculations_for_valid_username():
