@@ -61,7 +61,10 @@ class RuleSetsList(APIView):
 class RuleSetDetail(APIView):
     def delete(self, request, pk):
         # Call apropriate services method
-        delete_ruleset(pk)
+        try:
+            delete_ruleset(pk)
+        except RuleSet.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
         # Create response via empty JSON object
         response = { }
         # Return response 
@@ -95,7 +98,10 @@ class TaxCategoriesList(APIView):
 class TaxCategoryDetail(APIView):
     def delete(self, request, pk):
         # Call apropriate services method
-        delete_tax_category(pk)
+        try:
+            delete_tax_category(pk)
+        except TaxCategory.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
         # Create response via empty JSON object
         response = { }
         # Return response 
@@ -332,7 +338,15 @@ class RuleTierDetail(APIView):
         ordinal = request.data['ordinal']
         tax_rate = request.data['tax_rate']
         # Invoke service method 
-        update_rule_tier(pk, min_value, max_value, ordinal, tax_rate)
+        try:
+            update_rule_tier(pk, min_value, max_value, ordinal, tax_rate)
+        except ValidationError as e:
+            return Response(
+                { 'error' : str(e) },
+                status=status.HTTP_400_BAD_REQUEST
+                )
+        except RuleTier.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
         # Generate and return response 
         response = { }
         # Return response 
