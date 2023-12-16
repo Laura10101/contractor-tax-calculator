@@ -1,12 +1,6 @@
-from django.shortcuts import render
-from django.http import JsonResponse
-from django.core.serializers import serialize
-from django.views.decorators.csrf import csrf_exempt
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from django.core.exceptions import SuspiciousOperation
-import json
 from .services import *
 
 # Create a function to validate that a request contains
@@ -118,13 +112,22 @@ class RuleList(APIView):
                 { 'error' : 'Invalid request. Please provide a valid rule type.' },
                 status=status.HTTP_400_BAD_REQUEST
                 )
-        if rule_type == 'flat_rate':
-            rule_id = self.__post_flat_rate_rule(ruleset_pk, name, ordinal, variable_name, explainer, request)
-        elif rule_type == 'tiered_rate':
-            rule_id = create_tiered_rate_rule(ruleset_pk, name, ordinal, variable_name, explainer)
-        elif rule_type == 'secondary_tiered_rate':
-            rule_id = self.__post_secondary_tiered_rate_rule(ruleset_pk, name, ordinal, variable_name, explainer, request)
-        # Generate and return response 
+        try:
+            if rule_type == 'flat_rate':
+                rule_id = self.__post_flat_rate_rule(ruleset_pk, name, ordinal, variable_name, explainer, request)
+            elif rule_type == 'tiered_rate':
+                rule_id = create_tiered_rate_rule(ruleset_pk, name, ordinal, variable_name, explainer)
+            elif rule_type == 'secondary_tiered_rate':
+                rule_id = self.__post_secondary_tiered_rate_rule(ruleset_pk, name, ordinal, variable_name, explainer, request)
+        except ValidationError as e:
+            return Response(
+                { 'error': str(e) },
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        except RuleSet.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        
+        # Generate and return response         
         response = { 'rule_id': rule_id }
         return Response(response)
     
@@ -132,13 +135,10 @@ class RuleList(APIView):
         # Valid that request contains additional required attributes
         required_attributes = ['tax_rate']
         if not contains_required_attributes(request, required_attributes):
-            return Response(
-                { 'error' : 'Invalid request. Please provide all required attributes.' },
-                status=status.HTTP_400_BAD_REQUEST
-            )
+            raise ValidationError('tax_rate is a required attribute')
         
         # Extract additional variables from request
-        tax_rate = data.request['tax_rate']
+        tax_rate = request.data['tax_rate']
         # Invoke service method
         rule_id = create_flat_rate_rule(name, ruleset_pk, ordinal, variable_name, explainer, tax_rate)
         # Return ID
@@ -148,10 +148,7 @@ class RuleList(APIView):
         # Valid that request contains additional required attributes
         required_attributes = ['primary_rule_id']
         if not contains_required_attributes(request, required_attributes):
-            return Response(
-                { 'error' : 'Invalid request. Please provide all required attributes.' },
-                status=status.HTTP_400_BAD_REQUEST
-            )
+            raise ValidationError('primary_rule_id is a required attribute')
         
         # Extract additional variables from request
         primary_rule_id = request.data['primary_rule_id']
@@ -197,12 +194,25 @@ class RuleDetail(APIView):
                 { 'error' : 'Invalid request. Please provide a valid rule type.' },
                 status=status.HTTP_400_BAD_REQUEST
                 )
-        if rule_type == 'flat_rate':
-            self.___put_flat_rate_rule(request, pk, name, ordinal, variable_name, explainer)
-        elif rule_type == 'tiered_rate':
-            update_tiered_rate_rule(pk, name, ordinal, variable_name, explainer)
-        elif rule_type == 'secondary_tiered_rate':
-            update_secondary_tiered_rate_rule(pk, name, ordinal, variable_name, explainer)
+        try:
+            if rule_type == 'flat_rate':
+                self.___put_flat_rate_rule(request, pk, name, ordinal, variable_name, explainer)
+            elif rule_type == 'tiered_rate':
+                update_tiered_rate_rule(pk, name, ordinal, variable_name, explainer)
+            elif rule_type == 'secondary_tiered_rate':
+                update_secondary_tiered_rate_rule(pk, name, ordinal, variable_name, explainer)
+        except ValidationError as e:
+            return Response(
+                { 'error' : str(e) },
+                status=status.HTTP_400_BAD_REQUEST
+                )
+        except FlatRateRule.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        except TieredRateRule.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        except SecondaryTieredRateRule.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        
         # Generate and return response 
         response = { }
         # Return response 
@@ -212,13 +222,10 @@ class RuleDetail(APIView):
         # Valid that request contains additional required attributes
         required_attributes = ['tax_rate']
         if not contains_required_attributes(request, required_attributes):
-            return Response(
-                { 'error' : 'Invalid request. Please provide all required attributes.' },
-                status=status.HTTP_400_BAD_REQUEST
-            )
+            raise ValidationError('tax_rate is a required attribute')
         
         # Extract additional variables from request
-        tax_rate = data.request['tax_rate']
+        tax_rate = request.data['tax_rate']
         update_flat_rate_rule(
             name,
             ordinal,
