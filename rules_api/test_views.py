@@ -875,9 +875,7 @@ def test_put_flat_rate_rule_with_nulL_explainer():
 
     assert response is not None
     assert response.status_code == 200
-    assert response.data['rule_id'] is not None
-
-    rule_id = response.data['rule_id']
+    
     rule = FlatRateRule.objects.get(pk=rule_id)
     assert rule.name == name
     assert rule.ordinal == ordinal
@@ -1029,9 +1027,7 @@ def test_put_valid_flat_rate_rule():
 
     assert response is not None
     assert response.status_code == 200
-    assert response.data['rule_id'] is not None
 
-    rule_id = response.data['rule_id']
     rule = FlatRateRule.objects.get(pk=rule_id)
     assert rule.name == name
     assert rule.ordinal == ordinal

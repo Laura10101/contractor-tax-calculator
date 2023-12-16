@@ -246,10 +246,12 @@ class RuleDetail(APIView):
         # Extract additional variables from request
         tax_rate = request.data['tax_rate']
         update_flat_rate_rule(
+            pk,
             name,
             ordinal,
             explainer,
-            variable_name, tax_rate
+            variable_name,
+            tax_rate
         )
 
 # Create django rest rule tiers list view 
