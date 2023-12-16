@@ -159,7 +159,7 @@ class RuleList(APIView):
 
 # Create Django REST rule detail view
 class RuleDetail(APIView):
-    def delete(self, request, pk):
+    def delete(self, request, ruleset_pk, pk):
         # Call apropriate services method
         delete_rule(pk)
         # Create response via empty JSON object
@@ -167,7 +167,7 @@ class RuleDetail(APIView):
         # Return response 
         return Response(response)
 
-    def put(self, request, pk):
+    def put(self, request, ruleset_pk, pk):
         # Define the list of required attributes 
         required_attributes = [
             'type',
@@ -271,7 +271,7 @@ class RuleTiersList(APIView):
 # Create django rest rule tier detail view 
 # Django rest views are classes inheriting APIView 
 class RuleTierDetail(APIView):
-    def delete(self, request, pk):
+    def delete(self, request, ruleset_pk, rule_pk, pk):
         # Call apropriate services method
         delete_rule_tier(pk)
         # Create response via empty JSON object
@@ -279,7 +279,7 @@ class RuleTierDetail(APIView):
         # Return response 
         return Response(response)
 
-    def put(self, request, pk):
+    def put(self, request, ruleset_pk, rule_pk, pk):
         # Define the list of required attributes 
         required_attributes = [
             'min_value',
@@ -337,7 +337,7 @@ class SecondaryRuleTiersList(APIView):
 # Create django rest secondary rule tier detail view 
 # Django rest views are classes inheriting APIView 
 class SecondaryRuleTierDetail(APIView):
-    def delete(self, request, pk):
+    def delete(self, request, ruleset_pk, rule_pk, pk):
         # Call apropriate services method
         delete_secondary_rule_tier(pk)
         # Create response via empty JSON object
@@ -345,7 +345,7 @@ class SecondaryRuleTierDetail(APIView):
         # Return response 
         return Response(response)
 
-    def put(self, request, pk):
+    def put(self, request, ruleset_pk, rule_pk, pk):
         # Define the list of required attributes 
         required_attributes = [
             'tax_rate'

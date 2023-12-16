@@ -1227,6 +1227,7 @@ def test_put_tiered_rate_rule_with_null_data():
     assert rule is not None
     assert rule.variable_name == 'salary'
 
+    rule_id = None
     name = None
     ordinal = None
     explainer = None
@@ -1240,7 +1241,7 @@ def test_put_tiered_rate_rule_with_null_data():
         'variable_name': variable_name
     }
 
-    request_url = url + 'rulesets/' + str(None) + '/rules/' + str(None) + '/'
+    request_url = url + 'rulesets/' + str(rule.ruleset.id) + '/rules/' + str(rule_id) + '/'
     response = client.put(request_url, body, format='json')
 
     assert response is not None
@@ -1422,7 +1423,7 @@ def test_put_tiered_rate_rule_with_nulL_explainer():
         'variable_name': variable_name
     }
 
-    request_url = url + 'rulesets/' + str(rule.ruleset.id) + '/rules/'
+    request_url = url + 'rulesets/' + str(rule.ruleset.id) + '/rules/' + str(rule.id) + '/'
     response = client.put(request_url, body, format='json')
 
     assert response is not None
@@ -1482,7 +1483,7 @@ def test_put_valid_tiered_rate_rule():
         'variable_name': variable_name
     }
 
-    request_url = url + 'rulesets/' + str(rule.ruleset.id) + '/rules/'
+    request_url = url + 'rulesets/' + str(rule.ruleset.id) + '/rules/' + str(rule.id) + '/'
     response = client.put(request_url, body, format='json')
 
     assert response is not None
