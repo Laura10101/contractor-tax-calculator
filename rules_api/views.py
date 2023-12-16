@@ -279,14 +279,23 @@ class RuleTiersList(APIView):
         max_value = request.data['max_value']
         ordinal = request.data['ordinal']
         tax_rate = request.data['tax_rate'] 
-        # Invoke service method 
-        rule_tier_id = create_rule_tier(
-            rule_pk,
-            min_value,
-            max_value,
-            ordinal,
-            tax_rate
-        )
+        # Invoke service method
+        try:
+            rule_tier_id = create_rule_tier(
+                rule_pk,
+                min_value,
+                max_value,
+                ordinal,
+                tax_rate
+            )
+        except ValidationError as e:
+            return Response(
+                { 'error' : str(e) },
+                status=status.HTTP_400_BAD_REQUEST
+                )
+        except TieredRateRule.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
         # Create response 
         response = { 'tier_id' : rule_tier_id }
         # Return response 

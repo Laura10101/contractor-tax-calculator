@@ -1562,7 +1562,7 @@ def test_post_rule_tier_with_null_data():
         'min_value': min_value,
         'max_value': max_value,
         'ordinal': ordinal,
-        'tier_rate': tier_rate,
+        'tax_rate': tier_rate,
     }
 
     request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/tiers/'
@@ -1585,7 +1585,7 @@ def test_post_rule_tier_with_null_rule_id():
         'min_value': min_value,
         'max_value': max_value,
         'ordinal': ordinal,
-        'tier_rate': tier_rate,
+        'tax_rate': tier_rate,
     }
 
     request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/tiers/'
@@ -1608,7 +1608,7 @@ def test_post_rule_tier_with_non_existent_rule_id():
         'min_value': min_value,
         'max_value': max_value,
         'ordinal': ordinal,
-        'tier_rate': tier_rate,
+        'tax_rate': tier_rate,
     }
 
     request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/tiers/'
@@ -1631,7 +1631,7 @@ def test_post_rule_tier_with_non_numeric_rule_id():
         'min_value': min_value,
         'max_value': max_value,
         'ordinal': ordinal,
-        'tier_rate': tier_rate,
+        'tax_rate': tier_rate,
     }
 
     request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/tiers/'
@@ -1654,7 +1654,7 @@ def test_post_rule_tier_with_null_min_value():
         'min_value': min_value,
         'max_value': max_value,
         'ordinal': ordinal,
-        'tier_rate': tier_rate,
+        'tax_rate': tier_rate,
     }
 
     request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/tiers/'
@@ -1677,7 +1677,7 @@ def test_post_rule_tier_with_non_numeric_min_value():
         'min_value': min_value,
         'max_value': max_value,
         'ordinal': ordinal,
-        'tier_rate': tier_rate,
+        'tax_rate': tier_rate,
     }
 
     request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/tiers/'
@@ -1700,14 +1700,14 @@ def test_post_rule_tier_with_null_max_value():
         'min_value': min_value,
         'max_value': max_value,
         'ordinal': ordinal,
-        'tier_rate': tier_rate,
+        'tax_rate': tier_rate,
     }
 
     request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/tiers/'
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status_code == 400
+    assert response.status_code == 200
 
 @pytest.mark.django_db
 def test_post_rule_tier_with_non_numeric_max_value():
@@ -1723,7 +1723,7 @@ def test_post_rule_tier_with_non_numeric_max_value():
         'min_value': min_value,
         'max_value': max_value,
         'ordinal': ordinal,
-        'tier_rate': tier_rate,
+        'tax_rate': tier_rate,
     }
 
     request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/tiers/'
@@ -1746,7 +1746,7 @@ def test_post_rule_tier_with_null_ordinal():
         'min_value': min_value,
         'max_value': max_value,
         'ordinal': ordinal,
-        'tier_rate': tier_rate,
+        'tax_rate': tier_rate,
     }
 
     request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/tiers/'
@@ -1769,7 +1769,7 @@ def test_post_rule_tier_with_non_numeric_ordinal():
         'min_value': min_value,
         'max_value': max_value,
         'ordinal': ordinal,
-        'tier_rate': tier_rate,
+        'tax_rate': tier_rate,
     }
 
     request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/tiers/'
@@ -1792,7 +1792,7 @@ def test_post_rule_tier_with_null_tier_rate():
         'min_value': min_value,
         'max_value': max_value,
         'ordinal': ordinal,
-        'tier_rate': tier_rate,
+        'tax_rate': tier_rate,
     }
 
     request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/tiers/'
@@ -1815,7 +1815,7 @@ def test_post_rule_tier_with_non_numeric_tier_rate():
         'min_value': min_value,
         'max_value': max_value,
         'ordinal': ordinal,
-        'tier_rate': tier_rate,
+        'tax_rate': tier_rate,
     }
 
     request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/tiers/'
@@ -1838,7 +1838,7 @@ def test_post_valid_rule_tier():
         'min_value': min_value,
         'max_value': max_value,
         'ordinal': ordinal,
-        'tier_rate': tier_rate,
+        'tax_rate': tier_rate,
     }
 
     request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/tiers/'
@@ -1880,7 +1880,7 @@ def test_put_rule_tier_with_null_data():
         'min_value': min_value,
         'max_value': max_value,
         'ordinal': ordinal,
-        'tier_rate': tier_rate,
+        'tax_rate': tier_rate,
     }
 
     request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/tiers/' + str(tier_id) + '/'
@@ -1911,7 +1911,7 @@ def test_put_rule_tier_with_null_tier_id():
         'min_value': min_value,
         'max_value': max_value,
         'ordinal': ordinal,
-        'tier_rate': tier_rate,
+        'tax_rate': tier_rate,
     }
 
     request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/tiers/' + str(tier_id) + '/'
@@ -1942,7 +1942,7 @@ def test_put_rule_tier_with_non_existent_tier_id():
         'min_value': min_value,
         'max_value': max_value,
         'ordinal': ordinal,
-        'tier_rate': tier_rate,
+        'tax_rate': tier_rate,
     }
 
     request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/tiers/' + str(tier_id) + '/'
@@ -1973,7 +1973,7 @@ def test_put_rule_tier_with_non_numeric_tier_id():
         'min_value': min_value,
         'max_value': max_value,
         'ordinal': ordinal,
-        'tier_rate': tier_rate,
+        'tax_rate': tier_rate,
     }
 
     request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/tiers/' + str(tier_id) + '/'
@@ -2003,7 +2003,7 @@ def test_put_rule_tier_with_null_min_value():
         'min_value': min_value,
         'max_value': max_value,
         'ordinal': ordinal,
-        'tier_rate': tier_rate,
+        'tax_rate': tier_rate,
     }
 
     request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/tiers/' + str(tier_id) + '/'
@@ -2033,7 +2033,7 @@ def test_put_rule_tier_with_non_numeric_min_value():
         'min_value': min_value,
         'max_value': max_value,
         'ordinal': ordinal,
-        'tier_rate': tier_rate,
+        'tax_rate': tier_rate,
     }
 
     request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/tiers/' + str(tier_id) + '/'
@@ -2063,14 +2063,14 @@ def test_put_rule_tier_with_null_max_value():
         'min_value': min_value,
         'max_value': max_value,
         'ordinal': ordinal,
-        'tier_rate': tier_rate,
+        'tax_rate': tier_rate,
     }
 
     request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/tiers/' + str(tier_id) + '/'
     response = client.put(request_url, body, format='json')
 
     assert response is not None
-    assert response.status_code == 400
+    assert response.status_code == 200
 
 @pytest.mark.django_db
 def test_put_rule_tier_with_non_numeric_max_value():
@@ -2093,7 +2093,7 @@ def test_put_rule_tier_with_non_numeric_max_value():
         'min_value': min_value,
         'max_value': max_value,
         'ordinal': ordinal,
-        'tier_rate': tier_rate,
+        'tax_rate': tier_rate,
     }
 
     request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/tiers/' + str(tier_id) + '/'
@@ -2123,7 +2123,7 @@ def test_put_rule_tier_with_null_ordinal():
         'min_value': min_value,
         'max_value': max_value,
         'ordinal': ordinal,
-        'tier_rate': tier_rate,
+        'tax_rate': tier_rate,
     }
 
     request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/tiers/' + str(tier_id) + '/'
@@ -2153,7 +2153,7 @@ def test_put_rule_tier_with_non_numeric_ordinal():
         'min_value': min_value,
         'max_value': max_value,
         'ordinal': ordinal,
-        'tier_rate': tier_rate,
+        'tax_rate': tier_rate,
     }
 
     request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/tiers/' + str(tier_id) + '/'
@@ -2183,7 +2183,7 @@ def test_put_rule_tier_with_null_tier_rate():
         'min_value': min_value,
         'max_value': max_value,
         'ordinal': ordinal,
-        'tier_rate': tier_rate,
+        'tax_rate': tier_rate,
     }
 
     request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/tiers/' + str(tier_id) + '/'
@@ -2213,7 +2213,7 @@ def test_put_rule_tier_with_non_numeric_tier_rate():
         'min_value': min_value,
         'max_value': max_value,
         'ordinal': ordinal,
-        'tier_rate': tier_rate,
+        'tax_rate': tier_rate,
     }
 
     request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/tiers/' + str(tier_id) + '/'
@@ -2243,7 +2243,7 @@ def test_put_valid_rule_tier():
         'min_value': min_value,
         'max_value': max_value,
         'ordinal': ordinal,
-        'tier_rate': tier_rate,
+        'tax_rate': tier_rate,
     }
 
     request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/tiers/' + str(tier_id) + '/'
