@@ -47,7 +47,7 @@ def test_post_ruleset_with_null_jurisdiction_id():
 
 @pytest.mark.django_db
 def test_post_ruleset_with_null_tax_category_id():
-    jurisdiction_id = create_mock_jurisdiction()
+    jurisdiction_id = create_mock_jurisdiction().id
     tax_category_id = None
     ordinal = 1
 
@@ -65,7 +65,7 @@ def test_post_ruleset_with_null_tax_category_id():
 
 @pytest.mark.django_db
 def test_post_ruleset_with_non_existent_tax_category_id():
-    jurisdiction_id = create_mock_jurisdiction()
+    jurisdiction_id = create_mock_jurisdiction().id
     tax_category_id = 479
     ordinal = 1
 
@@ -83,7 +83,7 @@ def test_post_ruleset_with_non_existent_tax_category_id():
 
 @pytest.mark.django_db
 def test_post_ruleset_with_null_ordinal():
-    jurisdiction_id = create_mock_jurisdiction()
+    jurisdiction_id = create_mock_jurisdiction().id
     tax_category_id = 479
     ordinal = None
 
@@ -101,7 +101,7 @@ def test_post_ruleset_with_null_ordinal():
 
 @pytest.mark.django_db
 def test_post_ruleset_with_non_numeric_ordinal():
-    jurisdiction_id = create_mock_jurisdiction()
+    jurisdiction_id = create_mock_jurisdiction().id
     tax_category_id = 479
     ordinal = 'ABC'
 
@@ -119,7 +119,7 @@ def test_post_ruleset_with_non_numeric_ordinal():
 
 @pytest.mark.django_db
 def test_post_ruleset_with_duplicate_tax_category_jurisdiction_combination():
-    jurisdiction_id = create_mock_jurisdiction()
+    jurisdiction_id = create_mock_jurisdiction().id
     tax_category_id = create_tax_category('Test category')
     ordinal = 1
 
@@ -134,7 +134,7 @@ def test_post_ruleset_with_duplicate_tax_category_jurisdiction_combination():
 
     assert response is not None
     assert response.status_code == 200
-    assert response.data['tax_category_id'] is not None
+    assert response.data['ruleset_id'] is not None
 
     response = client.post(request_url, body, format='json')
 
@@ -143,7 +143,7 @@ def test_post_ruleset_with_duplicate_tax_category_jurisdiction_combination():
 
 @pytest.mark.django_db
 def test_post_valid_ruleset():
-    jurisdiction_id = create_mock_jurisdiction()
+    jurisdiction_id = create_mock_jurisdiction().id
     tax_category_id = create_tax_category('Test category')
     ordinal = 1
 
