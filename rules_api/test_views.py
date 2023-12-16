@@ -2323,7 +2323,7 @@ def test_post_secondary_tiered_rate_rule_with_non_numeric_ruleset_id():
 def test_post_secondary_tiered_rate_rule_with_null_primary_rule_id():
     primary_rule = create_mock_simple_tiered_rate_rule(9000, 45000, 'salary', 20)
     primary_rule_id = None
-    ruleset_id = primary_rule_id.ruleset.id
+    ruleset_id = primary_rule.ruleset.id
     name = 'Test rule'
     ordinal = 1
     explainer = 'Test explainer'
@@ -2348,7 +2348,7 @@ def test_post_secondary_tiered_rate_rule_with_null_primary_rule_id():
 def test_post_secondary_tiered_rate_rule_with_non_existent_primary_rule_id():
     primary_rule = create_mock_simple_tiered_rate_rule(9000, 45000, 'salary', 20)
     primary_rule_id = 479
-    ruleset_id = primary_rule_id.ruleset.id
+    ruleset_id = primary_rule.ruleset.id
     name = 'Test rule'
     ordinal = 1
     explainer = 'Test explainer'
@@ -2373,7 +2373,7 @@ def test_post_secondary_tiered_rate_rule_with_non_existent_primary_rule_id():
 def test_post_secondary_tiered_rate_rule_with_non_numeric_primary_rule_id():
     primary_rule = create_mock_simple_tiered_rate_rule(9000, 45000, 'salary', 20)
     primary_rule_id = 'ABC'
-    ruleset_id = primary_rule_id.ruleset.id
+    ruleset_id = primary_rule.ruleset.id
     name = 'Test rule'
     ordinal = 1
     explainer = 'Test explainer'
@@ -2398,7 +2398,7 @@ def test_post_secondary_tiered_rate_rule_with_non_numeric_primary_rule_id():
 def test_crete_secondary_tiered_rate_rule_with_null_name():
     primary_rule = create_mock_simple_tiered_rate_rule(9000, 45000, 'salary', 20)
     primary_rule_id = primary_rule.id
-    ruleset_id = primary_rule_id.ruleset.id
+    ruleset_id = primary_rule.ruleset.id
     name = None
     ordinal = 1
     explainer = 'Test explainer'
@@ -2423,7 +2423,7 @@ def test_crete_secondary_tiered_rate_rule_with_null_name():
 def test_post_secondary_tiered_rate_rule_with_null_ordinal():
     primary_rule = create_mock_simple_tiered_rate_rule(9000, 45000, 'salary', 20)
     primary_rule_id = primary_rule.id
-    ruleset_id = primary_rule_id.ruleset.id
+    ruleset_id = primary_rule.ruleset.id
     name = 'Test rule'
     ordinal = None
     explainer = 'Test explainer'
@@ -2448,7 +2448,7 @@ def test_post_secondary_tiered_rate_rule_with_null_ordinal():
 def test_post_secondary_tiered_rate_rule_with_non_numeric_ordinal():
     primary_rule = create_mock_simple_tiered_rate_rule(9000, 45000, 'salary', 20)
     primary_rule_id = primary_rule.id
-    ruleset_id = primary_rule_id.ruleset.id
+    ruleset_id = primary_rule.ruleset.id
     name = 'Test rule'
     ordinal = 'ABC'
     explainer = 'Test explainer'
@@ -2473,7 +2473,7 @@ def test_post_secondary_tiered_rate_rule_with_non_numeric_ordinal():
 def test_post_secondary_tiered_rate_rule_with_nulL_explainer():
     primary_rule = create_mock_simple_tiered_rate_rule(9000, 45000, 'salary', 20)
     primary_rule_id = primary_rule.id
-    ruleset_id = primary_rule_id.ruleset.id
+    ruleset_id = primary_rule.ruleset.id
     name = 'Test rule'
     ordinal = 1
     explainer = None
@@ -2508,7 +2508,7 @@ def test_post_secondary_tiered_rate_rule_with_nulL_explainer():
 def test_post_secondary_tiered_rate_rule_with_null_variable_name():
     primary_rule = create_mock_simple_tiered_rate_rule(9000, 45000, 'salary', 20)
     primary_rule_id = primary_rule.id
-    ruleset_id = primary_rule_id.ruleset.id
+    ruleset_id = primary_rule.ruleset.id
     name = 'Test rule'
     ordinal = 1
     explainer = 'Test explainer'
@@ -2533,7 +2533,7 @@ def test_post_secondary_tiered_rate_rule_with_null_variable_name():
 def test_post_valid_secondary_tiered_rate_rule():
     primary_rule = create_mock_simple_tiered_rate_rule(9000, 45000, 'salary', 20)
     primary_rule_id = primary_rule.id
-    ruleset_id = primary_rule_id.ruleset.id
+    ruleset_id = primary_rule.ruleset.id
     name = 'Test rule'
     ordinal = 1
     explainer = 'Test explainer'
