@@ -187,7 +187,7 @@ def create_secondary_tiered_rate_rule(ruleset_id, primary_rule_id, name, ordinal
     secondary_tiered_rate_rule.save()
     return secondary_tiered_rate_rule.id
 
-def update_secondary_tiered_rate_rule(id, name, ordinal, explainer, variable_name, tax_rate):
+def update_secondary_tiered_rate_rule(id, name, ordinal, explainer, variable_name):
     if not isinstance(id, int):
         raise SecondaryTieredRateRule.DoesNotExist('rule_id must be a non-negative integer value')
     
