@@ -2570,7 +2570,7 @@ def test_put_secondary_tiered_rate_rule_with_null_data():
     rule = create_mock_secondary_tiered_rate_rule(primary_rule, 'dividends', primary_rule.ruleset)
 
     assert rule is not None
-    assert rule.variable_name == 'salary'
+    assert rule.variable_name == 'dividends'
 
     name = None
     ordinal = None
@@ -2597,7 +2597,7 @@ def test_put_secondary_tiered_rate_rule_with_null_rule_id():
     rule = create_mock_secondary_tiered_rate_rule(primary_rule, 'dividends', primary_rule.ruleset)
 
     assert rule is not None
-    assert rule.variable_name == 'salary'
+    assert rule.variable_name == 'dividends'
 
     name = 'Test rule updated'
     ordinal = 2
@@ -2624,7 +2624,7 @@ def test_put_secondary_tiered_rate_rule_with_non_existent_rule_id():
     rule = create_mock_secondary_tiered_rate_rule(primary_rule, 'dividends', primary_rule.ruleset)
 
     assert rule is not None
-    assert rule.variable_name == 'salary'
+    assert rule.variable_name == 'dividends'
 
     name = 'Test rule updated'
     ordinal = 2
@@ -2651,7 +2651,7 @@ def test_put_secondary_tiered_rate_rule_with_non_numeric_rule_id():
     rule = create_mock_secondary_tiered_rate_rule(primary_rule, 'dividends', primary_rule.ruleset)
 
     assert rule is not None
-    assert rule.variable_name == 'salary'
+    assert rule.variable_name == 'dividends'
 
     name = 'Test rule updated'
     ordinal = 2
@@ -2678,7 +2678,7 @@ def test_put_secondary_iered_rate_rule_with_null_name():
     rule = create_mock_secondary_tiered_rate_rule(primary_rule, 'dividends', primary_rule.ruleset)
 
     assert rule is not None
-    assert rule.variable_name == 'salary'
+    assert rule.variable_name == 'dividends'
 
     name = None
     ordinal = 2
@@ -2705,7 +2705,7 @@ def test_put_secondary_tiered_rate_rule_with_null_ordinal():
     rule = create_mock_secondary_tiered_rate_rule(primary_rule, 'dividends', primary_rule.ruleset)
 
     assert rule is not None
-    assert rule.variable_name == 'salary'
+    assert rule.variable_name == 'dividends'
 
     name = 'Test rule updated'
     ordinal = None
@@ -2732,7 +2732,7 @@ def test_put_secondary_tiered_rate_rule_with_non_numeric_ordinal():
     rule = create_mock_secondary_tiered_rate_rule(primary_rule, 'dividends', primary_rule.ruleset)
 
     assert rule is not None
-    assert rule.variable_name == 'salary'
+    assert rule.variable_name == 'dividends'
 
     name = 'Test rule updated'
     ordinal = 'ABC'
@@ -2759,7 +2759,7 @@ def test_put_secondary_tiered_rate_rule_with_nulL_explainer():
     rule = create_mock_secondary_tiered_rate_rule(primary_rule, 'dividends', primary_rule.ruleset)
 
     assert rule is not None
-    assert rule.variable_name == 'salary'
+    assert rule.variable_name == 'dividends'
 
     name = 'Test rule updated'
     ordinal = 2
@@ -2794,7 +2794,7 @@ def test_put_secondary_tiered_rate_rule_with_null_variable_name():
     rule = create_mock_secondary_tiered_rate_rule(primary_rule, 'dividends', primary_rule.ruleset)
 
     assert rule is not None
-    assert rule.variable_name == 'salary'
+    assert rule.variable_name == 'dividends'
 
     name = 'Test rule updated'
     ordinal = 2
@@ -2821,7 +2821,7 @@ def test_put_valid_secondary_tiered_rate_rule():
     rule = create_mock_secondary_tiered_rate_rule(primary_rule, 'dividends', primary_rule.ruleset)
 
     assert rule is not None
-    assert rule.variable_name == 'salary'
+    assert rule.variable_name == 'dividends'
 
     name = 'Test rule updated'
     ordinal = 2
