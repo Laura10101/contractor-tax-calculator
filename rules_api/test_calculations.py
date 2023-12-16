@@ -74,4 +74,4 @@ def test_create_calculation_with_multiple_single_rule_jurisdictions():
 
     ruleset_result_2 = calculation.results.all()[1]
     assert ruleset_result_2.results.count() == 1
-    assert ruleset_result_2.results.first().tax_payable == round((49000 - 8000) * 0.08, 2)
+    assert ruleset_result_2.results.first().tax_payable == round(variable_table['dividends'] * (8/100), 2)
