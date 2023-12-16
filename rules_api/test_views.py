@@ -61,7 +61,7 @@ def test_post_ruleset_with_null_tax_category_id():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status_code == 400
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_post_ruleset_with_non_existent_tax_category_id():
@@ -79,12 +79,12 @@ def test_post_ruleset_with_non_existent_tax_category_id():
     response = client.post(request_url, body, format='json')
 
     assert response is not None
-    assert response.status_code == 400
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_post_ruleset_with_null_ordinal():
     jurisdiction_id = create_mock_jurisdiction().id
-    tax_category_id = 479
+    tax_category_id = create_tax_category('Test category')
     ordinal = None
 
     body = {
@@ -102,7 +102,7 @@ def test_post_ruleset_with_null_ordinal():
 @pytest.mark.django_db
 def test_post_ruleset_with_non_numeric_ordinal():
     jurisdiction_id = create_mock_jurisdiction().id
-    tax_category_id = 479
+    tax_category_id = create_tax_category('Test category')
     ordinal = 'ABC'
 
     body = {
