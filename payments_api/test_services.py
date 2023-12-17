@@ -8,6 +8,8 @@ import pytest
 from .stripe import *
 from rest_framework.test import APIClient
 
+from subscriptions_api.models import Subscription, SubscriptionOption
+
 # Required fields on a payment
 # subscription_id - The ID of the associated subscription
 # stripe_pid - The Stripe ID for the payment
@@ -173,19 +175,21 @@ def test_process_payment_success():
     client = APIClient()
     subs_url = '/api/subscriptions/'
 
-    subscription_option_id = 1
+    subscription_option = SubscriptionOption.objects.create(
+        subscription_months=6,
+        subscription_price=4.99,
+        is_active=True
+    )
     
-    body = {
-        'user_id': 'charliebrown',
-        'subscription_option_id': subscription_option_id
-    }
+    subscription_id = Subscription.objects.create(
+        subscription_option = subscription_option,
+        user_id = 479,
+        start_date = datetime.now()
+    )
 
-    response = client.post(subs_url, body, format='json')
-    print(response.data)
-    subscription_id = response.data['subscription_id']
-    total = 47.99
+    total = subscription_option.total()
     currency = 'GBP'
-    id, _ = create_payment(subscription_id, subscription_option_id, total, currency)
+    id, _ = create_payment(subscription_id, subscription_option.id, total, currency)
 
     payment = Payment.objects.get(pk=id)
     print(payment.stripe_pid)
