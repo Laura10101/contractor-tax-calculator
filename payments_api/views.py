@@ -147,14 +147,17 @@ class StripeWebhooksList(APIView):
         status = request.data['data']['object']['status']
         # Call the apropriate services function based on the event type
         # Create switch statmeent to determine which event type has occurred 
-        match event_type:
-            case 'payment_intent.canceled':
-                fail_payment(stripe_pid, status)
-            case 'payment_intent.payment_failed':
-                fail_payment(stripe_pid, status)
-            case 'payment_intent.requires_action':
-                fail_payment(stripe_pid, status)
-            case 'payment_intent.succeeded':
-                complete_payment(stripe_pid)
+        try:
+            match event_type:
+                case 'payment_intent.canceled':
+                    fail_payment(stripe_pid, status)
+                case 'payment_intent.payment_failed':
+                    fail_payment(stripe_pid, status)
+                case 'payment_intent.requires_action':
+                    fail_payment(stripe_pid, status)
+                case 'payment_intent.succeeded':
+                    complete_payment(stripe_pid)
+        except Payment.DoesNotExist:
+            return Response(status=404)
         # Return response 
         return Response({}, status=200)

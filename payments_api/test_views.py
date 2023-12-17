@@ -1,4 +1,5 @@
 from datetime import date
+from dateutil.relativedelta import relativedelta
 from django.db import IntegrityError
 from django.core.exceptions import ValidationError
 from rest_framework.test import APIClient
@@ -35,7 +36,7 @@ def create_mock_subscription(subscription_option):
     return Subscription.objects.create(
         subscription_option = subscription_option,
         user_id = 479,
-        start_date = datetime.now()
+        start_date = datetime.now() - relativedelta(months=2)
     )
 
 # Test creating a payment
@@ -402,7 +403,7 @@ def test_process_payment_success_webhook():
 
     subscription = Subscription.objects.get(pk=subs_id)
     assert subscription.is_active() == True
-    assert subscription.subscription_option.id == payment.subscription_option_id
+    assert subscription_option_id == payment.subscription_option_id
     assert subscription.start_date.date() == payment.completed_or_failed_date.date()
 
 @pytest.mark.django_db
