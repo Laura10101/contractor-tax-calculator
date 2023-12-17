@@ -5,6 +5,7 @@ from django.core.serializers import serialize
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from stripe.error import InvalidRequestError
 from .services import *
 import json
 import stripe
@@ -71,7 +72,15 @@ class PaymentDetail(APIView):
         stripe_card_id = request.data['stripe_card_id']
 
         # Invoke service method 
-        succeeded, result = confirm_payment(pk, stripe_card_id)
+        try:
+            succeeded, result = confirm_payment(pk, stripe_card_id)
+        except Payment.DoesNotExist:
+            return Response(status=404)
+        except stripe.error.InvalidRequestError as e:
+            return Response(
+                { 'error' : str(e) },
+                status=400
+                )
         # Create response 
         response = {
             'succeeded': succeeded,
