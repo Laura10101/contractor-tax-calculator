@@ -209,589 +209,76 @@ def test_patch_payment_with_null_payment_data():
     total = 42.30
     currency = 'GBP'
     id, _ = create_payment(subscription_id, subscription_option_id, total, currency)
-
-    billing_street_1 = None
-    billing_street_2 = None
-    town_or_city = None
-    county = None
-    country = None
-    postcode = None
-    card_number = None
-    expiry_date = None
-    ccv2 = None
     
     data = {
-        'billing_address': {
-            'billing_street_1': billing_street_1,
-            'billing_street_2': billing_street_2,
-            'town_or_city': town_or_city,
-            'county': county,
-            'country': country,
-            'postcode': postcode
-        },
-        'payment_details': {
-            'card_number': card_number,
-            'expiry_date': expiry_date,
-            'ccv2': ccv2
-        }
+        'stripe_card_id': None
     }
-    response = client.patch(url + str(id) + '/', data, format='json')
-    assert response.status_code == 400
+    response = client.patch(url + str(None) + '/', data, format='json')
+    assert response.status_code == 404
 
 @pytest.mark.django_db
-def test_patch_payment_with_null_street1():
+def test_patch_payment_with_null_payment_id():
     subscription_id = create_mock_subscription(create_mock_subscription_option()).id
     subscription_option_id = create_mock_subscription_option().id
     total = 42.30
     currency = 'GBP'
     id, _ = create_payment(subscription_id, subscription_option_id, total, currency)
     
-    billing_street_1 = '4 Maine Street'
-    billing_street_2 = 'St Leonards'
-    town_or_city = 'Exeter'
-    county = 'Devon'
-    country = 'United Kingdom'
-    postcode = 'EX2 7ST'
-    card_number = '1111 1111 1111 1111'
-    expiry_date = date.today()
-    ccv2 = 439
-
     data = {
-        'billing_address': {
-            'billing_street_1': billing_street_1,
-            'billing_street_2': billing_street_2,
-            'town_or_city': town_or_city,
-            'county': county,
-            'country': country,
-            'postcode': postcode
-        },
-        'payment_details': {
-            'card_number': card_number,
-            'expiry_date': expiry_date,
-            'ccv2': ccv2
-        }
+        'stripe_card_id': 'pm_card_gb'
     }
-    response = client.patch(url + str(id) + '/', data, format='json')
-    assert response.status_code == 400
+    response = client.patch(url + str(None) + '/', data, format='json')
+    assert response.status_code == 404
 
 @pytest.mark.django_db
-def test_patch_payment_with_null_street2():
+def test_patch_payment_with_null_stripe_card_id():
     subscription_id = create_mock_subscription(create_mock_subscription_option()).id
     subscription_option_id = create_mock_subscription_option().id
     total = 42.30
     currency = 'GBP'
     id, _ = create_payment(subscription_id, subscription_option_id, total, currency)
-
-    billing_street_1 = '4 Maine Street'
-    billing_street_2 = None
-    town_or_city = 'Exeter'
-    county = 'Devon'
-    country = 'United Kingdom'
-    postcode = 'EX2 7ST'
-    card_number = '1111 1111 1111 1111'
-    expiry_date = date.today()
-    ccv2 = 439
     
     data = {
-        'billing_address': {
-            'billing_street_1': billing_street_1,
-            'billing_street_2': billing_street_2,
-            'town_or_city': town_or_city,
-            'county': county,
-            'country': country,
-            'postcode': postcode
-        },
-        'payment_details': {
-            'card_number': card_number,
-            'expiry_date': expiry_date,
-            'ccv2': ccv2
-        }
+        'stripe_card_id': None
     }
     response = client.patch(url + str(id) + '/', data, format='json')
     assert response.status_code == 400
 
 @pytest.mark.django_db
-def test_patch_payment_with_null_city():
+def test_patch_payment_with_non_string_stripe_card_id():
     subscription_id = create_mock_subscription(create_mock_subscription_option()).id
     subscription_option_id = create_mock_subscription_option().id
     total = 42.30
     currency = 'GBP'
     id, _ = create_payment(subscription_id, subscription_option_id, total, currency)
-
-    billing_street_1 = '4 Maine Street'
-    billing_street_2 = 'St Leonards'
-    town_or_city = None
-    county = 'Devon'
-    country = 'United Kingdom'
-    postcode = 'EX2 7ST'
-    card_number = '1111 1111 1111 1111'
-    expiry_date = date.today()
-    ccv2 = 439
     
     data = {
-        'billing_address': {
-            'billing_street_1': billing_street_1,
-            'billing_street_2': billing_street_2,
-            'town_or_city': town_or_city,
-            'county': county,
-            'country': country,
-            'postcode': postcode
-        },
-        'payment_details': {
-            'card_number': card_number,
-            'expiry_date': expiry_date,
-            'ccv2': ccv2
-        }
+        'stripe_card_id': 1234
     }
     response = client.patch(url + str(id) + '/', data, format='json')
     assert response.status_code == 400
 
 @pytest.mark.django_db
-def test_patch_payment_with_null_county():
+def test_patch_valid_payment():
     subscription_id = create_mock_subscription(create_mock_subscription_option()).id
     subscription_option_id = create_mock_subscription_option().id
     total = 42.30
     currency = 'GBP'
     id, _ = create_payment(subscription_id, subscription_option_id, total, currency)
-
-    billing_street_1 = '4 Maine Street'
-    billing_street_2 = 'St Leonards'
-    town_or_city = 'Exeter'
-    county = None
-    country = 'United Kingdom'
-    postcode = 'EX2 7ST'
-    card_number = '1111 1111 1111 1111'
-    expiry_date = date.today()
-    ccv2 = 439
     
     data = {
-        'billing_address': {
-            'billing_street_1': billing_street_1,
-            'billing_street_2': billing_street_2,
-            'town_or_city': town_or_city,
-            'county': county,
-            'country': country,
-            'postcode': postcode
-        },
-        'payment_details': {
-            'card_number': card_number,
-            'expiry_date': expiry_date,
-            'ccv2': ccv2
-        }
-    }
-    response = client.patch(url + str(id) + '/', data, format='json')
-    assert response.status_code == 400
-
-@pytest.mark.django_db
-def test_patch_payment_with_null_country():
-    subscription_id = create_mock_subscription(create_mock_subscription_option()).id
-    subscription_option_id = create_mock_subscription_option().id
-    total = 42.30
-    currency = 'GBP'
-    id, _ = create_payment(subscription_id, subscription_option_id, total, currency)
-
-    billing_street_1 = '4 Maine Street'
-    billing_street_2 = 'St Leonards'
-    town_or_city = 'Exeter'
-    county = 'Devon'
-    country = None
-    postcode = 'EX2 7ST'
-    card_number = '1111 1111 1111 1111'
-    expiry_date = date.today()
-    ccv2 = 439
-    
-    data = {
-        'billing_address': {
-            'billing_street_1': billing_street_1,
-            'billing_street_2': billing_street_2,
-            'town_or_city': town_or_city,
-            'county': county,
-            'country': country,
-            'postcode': postcode
-        },
-        'payment_details': {
-            'card_number': card_number,
-            'expiry_date': expiry_date,
-            'ccv2': ccv2
-        }
-    }
-    response = client.patch(url + str(id) + '/', data, format='json')
-    assert response.status_code == 400
-
-@pytest.mark.django_db
-def test_patch_payment_with_null_postcode():
-    subscription_id = create_mock_subscription(create_mock_subscription_option()).id
-    subscription_option_id = create_mock_subscription_option().id
-    total = 42.30
-    currency = 'GBP'
-    id, _ = create_payment(subscription_id, subscription_option_id, total, currency)
-
-    billing_street_1 = '4 Maine Street'
-    billing_street_2 = 'St Leonards'
-    town_or_city = 'Exeter'
-    county = 'Devon'
-    country = 'United Kingdom'
-    postcode = None
-    card_number = '1111 1111 1111 1111'
-    expiry_date = date.today()
-    ccv2 = 439
-    
-    data = {
-        'billing_address': {
-            'billing_street_1': billing_street_1,
-            'billing_street_2': billing_street_2,
-            'town_or_city': town_or_city,
-            'county': county,
-            'country': country,
-            'postcode': postcode
-        },
-        'payment_details': {
-            'card_number': card_number,
-            'expiry_date': expiry_date,
-            'ccv2': ccv2
-        }
-    }
-    response = client.patch(url + str(id) + '/', data, format='json')
-    assert response.status_code == 400
-
-@pytest.mark.django_db
-def test_patch_payment_with_null_card_number():
-    subscription_id = create_mock_subscription(create_mock_subscription_option()).id
-    subscription_option_id = create_mock_subscription_option().id
-    total = 42.30
-    currency = 'GBP'
-    id, _ = create_payment(subscription_id, subscription_option_id, total, currency)
-
-    billing_street_1 = '4 Maine Street'
-    billing_street_2 = 'St Leonards'
-    town_or_city = 'Exeter'
-    county = 'Devon'
-    country = 'United Kingdom'
-    postcode = 'EX2 7ST'
-    card_number = None
-    expiry_date = date.today()
-    ccv2 = 439
-    
-    data = {
-        'billing_address': {
-            'billing_street_1': billing_street_1,
-            'billing_street_2': billing_street_2,
-            'town_or_city': town_or_city,
-            'county': county,
-            'country': country,
-            'postcode': postcode
-        },
-        'payment_details': {
-            'card_number': card_number,
-            'expiry_date': expiry_date,
-            'ccv2': ccv2
-        }
-    }
-    response = client.patch(url + str(id) + '/', data, format='json')
-    assert response.status_code == 400
-
-@pytest.mark.django_db
-def test_patch_payment_with_null_expiry():
-    subscription_id = create_mock_subscription(create_mock_subscription_option()).id
-    subscription_option_id = create_mock_subscription_option().id
-    total = 42.30
-    currency = 'GBP'
-    id, _ = create_payment(subscription_id, subscription_option_id, total, currency)
-
-    billing_street_1 = '4 Maine Street'
-    billing_street_2 = 'St Leonards'
-    town_or_city = 'Exeter'
-    county = 'Devon'
-    country = 'United Kingdom'
-    postcode = 'EX2 7ST'
-    card_number = '1111 1111 1111 1111'
-    expiry_date = None
-    ccv2 = 439
-    
-    data = {
-        'billing_address': {
-            'billing_street_1': billing_street_1,
-            'billing_street_2': billing_street_2,
-            'town_or_city': town_or_city,
-            'county': county,
-            'country': country,
-            'postcode': postcode
-        },
-        'payment_details': {
-            'card_number': card_number,
-            'expiry_date': expiry_date,
-            'ccv2': ccv2
-        }
-    }
-    response = client.patch(url + str(id) + '/', data, format='json')
-    assert response.status_code == 400
-
-@pytest.mark.django_db
-def test_patch_payment_with_null_ccv2():
-    subscription_id = create_mock_subscription(create_mock_subscription_option()).id
-    subscription_option_id = create_mock_subscription_option().id
-    total = 42.30
-    currency = 'GBP'
-    id, _ = create_payment(subscription_id, subscription_option_id, total, currency)
-
-    billing_street_1 = '4 Maine Street'
-    billing_street_2 = 'St Leonards'
-    town_or_city = 'Exeter'
-    county = 'Devon'
-    country = 'United Kingdom'
-    postcode = 'EX2 7ST'
-    card_number = '1111 1111 1111 1111'
-    expiry_date = date.today()
-    ccv2 = None
-    
-    data = {
-        'billing_address': {
-            'billing_street_1': billing_street_1,
-            'billing_street_2': billing_street_2,
-            'town_or_city': town_or_city,
-            'county': county,
-            'country': country,
-            'postcode': postcode
-        },
-        'payment_details': {
-            'card_number': card_number,
-            'expiry_date': expiry_date,
-            'ccv2': ccv2
-        }
-    }
-    response = client.patch(url + str(id) + '/', data, format='json')
-    assert response.status_code == 400
-
-@pytest.mark.django_db
-def test_patch_payment():
-    subscription_id = create_mock_subscription(create_mock_subscription_option()).id
-    subscription_option_id = create_mock_subscription_option().id
-    total = 42.30
-    currency = 'GBP'
-    id, _ = create_payment(subscription_id, subscription_option_id, total, currency)
-
-    billing_street_1 = '4 Maine Street'
-    billing_street_2 = 'St Leonards'
-    town_or_city = 'Exeter'
-    county = 'Devon'
-    country = 'United Kingdom'
-    postcode = 'EX2 7ST'
-    card_number = '1111 1111 1111 1111'
-    expiry_date = date.today()
-    ccv2 = 439
-    
-    
-    data = {
-        'billing_address': {
-            'billing_street_1': billing_street_1,
-            'billing_street_2': billing_street_2,
-            'town_or_city': town_or_city,
-            'county': county,
-            'country': country,
-            'postcode': postcode
-        },
-        'payment_details': {
-            'card_number': card_number,
-            'expiry_date': expiry_date,
-            'ccv2': ccv2
-        }
+        'stripe_card_id': 'pm_card_gb'
     }
     response = client.patch(url + str(id) + '/', data, format='json')
     assert response.status_code == 200
+    assert response.data is not None
+
+    assert response.data['succeeded']
 
     payment = Payment.objects.get(pk=id)
-    assert payment is not None
-    assert payment.billing_street_1 == billing_street_1
-    assert payment.billing_street_2 == billing_street_2
-    assert payment.town_or_city == town_or_city
-    assert payment.county == county
-    assert payment.country == country
-    assert payment.postcode == postcode
-    assert payment.card_number == card_number
-    assert payment.expiry_date == expiry_date
-    assert payment.ccv2 == ccv2
     assert payment.status == 3
+    assert payment.stripe_error is None
     assert payment.stripe_pid is not None
-
-@pytest.mark.django_db
-def test_patch_payment_with_short_card_number():
-    subscription_id = create_mock_subscription(create_mock_subscription_option()).id
-    subscription_option_id = create_mock_subscription_option().id
-    total = 42.30
-    currency = 'GBP'
-    id, _ = create_payment(subscription_id, subscription_option_id, total, currency)
-
-    billing_street_1 = '4 Maine Street'
-    billing_street_2 = 'St Leonards'
-    town_or_city = 'Exeter'
-    county = 'Devon'
-    country = 'United Kingdom'
-    postcode = 'EX2 7ST'
-    card_number = '1111 1111 1111 111'
-    expiry_date = date.today()
-    ccv2 = 439
-    
-    data = {
-        'billing_address': {
-            'billing_street_1': billing_street_1,
-            'billing_street_2': billing_street_2,
-            'town_or_city': town_or_city,
-            'county': county,
-            'country': country,
-            'postcode': postcode
-        },
-        'payment_details': {
-            'card_number': card_number,
-            'expiry_date': expiry_date,
-            'ccv2': ccv2
-        }
-    }
-    response = client.patch(url + str(id) + '/', data, format='json')
-    assert response.status_code == 400
-
-@pytest.mark.django_db
-def test_patch_payment_with_long_card_number():
-    subscription_id = create_mock_subscription(create_mock_subscription_option()).id
-    subscription_option_id = create_mock_subscription_option().id
-    total = 42.30
-    currency = 'GBP'
-    id, _ = create_payment(subscription_id, subscription_option_id, total, currency)
-
-    billing_street_1 = '4 Maine Street'
-    billing_street_2 = 'St Leonards'
-    town_or_city = 'Exeter'
-    county = 'Devon'
-    country = 'United Kingdom'
-    postcode = 'EX2 7ST'
-    card_number = '1111 1111 1111 1111 1'
-    expiry_date = date.today()
-    ccv2 = 439
-    
-    data = {
-        'billing_address': {
-            'billing_street_1': billing_street_1,
-            'billing_street_2': billing_street_2,
-            'town_or_city': town_or_city,
-            'county': county,
-            'country': country,
-            'postcode': postcode
-        },
-        'payment_details': {
-            'card_number': card_number,
-            'expiry_date': expiry_date,
-            'ccv2': ccv2
-        }
-    }
-    response = client.patch(url + str(id) + '/', data, format='json')
-    assert response.status_code == 400
-
-@pytest.mark.django_db
-def test_patch_payment_with_non_date_expiry():
-    subscription_id = create_mock_subscription(create_mock_subscription_option()).id
-    subscription_option_id = create_mock_subscription_option().id
-    total = 42.30
-    currency = 'GBP'
-    id, _ = create_payment(subscription_id, subscription_option_id, total, currency)
-
-    billing_street_1 = '4 Maine Street'
-    billing_street_2 = 'St Leonards'
-    town_or_city = 'Exeter'
-    county = 'Devon'
-    country = 'United Kingdom'
-    postcode = 'EX2 7ST'
-    card_number = '1111 1111 1111 1111 1'
-    expiry_date = 51085
-    ccv2 = 439
-    
-    data = {
-        'billing_address': {
-            'billing_street_1': billing_street_1,
-            'billing_street_2': billing_street_2,
-            'town_or_city': town_or_city,
-            'county': county,
-            'country': country,
-            'postcode': postcode
-        },
-        'payment_details': {
-            'card_number': card_number,
-            'expiry_date': expiry_date,
-            'ccv2': ccv2
-        }
-    }
-    response = client.patch(url + str(id) + '/', data, format='json')
-    assert response.status_code == 400
-
-@pytest.mark.django_db
-def test_patch_payment_with_non_numeric_ccv2():
-    subscription_id = create_mock_subscription(create_mock_subscription_option()).id
-    subscription_option_id = create_mock_subscription_option().id
-    total = 42.30
-    currency = 'GBP'
-    id, _ = create_payment(subscription_id, subscription_option_id, total, currency)
-
-    billing_street_1 = '4 Maine Street'
-    billing_street_2 = 'St Leonards'
-    town_or_city = 'Exeter'
-    county = 'Devon'
-    country = 'United Kingdom'
-    postcode = 'EX2 7ST'
-    card_number = '1111 1111 1111 1111 1'
-    expiry_date = date.today()
-    ccv2 = '439'
-    
-    data = {
-        'billing_address': {
-            'billing_street_1': billing_street_1,
-            'billing_street_2': billing_street_2,
-            'town_or_city': town_or_city,
-            'county': county,
-            'country': country,
-            'postcode': postcode
-        },
-        'payment_details': {
-            'card_number': card_number,
-            'expiry_date': expiry_date,
-            'ccv2': ccv2
-        }
-    }
-    response = client.patch(url + str(id) + '/', data, format='json')
-    assert response.status_code == 400
-
-@pytest.mark.django_db
-def test_patch_payment_with_nonexistent_payment_id():
-    subscription_id = create_mock_subscription(create_mock_subscription_option()).id
-    subscription_option_id = create_mock_subscription_option().id
-    total = 42.30
-    currency = 'GBP'
-    id, _ = create_payment(subscription_id, subscription_option_id, total, currency)
-
-    billing_street_1 = '4 Maine Street'
-    billing_street_2 = 'St Leonards'
-    town_or_city = 'Exeter'
-    county = 'Devon'
-    country = 'United Kingdom'
-    postcode = 'EX2 7ST'
-    card_number = '1111 1111 1111 1111 1'
-    expiry_date = date.today()
-    ccv2 = '439'
-    
-    data = {
-        'billing_address': {
-            'billing_street_1': billing_street_1,
-            'billing_street_2': billing_street_2,
-            'town_or_city': town_or_city,
-            'county': county,
-            'country': country,
-            'postcode': postcode
-        },
-        'payment_details': {
-            'card_number': card_number,
-            'expiry_date': expiry_date,
-            'ccv2': ccv2
-        }
-    }
-    response = client.patch(url + str(id) + '/', data, format='json')
-    assert response.status_code == 400
 
 # Test posting the payment result
 # Expected payload for Stripe webhook will be a payment intent object
