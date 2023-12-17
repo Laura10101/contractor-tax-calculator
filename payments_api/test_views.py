@@ -191,7 +191,7 @@ def test_patch_payment_with_null_payment_data():
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
-    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+    id, _ = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
 
     billing_street_1 = None
     billing_street_2 = None
@@ -227,7 +227,7 @@ def test_patch_payment_with_null_street1():
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
-    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+    id, _ = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
     
     billing_street_1 = '4 Maine Street'
     billing_street_2 = 'St Leonards'
@@ -263,7 +263,7 @@ def test_patch_payment_with_null_street2():
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
-    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+    id, _ = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
 
     billing_street_1 = '4 Maine Street'
     billing_street_2 = None
@@ -299,7 +299,7 @@ def test_patch_payment_with_null_city():
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
-    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+    id, _ = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
 
     billing_street_1 = '4 Maine Street'
     billing_street_2 = 'St Leonards'
@@ -335,7 +335,7 @@ def test_patch_payment_with_null_county():
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
-    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+    id, _ = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
 
     billing_street_1 = '4 Maine Street'
     billing_street_2 = 'St Leonards'
@@ -371,7 +371,7 @@ def test_patch_payment_with_null_country():
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
-    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+    id, _ = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
 
     billing_street_1 = '4 Maine Street'
     billing_street_2 = 'St Leonards'
@@ -407,7 +407,7 @@ def test_patch_payment_with_null_postcode():
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
-    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+    id, _ = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
 
     billing_street_1 = '4 Maine Street'
     billing_street_2 = 'St Leonards'
@@ -443,7 +443,7 @@ def test_patch_payment_with_null_card_number():
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
-    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+    id, _ = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
 
     billing_street_1 = '4 Maine Street'
     billing_street_2 = 'St Leonards'
@@ -479,7 +479,7 @@ def test_patch_payment_with_null_expiry():
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
-    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+    id, _ = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
 
     billing_street_1 = '4 Maine Street'
     billing_street_2 = 'St Leonards'
@@ -515,7 +515,7 @@ def test_patch_payment_with_null_ccv2():
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
-    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+    id, _ = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
 
     billing_street_1 = '4 Maine Street'
     billing_street_2 = 'St Leonards'
@@ -551,7 +551,7 @@ def test_patch_payment():
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
-    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+    id, _ = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
 
     billing_street_1 = '4 Maine Street'
     billing_street_2 = 'St Leonards'
@@ -602,7 +602,7 @@ def test_patch_payment_with_short_card_number():
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
-    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+    id, _ = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
 
     billing_street_1 = '4 Maine Street'
     billing_street_2 = 'St Leonards'
@@ -638,7 +638,7 @@ def test_patch_payment_with_long_card_number():
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
-    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+    id, _ = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
 
     billing_street_1 = '4 Maine Street'
     billing_street_2 = 'St Leonards'
@@ -674,7 +674,7 @@ def test_patch_payment_with_non_date_expiry():
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
-    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+    id, _ = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
 
     billing_street_1 = '4 Maine Street'
     billing_street_2 = 'St Leonards'
@@ -710,7 +710,7 @@ def test_patch_payment_with_non_numeric_ccv2():
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
-    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+    id, _ = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
 
     billing_street_1 = '4 Maine Street'
     billing_street_2 = 'St Leonards'
@@ -746,7 +746,7 @@ def test_patch_payment_with_nonexistent_payment_id():
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
-    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+    id, _ = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
 
     billing_street_1 = '4 Maine Street'
     billing_street_2 = 'St Leonards'
@@ -858,7 +858,7 @@ def test_process_payment_success_webhook():
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
-    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+    id, _ = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
 
     payment = Payment.objects.get(pk=id)
 
@@ -898,7 +898,7 @@ def test_process_payment_failure_webhook():
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
-    id = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+    id, _ = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
 
     payment = Payment.objects.get(pk=id)
 

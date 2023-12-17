@@ -103,14 +103,11 @@ class StripeWebhooksList(APIView):
             event = stripe.Webhook.construct_event(
                 request.data, sig_header, wh_secret
             )
-        except ValueError as e:
-            # Invalid payload
-            return HttpResponse(content=e, status=400)
-        except stripe.error.SignatureVerificationError as e:
-            # Invalid signature
-            return HttpResponse(content=e, status=400)
         except Exception as e:
-            return HttpResponse(content=e, status=400)
+            return Response(
+                { 'error' : str(e) },
+                status=400
+                )
 
         # Does it contain all of the attributes expected?
         if 'type' not in request.data.keys():
@@ -147,4 +144,4 @@ class StripeWebhooksList(APIView):
             case 'payment_intent.succeeded':
                 complete_payment(stripe_pid)
         # Return response 
-        return HttpResponse((f'Webhook successfully processed: {event["type"]}'), status=200)
+        return Response({}, status=200)
