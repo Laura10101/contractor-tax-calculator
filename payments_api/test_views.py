@@ -42,6 +42,7 @@ def test_post_payment_with_null_data():
     response = client.post(url, data, format='json')
     assert response.status_code == 400
 
+@pytest.mark.django_db
 def test_post_payment_with_null_subscription_id():
     subscription_id = None
     requested_subscription_months = 6
@@ -57,6 +58,7 @@ def test_post_payment_with_null_subscription_id():
     response = client.post(url, data, format='json')
     assert response.status_code == 400
 
+@pytest.mark.django_db
 def test_post_payment_with_null_months():
     subscription_id = 1
     requested_subscription_months = None
@@ -72,6 +74,7 @@ def test_post_payment_with_null_months():
     response = client.post(url, data, format='json')
     assert response.status_code == 400
 
+@pytest.mark.django_db
 def test_post_payment_with_negative_months():
     subscription_id = 1
     requested_subscription_months = -6
@@ -87,6 +90,7 @@ def test_post_payment_with_negative_months():
     response = client.post(url, data, format='json')
     assert response.status_code == 400
 
+@pytest.mark.django_db
 def test_post_payment_with_null_subtotal():
     subscription_id = 1
     requested_subscription_months = 6
@@ -102,6 +106,7 @@ def test_post_payment_with_null_subtotal():
     response = client.post(url, data, format='json')
     assert response.status_code == 400
 
+@pytest.mark.django_db
 def test_post_payment_with_negative_subtotal():
     subscription_id = 1
     requested_subscription_months = 6
@@ -117,6 +122,7 @@ def test_post_payment_with_negative_subtotal():
     response = client.post(url, data, format='json')
     assert response.status_code == 400
 
+@pytest.mark.django_db
 def test_post_payment_with_invalid_currency_code():
     subscription_id = 1
     requested_subscription_months = 6
@@ -132,6 +138,7 @@ def test_post_payment_with_invalid_currency_code():
     response = client.post(url, data, format='json')
     assert response.status_code == 400
 
+@pytest.mark.django_db
 def test_post_valid_payment():
     subscription_id = 1
     requested_subscription_months = 6
@@ -149,7 +156,7 @@ def test_post_valid_payment():
     id = response.data['id']
 
     assert id is not None
-    payment = Payments.objects.get(pk=id)
+    payment = Payment.objects.get(pk=id)
     assert payment.subscription_id == subscription_id
     assert payment.requested_subscription_months == requested_subscription_months
     assert payment.subtotal == subtotal
@@ -178,6 +185,7 @@ def test_post_valid_payment():
 #       'ccv2': x
 #   }
 # }
+@pytest.mark.django_db
 def test_patch_payment_with_null_payment_data():
     subscription_id = 1
     requested_subscription_months = 6
@@ -213,6 +221,7 @@ def test_patch_payment_with_null_payment_data():
     response = client.patch(url + str(id) + '/', data, format='json')
     assert response.status_code == 400
 
+@pytest.mark.django_db
 def test_patch_payment_with_null_street1():
     subscription_id = 1
     requested_subscription_months = 6
@@ -248,6 +257,7 @@ def test_patch_payment_with_null_street1():
     response = client.patch(url + str(id) + '/', data, format='json')
     assert response.status_code == 400
 
+@pytest.mark.django_db
 def test_patch_payment_with_null_street2():
     subscription_id = 1
     requested_subscription_months = 6
@@ -283,6 +293,7 @@ def test_patch_payment_with_null_street2():
     response = client.patch(url + str(id) + '/', data, format='json')
     assert response.status_code == 400
 
+@pytest.mark.django_db
 def test_patch_payment_with_null_city():
     subscription_id = 1
     requested_subscription_months = 6
@@ -318,6 +329,7 @@ def test_patch_payment_with_null_city():
     response = client.patch(url + str(id) + '/', data, format='json')
     assert response.status_code == 400
 
+@pytest.mark.django_db
 def test_patch_payment_with_null_county():
     subscription_id = 1
     requested_subscription_months = 6
@@ -353,6 +365,7 @@ def test_patch_payment_with_null_county():
     response = client.patch(url + str(id) + '/', data, format='json')
     assert response.status_code == 400
 
+@pytest.mark.django_db
 def test_patch_payment_with_null_country():
     subscription_id = 1
     requested_subscription_months = 6
@@ -388,6 +401,7 @@ def test_patch_payment_with_null_country():
     response = client.patch(url + str(id) + '/', data, format='json')
     assert response.status_code == 400
 
+@pytest.mark.django_db
 def test_patch_payment_with_null_postcode():
     subscription_id = 1
     requested_subscription_months = 6
@@ -423,6 +437,7 @@ def test_patch_payment_with_null_postcode():
     response = client.patch(url + str(id) + '/', data, format='json')
     assert response.status_code == 400
 
+@pytest.mark.django_db
 def test_patch_payment_with_null_card_number():
     subscription_id = 1
     requested_subscription_months = 6
@@ -458,6 +473,7 @@ def test_patch_payment_with_null_card_number():
     response = client.patch(url + str(id) + '/', data, format='json')
     assert response.status_code == 400
 
+@pytest.mark.django_db
 def test_patch_payment_with_null_expiry():
     subscription_id = 1
     requested_subscription_months = 6
@@ -493,6 +509,7 @@ def test_patch_payment_with_null_expiry():
     response = client.patch(url + str(id) + '/', data, format='json')
     assert response.status_code == 400
 
+@pytest.mark.django_db
 def test_patch_payment_with_null_ccv2():
     subscription_id = 1
     requested_subscription_months = 6
@@ -528,6 +545,7 @@ def test_patch_payment_with_null_ccv2():
     response = client.patch(url + str(id) + '/', data, format='json')
     assert response.status_code == 400
 
+@pytest.mark.django_db
 def test_patch_payment():
     subscription_id = 1
     requested_subscription_months = 6
@@ -578,6 +596,7 @@ def test_patch_payment():
     assert payment.status == 3
     assert payment.stripe_pid is not None
 
+@pytest.mark.django_db
 def test_patch_payment_with_short_card_number():
     subscription_id = 1
     requested_subscription_months = 6
@@ -613,6 +632,7 @@ def test_patch_payment_with_short_card_number():
     response = client.patch(url + str(id) + '/', data, format='json')
     assert response.status_code == 400
 
+@pytest.mark.django_db
 def test_patch_payment_with_long_card_number():
     subscription_id = 1
     requested_subscription_months = 6
@@ -648,6 +668,7 @@ def test_patch_payment_with_long_card_number():
     response = client.patch(url + str(id) + '/', data, format='json')
     assert response.status_code == 400
 
+@pytest.mark.django_db
 def test_patch_payment_with_non_date_expiry():
     subscription_id = 1
     requested_subscription_months = 6
@@ -683,6 +704,7 @@ def test_patch_payment_with_non_date_expiry():
     response = client.patch(url + str(id) + '/', data, format='json')
     assert response.status_code == 400
 
+@pytest.mark.django_db
 def test_patch_payment_with_non_numeric_ccv2():
     subscription_id = 1
     requested_subscription_months = 6
@@ -718,6 +740,7 @@ def test_patch_payment_with_non_numeric_ccv2():
     response = client.patch(url + str(id) + '/', data, format='json')
     assert response.status_code == 400
 
+@pytest.mark.django_db
 def test_patch_payment_with_nonexistent_payment_id():
     subscription_id = 1
     requested_subscription_months = 6
@@ -826,11 +849,12 @@ webhook_payload = {
     "type": ""
 }
 
+@pytest.mark.django_db
 def test_process_payment_success_webhook():
     client = APIClient()
     subs_url = '/api/subscriptions/'
 
-    susbcription_id = 1
+    subscription_id = 1
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
@@ -855,6 +879,7 @@ def test_process_payment_success_webhook():
     assert response.data['subscription_months'] == payment.requested_subscription_months
     assert response.data['start_date'] == payment.completed_or_failed_date
 
+@pytest.mark.django_db
 def test_process_payment_success_webhook_with_unknown_stripe_pid():
     stripe_pid = 'pid_imadethisup'
 
@@ -865,10 +890,11 @@ def test_process_payment_success_webhook_with_unknown_stripe_pid():
     response = client.post(request_url, webhook_payload, format='json')
     assert response.status_code == 404
 
+@pytest.mark.django_db
 def test_process_payment_failure_webhook():
     reason = 'Some stripe reason'
 
-    susbcription_id = 1
+    subscription_id = 1
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
@@ -887,6 +913,7 @@ def test_process_payment_failure_webhook():
     assert payment.status == -1
     assert payment.stripe_error == reason
 
+@pytest.mark.django_db
 def test_process_payment_failure_webhook_with_unknown_stripe_pid():
     stripe_pid = 'pid_imadethisup'
     webhook_payload['type'] = 'payment_intent.payment_failed'
