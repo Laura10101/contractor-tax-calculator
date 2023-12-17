@@ -221,10 +221,11 @@ def test_process_payment_failure():
     subtotal = 42.30
     currency = 'GBP'
     id, _ = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+    print(id)
 
     payment = Payment.objects.get(pk=id)
 
-    id = fail_payment(payment.stripe_pid, reason)
+    fail_payment(payment.stripe_pid, reason)
 
     payment = Payment.objects.get(pk=id)
     assert payment.status == -1
