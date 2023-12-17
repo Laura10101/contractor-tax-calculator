@@ -6,6 +6,9 @@ from .models import *
 from .services import *
 from .views import *
 import pytest
+import time
+import stripe
+from contractor_tax_calculator import settings
 
 from django.db import IntegrityError
 from django.core.exceptions import ValidationError
@@ -353,12 +356,22 @@ webhook_payload = {
     "type": ""
 }
 
+def generate_stripe_webhook_signature(**kwargs):
+    timestamp = kwargs.get("timestamp", int(time.time()))
+    payload = kwargs.get("payload", webhook_payload)
+    secret = kwargs.get("secret", settings.STRIPE_WH_SECRET)
+    scheme = kwargs.get("scheme", stripe.WebhookSignature.EXPECTED_SCHEME)
+    signature = kwargs.get("signature", None)
+    if signature is None:
+        payload_to_sign = "%d.%s" % (timestamp, payload)
+        signature = stripe.WebhookSignature._compute_signature(
+            payload_to_sign, secret
+        )
+    header = "t=%d,%s=%s" % (timestamp, scheme, signature)
+    return header
+
 @pytest.mark.django_db
 def test_process_payment_success_webhook():
-    client.credentials(
-        HTTP_STRIPE_SIGNATURE=settings.STRIPE_WH_SECRET
-    )
-
     subscription_id = create_mock_subscription(create_mock_subscription_option()).id
     subscription_option_id = create_mock_subscription_option().id
     total = 42.30
@@ -371,6 +384,11 @@ def test_process_payment_success_webhook():
     webhook_payload['data']['object']['id'] = payment.stripe_pid
     webhook_payload['data']['object']['status'] = 'succeeded'
     request_url = url + 'webhooks/'
+
+    signature = generate_stripe_webhook_signature(payload=json.dumps(webhook_payload))
+    client.credentials(
+        HTTP_STRIPE_SIGNATURE=signature
+    )
     response = client.post(request_url, webhook_payload, format='json')
     assert response.status_code == 200
 
@@ -386,25 +404,21 @@ def test_process_payment_success_webhook():
 
 @pytest.mark.django_db
 def test_process_payment_success_webhook_with_unknown_stripe_pid():
-    client.credentials(
-        HTTP_STRIPE_SIGNATURE=settings.STRIPE_WH_SECRET
-    )
-
     stripe_pid = 'pid_imadethisup'
 
     webhook_payload['type'] = 'payment_intent.succeeded'
     webhook_payload['data']['object']['id'] = stripe_pid
     webhook_payload['data']['object']['status'] = 'succeeded'
     request_url = url + 'webhooks/'
+    signature = generate_stripe_webhook_signature(payload=json.dumps(webhook_payload))
+    client.credentials(
+        HTTP_STRIPE_SIGNATURE=signature
+    )
     response = client.post(request_url, webhook_payload, format='json')
     assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_process_payment_failure_webhook():
-    client.credentials(
-        HTTP_STRIPE_SIGNATURE=settings.STRIPE_WH_SECRET
-    )
-
     subscription_id = create_mock_subscription(create_mock_subscription_option()).id
     subscription_option_id = create_mock_subscription_option().id
     total = 42.30
@@ -417,6 +431,10 @@ def test_process_payment_failure_webhook():
     webhook_payload['data']['object']['id'] = payment.stripe_pid
     webhook_payload['data']['object']['status'] = 'failed'
     request_url = url + 'webhooks/'
+    signature = generate_stripe_webhook_signature(payload=json.dumps(webhook_payload))
+    client.credentials(
+        HTTP_STRIPE_SIGNATURE=signature
+    )
     response = client.post(request_url, webhook_payload, format='json')
     assert response.status_code == 200
 
@@ -425,14 +443,14 @@ def test_process_payment_failure_webhook():
 
 @pytest.mark.django_db
 def test_process_payment_failure_webhook_with_unknown_stripe_pid():
-    client.credentials(
-        HTTP_STRIPE_SIGNATURE=settings.STRIPE_WH_SECRET
-    )
-
     stripe_pid = 'pid_imadethisup'
     webhook_payload['type'] = 'payment_intent.payment_failed'
     webhook_payload['data']['object']['id'] = stripe_pid
     webhook_payload['data']['object']['status'] = 'failed'
     request_url = url + 'webhooks/'
+    signature = generate_stripe_webhook_signature(payload=json.dumps(webhook_payload))
+    client.credentials(
+        HTTP_STRIPE_SIGNATURE=signature
+    )
     response = client.post(request_url, webhook_payload, format='json')
     assert response.status_code == 404
