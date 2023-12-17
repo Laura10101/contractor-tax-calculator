@@ -355,7 +355,9 @@ webhook_payload = {
 
 @pytest.mark.django_db
 def test_process_payment_success_webhook():
-    client = APIClient()
+    client.credentials(
+        HTTP_STRIPE_SIGNATURE=settings.STRIPE_WH_SECRET
+    )
 
     subscription_id = create_mock_subscription(create_mock_subscription_option()).id
     subscription_option_id = create_mock_subscription_option().id
@@ -384,6 +386,10 @@ def test_process_payment_success_webhook():
 
 @pytest.mark.django_db
 def test_process_payment_success_webhook_with_unknown_stripe_pid():
+    client.credentials(
+        HTTP_STRIPE_SIGNATURE=settings.STRIPE_WH_SECRET
+    )
+
     stripe_pid = 'pid_imadethisup'
 
     webhook_payload['type'] = 'payment_intent.succeeded'
@@ -395,6 +401,10 @@ def test_process_payment_success_webhook_with_unknown_stripe_pid():
 
 @pytest.mark.django_db
 def test_process_payment_failure_webhook():
+    client.credentials(
+        HTTP_STRIPE_SIGNATURE=settings.STRIPE_WH_SECRET
+    )
+
     subscription_id = create_mock_subscription(create_mock_subscription_option()).id
     subscription_option_id = create_mock_subscription_option().id
     total = 42.30
@@ -415,6 +425,10 @@ def test_process_payment_failure_webhook():
 
 @pytest.mark.django_db
 def test_process_payment_failure_webhook_with_unknown_stripe_pid():
+    client.credentials(
+        HTTP_STRIPE_SIGNATURE=settings.STRIPE_WH_SECRET
+    )
+
     stripe_pid = 'pid_imadethisup'
     webhook_payload['type'] = 'payment_intent.payment_failed'
     webhook_payload['data']['object']['id'] = stripe_pid
