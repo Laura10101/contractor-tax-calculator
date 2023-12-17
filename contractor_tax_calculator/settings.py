@@ -192,6 +192,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STRIPE_PUBLIC_KEY = os.getenv('STRIPE_PUBLIC_KEY', '')
 STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY', '')
+STRIPE_WH_SECRET = os.getenv('STRIPE_WH_SECRET', '')
 
 if 'USE_AWS' in os.environ:
     AWS_S3_OBJECT_PARAMETERS = {

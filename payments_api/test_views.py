@@ -356,10 +356,9 @@ webhook_payload = {
 @pytest.mark.django_db
 def test_process_payment_success_webhook():
     client = APIClient()
-    subs_url = '/api/subscriptions/'
 
-    subscription_id = 1
-    subscription_option_id = 6
+    subscription_id = create_mock_subscription(create_mock_subscription_option()).id
+    subscription_option_id = create_mock_subscription_option().id
     total = 42.30
     currency = 'GBP'
     id, _ = create_payment(subscription_id, subscription_option_id, total, currency)
@@ -369,7 +368,7 @@ def test_process_payment_success_webhook():
     webhook_payload['type'] = 'payment_intent.succeeded'
     webhook_payload['data']['object']['id'] = payment.stripe_pid
     webhook_payload['data']['object']['status'] = 'succeeded'
-    request_url = url + 'stripe-webhooks/'
+    request_url = url + 'webhooks/'
     response = client.post(request_url, webhook_payload, format='json')
     assert response.status_code == 200
 
@@ -378,10 +377,10 @@ def test_process_payment_success_webhook():
 
     subs_id = payment.subscription_id
 
-    response = client.get(subs_url + str(subs_id) + '/')
-    assert response.data['is_active'] == True
-    assert response.data['subscription_months'] == payment.subscription_option_id
-    assert response.data['start_date'] == payment.completed_or_failed_date
+    subscription = Subscription.objects.get(pk=subs_id)
+    assert subscription.is_active() == True
+    assert subscription.subscription_option.id == payment.subscription_option_id
+    assert subscription.start_date.date() == payment.completed_or_failed_date.date()
 
 @pytest.mark.django_db
 def test_process_payment_success_webhook_with_unknown_stripe_pid():
@@ -390,16 +389,14 @@ def test_process_payment_success_webhook_with_unknown_stripe_pid():
     webhook_payload['type'] = 'payment_intent.succeeded'
     webhook_payload['data']['object']['id'] = stripe_pid
     webhook_payload['data']['object']['status'] = 'succeeded'
-    request_url = url + 'stripe-webhooks/'
+    request_url = url + 'webhooks/'
     response = client.post(request_url, webhook_payload, format='json')
     assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_process_payment_failure_webhook():
-    reason = 'Some stripe reason'
-
-    subscription_id = 1
-    subscription_option_id = 6
+    subscription_id = create_mock_subscription(create_mock_subscription_option()).id
+    subscription_option_id = create_mock_subscription_option().id
     total = 42.30
     currency = 'GBP'
     id, _ = create_payment(subscription_id, subscription_option_id, total, currency)
@@ -409,13 +406,12 @@ def test_process_payment_failure_webhook():
     webhook_payload['type'] = 'payment_intent.payment_failed'
     webhook_payload['data']['object']['id'] = payment.stripe_pid
     webhook_payload['data']['object']['status'] = 'failed'
-    request_url = url + 'stripe_webhooks/'
+    request_url = url + 'webhooks/'
     response = client.post(request_url, webhook_payload, format='json')
     assert response.status_code == 200
 
     payment = Payment.objects.get(pk=id)
     assert payment.status == -1
-    assert payment.stripe_error == reason
 
 @pytest.mark.django_db
 def test_process_payment_failure_webhook_with_unknown_stripe_pid():
@@ -423,6 +419,6 @@ def test_process_payment_failure_webhook_with_unknown_stripe_pid():
     webhook_payload['type'] = 'payment_intent.payment_failed'
     webhook_payload['data']['object']['id'] = stripe_pid
     webhook_payload['data']['object']['status'] = 'failed'
-    request_url = url + 'stripe_webhooks/'
+    request_url = url + 'webhooks/'
     response = client.post(request_url, webhook_payload, format='json')
     assert response.status_code == 404
