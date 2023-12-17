@@ -13,110 +13,127 @@ from .models import *
 from .services import *
 import pytest
 
+from subscriptions_api.models import Subscription, SubscriptionOption
+
 client = APIClient()
 url = '/api/payments/'
 
 # Test creating a subscription
+# Helper functions
+
+def create_mock_subscription_option():
+    return SubscriptionOption.objects.create(
+        subscription_months=1,
+        subscription_price=4.99,
+        is_active=True
+    )
+
+def create_mock_subscription(subscription_option):
+    return Subscription.objects.create(
+        subscription_option = subscription_option,
+        user_id = 479,
+        start_date = datetime.now()
+    )
 
 # Test creating a payment
 # Format for POST payload on payments API
 # {
 #   'subscription_id': x,
-#   'requested_months': x,
-#   'subtotal': x.y,
+#   'subscription_option_id': x,
+#   'total': x.y,
 #   'currency': 'ZZZ'
 # }
 @pytest.mark.django_db
 def test_post_payment_with_null_data():
     subscription_id = None
-    requested_subscription_months = None
-    subtotal = None
+    subscription_option_id = None
+    total = None
     currency = None
 
     data = {
         'subscription_id': subscription_id,
-        'requested_months': requested_subscription_months,
-        'subtotal': subtotal,
+        'subscription_option_id': subscription_option_id,
+        'total': total,
         'currency': currency
     }
     response = client.post(url, data, format='json')
-    assert response.status_code == 400
+    assert response.status_code == 404
 
 @pytest.mark.django_db
 def test_post_payment_with_null_subscription_id():
     subscription_id = None
-    requested_subscription_months = 6
-    subtotal = 42.30
+    subscription_option_id = create_mock_subscription_option().id.id
+    total = 42.30
     currency = 'GBP'
 
     data = {
         'subscription_id': subscription_id,
-        'requested_months': requested_subscription_months,
-        'subtotal': subtotal,
+        'subscription_option_id': subscription_option_id,
+        'total': total,
+        'currency': currency
+    }
+    response = client.post(url, data, format='json')
+    assert response.status_code == 404
+
+@pytest.mark.django_db
+def test_post_payment_with_null_subscription_option_id():
+    subscription_id = create_mock_subscription(create_mock_subscription_option()).id
+    subscription_option_id = None
+    total = 42.30
+    currency = 'GBP'
+    
+    data = {
+        'subscription_id': subscription_id,
+        'subscription_option_id': subscription_option_id,
+        'total': total,
+        'currency': currency
+    }
+    response = client.post(url, data, format='json')
+    assert response.status_code == 404
+
+@pytest.mark.django_db
+def test_post_payment_with_negative_subscription_option_id():
+    subscription_id = create_mock_subscription(create_mock_subscription_option()).id
+    subscription_option_id = -6
+    total = 42.30
+    currency = 'GBP'
+    
+    data = {
+        'subscription_id': subscription_id,
+        'subscription_option_id': subscription_option_id,
+        'total': total,
         'currency': currency
     }
     response = client.post(url, data, format='json')
     assert response.status_code == 400
 
 @pytest.mark.django_db
-def test_post_payment_with_null_months():
-    subscription_id = 1
-    requested_subscription_months = None
-    subtotal = 42.30
+def test_post_payment_with_null_total():
+    subscription_id = create_mock_subscription(create_mock_subscription_option()).id
+    subscription_option_id = create_mock_subscription_option().id
+    total = None
     currency = 'GBP'
     
     data = {
         'subscription_id': subscription_id,
-        'requested_months': requested_subscription_months,
-        'subtotal': subtotal,
+        'subscription_option_id': subscription_option_id,
+        'total': total,
         'currency': currency
     }
     response = client.post(url, data, format='json')
     assert response.status_code == 400
 
 @pytest.mark.django_db
-def test_post_payment_with_negative_months():
-    subscription_id = 1
-    requested_subscription_months = -6
-    subtotal = 42.30
+def test_post_payment_with_negative_total():
+    subscription_id = create_mock_subscription(create_mock_subscription_option()).id
+    subscription_option_id = create_mock_subscription_option().id
+    total = -42.30
     currency = 'GBP'
     
     data = {
         'subscription_id': subscription_id,
-        'requested_months': requested_subscription_months,
-        'subtotal': subtotal,
-        'currency': currency
-    }
-    response = client.post(url, data, format='json')
-    assert response.status_code == 400
-
-@pytest.mark.django_db
-def test_post_payment_with_null_subtotal():
-    subscription_id = 1
-    requested_subscription_months = 6
-    subtotal = None
-    currency = 'GBP'
-    
-    data = {
-        'subscription_id': subscription_id,
-        'requested_months': requested_subscription_months,
-        'subtotal': subtotal,
-        'currency': currency
-    }
-    response = client.post(url, data, format='json')
-    assert response.status_code == 400
-
-@pytest.mark.django_db
-def test_post_payment_with_negative_subtotal():
-    subscription_id = 1
-    requested_subscription_months = 6
-    subtotal = -42.30
-    currency = 'GBP'
-    
-    data = {
-        'subscription_id': subscription_id,
-        'requested_months': requested_subscription_months,
-        'subtotal': subtotal,
+        'subscription_option_id': subscription_option_id,
+        'total': total,
         'currency': currency
     }
     response = client.post(url, data, format='json')
@@ -124,15 +141,15 @@ def test_post_payment_with_negative_subtotal():
 
 @pytest.mark.django_db
 def test_post_payment_with_invalid_currency_code():
-    subscription_id = 1
-    requested_subscription_months = 6
-    subtotal = 42.30
+    subscription_id = create_mock_subscription(create_mock_subscription_option()).id
+    subscription_option_id = create_mock_subscription_option().id
+    total = 42.30
     currency = 'G'
     
     data = {
         'subscription_id': subscription_id,
-        'requested_months': requested_subscription_months,
-        'subtotal': subtotal,
+        'subscription_option_id': subscription_option_id,
+        'total': total,
         'currency': currency
     }
     response = client.post(url, data, format='json')
@@ -140,28 +157,28 @@ def test_post_payment_with_invalid_currency_code():
 
 @pytest.mark.django_db
 def test_post_valid_payment():
-    subscription_id = 1
-    requested_subscription_months = 6
-    subtotal = 42.30
+    subscription_id = create_mock_subscription(create_mock_subscription_option()).id
+    subscription_option_id = create_mock_subscription_option().id
+    total = 42.30
     currency = 'GBP'
     
     data = {
         'subscription_id': subscription_id,
-        'requested_months': requested_subscription_months,
-        'subtotal': subtotal,
+        'subscription_option_id': subscription_option_id,
+        'total': total,
         'currency': currency
     }
     response = client.post(url, data, format='json')
-    assert response.status_code == 400
-    id = response.data['id']
+    assert response.status_code == 200
+    id = response.data['payment_id']
 
     assert id is not None
     payment = Payment.objects.get(pk=id)
     assert payment.subscription_id == subscription_id
-    assert payment.requested_subscription_months == requested_subscription_months
-    assert payment.subtotal == subtotal
-    assert payment.vat == (subtotal * 0.19)
-    assert payment.total == payment.subtotal + payment.vat
+    assert payment.subscription_option_id == subscription_option_id
+    assert payment.total == total
+    assert payment.vat == (total * 0.19)
+    assert payment.total == payment.total + payment.vat
     assert payment.currency == currency
     assert payment.status == 1
     assert payment.created_date == date.today()
@@ -187,11 +204,11 @@ def test_post_valid_payment():
 # }
 @pytest.mark.django_db
 def test_patch_payment_with_null_payment_data():
-    subscription_id = 1
-    requested_subscription_months = 6
-    subtotal = 42.30
+    subscription_id = create_mock_subscription(create_mock_subscription_option()).id
+    subscription_option_id = create_mock_subscription_option().id
+    total = 42.30
     currency = 'GBP'
-    id, _ = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+    id, _ = create_payment(subscription_id, subscription_option_id, total, currency)
 
     billing_street_1 = None
     billing_street_2 = None
@@ -223,11 +240,11 @@ def test_patch_payment_with_null_payment_data():
 
 @pytest.mark.django_db
 def test_patch_payment_with_null_street1():
-    subscription_id = 1
-    requested_subscription_months = 6
-    subtotal = 42.30
+    subscription_id = create_mock_subscription(create_mock_subscription_option()).id
+    subscription_option_id = create_mock_subscription_option().id
+    total = 42.30
     currency = 'GBP'
-    id, _ = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+    id, _ = create_payment(subscription_id, subscription_option_id, total, currency)
     
     billing_street_1 = '4 Maine Street'
     billing_street_2 = 'St Leonards'
@@ -259,11 +276,11 @@ def test_patch_payment_with_null_street1():
 
 @pytest.mark.django_db
 def test_patch_payment_with_null_street2():
-    subscription_id = 1
-    requested_subscription_months = 6
-    subtotal = 42.30
+    subscription_id = create_mock_subscription(create_mock_subscription_option()).id
+    subscription_option_id = create_mock_subscription_option().id
+    total = 42.30
     currency = 'GBP'
-    id, _ = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+    id, _ = create_payment(subscription_id, subscription_option_id, total, currency)
 
     billing_street_1 = '4 Maine Street'
     billing_street_2 = None
@@ -295,11 +312,11 @@ def test_patch_payment_with_null_street2():
 
 @pytest.mark.django_db
 def test_patch_payment_with_null_city():
-    subscription_id = 1
-    requested_subscription_months = 6
-    subtotal = 42.30
+    subscription_id = create_mock_subscription(create_mock_subscription_option()).id
+    subscription_option_id = create_mock_subscription_option().id
+    total = 42.30
     currency = 'GBP'
-    id, _ = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+    id, _ = create_payment(subscription_id, subscription_option_id, total, currency)
 
     billing_street_1 = '4 Maine Street'
     billing_street_2 = 'St Leonards'
@@ -331,11 +348,11 @@ def test_patch_payment_with_null_city():
 
 @pytest.mark.django_db
 def test_patch_payment_with_null_county():
-    subscription_id = 1
-    requested_subscription_months = 6
-    subtotal = 42.30
+    subscription_id = create_mock_subscription(create_mock_subscription_option()).id
+    subscription_option_id = create_mock_subscription_option().id
+    total = 42.30
     currency = 'GBP'
-    id, _ = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+    id, _ = create_payment(subscription_id, subscription_option_id, total, currency)
 
     billing_street_1 = '4 Maine Street'
     billing_street_2 = 'St Leonards'
@@ -367,11 +384,11 @@ def test_patch_payment_with_null_county():
 
 @pytest.mark.django_db
 def test_patch_payment_with_null_country():
-    subscription_id = 1
-    requested_subscription_months = 6
-    subtotal = 42.30
+    subscription_id = create_mock_subscription(create_mock_subscription_option()).id
+    subscription_option_id = create_mock_subscription_option().id
+    total = 42.30
     currency = 'GBP'
-    id, _ = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+    id, _ = create_payment(subscription_id, subscription_option_id, total, currency)
 
     billing_street_1 = '4 Maine Street'
     billing_street_2 = 'St Leonards'
@@ -403,11 +420,11 @@ def test_patch_payment_with_null_country():
 
 @pytest.mark.django_db
 def test_patch_payment_with_null_postcode():
-    subscription_id = 1
-    requested_subscription_months = 6
-    subtotal = 42.30
+    subscription_id = create_mock_subscription(create_mock_subscription_option()).id
+    subscription_option_id = create_mock_subscription_option().id
+    total = 42.30
     currency = 'GBP'
-    id, _ = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+    id, _ = create_payment(subscription_id, subscription_option_id, total, currency)
 
     billing_street_1 = '4 Maine Street'
     billing_street_2 = 'St Leonards'
@@ -439,11 +456,11 @@ def test_patch_payment_with_null_postcode():
 
 @pytest.mark.django_db
 def test_patch_payment_with_null_card_number():
-    subscription_id = 1
-    requested_subscription_months = 6
-    subtotal = 42.30
+    subscription_id = create_mock_subscription(create_mock_subscription_option()).id
+    subscription_option_id = create_mock_subscription_option().id
+    total = 42.30
     currency = 'GBP'
-    id, _ = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+    id, _ = create_payment(subscription_id, subscription_option_id, total, currency)
 
     billing_street_1 = '4 Maine Street'
     billing_street_2 = 'St Leonards'
@@ -475,11 +492,11 @@ def test_patch_payment_with_null_card_number():
 
 @pytest.mark.django_db
 def test_patch_payment_with_null_expiry():
-    subscription_id = 1
-    requested_subscription_months = 6
-    subtotal = 42.30
+    subscription_id = create_mock_subscription(create_mock_subscription_option()).id
+    subscription_option_id = create_mock_subscription_option().id
+    total = 42.30
     currency = 'GBP'
-    id, _ = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+    id, _ = create_payment(subscription_id, subscription_option_id, total, currency)
 
     billing_street_1 = '4 Maine Street'
     billing_street_2 = 'St Leonards'
@@ -511,11 +528,11 @@ def test_patch_payment_with_null_expiry():
 
 @pytest.mark.django_db
 def test_patch_payment_with_null_ccv2():
-    subscription_id = 1
-    requested_subscription_months = 6
-    subtotal = 42.30
+    subscription_id = create_mock_subscription(create_mock_subscription_option()).id
+    subscription_option_id = create_mock_subscription_option().id
+    total = 42.30
     currency = 'GBP'
-    id, _ = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+    id, _ = create_payment(subscription_id, subscription_option_id, total, currency)
 
     billing_street_1 = '4 Maine Street'
     billing_street_2 = 'St Leonards'
@@ -547,11 +564,11 @@ def test_patch_payment_with_null_ccv2():
 
 @pytest.mark.django_db
 def test_patch_payment():
-    subscription_id = 1
-    requested_subscription_months = 6
-    subtotal = 42.30
+    subscription_id = create_mock_subscription(create_mock_subscription_option()).id
+    subscription_option_id = create_mock_subscription_option().id
+    total = 42.30
     currency = 'GBP'
-    id, _ = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+    id, _ = create_payment(subscription_id, subscription_option_id, total, currency)
 
     billing_street_1 = '4 Maine Street'
     billing_street_2 = 'St Leonards'
@@ -598,11 +615,11 @@ def test_patch_payment():
 
 @pytest.mark.django_db
 def test_patch_payment_with_short_card_number():
-    subscription_id = 1
-    requested_subscription_months = 6
-    subtotal = 42.30
+    subscription_id = create_mock_subscription(create_mock_subscription_option()).id
+    subscription_option_id = create_mock_subscription_option().id
+    total = 42.30
     currency = 'GBP'
-    id, _ = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+    id, _ = create_payment(subscription_id, subscription_option_id, total, currency)
 
     billing_street_1 = '4 Maine Street'
     billing_street_2 = 'St Leonards'
@@ -634,11 +651,11 @@ def test_patch_payment_with_short_card_number():
 
 @pytest.mark.django_db
 def test_patch_payment_with_long_card_number():
-    subscription_id = 1
-    requested_subscription_months = 6
-    subtotal = 42.30
+    subscription_id = create_mock_subscription(create_mock_subscription_option()).id
+    subscription_option_id = create_mock_subscription_option().id
+    total = 42.30
     currency = 'GBP'
-    id, _ = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+    id, _ = create_payment(subscription_id, subscription_option_id, total, currency)
 
     billing_street_1 = '4 Maine Street'
     billing_street_2 = 'St Leonards'
@@ -670,11 +687,11 @@ def test_patch_payment_with_long_card_number():
 
 @pytest.mark.django_db
 def test_patch_payment_with_non_date_expiry():
-    subscription_id = 1
-    requested_subscription_months = 6
-    subtotal = 42.30
+    subscription_id = create_mock_subscription(create_mock_subscription_option()).id
+    subscription_option_id = create_mock_subscription_option().id
+    total = 42.30
     currency = 'GBP'
-    id, _ = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+    id, _ = create_payment(subscription_id, subscription_option_id, total, currency)
 
     billing_street_1 = '4 Maine Street'
     billing_street_2 = 'St Leonards'
@@ -706,11 +723,11 @@ def test_patch_payment_with_non_date_expiry():
 
 @pytest.mark.django_db
 def test_patch_payment_with_non_numeric_ccv2():
-    subscription_id = 1
-    requested_subscription_months = 6
-    subtotal = 42.30
+    subscription_id = create_mock_subscription(create_mock_subscription_option()).id
+    subscription_option_id = create_mock_subscription_option().id
+    total = 42.30
     currency = 'GBP'
-    id, _ = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+    id, _ = create_payment(subscription_id, subscription_option_id, total, currency)
 
     billing_street_1 = '4 Maine Street'
     billing_street_2 = 'St Leonards'
@@ -742,11 +759,11 @@ def test_patch_payment_with_non_numeric_ccv2():
 
 @pytest.mark.django_db
 def test_patch_payment_with_nonexistent_payment_id():
-    subscription_id = 1
-    requested_subscription_months = 6
-    subtotal = 42.30
+    subscription_id = create_mock_subscription(create_mock_subscription_option()).id
+    subscription_option_id = create_mock_subscription_option().id
+    total = 42.30
     currency = 'GBP'
-    id, _ = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+    id, _ = create_payment(subscription_id, subscription_option_id, total, currency)
 
     billing_street_1 = '4 Maine Street'
     billing_street_2 = 'St Leonards'
@@ -855,10 +872,10 @@ def test_process_payment_success_webhook():
     subs_url = '/api/subscriptions/'
 
     subscription_id = 1
-    requested_subscription_months = 6
-    subtotal = 42.30
+    subscription_option_id = 6
+    total = 42.30
     currency = 'GBP'
-    id, _ = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+    id, _ = create_payment(subscription_id, subscription_option_id, total, currency)
 
     payment = Payment.objects.get(pk=id)
 
@@ -876,7 +893,7 @@ def test_process_payment_success_webhook():
 
     response = client.get(subs_url + str(subs_id) + '/')
     assert response.data['is_active'] == True
-    assert response.data['subscription_months'] == payment.requested_subscription_months
+    assert response.data['subscription_months'] == payment.subscription_option_id
     assert response.data['start_date'] == payment.completed_or_failed_date
 
 @pytest.mark.django_db
@@ -895,10 +912,10 @@ def test_process_payment_failure_webhook():
     reason = 'Some stripe reason'
 
     subscription_id = 1
-    requested_subscription_months = 6
-    subtotal = 42.30
+    subscription_option_id = 6
+    total = 42.30
     currency = 'GBP'
-    id, _ = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+    id, _ = create_payment(subscription_id, subscription_option_id, total, currency)
 
     payment = Payment.objects.get(pk=id)
 
