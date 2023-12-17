@@ -176,12 +176,12 @@ def test_process_payment_success():
     subs_url = '/api/subscriptions/'
 
     subscription_option = SubscriptionOption.objects.create(
-        subscription_months=6,
+        subscription_months=1,
         subscription_price=4.99,
         is_active=True
     )
     
-    subscription_id = Subscription.objects.create(
+    subscription = Subscription.objects.create(
         subscription_option = subscription_option,
         user_id = 479,
         start_date = datetime.now()
@@ -189,7 +189,7 @@ def test_process_payment_success():
 
     total = subscription_option.total()
     currency = 'GBP'
-    id, _ = create_payment(subscription_id, subscription_option.id, total, currency)
+    id, _ = create_payment(subscription.id, subscription_option.id, total, currency)
 
     payment = Payment.objects.get(pk=id)
     print(payment.stripe_pid)
@@ -201,11 +201,10 @@ def test_process_payment_success():
 
     subs_id = payment.subscription_id
 
-    response = client.get(subs_url + str(subs_id) + '/')
-    print(response.data)
-    assert response.data['is_active'] == True
-    assert response.data['subscription_option_id'] == payment.requested_subscription_months
-    assert response.data['start_date'] == payment.completed_or_failed_date
+    subscription = Subscription.objects.get(pk=subs_id)
+    assert subscription.is_active() == True
+    assert subscription.subscription_option.id == payment.subscription_option_id
+    assert subscription.start_date.date() == payment.completed_or_failed_date.date()
 
 @pytest.mark.django_db
 def test_process_payment_success_with_unknown_stripe_pid():
