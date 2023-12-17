@@ -356,6 +356,9 @@ webhook_payload = {
     "type": ""
 }
 
+# This function generates the signature header required when testing webhooks
+# The code is lifted from the Stripe Python library's webhook tests
+# https://github.com/stripe/stripe-python/blob/master/tests/test_webhook.py
 def generate_stripe_webhook_signature(**kwargs):
     timestamp = kwargs.get("timestamp", int(time.time()))
     payload = kwargs.get("payload", webhook_payload)
