@@ -36,13 +36,7 @@ class PaymentsList(APIView):
         # Extract data required for service method
         subscription_id = request.data['subscription_id']
         subscription_option_id = request.data['subscription_option_id']
-        try:
-            total = int(request.data['total'])
-        except ValueError:
-            return Response(
-                { 'error' : 'Total must be a numeric value.' },
-                status=400
-                )
+        total = request.data['total']
         currency = request.data['currency']
 
         # Invoke service method 
