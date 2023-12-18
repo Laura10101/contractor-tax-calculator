@@ -40,7 +40,18 @@ class PaymentsList(APIView):
         currency = request.data['currency']
 
         # Invoke service method 
-        payment_id, client_secret = create_payment(subscription_id, subscription_option_id, total, currency)
+        try:
+            payment_id, client_secret = create_payment(subscription_id, subscription_option_id, total, currency)
+        except ValidationError as e:
+            return Response(
+                { 'error' : str(e) },
+                status=400
+                )
+        except InvalidRequestError as e:
+            return Response(
+                { 'error' : str(e) },
+                status=400
+                )
         # Create response 
         response = {
             'payment_id' : payment_id,
