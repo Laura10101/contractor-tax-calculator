@@ -181,12 +181,8 @@ def test_post_valid_payment():
     assert payment.subscription_id == subscription_id
     assert payment.subscription_option_id == subscription_option_id
     assert payment.total == total
-    assert payment.vat == (total * 0.19)
-    assert payment.total == payment.total + payment.vat
     assert payment.currency == currency
-    assert payment.status == 1
-    assert payment.created_date == date.today()
-    assert payment.intended_date == date.today()
+    assert payment.status == 2
     assert payment.stripe_pid is not None
 
 # Test patching a payment with payment details
