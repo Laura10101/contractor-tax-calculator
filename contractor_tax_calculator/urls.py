@@ -27,6 +27,8 @@ urlpatterns = [
     path('api/jurisdictions/', include('jurisdictions_api.urls')),
     path('api/subscriptions/', include('subscriptions_api.urls')),
     path('api/payments/', include('payments_api.urls')),
+    path('api/forms/', include('forms_api.urls')),
+    path('api/rules/', include('rules_api.urls')),
     path('accounts/', include('allauth.urls')),
     path('checkout/', include('checkout.urls')),
     path('', include('home.urls')),
