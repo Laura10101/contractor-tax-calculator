@@ -33,11 +33,18 @@ class PaymentsList(APIView):
                 { 'error' : 'Invalid request. Please supply all required attributes.' },
                 status=400
                 )
+        
         # Extract data required for service method
         subscription_id = request.data['subscription_id']
         subscription_option_id = request.data['subscription_option_id']
         total = request.data['total']
         currency = request.data['currency']
+
+        if not isinstance(subscription_id, int) or subscription_id < 0:
+            return Response(status=404)
+        
+        if not isinstance(subscription_option_id, int) or subscription_option_id < 0:
+            return Response(status=404)
 
         # Invoke service method 
         try:
