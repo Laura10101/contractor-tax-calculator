@@ -384,7 +384,6 @@ def test_process_payment_success_webhook():
     webhook_payload['data']['object']['id'] = payment.stripe_pid
     webhook_payload['data']['object']['status'] = 'succeeded'
     request_url = url + 'webhooks/'
-
     signature = generate_stripe_webhook_signature(payload=json.dumps(webhook_payload))
     client.credentials(
         HTTP_STRIPE_SIGNATURE=signature

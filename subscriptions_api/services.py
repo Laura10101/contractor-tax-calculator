@@ -50,7 +50,7 @@ def update_subscription(user_id, subscription_option_id):
     subscriptions = Subscription.objects.filter(user_id__exact=int(user_id))
     # Return an error if more than one subscription 
     if len(subscriptions) > 1:
-        print('More than one exception found for user ' + str(user_id))
+        print('More than one subscription found for user ' + str(user_id))
         raise Exception ("More than one subscription found for user")
     # Return false if no subscription for that user ID
     if len(subscriptions) <= 0:

@@ -133,21 +133,18 @@ class StripeWebhooksList(APIView):
 
         # Does it contain all of the attributes expected?
         if 'type' not in request.data.keys():
-            print('Missing type attribute')
             return Response(
                 { 'error' : 'Invalid request. Please supply all required attributes.' },
                 status=400
                 )
 
         if 'id' not in request.data['data']['object'].keys():
-            print('Missing id attribute')
             return Response(
                 { 'error' : 'Invalid request. Please supply all required attributes.' },
                 status=400
                 )
 
         if 'status' not in request.data['data']['object'].keys():
-            print('Missing status attribute')
             return Response(
                 { 'error' : 'Invalid request. Please supply all required attributes.' },
                 status=400

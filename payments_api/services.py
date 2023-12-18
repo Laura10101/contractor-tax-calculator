@@ -37,13 +37,11 @@ def confirm_payment(id, stripe_card_id):
     success, status_or_error = confirm_stripe_payment(payment.stripe_pid, stripe_card_id)
 
     if success and status_or_error in ['processing', 'succeeded']:
-        print('Payment confirmation succeeded')
         payment.status=3
         payment.intended_date=datetime.now()
         payment.save()
         return True, 'succeeded'
     else:
-        print('Payment failed with reason ' + status_or_error)
         payment.status=-1
         payment.stripe_error = status_or_error
         payment.completed_or_failed_date=datetime.now()
@@ -55,11 +53,19 @@ def complete_payment(stripe_pid):
 
     if payments.count() == 0:
         raise Payment.DoesNotExist()
+    
+    if payments.count() > 1:
+        raise ValidationError('Multiple payments found for Stripe PID = ' + stripe_pid)
+    
+    payment = payments.first()
 
-    payments.update(
-        status=4,
-        completed_or_failed_date=date.today()
-        )
+    if payment.status == 4:
+        raise ValidationError('Payment with stripe_pid = ' + stripe_pid + ' is already completed. Cannot complete again.')
+
+    payment.status = 4
+    payment.completed_or_failed_date=date.today()
+    payment.full_clean()
+    payment.save()
 
 def fail_payment(stripe_pid, reason):
     payments = Payment.objects.filter(stripe_pid__exact=stripe_pid)

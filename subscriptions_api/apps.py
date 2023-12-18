@@ -5,3 +5,6 @@ class SubscriptionsApiConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'subscriptions_api'
     verbose_name = 'Subscriptions'
+
+    def ready(self):
+        import subscriptions_api.signals
