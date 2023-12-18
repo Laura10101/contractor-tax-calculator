@@ -66,7 +66,7 @@ def test_post_payment_with_null_data():
 @pytest.mark.django_db
 def test_post_payment_with_null_subscription_id():
     subscription_id = None
-    subscription_option_id = create_mock_subscription_option().id.id
+    subscription_option_id = create_mock_subscription_option().id
     total = 42.30
     currency = 'GBP'
 
