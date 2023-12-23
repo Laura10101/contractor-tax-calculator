@@ -20,9 +20,8 @@ url = '/api/subscriptions/'
 @pytest.mark.django_db
 def test_post_subscription_with_null_data():
     user_id = None
-    subscription_option_id = None
 
-    body = { 'user_id': user_id, 'subscription_option_id': subscription_option_id }
+    body = { 'user_id': user_id }
     response = client.post(url, body, format='json')
     assert response is not None
     assert response.status_code == 400
@@ -31,14 +30,7 @@ def test_post_subscription_with_null_data():
 def test_post_subscription_with_null_user_id():
     user_id = None
     
-    subscription_months = 1
-    subscription_option_id = SubscriptionOption.objects.create(
-        subscription_months = subscription_months,
-        subscription_price = 9.99,
-        is_active = True
-    ).id
-
-    body = { 'user_id': user_id, 'subscription_option_id': subscription_option_id }
+    body = { 'user_id': user_id }
     response = client.post(url, body, format='json')
     assert response is not None
     assert response.status_code == 400
@@ -46,47 +38,23 @@ def test_post_subscription_with_null_user_id():
 @pytest.mark.django_db
 def test_post_subscription_with_nonexistent_user_id():
     user_id = 72
-    
-    subscription_months = 6
-    subscription_option_id = SubscriptionOption.objects.create(
-        subscription_months = subscription_months,
-        subscription_price = 9.99,
-        is_active = True
-    ).id
 
-    body = { 'user_id': user_id, 'subscription_option_id': subscription_option_id }
+    body = { 'user_id': user_id }
     response = client.post(url, body, format='json')
     assert response is not None
     assert response.status_code == 200
 
 @pytest.mark.django_db
-def test_post_subscription_with_null_subscription_option_id():
-    user_id = 1
-
-    body = { 'user_id': user_id, 'subscription_option_id': None }
-    response = client.post(url, body, format='json')
-    assert response is not None
-    assert response.status_code == 400
-
-@pytest.mark.django_db
 def test_post_valid_subscription():
     user_id = 1
 
-    subscription_months = 6
-    subscription_option_id = SubscriptionOption.objects.create(
-        subscription_months = subscription_months,
-        subscription_price = 9.99,
-        is_active = True
-    ).id
-
-    body = { 'user_id': user_id, 'subscription_option_id': subscription_option_id }
+    body = { 'user_id': user_id }
     response = client.post(url, body, format='json')
     assert response is not None
     assert response.status_code == 200
     id = response.data['subscription_id']
     subscription = Subscription.objects.get(pk=id)
     assert subscription.user_id == user_id
-    assert subscription.subscription_option.subscription_months == subscription_months
 
 # Test updating a subscription
 @pytest.mark.django_db
@@ -99,7 +67,7 @@ def test_patch_subscription_with_null_subscription_option_id():
         is_active = True
     ).id
 
-    id = create_subscription(user_id, subscription_option_id)
+    id = create_subscription(user_id)
     assert id is not None
     subscription = Subscription.objects.get(pk=id)
 
@@ -118,7 +86,7 @@ def test_patch_subscription():
         is_active = True
     ).id
 
-    id = create_subscription(user_id, subscription_option_id)
+    id = create_subscription(user_id)
     assert id is not None
     subscription = Subscription.objects.get(pk=id)
 
@@ -151,28 +119,16 @@ def test_get_status_for_nonexistent_user_id():
 def test_get_status_where_multiple_subscriptions_exists():
     user_id = 1
     request_url = url + 'status/'
-    subscription_option_id1 = SubscriptionOption.objects.create(
-        subscription_months = 6,
-        subscription_price = 9.99,
-        is_active = True
-    ).id
 
-    id1 = create_subscription(user_id, subscription_option_id1)
+    id1 = create_subscription(user_id)
     assert id is not None
     sub1 = Subscription.objects.get(pk=id1)
     assert sub1.user_id == user_id
-    assert sub1.subscription_option.subscription_months == 6
 
-    subscription_option_id2 = SubscriptionOption.objects.create(
-        subscription_months = 9,
-        subscription_price = 9.99,
-        is_active = True
-    ).id
-    id2 = create_subscription(user_id, subscription_option_id2)
+    id2 = create_subscription(user_id)
     assert id is not None
     sub2 = Subscription.objects.get(pk=id2)
     assert sub2.user_id == user_id
-    assert sub2.subscription_option.subscription_months == 9
 
     params = {'user_id': user_id}
     response = client.get(request_url, params)
@@ -184,15 +140,16 @@ def test_get_status_where_subscription_expired():
     user_id = 1
     request_url = url + 'status/'
     months = 1
-    subscription_option_id = SubscriptionOption.objects.create(
+    subscription_option = SubscriptionOption.objects.create(
         subscription_months = months,
         subscription_price = 9.99,
         is_active = True
-    ).id
-    id = create_subscription(user_id, subscription_option_id)
+    )
+    id = create_subscription(user_id)
     assert id is not None
     subscription = Subscription.objects.get(pk=id)
     subscription.start_date = date(2023, 1, 1)
+    subscription.subscription_option = subscription_option
     subscription.save()
 
     params = {'user_id': user_id}
@@ -208,14 +165,15 @@ def test_get_status_where_subscription_active():
     request_url = url + 'status/'
     print(request_url)
     months = 1
-    subscription_option_id = SubscriptionOption.objects.create(
+    subscription_option = SubscriptionOption.objects.create(
         subscription_months = months,
         subscription_price = 9.99,
         is_active = True
-    ).id
-    id = create_subscription(user_id, subscription_option_id)
+    )
+    id = create_subscription(user_id)
     assert id is not None
     subscription = Subscription.objects.get(pk=id)
+    subscription.subscription_option = subscription_option
     subscription.save()
 
     params = {'user_id': user_id}
