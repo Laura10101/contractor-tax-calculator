@@ -28,14 +28,11 @@ class Subscription(models.Model):
     start_date = models.DateTimeField(null=False, blank=False)
 
     def is_active(self):
-        print('Checking whether subscription is active')
+        if self.subscription_option is None:
+            return False
+            
         subscription_months = self.subscription_option.subscription_months
-        print('Number of months on subscription is ' + str(subscription_months))
-        print('Start date is ' + str(self.start_date))
         expiry_date = self.start_date + relativedelta(months=subscription_months)
-        print('Expiry date of subscription is ' + str(expiry_date))
-        print(type(date.today()))
-        print(type(expiry_date))
         return date.today() <= datetime.strptime(expiry_date.strftime('%Y-%m-%d'), '%Y-%m-%d').date()
 
     def __str__(self):
