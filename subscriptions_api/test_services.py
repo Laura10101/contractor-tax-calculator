@@ -9,58 +9,32 @@ import pytest
 @pytest.mark.django_db
 def test_create_subscription_with_null_data():
     user_id = None
-    subscription_option_id = None
     with pytest.raises(ValidationError):
-        id = create_subscription(user_id, subscription_option_id)
+        id = create_subscription(user_id)
 
 @pytest.mark.django_db
 def test_create_subscription_with_null_user_id():
     user_id = None
     subscription_months = 1
-    subscription_option_id = SubscriptionOption.objects.create(
-        subscription_months = subscription_months,
-        subscription_price = 9.99,
-        is_active = True
-    ).id
     with pytest.raises(ValidationError):
-        id = create_subscription(user_id, subscription_option_id)
+        id = create_subscription(user_id)
 
 @pytest.mark.django_db
 def test_create_subscription_with_nonexistent_user_id():
     user_id = 97
     subscription_months = 1
-    subscription_option_id = SubscriptionOption.objects.create(
-        subscription_months = subscription_months,
-        subscription_price = 9.99,
-        is_active = True
-    ).id
-    id = create_subscription(user_id, subscription_option_id)
+    id = create_subscription(user_id)
     assert id is not None
     subscription = Subscription.objects.get(pk=id)
     assert subscription.user_id == user_id
-    assert subscription.subscription_option.subscription_months == subscription_months
-
-@pytest.mark.django_db
-def test_create_subscription_with_null_subscription_option_id():
-    user_id = 1
-    subscription_option_id = None
-    with pytest.raises(SubscriptionOption.DoesNotExist):
-        id = create_subscription(user_id, subscription_option_id)
 
 @pytest.mark.django_db
 def test_create_valid_subscription():
     user_id = 97
-    subscription_months = 1
-    subscription_option_id = SubscriptionOption.objects.create(
-        subscription_months = subscription_months,
-        subscription_price = 9.99,
-        is_active = True
-    ).id
-    id = create_subscription(user_id, subscription_option_id)
+    id = create_subscription(user_id)
     assert id is not None
     subscription = Subscription.objects.get(pk=id)
     assert subscription.user_id == user_id
-    assert subscription.subscription_option.subscription_months == subscription_months
 
 # Test updating a subscription
 @pytest.mark.django_db
@@ -72,7 +46,7 @@ def test_update_subscription_with_non_existent_user_id():
         subscription_price = 9.99,
         is_active = True
     ).id
-    id = create_subscription(user_id, subscription_option_id)
+    id = create_subscription(user_id)
     assert id is not None
     subscription = Subscription.objects.get(pk=id)
 
@@ -90,7 +64,7 @@ def test_update_subscription_with_null_subscription_option_id():
         subscription_price = 9.99,
         is_active = True
     ).id
-    id = create_subscription(user_id, subscription_option_id)
+    id = create_subscription(user_id)
     assert id is not None
     subscription = Subscription.objects.get(pk=id)
 
@@ -107,7 +81,7 @@ def test_update_subscription_with_non_existent_subscription_option_id():
         subscription_price = 9.99,
         is_active = True
     ).id
-    id = create_subscription(user_id, subscription_option_id)
+    id = create_subscription(user_id)
     assert id is not None
     subscription = Subscription.objects.get(pk=id)
 
@@ -124,7 +98,7 @@ def test_valid_subscription_update():
         subscription_price = 9.99,
         is_active = True
     ).id
-    id = create_subscription(user_id, subscription_option_id)
+    id = create_subscription(user_id)
     assert id is not None
     subscription = Subscription.objects.get(pk=id)
 
@@ -148,29 +122,15 @@ def test_get_status_for_nonexistent_user_id():
 @pytest.mark.django_db
 def test_get_status_where_multiple_subscriptions_exists():
     user_id = 1
-    subscription_months = 1
-    subscription_option_id = SubscriptionOption.objects.create(
-        subscription_months = subscription_months,
-        subscription_price = 9.99,
-        is_active = True
-    ).id
-    id = create_subscription(user_id, subscription_option_id)
+    id = create_subscription(user_id)
     assert id is not None
     sub1 = Subscription.objects.get(pk=id)
     assert sub1.user_id == user_id
-    assert sub1.subscription_option.subscription_months == subscription_months
 
-    subscription_months2 = 3
-    subscription_option_id2 = SubscriptionOption.objects.create(
-        subscription_months = subscription_months2,
-        subscription_price = 9.99,
-        is_active = True
-    ).id
-    id2 = create_subscription(user_id, subscription_option_id2)
+    id2 = create_subscription(user_id)
     assert id is not None
     sub2 = Subscription.objects.get(pk=id2)
     assert sub2.user_id == user_id
-    assert sub2.subscription_option.subscription_months == subscription_months2
 
     with pytest.raises(IntegrityError):
         check_subscription(user_id)
@@ -179,12 +139,7 @@ def test_get_status_where_multiple_subscriptions_exists():
 def test_get_status_where_subscription_expired():
     user_id = 1
     subscription_months = 1
-    subscription_option_id = SubscriptionOption.objects.create(
-        subscription_months = subscription_months,
-        subscription_price = 9.99,
-        is_active = True
-    ).id
-    id = create_subscription(user_id, subscription_option_id)
+    id = create_subscription(user_id)
     assert id is not None
     subscription = Subscription.objects.get(pk=id)
     subscription.start_date = date(2023, 1, 1)
@@ -199,7 +154,11 @@ def test_get_status_where_subscription_active():
         subscription_price = 9.99,
         is_active = True
     ).id
-    id = create_subscription(user_id, subscription_option_id)
+    id = create_subscription(user_id)
     assert id is not None
+
+    update_subscription(user_id, subscription_option_id)
+    
     subscription = Subscription.objects.get(pk=id)
     assert subscription.is_active() == True
+    assert subscription.subscription_option.subscription_months == subscription_months
