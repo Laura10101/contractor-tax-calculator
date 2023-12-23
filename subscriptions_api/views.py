@@ -23,7 +23,6 @@ class SubscriptionsList(APIView):
         # Define the list of required attributes 
         required_attributes = [
             'user_id',
-            'subscription_option_id',
         ]
         # Validate data 
         if not contains_required_attributes(request, required_attributes):
@@ -33,18 +32,12 @@ class SubscriptionsList(APIView):
                 )
         # Extract data required for service method 
         user_id = request.data['user_id']
-        subscription_option_id = request.data['subscription_option_id']
         # Invoke service method
         try:
-            subscription_id = create_subscription(user_id, subscription_option_id)
+            subscription_id = create_subscription(user_id)
         except ValidationError as e:
             return Response(
                 { 'error' : str(e) },
-                status=status.HTTP_400_BAD_REQUEST
-                )
-        except SubscriptionOption.DoesNotExist:
-            return Response(
-                { 'error' : 'Please supply a valid subcription option id' },
                 status=status.HTTP_400_BAD_REQUEST
                 )
         except IntegrityError:
