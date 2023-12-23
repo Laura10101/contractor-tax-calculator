@@ -7,7 +7,7 @@ from .services import create_subscription, update_subscription
 
 def trigger_subscription_creation(sender, instance, created, **kwargs):
     if created:
-        create_subscription(instance.id, None)
+        create_subscription(instance.id)
 
 def trigger_subscription_update(sender, instance, created, **kwargs):
     if not created:
