@@ -4,12 +4,12 @@ from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 
 # Create service method to create subscription 
-def create_subscription(user_id, subscription_option_id):
+def create_subscription(user_id):
     if user_id is None or user_id == '':
         raise ValidationError('A valid username must be provided')
 
     # Load the subscription option
-    subscription_option = SubscriptionOption.objects.get(pk=subscription_option_id)
+    subscription_option = None
     # Create new subscription in the database 
     new_subscription = Subscription.objects.create(
         user_id=user_id,
