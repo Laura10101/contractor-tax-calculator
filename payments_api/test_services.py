@@ -62,17 +62,8 @@ def test_create_payment_with_null_subscription_id():
     subscription_option_id = 1
     total = 47.99
     currency = 'GBP'
-    id, _ = create_payment(subscription_id, subscription_option_id, total, currency)
-    assert id is not None
-    payment = Payment.objects.get(pk=id)
-    assert payment.subscription_id == subscription_id
-    assert payment.subscription_option_id == subscription_option_id
-    assert payment.total == total
-    assert payment.currency == currency
-    assert payment.status == 2
-    assert payment.created_date.date() == date.today()
-    assert payment.intended_date.date() == date.today()
-    assert payment.stripe_pid is not None
+    with pytest.raises(ValidationError):
+        id, _ = create_payment(subscription_id, subscription_option_id, total, currency)
 
 @pytest.mark.django_db
 def test_create_payment_with_null_subscription_option_id():
