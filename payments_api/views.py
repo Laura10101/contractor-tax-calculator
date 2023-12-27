@@ -41,10 +41,10 @@ class PaymentsList(APIView):
         currency = request.data['currency']
 
         if not isinstance(subscription_id, int) or subscription_id < 0:
-            return Response(status=404)
+            return Response({ 'error': 'Subscription with id = ' + str(subscription_id) + ' could not be found.' }, status=404)
         
         if not isinstance(subscription_option_id, int) or subscription_option_id < 0:
-            return Response(status=404)
+            return Response({ 'error': 'Subscription option with id = ' + str(subscription_option_id) + ' could not be found.' }, status=404)
 
         # Invoke service method 
         try:
