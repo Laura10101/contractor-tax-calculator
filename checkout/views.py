@@ -13,12 +13,12 @@ def get_subscription_option(base_url, subscription_option_id):
     print('Subscription option response: ' + response.text)
     return json.loads(response.text)['subscription_option']
 
-def post_payment(base_url, subscription_id, subscription_option_id, total, currency):
+def post_payment(base_url, user_id, subscription_option_id, total, currency):
     url = base_url + '/api/payments/'
 
     # Create data payload for POST request to payment API
     data = {
-        'subscription_id': subscription_id,
+        'user_id': user_id,
         'subscription_option_id': subscription_option_id,
         'total': total,
         'currency': currency,
@@ -26,9 +26,9 @@ def post_payment(base_url, subscription_id, subscription_option_id, total, curre
 
     # POST data to payment API
     # This will create Stripe payment confirmation and local record 
-    print("Creating payment at URL: " + url)
     response = requests.post(url, json=data)
-    print('Create payment response: ' + str(response))
+    if not response.ok:
+        raise Exception('An unexpected error occurred when posting payment with HTTP status of: ' + str(response.status_code))
     payment_result = json.loads(response.text)
     return payment_result['payment_id'], payment_result['client_secret']
 
@@ -47,7 +47,7 @@ def checkout(request):
     base_url = request.scheme + '://' + request.get_host()
     
     # Get subscription option id from form
-    subscription_option_id = request.POST.get('subscription')
+    subscription_option_id = int(request.POST.get('subscription'))
 
     # Get the subscription option from the subscription API
     option_data = get_subscription_option(base_url, subscription_option_id)
@@ -55,7 +55,7 @@ def checkout(request):
     # Extract data from response 
     payment_id, client_secret = post_payment(
         base_url,
-        None,
+        request.user.id,
         subscription_option_id,
         option_data['total'],
         'GBP',

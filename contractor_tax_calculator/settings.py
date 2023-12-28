@@ -29,7 +29,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', '')
 DEBUG = os.getenv('DEVELOPMENT', False)
 
 ALLOWED_HOSTS = [
-    '8000-laura10101-contractorta-g5o2od5xoex.ws-eu106.gitpod.io',
+    '8000-laura10101-contractorta-g5o2od5xoex.ws-eu107.gitpod.io',
     'contractor-tax-calculator.herokuapp.com',
     'localhost'
     ]
