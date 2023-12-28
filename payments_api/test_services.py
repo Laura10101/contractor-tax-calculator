@@ -11,7 +11,7 @@ from rest_framework.test import APIClient
 from subscriptions_api.models import Subscription, SubscriptionOption
 
 # Required fields on a payment
-# subscription_id - The ID of the associated subscription
+# user_id - The ID of the associated subscription
 # stripe_pid - The Stripe ID for the payment
 # status - 1 = 'created' when first created
 #        - 2 = 'intended' when payment intention successfully created with stripe
@@ -37,80 +37,80 @@ from subscriptions_api.models import Subscription, SubscriptionOption
 # intended_date - The date on which the payment intention was confirmed in stripe
 # completed_or_failed_date - The date on which the payment completed in Stripe
 def get_mock_payment_id():
-    subscription_id = 1
+    user_id = 1
     subscription_option_id = 1
     total = 47.99
     currency = 'GBP'
-    id, _ = create_payment(subscription_id, subscription_option_id, total, currency)
+    id, _ = create_payment(user_id, subscription_option_id, total, currency)
     return id
 
 # Test creating a payment
 # Payment creation only requires the following fields:
-# subscription_id, requested_subscription_months, subtotal, currency
+# user_id, requested_subscription_months, subtotal, currency
 @pytest.mark.django_db
 def test_create_payment_with_null_data():
-    subscription_id = None
+    user_id = None
     subscription_option_id = None
     total = None
     currency = None
     with pytest.raises(ValidationError):
-        id = create_payment(subscription_id, subscription_option_id, total, currency)
+        id = create_payment(user_id, subscription_option_id, total, currency)
 
 @pytest.mark.django_db
-def test_create_payment_with_null_subscription_id():
-    subscription_id = None
+def test_create_payment_with_null_user_id():
+    user_id = None
     subscription_option_id = 1
     total = 47.99
     currency = 'GBP'
     with pytest.raises(ValidationError):
-        id, _ = create_payment(subscription_id, subscription_option_id, total, currency)
+        id, _ = create_payment(user_id, subscription_option_id, total, currency)
 
 @pytest.mark.django_db
 def test_create_payment_with_null_subscription_option_id():
-    subscription_id = 1
+    user_id = 1
     subscription_option_id = None
     total = 47.99
     currency = 'GBP'
     with pytest.raises(ValidationError):
-        id = create_payment(subscription_id, subscription_option_id, total, currency)
+        id = create_payment(user_id, subscription_option_id, total, currency)
 
 @pytest.mark.django_db
 def test_create_payment_with_null_subtotal():
-    subscription_id = 1
+    user_id = 1
     subscription_option_id = 1
     total = None
     currency = 'GBP'
     with pytest.raises(ValidationError):
-        id = create_payment(subscription_id, subscription_option_id, total, currency)
+        id = create_payment(user_id, subscription_option_id, total, currency)
 
 @pytest.mark.django_db
 def test_create_payment_with_negative_subtotal():
-    subscription_id = 1
+    user_id = 1
     subscription_option_id = 1
     total = -47.99
     currency = 'GBP'
     with pytest.raises(ValidationError):
-        id = create_payment(subscription_id, subscription_option_id, total, currency)
+        id = create_payment(user_id, subscription_option_id, total, currency)
 
 @pytest.mark.django_db
 def test_create_payment_with_invalid_currency_code():
-    subscription_id = 1
+    user_id = 1
     subscription_option_id = 1
     total = 47.99
     currency = 'Abracadabra'
     with pytest.raises(ValidationError):
-        id = create_payment(subscription_id, subscription_option_id, total, currency)
+        id = create_payment(user_id, subscription_option_id, total, currency)
 
 @pytest.mark.django_db
 def test_create_valid_payment():
-    subscription_id = 1
+    user_id = 1
     subscription_option_id = 1
     total = 47.99
     currency = 'GBP'
-    id, _ = create_payment(subscription_id, subscription_option_id, total, currency)
+    id, _ = create_payment(user_id, subscription_option_id, total, currency)
     assert id is not None
     payment = Payment.objects.get(pk=id)
-    assert payment.subscription_id == subscription_id
+    assert payment.user_id == user_id
     assert payment.subscription_option_id == subscription_option_id
     assert payment.total == total
     assert payment.currency == currency
@@ -166,6 +166,8 @@ def test_process_payment_success():
     client = APIClient()
     subs_url = '/api/subscriptions/'
 
+    user_id = 479
+
     subscription_option = SubscriptionOption.objects.create(
         subscription_months=1,
         subscription_price=4.99,
@@ -174,13 +176,13 @@ def test_process_payment_success():
     
     subscription = Subscription.objects.create(
         subscription_option = subscription_option,
-        user_id = 479,
+        user_id = user_id,
         start_date = datetime.now()
     )
 
     total = subscription_option.total()
     currency = 'GBP'
-    id, _ = create_payment(subscription.id, subscription_option.id, total, currency)
+    id, _ = create_payment(user_id, subscription_option.id, total, currency)
 
     payment = Payment.objects.get(pk=id)
     print(payment.stripe_pid)
@@ -190,9 +192,7 @@ def test_process_payment_success():
     payment = Payment.objects.get(pk=id)
     assert payment.status == 4
 
-    subs_id = payment.subscription_id
-
-    subscription = Subscription.objects.get(pk=subs_id)
+    subscription = Subscription.objects.get(pk=subscription.id)
     assert subscription.is_active() == True
     assert subscription.subscription_option.id == payment.subscription_option_id
     assert subscription.start_date.date() == payment.completed_or_failed_date.date()
@@ -207,11 +207,11 @@ def test_process_payment_success_with_unknown_stripe_pid():
 def test_process_payment_failure():
     reason = 'Some stripe reason'
 
-    subscription_id = 1
+    user_id = 1
     requested_subscription_months = 6
     subtotal = 42.30
     currency = 'GBP'
-    id, _ = create_payment(subscription_id, requested_subscription_months, subtotal, currency)
+    id, _ = create_payment(user_id, requested_subscription_months, subtotal, currency)
     print(id)
 
     payment = Payment.objects.get(pk=id)

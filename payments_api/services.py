@@ -5,13 +5,13 @@ from datetime import datetime, date
 from django.core.exceptions import ValidationError
 
 
-def create_payment(subscription_id, subscription_option_id, total, currency):
+def create_payment(user_id, subscription_option_id, total, currency):
     if not isinstance(total, float) and not isinstance(total, int):
         raise ValidationError('Parameter total must be a valid integer or a float to 2 decimal places')
 
     # Create new payment in the database 
     new_payment = Payment()
-    new_payment.subscription_id=subscription_id
+    new_payment.user_id=user_id
     new_payment.subscription_option_id=subscription_option_id
     new_payment.currency=currency
     new_payment.total=round(total, 2)

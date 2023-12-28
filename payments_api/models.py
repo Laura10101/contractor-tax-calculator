@@ -37,7 +37,7 @@ from subscriptions_api.models import SubscriptionOption
 
 class Payment(models.Model):
     # Add class attributes
-    subscription_id = models.IntegerField(null=False, blank=False)
+    user_id = models.IntegerField(null=False, blank=False)
     subscription_option_id = models.IntegerField(null=False, blank=False, validators=[MinValueValidator(0.0)])
     stripe_pid = models.CharField(max_length=255, null=True, blank=True)
     status = models.IntegerField(null=False, blank=False, default=1, validators=[MinValueValidator(0.0)])

@@ -22,7 +22,7 @@ def contains_required_attributes(request, required_attributes):
 class PaymentsList(APIView):
     def post(self, request):
         required_attributes = [
-            'subscription_id',
+            'user_id',
             'subscription_option_id',
             'total',
             'currency',
@@ -35,20 +35,20 @@ class PaymentsList(APIView):
                 )
         
         # Extract data required for service method
-        subscription_id = request.data['subscription_id']
+        user_id = request.data['user_id']
         subscription_option_id = request.data['subscription_option_id']
         total = request.data['total']
         currency = request.data['currency']
 
-        if not isinstance(subscription_id, int) or subscription_id < 0:
-            return Response({ 'error': 'Subscription with id = ' + str(subscription_id) + ' could not be found.' }, status=404)
+        if not isinstance(user_id, int) or user_id < 0:
+            return Response({ 'error': 'User with id = ' + str(user_id) + ' could not be found.' }, status=404)
         
         if not isinstance(subscription_option_id, int) or subscription_option_id < 0:
             return Response({ 'error': 'Subscription option with id = ' + str(subscription_option_id) + ' could not be found.' }, status=404)
 
         # Invoke service method 
         try:
-            payment_id, client_secret = create_payment(subscription_id, subscription_option_id, total, currency)
+            payment_id, client_secret = create_payment(user_id, subscription_option_id, total, currency)
         except ValidationError as e:
             return Response(
                 { 'error' : str(e) },

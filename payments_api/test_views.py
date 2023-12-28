@@ -42,20 +42,20 @@ def create_mock_subscription(subscription_option):
 # Test creating a payment
 # Format for POST payload on payments API
 # {
-#   'subscription_id': x,
+#   'user_id': x,
 #   'subscription_option_id': x,
 #   'total': x.y,
 #   'currency': 'ZZZ'
 # }
 @pytest.mark.django_db
 def test_post_payment_with_null_data():
-    subscription_id = None
+    user_id = None
     subscription_option_id = None
     total = None
     currency = None
 
     data = {
-        'subscription_id': subscription_id,
+        'user_id': user_id,
         'subscription_option_id': subscription_option_id,
         'total': total,
         'currency': currency
@@ -64,14 +64,14 @@ def test_post_payment_with_null_data():
     assert response.status_code == 404
 
 @pytest.mark.django_db
-def test_post_payment_with_null_subscription_id():
-    subscription_id = None
+def test_post_payment_with_null_user_id():
+    user_id = None
     subscription_option_id = create_mock_subscription_option().id
     total = 42.30
     currency = 'GBP'
 
     data = {
-        'subscription_id': subscription_id,
+        'user_id': user_id,
         'subscription_option_id': subscription_option_id,
         'total': total,
         'currency': currency
@@ -81,13 +81,13 @@ def test_post_payment_with_null_subscription_id():
 
 @pytest.mark.django_db
 def test_post_payment_with_null_subscription_option_id():
-    subscription_id = create_mock_subscription(create_mock_subscription_option()).id
+    user_id = create_mock_subscription(create_mock_subscription_option()).id
     subscription_option_id = None
     total = 42.30
     currency = 'GBP'
     
     data = {
-        'subscription_id': subscription_id,
+        'user_id': user_id,
         'subscription_option_id': subscription_option_id,
         'total': total,
         'currency': currency
@@ -97,13 +97,13 @@ def test_post_payment_with_null_subscription_option_id():
 
 @pytest.mark.django_db
 def test_post_payment_with_negative_subscription_option_id():
-    subscription_id = create_mock_subscription(create_mock_subscription_option()).id
+    user_id = create_mock_subscription(create_mock_subscription_option()).id
     subscription_option_id = -6
     total = 42.30
     currency = 'GBP'
     
     data = {
-        'subscription_id': subscription_id,
+        'user_id': user_id,
         'subscription_option_id': subscription_option_id,
         'total': total,
         'currency': currency
@@ -113,13 +113,13 @@ def test_post_payment_with_negative_subscription_option_id():
 
 @pytest.mark.django_db
 def test_post_payment_with_null_total():
-    subscription_id = create_mock_subscription(create_mock_subscription_option()).id
+    user_id = create_mock_subscription(create_mock_subscription_option()).id
     subscription_option_id = create_mock_subscription_option().id
     total = None
     currency = 'GBP'
     
     data = {
-        'subscription_id': subscription_id,
+        'user_id': user_id,
         'subscription_option_id': subscription_option_id,
         'total': total,
         'currency': currency
@@ -129,13 +129,13 @@ def test_post_payment_with_null_total():
 
 @pytest.mark.django_db
 def test_post_payment_with_negative_total():
-    subscription_id = create_mock_subscription(create_mock_subscription_option()).id
+    user_id = create_mock_subscription(create_mock_subscription_option()).id
     subscription_option_id = create_mock_subscription_option().id
     total = -42.30
     currency = 'GBP'
     
     data = {
-        'subscription_id': subscription_id,
+        'user_id': user_id,
         'subscription_option_id': subscription_option_id,
         'total': total,
         'currency': currency
@@ -145,13 +145,13 @@ def test_post_payment_with_negative_total():
 
 @pytest.mark.django_db
 def test_post_payment_with_invalid_currency_code():
-    subscription_id = create_mock_subscription(create_mock_subscription_option()).id
+    user_id = create_mock_subscription(create_mock_subscription_option()).id
     subscription_option_id = create_mock_subscription_option().id
     total = 42.30
     currency = 'G'
     
     data = {
-        'subscription_id': subscription_id,
+        'user_id': user_id,
         'subscription_option_id': subscription_option_id,
         'total': total,
         'currency': currency
@@ -161,13 +161,13 @@ def test_post_payment_with_invalid_currency_code():
 
 @pytest.mark.django_db
 def test_post_valid_payment():
-    subscription_id = create_mock_subscription(create_mock_subscription_option()).id
+    user_id = create_mock_subscription(create_mock_subscription_option()).id
     subscription_option_id = create_mock_subscription_option().id
     total = 42.30
     currency = 'GBP'
     
     data = {
-        'subscription_id': subscription_id,
+        'user_id': user_id,
         'subscription_option_id': subscription_option_id,
         'total': total,
         'currency': currency
@@ -178,7 +178,7 @@ def test_post_valid_payment():
 
     assert id is not None
     payment = Payment.objects.get(pk=id)
-    assert payment.subscription_id == subscription_id
+    assert payment.user_id == user_id
     assert payment.subscription_option_id == subscription_option_id
     assert payment.total == total
     assert payment.currency == currency
@@ -204,11 +204,11 @@ def test_post_valid_payment():
 # }
 @pytest.mark.django_db
 def test_patch_payment_with_null_payment_data():
-    subscription_id = create_mock_subscription(create_mock_subscription_option()).id
+    user_id = create_mock_subscription(create_mock_subscription_option()).id
     subscription_option_id = create_mock_subscription_option().id
     total = 42.30
     currency = 'GBP'
-    id, _ = create_payment(subscription_id, subscription_option_id, total, currency)
+    id, _ = create_payment(user_id, subscription_option_id, total, currency)
     
     data = {
         'stripe_card_id': None
@@ -218,11 +218,11 @@ def test_patch_payment_with_null_payment_data():
 
 @pytest.mark.django_db
 def test_patch_payment_with_null_payment_id():
-    subscription_id = create_mock_subscription(create_mock_subscription_option()).id
+    user_id = create_mock_subscription(create_mock_subscription_option()).id
     subscription_option_id = create_mock_subscription_option().id
     total = 42.30
     currency = 'GBP'
-    id, _ = create_payment(subscription_id, subscription_option_id, total, currency)
+    id, _ = create_payment(user_id, subscription_option_id, total, currency)
     
     data = {
         'stripe_card_id': 'pm_card_gb'
@@ -232,11 +232,11 @@ def test_patch_payment_with_null_payment_id():
 
 @pytest.mark.django_db
 def test_patch_payment_with_null_stripe_card_id():
-    subscription_id = create_mock_subscription(create_mock_subscription_option()).id
+    user_id = create_mock_subscription(create_mock_subscription_option()).id
     subscription_option_id = create_mock_subscription_option().id
     total = 42.30
     currency = 'GBP'
-    id, _ = create_payment(subscription_id, subscription_option_id, total, currency)
+    id, _ = create_payment(user_id, subscription_option_id, total, currency)
     
     data = {
         'stripe_card_id': None
@@ -246,11 +246,11 @@ def test_patch_payment_with_null_stripe_card_id():
 
 @pytest.mark.django_db
 def test_patch_payment_with_non_string_stripe_card_id():
-    subscription_id = create_mock_subscription(create_mock_subscription_option()).id
+    user_id = create_mock_subscription(create_mock_subscription_option()).id
     subscription_option_id = create_mock_subscription_option().id
     total = 42.30
     currency = 'GBP'
-    id, _ = create_payment(subscription_id, subscription_option_id, total, currency)
+    id, _ = create_payment(user_id, subscription_option_id, total, currency)
     
     data = {
         'stripe_card_id': 1234
@@ -260,11 +260,11 @@ def test_patch_payment_with_non_string_stripe_card_id():
 
 @pytest.mark.django_db
 def test_patch_valid_payment():
-    subscription_id = create_mock_subscription(create_mock_subscription_option()).id
+    user_id = create_mock_subscription(create_mock_subscription_option()).id
     subscription_option_id = create_mock_subscription_option().id
     total = 42.30
     currency = 'GBP'
-    id, _ = create_payment(subscription_id, subscription_option_id, total, currency)
+    id, _ = create_payment(user_id, subscription_option_id, total, currency)
     
     data = {
         'stripe_card_id': 'pm_card_gb'
@@ -372,11 +372,13 @@ def generate_stripe_webhook_signature(**kwargs):
 
 @pytest.mark.django_db
 def test_process_payment_success_webhook():
-    subscription_id = create_mock_subscription(create_mock_subscription_option()).id
+    subscription = create_mock_subscription(create_mock_subscription_option())
+    subscription_id = subscription.id
+    user_id = subscription.user_id
     subscription_option_id = create_mock_subscription_option().id
     total = 42.30
     currency = 'GBP'
-    id, _ = create_payment(subscription_id, subscription_option_id, total, currency)
+    id, _ = create_payment(user_id, subscription_option_id, total, currency)
 
     payment = Payment.objects.get(pk=id)
 
@@ -394,9 +396,7 @@ def test_process_payment_success_webhook():
     payment = Payment.objects.get(pk=id)
     assert payment.status == 4
 
-    subs_id = payment.subscription_id
-
-    subscription = Subscription.objects.get(pk=subs_id)
+    subscription = Subscription.objects.get(pk=subscription_id)
     assert subscription.is_active() == True
     assert subscription_option_id == payment.subscription_option_id
     assert subscription.start_date.date() == payment.completed_or_failed_date.date()
@@ -418,11 +418,11 @@ def test_process_payment_success_webhook_with_unknown_stripe_pid():
 
 @pytest.mark.django_db
 def test_process_payment_failure_webhook():
-    subscription_id = create_mock_subscription(create_mock_subscription_option()).id
+    user_id = create_mock_subscription(create_mock_subscription_option()).id
     subscription_option_id = create_mock_subscription_option().id
     total = 42.30
     currency = 'GBP'
-    id, _ = create_payment(subscription_id, subscription_option_id, total, currency)
+    id, _ = create_payment(user_id, subscription_option_id, total, currency)
 
     payment = Payment.objects.get(pk=id)
 
