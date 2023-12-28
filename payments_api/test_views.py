@@ -312,7 +312,7 @@ webhook_payload = {
             "created": 1628014284,
             "currency": "usd",
             "customer": None,
-            "description": "Created by stripe.com/docs demo",
+            "description": "",
             "invoice": None,
             "last_payment_error": None,
             "latest_charge": None,
@@ -385,12 +385,13 @@ def test_process_payment_success_webhook():
     webhook_payload['type'] = 'payment_intent.succeeded'
     webhook_payload['data']['object']['id'] = payment.stripe_pid
     webhook_payload['data']['object']['status'] = 'succeeded'
+    encoded_payload = json.dumps(webhook_payload).replace(' ', '')
     request_url = url + 'webhooks/'
-    signature = generate_stripe_webhook_signature(payload=json.dumps(webhook_payload))
+    signature = generate_stripe_webhook_signature(payload=encoded_payload)
     client.credentials(
         HTTP_STRIPE_SIGNATURE=signature
     )
-    response = client.post(request_url, webhook_payload, format='json')
+    response = client.post(request_url, data=webhook_payload, format="json")
     assert response.status_code == 200
 
     payment = Payment.objects.get(pk=id)
@@ -408,8 +409,9 @@ def test_process_payment_success_webhook_with_unknown_stripe_pid():
     webhook_payload['type'] = 'payment_intent.succeeded'
     webhook_payload['data']['object']['id'] = stripe_pid
     webhook_payload['data']['object']['status'] = 'succeeded'
+    encoded_payload = json.dumps(webhook_payload).replace(' ', '')
     request_url = url + 'webhooks/'
-    signature = generate_stripe_webhook_signature(payload=json.dumps(webhook_payload))
+    signature = generate_stripe_webhook_signature(payload=encoded_payload)
     client.credentials(
         HTTP_STRIPE_SIGNATURE=signature
     )
@@ -429,8 +431,9 @@ def test_process_payment_failure_webhook():
     webhook_payload['type'] = 'payment_intent.payment_failed'
     webhook_payload['data']['object']['id'] = payment.stripe_pid
     webhook_payload['data']['object']['status'] = 'failed'
+    encoded_payload = json.dumps(webhook_payload).replace(' ', '')
     request_url = url + 'webhooks/'
-    signature = generate_stripe_webhook_signature(payload=json.dumps(webhook_payload))
+    signature = generate_stripe_webhook_signature(payload=encoded_payload)
     client.credentials(
         HTTP_STRIPE_SIGNATURE=signature
     )
@@ -446,8 +449,9 @@ def test_process_payment_failure_webhook_with_unknown_stripe_pid():
     webhook_payload['type'] = 'payment_intent.payment_failed'
     webhook_payload['data']['object']['id'] = stripe_pid
     webhook_payload['data']['object']['status'] = 'failed'
+    encoded_payload = json.dumps(webhook_payload).replace(' ', '')
     request_url = url + 'webhooks/'
-    signature = generate_stripe_webhook_signature(payload=json.dumps(webhook_payload))
+    signature = generate_stripe_webhook_signature(payload=encoded_payload)
     client.credentials(
         HTTP_STRIPE_SIGNATURE=signature
     )

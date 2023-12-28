@@ -121,10 +121,9 @@ class StripeWebhooksList(APIView):
 
         try:
             event = stripe.Webhook.construct_event(
-                json.dumps(request.data), sig_header, wh_secret
+                request.body.decode('utf-8'), sig_header, wh_secret
             )
         except Exception as e:
-            print(str(e))
             return Response(
                 { 'error' : str(e) },
                 status=400
@@ -166,6 +165,6 @@ class StripeWebhooksList(APIView):
                 case 'payment_intent.succeeded':
                     complete_payment(stripe_pid)
         except Payment.DoesNotExist:
-            return Response(status=404)
+            return Response({ 'error': 'Payment with stripe_pid ' + str(stripe_pid) + ' not found.' }, status=404)
         # Return response 
         return Response({}, status=200)
