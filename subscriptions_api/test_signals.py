@@ -34,7 +34,7 @@ def test_completing_payment_also_updates_subscription():
     )
 
     # Create a dummy payment
-    payment_id, _ = create_payment(subscription.id, subscription_option.id, 4.99, 'GBP')
+    payment_id, _ = create_payment(subscription.user_id, subscription_option.id, 4.99, 'GBP')
     assert payment_id is not None
     
     # Complete the payment
@@ -42,8 +42,6 @@ def test_completing_payment_also_updates_subscription():
     complete_payment(payment.stripe_pid)
 
     # Check the subscription has updated
-    subs_id = payment.subscription_id
-
-    subscription = Subscription.objects.get(pk=subs_id)
+    subscription = Subscription.objects.get(pk=subscription.id)
     assert subscription.is_active() == True
     assert subscription.subscription_option.id == payment.subscription_option_id
