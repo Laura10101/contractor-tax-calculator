@@ -34,19 +34,19 @@ def confirm_payment(id, stripe_card_id):
     payment = Payment.objects.get(pk=id)
 
     # Confirm the payment with Stripe and update its status
-    success, status_or_error = confirm_stripe_payment(payment.stripe_pid, stripe_card_id)
+    status_or_error = confirm_stripe_payment(payment.stripe_pid, stripe_card_id)
 
-    if success and status_or_error in ['processing', 'succeeded']:
+    if status_or_error in ['processing', 'succeeded']:
         payment.status=3
         payment.intended_date=datetime.now()
         payment.save()
-        return True, 'succeeded'
+        return status_or_error
     else:
         payment.status=-1
         payment.stripe_error = status_or_error
         payment.completed_or_failed_date=datetime.now()
         payment.save()
-        return False, 'failed with reason:''' + status_or_error + '.'''
+        return 'failed with reason:''' + status_or_error + '.'''
 
 def complete_payment(stripe_pid):
     payments = Payment.objects.filter(stripe_pid__exact=stripe_pid)

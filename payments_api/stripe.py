@@ -33,9 +33,9 @@ def confirm_stripe_payment(stripe_pid, stripe_card_id):
             payment_method=stripe_card_id,
             capture_method='automatic_async'
         )
-        return True, payment_intent.status
+        return payment_intent.status
     except stripe.error.CardError as ex:
-        return False, str(ex)
+        return str(ex)
         
 
     

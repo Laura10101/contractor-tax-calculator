@@ -273,7 +273,7 @@ def test_patch_valid_payment():
     assert response.status_code == 200
     assert response.data is not None
 
-    assert response.data['succeeded']
+    assert response.data['result'] in ['processing', 'succeeded']
 
     payment = Payment.objects.get(pk=id)
     assert payment.status == 3

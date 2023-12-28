@@ -32,12 +32,6 @@ def post_payment(base_url, user_id, subscription_option_id, total, currency):
     payment_result = json.loads(response.text)
     return payment_result['payment_id'], payment_result['client_secret']
 
-def update_subscription(base_url, user_id, subscription_option_id):
-    url = base_url + '/api/subscriptions/?user_id=' + str(user_id)
-    data = { 'subscription_option_id': subscription_option_id }
-    response = requests.patch(url, json=data)
-    return response.status_code == 200
-
 # Create your views here.
 def checkout(request):
     stripe_public_key = settings.STRIPE_PUBLIC_KEY
@@ -97,16 +91,12 @@ def confirm_checkout(request):
     print("Confirming payment at URL: " + url)
     response = requests.patch(url, json=data)
     if not response:
-        raise Exception('Failed to update subscription')
+        raise Exception('Failed to confirm payment')
     print('Confirm payment response: ' + str(response))
     data = json.loads(response.text)
-    if data['succeeded']:
-        # Update subscription
-        subscription_option_id = request.POST['subscription_option_id']
-        result = update_subscription(base_url, request.user.id, subscription_option_id)
+    if data['result'] in ['processing', 'succeeded']:
         # Display success to user
-        payment_status = 'succeeded'
-        failure_reason = ''
+        return redirect('/checkout/status/' + str(payment_id) + '/')
     else:
         payment_status = 'failed'
         failure_reason = data['result']
@@ -130,6 +120,7 @@ def checkout_status(request, id):
     
     # Get payment status from payments API
     url = base_url + str(id) + '/status/'
+    print('Checking payment status at url = ' + url)
     response = requests.get(url)
     data = json.loads(response.text)
     payment_status = data['status']

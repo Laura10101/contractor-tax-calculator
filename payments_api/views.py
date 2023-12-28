@@ -85,7 +85,7 @@ class PaymentDetail(APIView):
 
         # Invoke service method 
         try:
-            succeeded, result = confirm_payment(pk, stripe_card_id)
+            result = confirm_payment(pk, stripe_card_id)
         except Payment.DoesNotExist:
             return Response(status=404)
         except stripe.error.InvalidRequestError as e:
@@ -95,7 +95,6 @@ class PaymentDetail(APIView):
                 )
         # Create response 
         response = {
-            'succeeded': succeeded,
             'result': result,
             }
         # Return response 
@@ -103,9 +102,9 @@ class PaymentDetail(APIView):
 
 class PaymentStatusDetail(APIView):
     def get(self, request, pk):
-        status, failure_reason = get_payment_status(id)
+        status, failure_reason = get_payment_status(pk)
         response = {
-            'id': id,
+            'id': pk,
             'status': status,
             'failure_reason': failure_reason,
         }
