@@ -452,9 +452,9 @@ def serialise_tax_calculation_result(result):
         'jurisdictions': {},
     }
 
-    for ruleset_result in result.results:
-        for tier_result in ruleset_result.results:
-            if not ruleset_result.jurisdiction_id in serialised_result['jurisidctions']:
+    for ruleset_result in result.results.all():
+        for tier_result in ruleset_result.results.all():
+            if not ruleset_result.jurisdiction_id in serialised_result['jurisdictions']:
                 serialised_result['jurisdictions'][ruleset_result.jurisdiction_id] = []
 
             serialised_tier_result = {
@@ -513,27 +513,29 @@ class TaxCalculationsList(APIView):
 
 
     def get(self, request):
-        # Define the list of required attributes 
-        required_attributes = [
-            'username',
-        ]
         # Validate data 
-        if not contains_required_attributes(request, required_attributes):
+        if not 'username' in request.GET:
             return Response(
                 { 'error' : 'Invalid request. Please supply all required attributes.' },
                 status=status.HTTP_400_BAD_REQUEST
                 )
 
         # Extract data
-        username = request.data['username']
+        username = request.GET['username']
 
-        if username is None or username == '':
+        if username is None or username == '' or username == 'None':
             return Response(
                 { 'error' : 'No tax calculations found for null or blank username.' },
-                status=status.HTTP_400_BAD_REQUEST
+                status=status.HTTP_404_NOT_FOUND
                 )
 
         results = get_calculations_for_user(username)
+
+        if results.count() == 0:
+            return Response(
+                { 'error' : 'No tax calculations found for user ' + username + '.' },
+                status=status.HTTP_404_NOT_FOUND
+                )
 
         response = []
         for result in results:

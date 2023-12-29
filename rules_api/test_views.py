@@ -3338,3 +3338,48 @@ def test_put_valid_secondary_rule_tier():
 
     assert tier.secondary_rule.id == rule_id
     assert tier.tier_rate == tier_rate
+
+# Retrieving calculations
+@pytest.mark.django_db
+def test_get_calculations_for_null_username():
+    body = {
+        'username': None,
+    }
+
+    request_url = url + 'calculations/?username=' + str(None)
+    response = client.get(request_url)
+
+    assert response is not None
+    assert response.status_code == 404
+
+@pytest.mark.django_db
+def test_get_calculations_for_non_existent_username():
+    request_url = url + 'calculations/?username=jimbo'
+    response = client.get(request_url)
+
+    assert response is not None
+    assert response.status_code == 404
+
+@pytest.mark.django_db
+def test_get_calculations_for_valid_username():
+    rule = create_mock_flat_rate_Rule('salary', 20, create_mock_ruleset())
+    assert rule is not None
+
+    jurisdiction_id = rule.ruleset.jurisdiction_id
+    calculation = create_calculation('bob', [jurisdiction_id], create_mock_variable_table())
+    assert calculation is not None
+    assert calculation.results.count() == 1
+    assert calculation.results.first().results.count() == 1
+
+    request_url = url + 'calculations/?username=bob'
+    response = client.get(request_url)
+
+    assert response is not None
+    assert response.status_code == 200
+
+    print(response.data)
+    assert len(response.data) == 1
+    calculation = response.data[0]
+    assert calculation['username'] == 'bob'
+    assert len(calculation['jurisdictions']) == 1
+
