@@ -442,3 +442,102 @@ class SecondaryRuleTierDetail(APIView):
         response = { }
         # Return response 
         return Response(response)
+
+# Helper to convert tax calculation result to dictionary
+def serialise_tax_calculation_result(result):
+    serialised_result = {
+        'calculation_id': result.id,
+        'username': result.username,
+        'created': result.created,
+        'jurisdictions': {},
+    }
+
+    for ruleset_result in result.results:
+        for tier_result in ruleset_result.results:
+            if not ruleset_result.jurisdiction_id in serialised_result['jurisidctions']:
+                serialised_result['jurisdictions'][ruleset_result.jurisdiction_id] = []
+
+            serialised_tier_result = {
+                'tax_category': ruleset_result.tax_category_name,
+                'ruleset_ordinal': ruleset_result.ordinal,
+                'tier_ordinal': tier_result.ordinal,
+                'rule_id': tier_result.rule_id,
+                'rule_type': tier_result.rule_model_name,
+                'tier_name': tier_result.tier_name,
+                'variable_name': tier_result.variable_name,
+                'variable_value': tier_result.variable_value,
+                'taxable_amount': tier_result.taxable_amount,
+                'tax_rate': tier_result.tax_rate,
+                'tax_payable': tier_result.tax_payable,
+            }
+
+            serialised_result['jurisdictions'][ruleset_result.jurisdiction_id].append(serialised_tier_result)
+
+    return serialised_result
+
+# Create django rest tax calculation list view 
+# Django rest views are classes inheriting APIView 
+class TaxCalculationsList(APIView):
+    def post(self, request):
+        # Define the list of required attributes 
+        required_attributes = [
+            'username',
+            'jurisdiction_ids',
+            'variables',
+        ]
+        # Validate data 
+        if not contains_required_attributes(request, required_attributes):
+            return Response(
+                { 'error' : 'Invalid request. Please supply all required attributes.' },
+                status=status.HTTP_400_BAD_REQUEST
+                )
+
+        # Extract required data from request
+        username = request.data['username']
+        jurisdiction_ids = request.data['jurisdiction_ids']
+        variables = request.data['variables']
+
+        # Invoke service method
+        try:
+            result = create_calculation(username, jurisdiction_ids, variables)
+        except Exception as e:
+            return Response(
+                { 'error' : str(e) },
+                status=status.HTTP_400_BAD_REQUEST
+                )
+
+        # Generate response
+        response = serialise_tax_calculation_result(result)
+
+        return Response(response)
+
+
+    def get(self, request):
+        # Define the list of required attributes 
+        required_attributes = [
+            'username',
+        ]
+        # Validate data 
+        if not contains_required_attributes(request, required_attributes):
+            return Response(
+                { 'error' : 'Invalid request. Please supply all required attributes.' },
+                status=status.HTTP_400_BAD_REQUEST
+                )
+
+        # Extract data
+        username = request.data['username']
+
+        if username is None or username == '':
+            return Response(
+                { 'error' : 'No tax calculations found for null or blank username.' },
+                status=status.HTTP_400_BAD_REQUEST
+                )
+
+        results = get_calculations_for_user(username)
+
+        response = []
+        for result in results:
+            serialised_result = serialise_tax_calculation_result(result)
+            response.append(serialised_result)
+
+        return Response(response)
