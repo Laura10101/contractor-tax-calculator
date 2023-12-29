@@ -3383,3 +3383,89 @@ def test_get_calculations_for_valid_username():
     assert calculation['username'] == 'bob'
     assert len(calculation['jurisdictions']) == 1
 
+# Generating calculations
+@pytest.mark.django_db
+def test_create_calculation_with_no_jurisdictions():
+    username = 'bob'
+    jurisdiction_ids = []
+    variables = create_mock_variable_table()
+
+    body = {
+        'username': username,
+        'jurisdiction_ids': jurisdiction_ids,
+        'variables': variables,
+    }
+
+    request_url = url + 'calculations/'
+    response = client.post(request_url, body, format='json')
+
+    assert response.status_code == 400
+
+@pytest.mark.django_db
+def test_create_calculation_with_single_jurisdiction():
+    rule = create_mock_simple_tiered_rate_rule(8000, 45000, 'salary', 20)
+    username = 'bob'
+    jurisdiction_ids = [rule.ruleset.jurisdiction_id]
+    variables = create_mock_variable_table()
+
+    body = {
+        'username': username,
+        'jurisdiction_ids': jurisdiction_ids,
+        'variables': variables,
+    }
+
+    request_url = url + 'calculations/'
+    response = client.post(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status_code == 200
+    assert response.data is not None
+    calculation = response.data
+    assert len(calculation['jurisdictions']) == 1
+    jurisdiction_results = calculation['jurisdictions'][jurisdiction_ids[0]]
+    assert len(jurisdiction_results) == 1
+    tier_result = jurisdiction_results[0]
+    tax_payable = tier_result['tax_payable']
+
+    assert tax_payable == round(1000 * (20/100), 2)
+
+@pytest.mark.django_db
+def test_create_calculation_with_multiple_single_rule_jurisdictions():
+    rule1 = create_mock_simple_tiered_rate_rule(8000, 45000, 'salary', 20)
+    jursdiction_id_1 = rule1.ruleset.jurisdiction_id
+
+    rule2 = create_mock_flat_rate_Rule('dividends', 8, create_mock_ruleset())
+    jursdiction_id_2 = rule2.ruleset.jurisdiction_id
+
+    username = 'bob'
+    jurisdiction_ids = [jursdiction_id_1, jursdiction_id_2]
+    variables = create_mock_variable_table()
+
+    body = {
+        'username': username,
+        'jurisdiction_ids': jurisdiction_ids,
+        'variables': variables,
+    }
+
+    request_url = url + 'calculations/'
+    response = client.post(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status_code == 200
+    print(response.data)
+    assert response.data is not None
+    calculation = response.data
+
+    assert len(calculation['jurisdictions']) == 2
+    jurisdiction1_results = calculation['jurisdictions'][jurisdiction_ids[0]]
+    jurisdiction2_results = calculation['jurisdictions'][jurisdiction_ids[1]]
+
+    assert len(jurisdiction1_results) == 1
+    tier_result = jurisdiction1_results[0]
+    tax_payable = tier_result['tax_payable']
+    assert tax_payable == round(1000 * 0.2, 2)
+
+    assert len(jurisdiction2_results) == 1
+    tier_result = jurisdiction2_results[0]
+    tax_payable = tier_result['tax_payable']
+    assert tax_payable == round(variables['dividends'] * (8/100), 2)
