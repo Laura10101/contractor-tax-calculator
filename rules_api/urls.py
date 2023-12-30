@@ -12,5 +12,5 @@ urlpatterns = [
     path('rulesets/<int:ruleset_pk>/rules/<int:pk>/', RuleDetail.as_view()),
     path('taxcategories/', TaxCategoriesList.as_view()),
     path('taxcategories/<int:pk>/', TaxCategoryDetail.as_view()),
-    path('calculations/', TaxCalculationsList.as_view()),
+    path('calculations/', TaxCalculationsList.as_view(), name='calculations'),
 ]
