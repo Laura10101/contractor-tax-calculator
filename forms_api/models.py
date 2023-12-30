@@ -24,6 +24,8 @@ class Question(PolymorphicModel):
     explainer = models.CharField(max_length=255, null=False, blank=False)
     # Is question mandatory or not
     is_mandatory = models.BooleanField(default=False)
+    # The machine-friendly name that will be used by rules to reference the answer to this question
+    variable_name = models.CharField(max_length=50, null=False, blank=False)
 
     def __str__(self):
         return str(self.form) + ': ' + self.text
