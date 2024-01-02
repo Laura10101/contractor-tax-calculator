@@ -78,7 +78,9 @@ def get_jurisdiction_calculation_summaries(calculation, jurisdictions_url):
     for jurisdiction_id, jurisdiction_results in calculation['jurisdictions'].items():
         jurisdiction_name = find_jurisdiction_name(jurisdiction_id, all_jurisdictions)
         if not jurisdiction_name in jurisdictions:
-            jurisdictions[jurisdiction_name] = { }
+            jurisdictions[jurisdiction_name] = {
+                'jurisdiction_id': jurisdiction_id,
+            }
 
         total = 0.0
         for result in jurisdiction_results:
