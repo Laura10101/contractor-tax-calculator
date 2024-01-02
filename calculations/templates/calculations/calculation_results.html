@@ -12,6 +12,23 @@
 {% endblock %}
 
 {% block content %}
+    <div class="modal" id="exampleModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Modal body text goes here.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="container">
         {% for jurisdiction_name, jurisdiction in summaries.items %}
             {% if forloop.counter == 1 or forloop.counter|divisibleby:4 %}
@@ -19,7 +36,6 @@
             {% endif %}
                     <div class="col-sm-3">
                         <div class="card" style="width: 18rem;">
-                            <img src="..." class="card-img-top" alt="...">
                             <div class="card-body">
                                 <h5 class="card-title">{{ jurisdiction_name }}</h5>
                                 <table class="table">
@@ -38,7 +54,9 @@
                                         {% endfor %}
                                     </tbody>
                                 </table>
-                                <a href="#" class="btn btn-primary">View Calculation</a>
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                                    View calculation
+                                </button>
                             </div>
                         </div>
                     </div>
