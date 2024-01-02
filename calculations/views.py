@@ -30,9 +30,7 @@ def select_jurisdictions(request):
     template = 'calculations/select_jurisdictions.html'
     url = request.build_absolute_uri(reverse('jurisdictions'))
     response = requests.get(url)
-    print(response.text)
     data = json.loads(response.text)
-    print('Jurisdictions: ' + str(data['jurisdictions']))
 
     context = {
         'jurisdictions': data['jurisdictions']
@@ -62,7 +60,8 @@ def display_form(request):
     forms = get_forms_by_jurisdiction_ids(forms_url, ids)
     print('Forms data: ' + str(forms))
     # Context is used to pass data into the template 
-    context = { 
+    context = {
+        'jurisdiction_ids': ",".join(selected_jurisdictions_ids),
         'jurisdictions': jurisdictions,
         'forms': forms,
     }
@@ -75,15 +74,17 @@ def display_calculation(request):
     # If the method is POST, then first create the calculation using the
     # rules API
     if request.method == 'POST':
-        id = create_calculation('', request.POST)
+        calculation = create_calculation(request.build_absolute_uri(reverse('calculations')), request)
     else:
         if not 'id' in request.GET:
             raise SuspiciousOperation("Invalid request. Please select a calculation to display.")
+        else:
+            id = int(request.GET['id'])
+            calculation = get_calculation(request.build_absolute_uri(reverse('calculations')), id)
 
-    # Retrieve the calculation details from the calculation API
-    calculation = get_calculation('', id)
     context = {
-        'calculation': calculation
+        'calculation': calculation,
+        'summaries': get_jurisdiction_calculation_summaries(calculation, request.build_absolute_uri(reverse('jurisdictions')))
     }
     return render(request, template, context)
 

@@ -3,8 +3,10 @@ import json
 
 # Create helper functions 
 # Create helper function to return details of jurisdictions based on a list of IDs
-def get_jurisdictions_by_ids(url, ids):
-    url = url + '?ids=' + ','.join(str(id) for id in ids)
+def get_jurisdictions_by_ids(url, ids=None):
+    if ids is not None:
+        url = url + '?ids=' + ','.join(str(id) for id in ids)
+
     response = requests.get(url)
 
     if response.status_code != 200:
@@ -35,20 +37,16 @@ def create_calculation(url, request):
         'variables': {}
     }
     for key in request.POST:
-        print(key)
         if not key == 'csrfmiddlewaretoken':
             if key == 'jurisdiction_ids':
                 body['jurisdiction_ids'] = [int(id) for id in request.POST[key].split(',')]
             else:
                 body['variables'][key] = cast(request.POST[key])
 
-    print(body)
     response = requests.post(url, json=body)
     if response.ok:
-        print(json.loads(response.text))
         return json.loads(response.text)
     else:
-        print(json.loads(response.text))
         raise Exception('Posting calculation failed with status code=' + str(response.status_code) + ' and error = ' + json.loads(response.text)['error'])
     
 
@@ -66,3 +64,34 @@ def cast(value):
                 return float(value)
             except ValueError:
                 return value
+
+def find_jurisdiction_name(jurisdiction_id, all_jurisdictions):
+    for jurisdiction in all_jurisdictions:
+        if jurisdiction_id == str(jurisdiction['id']):
+            return jurisdiction['name']
+    return None
+
+def get_jurisdiction_calculation_summaries(calculation, jurisdictions_url):
+    all_jurisdictions = get_jurisdictions_by_ids(jurisdictions_url)
+    jurisdictions = {}
+
+    for jurisdiction_id, jurisdiction_results in calculation['jurisdictions'].items():
+        jurisdiction_name = find_jurisdiction_name(jurisdiction_id, all_jurisdictions)
+        if not jurisdiction_name in jurisdictions:
+            jurisdictions[jurisdiction_name] = { }
+
+        total = 0.0
+        for result in jurisdiction_results:
+            tax_category = result['tax_category']
+            tax_payable = result['tax_payable']
+
+            if not tax_category in jurisdictions[jurisdiction_name]:
+                jurisdictions[jurisdiction_name][tax_category] = 0.0
+
+            jurisdictions[jurisdiction_name][tax_category] += tax_payable
+
+            total += tax_payable
+
+        jurisdictions[jurisdiction_name]['Total'] = total
+    return jurisdictions
+

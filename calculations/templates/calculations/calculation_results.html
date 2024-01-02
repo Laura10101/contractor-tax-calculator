@@ -12,5 +12,39 @@
 {% endblock %}
 
 {% block content %}
-
+    <div class="container">
+        {% for jurisdiction_name, jurisdiction in summaries.items %}
+            {% if forloop.counter == 1 or forloop.counter|divisibleby:4 %}
+                <div class="row">
+            {% endif %}
+                    <div class="col-sm-3">
+                        <div class="card" style="width: 18rem;">
+                            <img src="..." class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ jurisdiction_name }}</h5>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Tax Category</th>
+                                            <th scope="col">Tax Payable</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for category, tax_payable in jurisdiction.items %}
+                                            <tr>
+                                                <th scope="row">{{ category }}</th>
+                                                <td>{{ tax_payable }}</th>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                <a href="#" class="btn btn-primary">View Calculation</a>
+                            </div>
+                        </div>
+                    </div>
+            {% if forloop.counter|divisibleby:3 %}
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
 {% endblock %}
