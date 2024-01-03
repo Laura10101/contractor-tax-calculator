@@ -74,17 +74,19 @@
             </div>
             
             <div class="tab-content" id="nav-tabContent">
+                <!-- Forms config -->
                 <div class="tab-pane fade show active" id="nav-forms" role="tabpanel" aria-labelledby="nav-forms-tab">
                     <div class="content">
+                        <!-- Form manager options -->
                         <div class="row">
                             <div class="col">
-                                <!-- Form manager options -->
                                 <button type="button" class="btn btn-primary">
                                     <i class="fas fa-plus"></i> Question
                                 </button>
-                                <!-- End form manager options -->
                             </div>
                         </div>
+                        <!-- End form manager options -->
+
                         <!-- Boolean question -->
                         <div class="row">
                             <div class="col">
@@ -203,9 +205,169 @@
                         <!-- End multiple choice question -->
                     </div>
                 </div>
+                <!-- End forms config -->
+
+                <!-- Rules config -->
                 <div class="tab-pane fade" id="nav-rules" role="tabpanel" aria-labelledby="nav-rules-tab">
-                    test
+                    <div class="content">
+                        <!-- Rule manager options -->
+                        <div class="row">
+                            <div class="col">
+                                <button type="button" class="btn btn-primary">
+                                    <i class="fas fa-plus"></i> Ruleset
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Rule form manager options -->
+
+                        <!-- Ruleset -->
+                        <div class="row">
+                            <div class="col">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <table class="table table-borderless">
+                                            <tbody>
+                                                <tr>
+                                                    <!-- Ruleset details -->
+                                                    <td>
+                                                        <i class="fas fa-list-ol"></i>
+                                                        <p>Ruleset name</p>
+                                                        <p>Tax category name</p>
+                                                    </td>
+                                                    <!-- End ruleset details -->
+
+                                                    <!-- Rules -->
+                                                    <td>
+                                                        <!-- Flat rate rule -->
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <div class="card">
+                                                                    <div class="card-body">
+                                                                        <table class="table table-borderless">
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td rowspan="4">
+                                                                                        <i class="fas fa-percent"></i>
+                                                                                        Flat rate rule
+                                                                                    </td>
+                                                                                    <td>Name</td>
+                                                                                    <td rowspan="4">
+                                                                                        <i class="fas fa-edit"></i>
+                                                                                        <i class="fas fa-trash-alt"></i>
+                                                                                        <i class="fas fa-arrow-up"></i>
+                                                                                        <i class="fas fa-arrow-down"></i>
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Variable Name</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Explainer</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Flat rate</td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- End flat rate rule -->
+
+                                                        <!-- Tiered rate rule -->
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <div class="card">
+                                                                    <div class="card-body">
+                                                                        <table class="table table-borderless">
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td rowspan="3">
+                                                                                        <i class="fas fa-layer-group"></i>
+                                                                                        Tiered rate rule
+                                                                                    </td>
+                                                                                    <td>Name</td>
+                                                                                    <td rowspan="3">
+                                                                                        <i class="fas fa-edit"></i>
+                                                                                        <i class="fas fa-trash-alt"></i>
+                                                                                        <i class="fas fa-arrow-up"></i>
+                                                                                        <i class="fas fa-arrow-down"></i>
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Variable Name</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Explainer</td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- End tiered rate rule -->
+
+                                                        <!-- Secondary tiered rate rule -->
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <div class="card">
+                                                                    <div class="card-body">
+                                                                        <table class="table table-borderless">
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td rowspan="4">
+                                                                                        <i class="fas fa-link"></i>
+                                                                                        Secondary tiered rate rule
+                                                                                    </td>
+                                                                                    <td>Name</td>
+                                                                                    <td rowspan="4">
+                                                                                        <i class="fas fa-edit"></i>
+                                                                                        <i class="fas fa-trash-alt"></i>
+                                                                                        <i class="fas fa-arrow-up"></i>
+                                                                                        <i class="fas fa-arrow-down"></i>
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Variable Name</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Explainer</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Primary rule</td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- End secondary tiered rate rule -->
+                                                    </td>
+                                                    <!-- End rules -->
+
+                                                    <!-- Ruleset actions -->
+                                                    <td>
+                                                        <i class="fas fa-plus"></i>
+                                                        <i class="fas fa-edit"></i>
+                                                        <i class="fas fa-trash-alt"></i>
+                                                        <i class="fas fa-arrow-up"></i>
+                                                        <i class="fas fa-arrow-down"></i>
+                                                    </td>
+                                                    <!-- End ruleset actions -->
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End ruleset -->
+                    </div>
                 </div>
+                <!-- End rules config -->
             </div>
         {% endblock %}
     </div>
