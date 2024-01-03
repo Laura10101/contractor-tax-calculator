@@ -12,86 +12,88 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container">
-        {% for jurisdiction_name, jurisdiction in summaries.items %}
-            <!-- Start modal for jurisdiction {{ jurisdiction_name }} -->
-            <div class="modal" id="calculationDetail{{ jurisdiction_name }}" tabindex="-1">
-                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Tax Calculations for {{ jurisdiction_name }}</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Tax Category</th>
-                                        <th scope="col">Affected Income</th>
-                                        <th scope="col">Taxable Amount</th>
-                                        <th scope="col">Tax Rate</th>
-                                        <th scope="col">Tax Payable</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for jurisdiction_id, results in calculation.jurisdictions.items %}
-                                        {% if jurisdiction_id == jurisdiction.jurisdiction_id %}
-                                            {% for result in results %}
-                                                <tr>
-                                                    <td>{{ result.tax_category }}</td>
-                                                    <td>{{ result.variable_name }}</td>
-                                                    <td>{{ result.taxable_amount }}</td>
-                                                    <td>{{ result.tax_rate }}</td>
-                                                    <td>{{ result.tax_payable }}</td>
-                                                </tr>
-                                            {% endfor %}
-                                        {% endif %}
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- End modal -->
-
-            {% if forloop.counter == 1 or forloop.counter|divisibleby:4 %}
-                <div class="row">
-            {% endif %}
-                    <div class="col-sm-3">
-                        <div class="card" style="width: 18rem;">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ jurisdiction_name }}</h5>
+    {% if not error %}
+        <div class="container">
+            {% for jurisdiction_name, jurisdiction in summaries.items %}
+                <!-- Start modal for jurisdiction {{ jurisdiction_name }} -->
+                <div class="modal" id="calculationDetail{{ jurisdiction_name }}" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Tax Calculations for {{ jurisdiction_name }}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
                                 <table class="table">
                                     <thead>
                                         <tr>
                                             <th scope="col">Tax Category</th>
+                                            <th scope="col">Affected Income</th>
+                                            <th scope="col">Taxable Amount</th>
+                                            <th scope="col">Tax Rate</th>
                                             <th scope="col">Tax Payable</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {% for category, tax_payable in jurisdiction.items %}
-                                            {% if category != 'jurisdiction_id' %}
-                                                <tr>
-                                                    <th scope="row">{{ category }}</th>
-                                                    <td>{{ tax_payable }}</th>
-                                                </tr>
+                                        {% for jurisdiction_id, results in calculation.jurisdictions.items %}
+                                            {% if jurisdiction_id == jurisdiction.jurisdiction_id %}
+                                                {% for result in results %}
+                                                    <tr>
+                                                        <td>{{ result.tax_category }}</td>
+                                                        <td>{{ result.variable_name }}</td>
+                                                        <td>{{ result.taxable_amount }}</td>
+                                                        <td>{{ result.tax_rate }}</td>
+                                                        <td>{{ result.tax_payable }}</td>
+                                                    </tr>
+                                                {% endfor %}
                                             {% endif %}
                                         {% endfor %}
                                     </tbody>
                                 </table>
-                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#calculationDetail{{ jurisdiction_name }}">
-                                    View calculation
-                                </button>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             </div>
                         </div>
                     </div>
-            {% if forloop.counter|divisibleby:3 %}
                 </div>
-            {% endif %}
-        {% endfor %}
-    </div>
+                <!-- End modal -->
+
+                {% if forloop.counter == 1 or forloop.counter|divisibleby:4 %}
+                    <div class="row">
+                {% endif %}
+                        <div class="col-sm-3">
+                            <div class="card" style="width: 18rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ jurisdiction_name }}</h5>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Tax Category</th>
+                                                <th scope="col">Tax Payable</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for category, tax_payable in jurisdiction.items %}
+                                                {% if category != 'jurisdiction_id' %}
+                                                    <tr>
+                                                        <th scope="row">{{ category }}</th>
+                                                        <td>{{ tax_payable }}</th>
+                                                    </tr>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#calculationDetail{{ jurisdiction_name }}">
+                                        View calculation
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                {% if forloop.counter|divisibleby:3 %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
 {% endblock %}

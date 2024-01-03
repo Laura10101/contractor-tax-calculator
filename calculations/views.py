@@ -77,7 +77,7 @@ def display_calculation(request):
         calculation = create_calculation(request.build_absolute_uri(reverse('calculations')), request)
     else:
         if not 'id' in request.GET:
-            raise SuspiciousOperation("Invalid request. Please select a calculation to display.")
+            return render(request, template, { 'error': 'No valid tax calculation ID was found when attempting to access tax calculation details'})
         else:
             id = int(request.GET['id'])
             calculation = get_calculation(request.build_absolute_uri(reverse('calculations')), id)
