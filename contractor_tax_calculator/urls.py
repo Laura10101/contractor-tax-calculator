@@ -23,8 +23,8 @@ from payments_api.views import *
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
     path('admin/config/', include('config.urls')),
+    path('admin/', admin.site.urls, name='admin'),
     path('api/jurisdictions/', include('jurisdictions_api.urls')),
     path('api/subscriptions/', include('subscriptions_api.urls')),
     path('api/payments/', include('payments_api.urls')),
