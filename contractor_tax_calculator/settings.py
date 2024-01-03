@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     'storages',
     'calculations',
     'allauth.socialaccount',
+    'config',
 ]
 
 MIDDLEWARE = [
