@@ -9,7 +9,6 @@
     {% elif user_has_subscription and request.path in subscription_exempt_paths %}
       <meta http-equiv="Refresh" content="0;/dashboard/">
     {% endif %}-->
-
     {% block meta %}
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <meta charset="utf-8">
@@ -86,6 +85,14 @@
     {% endif %}
 
     {% block page_header %}
+    {% endblock %}
+
+    {% block error %}
+        {% if error %}
+            <div class="container">
+                {{ error }}
+            </div>
+        {% endif %}
     {% endblock %}
 
     {% block content %}
