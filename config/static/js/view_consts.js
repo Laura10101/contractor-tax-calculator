@@ -287,143 +287,143 @@ const multipleChoiceQuestionDisplay = {
  */
 const rulesetDialog = {
     dialog: {
-        id: ""
+        id: "ruleset-modal"
     },
 
     label: {
-        id: ""
+        id: "ruleset-modal-label"
     },
 
     taxCategory: {
         label: {
-            id: ""
+            id: "ruleset-modal-tax-category-label"
         },
 
         input: {
-            id: ""
+            id: "ruleset-modal-tax-category-input"
         }
     }
 };
 
 const ruleTypeDialog = {
     dialog: {
-        id: ""
+        id: "rule-type-modal"
     },
 
     label: {
-        id: ""
+        id: "rule-type-modal-label"
     },
 
     ruleType: {
         label: {
-            id: ""
+            id: "rule-type-modal-input-label"
         },
 
         input: {
-            id: ""
+            id: "rule-type-modal-input"
         }
     }
 };
 
 const flatRateRuleDialog = {
     dialog: {
-        id: ""
+        id: "flat-rate-rule-modal"
     },
 
     label: {
-        id: ""
+        id: "flat-rate-rule-modal-label"
     },
 
     name: {
         label: {
-            id: ""
+            id: "flat-rate-rule-modal-name-label"
         },
         input: {
-            id: ""
+            id: "flat-rate-rule-modal-name-input"
         }
     },
 
     explainer: {
         label: {
-            id: ""
+            id: "flat-rate-rule-modal-explainer-label"
         },
         input: {
-            id: ""
+            id: "flat-rate-rule-modal-explainer-input"
         }
     },
 
     variableName: {
         label: {
-            id: ""
+            id: "flat-rate-rule-modal-variable-name-label"
         },
         input: {
-            id: ""
+            id: "flat-rate-rule-modal-variable-name-input"
         }
     },
 
     taxRate: {
         label: {
-            id: ""
+            id: "flat-rate-rule-modal-tax-rate-label"
         },
         input: {
-            id: ""
+            id: "flat-rate-rule-modal-tax-rate-input"
         }
     }
 };
 
 const tieredRateRuleDialog = {
     dialog: {
-        id: ""
+        id: "tiered-rate-rule-modal"
     },
 
     label: {
-        id: ""
+        id: "tiered-rate-rule-modal-label"
     },
 
     name: {
         label: {
-            id: ""
+            id: "tiered-rate-rule-modal-name-label"
         },
         input: {
-            id: ""
+            id: "tiered-rate-rule-modal-name-input"
         }
     },
 
     explainer: {
         label: {
-            id: ""
+            id: "tiered-rate-rule-modal-explainer-label"
         },
         input: {
-            id: ""
+            id: "tiered-rate-rule-modal-explainer-input"
         }
     },
 
     variableName: {
         label: {
-            id: ""
+            id: "tiered-rate-rule-modal-variable-name-label"
         },
         input: {
-            id: ""
+            id: "tiered-rate-rule-modal-variable-name-input"
         }
     },
 
     tiers: {
         label: {
-            id: ""
+            id: "tiered-rate-rule-modal-tiers-label"
         },
         table: {
-            id: ""
+            id: "tiered-rate-rule-modal-tiers-table"
         },
         tierRow: {
-            id: "",
+            id: "tiered-rate-rule-modal-tiers-row",
             lowerLimit: {
-                cellId: ""
+                cellId: "tiered-rate-rule-modal-tiers-min"
             },
             upperLimit: {
-                cellId: ""
+                cellId: "tiered-rate-rule-modal-tiers-max"
             },
             taxRate: {
-                cellId: ""
+                cellId: "tiered-rate-rule-modal-tiers-rate"
             }
         }
     }
@@ -431,66 +431,66 @@ const tieredRateRuleDialog = {
 
 const secondaryTieredRateRuleDialog = {
     dialog: {
-        id: ""
+        id: "secondary-tiered-rate-rule-modal"
     },
 
     label: {
-        id: ""
+        id: "secondary-tiered-rate-rule-modal-label"
     },
 
     name: {
         label: {
-            id: ""
+            id: "secondary-tiered-rate-rule-modal-name-label"
         },
         input: {
-            id: ""
+            id: "secondary-tiered-rate-rule-modal-name-input"
         }
     },
 
     explainer: {
         label: {
-            id: ""
+            id: "secondary-tiered-rate-rule-modal-explainer-label"
         },
         input: {
-            id: ""
+            id: "secondary-tiered-rate-rule-modal-explainer-input"
         }
     },
 
     variableName: {
         label: {
-            id: ""
+            id: "secondary-tiered-rate-rule-modal-variable-name-label"
         },
         input: {
-            id: ""
+            id: "secondary-tiered-rate-rule-modal-variable-name-input"
         }
     },
 
     primaryRule: {
         label: {
-            id: ""
+            id: "secondary-tiered-rate-rule-modal-primary-rule-label"
         },
         input: {
-            id: ""
+            id: "secondary-tiered-rate-rule-modal-primary-rule-input"
         }
     },
 
     tiers: {
         label: {
-            id: ""
+            id: "secondary-tiered-rate-rule-modal-tiers-label"
         },
         table: {
-            id: ""
+            id: "secondary-tiered-rate-rule-modal-tiers-table"
         },
         tierRow: {
-            id: "",
+            id: "secondary-tiered-rate-rule-modal-tiers-row",
             lowerLimit: {
-                cellId: ""
+                cellId: "secondary-tiered-rate-rule-modal-tiers-min"
             },
             upperLimit: {
-                cellId: ""
+                cellId: "secondary-tiered-rate-rule-modal-tiers-max"
             },
             taxRate: {
-                cellId: ""
+                cellId: "secondary-tiered-rate-rule-modal-tiers-rate"
             }
         }
     }
@@ -498,65 +498,65 @@ const secondaryTieredRateRuleDialog = {
 
 const ruleTierDialog = {
     dialog: {
-        id: ""
+        id: "rule-tier-modal"
     },
 
     label: {
-        id: ""
+        id: "rule-tier-modal-label"
     },
 
     minimumValue: {
         label: {
-            id: ""
+            id: "rule-tier-modal-min-label"
         },
         input: {
-            id: ""
+            id: "rule-tier-modal-min-input"
         }
     },
 
     maximumValue: {
         label: {
-            id: ""
+            id: "rule-tier-modal-max-label"
         },
         input: {
-            id: ""
+            id: "rule-tier-modal-max-input"
         }
     },
 
     taxRate: {
         label: {
-            id: ""
+            id: "rule-tier-modal-tax-rate-label"
         },
         input: {
-            id: ""
+            id: "rule-tier-modal-tax-rate-input"
         }
     }
 };
 
 const secondaryRuleTierDialog = {
     dialog: {
-        id: ""
+        id: "secondary-rule-tier-modal"
     },
 
     label: {
-        id: ""
+        id: "secondary-rule-tier-modal-label"
     },
 
     primaryTier: {
         label: {
-            id: ""
+            id: "secondary-rule-tier-modal-primary-tier-label"
         },
         input: {
-            id: ""
+            id: "secondary-rule-tier-modal-primary-tier-input"
         }
     },
 
     taxRate: {
         label: {
-            id: ""
+            id: "secondary-rule-tier-modal-tax-rate-label"
         },
         input: {
-            id: ""
+            id: "secondary-rule-tier-modal-tax-rate-input"
         }
     }
 };

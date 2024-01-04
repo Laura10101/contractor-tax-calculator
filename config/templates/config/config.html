@@ -326,11 +326,11 @@
     <!-- End multiple choice question dialog -->
 
     <!-- Ruleset modal -->
-    <div class="modal fade" id="rulesetModal" tabindex="-1" aria-labelledby="rulesetModalLabel" aria-hidden="true">
+    <div class="modal fade" id="ruleset-modal" tabindex="-1" aria-labelledby="ruleset-modal-label" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="rulesetModalLabel">Create Ruleset</h5>
+              <h5 class="modal-title" id="ruleset-modal-label">Create Ruleset</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -338,11 +338,11 @@
             <div class="modal-body">
                 <div class="container">
                     <div class="row">
-                        <div class="col">
+                        <div class="col" id="ruleset-modal-tax-category-label">
                             Tax Category
                         </div>
                         <div class="col">
-                            <select class="custom-select">
+                            <select class="custom-select" id="ruleset-modal-tax-category-input">
                               </select>
                         </div>
                     </div>
@@ -358,11 +358,11 @@
     <!-- End ruleset modal -->
 
     <!-- Rule type modal -->
-    <div class="modal fade" id="ruleTypeModal" tabindex="-1" aria-labelledby="ruleTypeModalLabel" aria-hidden="true">
+    <div class="modal fade" id="rule-type-modal" tabindex="-1" aria-labelledby="rule-type-modal-label" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="ruleTypeModalLabel">Select Rule Type</h5>
+              <h5 class="modal-title" id="rule-type-modal-label">Select Rule Type</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -370,11 +370,11 @@
             <div class="modal-body">
                 <div class="container">
                     <div class="row">
-                        <div class="col">
+                        <div class="col" id="rule-type-modal-input-label">
                             Which type of rule should be created?
                         </div>
                         <div class="col">
-                            <select class="custom-select">
+                            <select class="custom-select" id="rule-type-modal-input">
                                 <option value="flat_rate">Flat Rate</option>
                                 <option value="tiered_rate">Tiered Rate</option>
                                 <option value="secondary_tiered_rate">Secondary Tiered Rate</option>
@@ -393,11 +393,11 @@
     <!-- End rule type modal -->
 
     <!-- Flat rate rule dialog -->
-    <div class="modal fade" id="flatRateRuleModal" tabindex="-1" aria-labelledby="flatRateRuleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="flat-rate-rule-modal" tabindex="-1" aria-labelledby="flat-rate-rule-modal-label" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Create Flat Rate Rule</h5>
+              <h5 class="modal-title" id="flat-rate-rule-modal-label">Create Flat Rate Rule</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -405,35 +405,35 @@
             <div class="modal-body">
                 <div class="container">
                     <div class="row">
-                        <div class="col">
+                        <div class="col" id="flat-rate-rule-modal-name-label">
                             Name
                         </div>
                         <div class="col">
-                            <input class="form-control" type="text">
+                            <input class="form-control" type="text" id="flat-rate-rule-modal-name-input">
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col">
+                        <div class="col" id="flat-rate-rule-modal-explainer-label">
                             Explainer
                         </div>
                         <div class="col">
-                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                            <textarea class="form-control" id="flat-rate-rule-modal-explainer-input" rows="3"></textarea>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col">
+                        <div class="col" id="flat-rate-rule-modal-variable-name-label">
                             Variable Name
                         </div>
                         <div class="col">
-                            <input class="form-control" type="text">
+                            <input class="form-control" type="text" id="flat-rate-rule-modal-variable-name-input">
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col">
+                        <div class="col" id="flat-rate-rule-modal-tax-rate-label">
                             Tax Rate
                         </div>
                         <div class="col">
-                            <input class="form-control" type="text">
+                            <input class="form-control" type="text" id="flat-rate-rule-modal-tax-rate-input">
                         </div>
                     </div>
                 </div>
@@ -448,11 +448,11 @@
     <!-- End flat rate rule dialog -->
 
     <!-- Tiered rate rule dialog -->
-    <div class="modal fade" id="tieredRateRuleModal" tabindex="-1" aria-labelledby="tieredRateRuleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="tiered-rate-rule-modal" tabindex="-1" aria-labelledby="tiered-rate-rule-modal-label" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Create Tiered Rate Rule</h5>
+              <h5 class="modal-title" id="tiered-rate-rule-modal-label">Create Tiered Rate Rule</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -460,27 +460,27 @@
             <div class="modal-body">
                 <div class="container">
                     <div class="row">
-                        <div class="col">
+                        <div class="col" id="tiered-rate-rule-modal-name-label">
                             Name
                         </div>
                         <div class="col">
-                            <input class="form-control" type="text">
+                            <input class="form-control" type="text" id="tiered-rate-rule-modal-name-input">
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col">
+                        <div class="col" id="tiered-rate-rule-modal-explainer-label">
                             Explainer
                         </div>
                         <div class="col">
-                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                            <textarea class="form-control" id="tiered-rate-rule-modal-explainer-input" rows="3"></textarea>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col">
+                        <div class="col" id="tiered-rate-rule-modal-variable-name-label">
                             Variable Name
                         </div>
                         <div class="col">
-                            <input class="form-control" type="text">
+                            <input class="form-control" type="text" id="tiered-rate-rule-modal-variable-name-input">
                         </div>
                     </div>
                     <div class="row">
@@ -488,14 +488,14 @@
                             <div class="container">
                                 <div class="row">
                                     <div class="col">
-                                        <h5>
-                                            Tiers <i class="fas fa-plus" data-toggle="modal" data-target="#ruleTierModal"></i>
+                                        <h5 id="tiered-rate-rule-modal-tiers-label">
+                                            Tiers <i class="fas fa-plus" data-toggle="modal" data-target="#rule-tier-modal"></i>
                                         </h5>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col">
-                                        <table class="table">
+                                        <table class="table" id="tiered-rate-rule-modal-tiers-table">
                                             <thead>
                                                 <tr>
                                                     <th scope="col">Lower Limit</th>
@@ -505,10 +505,10 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>£10,000.00</td>
-                                                    <td>£25,000.00</td>
-                                                    <td>8%</td>
+                                                <tr id="tiered-rate-rule-modal-tiers-row">
+                                                    <td id="tiered-rate-rule-modal-tiers-min">£10,000.00</td>
+                                                    <td id="tiered-rate-rule-modal-tiers-max">£25,000.00</td>
+                                                    <td id="tiered-rate-rule-modal-tiers-rate">8%</td>
                                                     <td>
                                                         <i class="fas fa-edit" data-toggle="modal" data-target="#ruleTierModal"></i>
                                                         <i class="fas fa-trash-alt"></i>
@@ -535,11 +535,11 @@
     <!-- End tiered rate rule dialog -->
 
     <!-- Secondary tiered rate rule dialog -->
-    <div class="modal fade" id="secondaryTieredRateRuleModal" tabindex="-1" aria-labelledby="secondaryTieredRateRuleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="secondary-tiered-rate-rule-modal" tabindex="-1" aria-labelledby="secondary-tiered-rate-rule-modal-label" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="secondaryTieredRateRuleModalLabel">Create Secondary Tiered Rate Rule</h5>
+              <h5 class="modal-title" id="secondary-tiered-rate-rule-modal-label">Create Secondary Tiered Rate Rule</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -547,35 +547,35 @@
             <div class="modal-body">
                 <div class="container">
                     <div class="row">
-                        <div class="col">
+                        <div class="col" id="secondary-tiered-rate-rule-modal-name-label">
                             Name
                         </div>
                         <div class="col">
-                            <input class="form-control" type="text">
+                            <input class="form-control" type="text" id="secondary-tiered-rate-rule-modal-name-input">
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col">
+                        <div class="col" id="secondary-tiered-rate-rule-modal-explainer-label">
                             Explainer
                         </div>
                         <div class="col">
-                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                            <textarea class="form-control" id="secondary-tiered-rate-rule-modal-explainer-input" rows="3"></textarea>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col">
+                        <div class="col" id="secondary-tiered-rate-rule-modal-variable-name-label">
                             Variable Name
                         </div>
                         <div class="col">
-                            <input class="form-control" type="text">
+                            <input class="form-control" type="text" id="secondary-tiered-rate-rule-modal-variable-name-input">
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col">
+                        <div class="col" id="secondary-tiered-rate-rule-modal-primary-rule-label">
                             Primary Rule
                         </div>
                         <div class="col">
-                            <select class="custom-select">
+                            <select class="custom-select" id="secondary-tiered-rate-rule-modal-primary-rule-input">
                             </select>
                         </div>
                     </div>
@@ -584,14 +584,14 @@
                             <div class="container">
                                 <div class="row">
                                     <div class="col">
-                                        <h5>
-                                            Tiers <i class="fas fa-plus" data-toggle="modal" data-target="#secondaryRuleTierModal"></i>
+                                        <h5 id="secondary-tiered-rate-rule-modal-tiers-label">
+                                            Tiers <i class="fas fa-plus" data-toggle="modal" data-target="#secondary-rule-tier-modal"></i>
                                         </h5>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col">
-                                        <table class="table">
+                                        <table class="table" id="secondary-tiered-rate-rule-modal-tiers-table">
                                             <thead>
                                                 <tr>
                                                     <th scope="col">Lower Limit</th>
@@ -601,10 +601,10 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>£10,000.00</td>
-                                                    <td>£25,000.00</td>
-                                                    <td>8%</td>
+                                                <tr id="secondary-tiered-rate-rule-modal-tiers-row">
+                                                    <td id="secondary-tiered-rate-rule-modal-tiers-min">£10,000.00</td>
+                                                    <td id="secondary-tiered-rate-rule-modal-tiers-max">£25,000.00</td>
+                                                    <td id="secondary-tiered-rate-rule-modal-tiers-rate">8%</td>
                                                     <td>
                                                         <i class="fas fa-edit" data-toggle="modal" data-target="#ruleTierModal"></i>
                                                         <i class="fas fa-trash-alt"></i>
@@ -631,11 +631,11 @@
     <!-- End secondary tiered rate rule dialog -->
 
     <!-- Rule tier dialog -->
-    <div class="modal fade" id="ruleTierModal" tabindex="-1" aria-labelledby="ruleTierModalLabel" aria-hidden="true">
+    <div class="modal fade" id="rule-tier-modal" tabindex="-1" aria-labelledby="rule-tier-modal-label" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="ruleTierModalLabel">Create Tier for Tiered Rate Rule</h5>
+              <h5 class="modal-title" id="rule-tier-modal-label">Create Tier for Tiered Rate Rule</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -643,29 +643,29 @@
             <div class="modal-body">
                 <div class="container">
                     <div class="row">
-                        <div class="col">
+                        <div class="col" id="rule-tier-modal-min-label">
                             <p>Minimum value</p>
                             <p>Leave blank if none</p>
                         </div>
                         <div class="col">
-                            <input class="form-control" type="text">
+                            <input class="form-control" type="text" id="rule-tier-modal-min-input">
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col">
+                        <div class="col" id="rule-tier-modal-max-label">
                             <p>Maximum value</p>
                             <p>Leave blank if none</p>
                         </div>
                         <div class="col">
-                            <input class="form-control" type="text">
+                            <input class="form-control" type="text" id="rule-tier-modal-max-input">
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col">
+                        <div class="col" id="rule-tier-modal-tax-rate-label">
                             Tax Rate
                         </div>
                         <div class="col">
-                            <input class="form-control" type="text">
+                            <input class="form-control" type="text" id="rule-tier-modal-tax-rate-input">
                         </div>
                     </div>
                 </div>
@@ -680,11 +680,11 @@
     <!-- End rule tier dialog -->
 
     <!-- Secondary rule tier dialog -->
-    <div class="modal fade" id="secondaryRuleTierModal" tabindex="-1" aria-labelledby="secondaryRuleTierModalLabel" aria-hidden="true">
+    <div class="modal fade" id="secondary-rule-tier-modal" tabindex="-1" aria-labelledby="secondary-rule-tier-modal-label" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="secondaryRuleTierModalLabel">Create Tier for Secondary Tiered Rate Rule</h5>
+              <h5 class="modal-title" id="secondary-rule-tier-modal-label">Create Tier for Secondary Tiered Rate Rule</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -692,20 +692,20 @@
             <div class="modal-body">
                 <div class="container">
                     <div class="row">
-                        <div class="col">
+                        <div class="col" id="secondary-rule-tier-modal-primary-tier-label">
                             Primary Tier
                         </div>
                         <div class="col">
-                            <select class="custom-select">
+                            <select class="custom-select" id="secondary-rule-tier-modal-primary-tier-input">
                             </select>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col">
+                        <div class="col" id="secondary-rule-tier-modal-tax-rate-label">
                             Tax Rate
                         </div>
                         <div class="col">
-                            <input class="form-control" type="text">
+                            <input class="form-control" type="text" id="secondary-rule-tier-modal-tax-rate-input">
                         </div>
                     </div>
                 </div>
@@ -858,7 +858,7 @@
                         <!-- Rule manager options -->
                         <div class="row">
                             <div class="col">
-                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#rulesetModal">
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ruleset-modal">
                                     <i class="fas fa-plus"></i> Ruleset
                                 </button>
                             </div>
@@ -897,7 +897,7 @@
                                                                                     </td>
                                                                                     <td>Name</td>
                                                                                     <td rowspan="4">
-                                                                                        <i class="fas fa-edit" data-toggle="modal" data-target="#flatRateRuleModal"></i>
+                                                                                        <i class="fas fa-edit" data-toggle="modal" data-target="#flat-rate-rule-modal"></i>
                                                                                         <i class="fas fa-trash-alt"></i>
                                                                                         <i class="fas fa-arrow-up"></i>
                                                                                         <i class="fas fa-arrow-down"></i>
@@ -930,7 +930,7 @@
                                                                                     </td>
                                                                                     <td>Name</td>
                                                                                     <td rowspan="3">
-                                                                                        <i class="fas fa-edit" data-toggle="modal" data-target="#tieredRateRuleModal"></i>
+                                                                                        <i class="fas fa-edit" data-toggle="modal" data-target="#tiered-rate-rule-modal"></i>
                                                                                         <i class="fas fa-trash-alt"></i>
                                                                                         <i class="fas fa-arrow-up"></i>
                                                                                         <i class="fas fa-arrow-down"></i>
@@ -960,7 +960,7 @@
                                                                                     </td>
                                                                                     <td>Name</td>
                                                                                     <td rowspan="4">
-                                                                                        <i class="fas fa-edit" data-toggle="modal" data-target="#secondaryTieredRateRuleModal" ></i>
+                                                                                        <i class="fas fa-edit" data-toggle="modal" data-target="#secondary-tiered-rate-rule-modal" ></i>
                                                                                         <i class="fas fa-trash-alt"></i>
                                                                                         <i class="fas fa-arrow-up"></i>
                                                                                         <i class="fas fa-arrow-down"></i>
@@ -985,7 +985,7 @@
 
                                                             <!-- Ruleset actions -->
                                                             <td>
-                                                                <i class="fas fa-plus" data-toggle="modal" data-target="#ruleTypeModal"></i>
+                                                                <i class="fas fa-plus" data-toggle="modal" data-target="#rule-type-modal"></i>
                                                                 <i class="fas fa-edit"></i>
                                                                 <i class="fas fa-trash-alt"></i>
                                                                 <i class="fas fa-arrow-up"></i>
