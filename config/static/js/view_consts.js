@@ -218,6 +218,9 @@ multipleChoiceQuestionDialog = {
 /*
  * Question Display Constants
  */
+questionDisplayContainer = {
+    id: ""
+};
 
 booleanQuestionDisplay = {
     card: {
@@ -561,6 +564,10 @@ secondaryRuleTierDialog = {
 /*
  * Rule Display Constants
  */
+rulesetDisplayContainer = {
+    id: ""
+};
+
 rulesetDisplay = {
     card: {
         id: ""
