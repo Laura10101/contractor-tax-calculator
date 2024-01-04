@@ -219,7 +219,7 @@ const multipleChoiceQuestionDialog = {
  * Question Display Constants
  */
 const questionDisplayContainer = {
-    id: "questionsDisplayContainer"
+    id: "questions-display-container"
 };
 
 const booleanQuestionDisplay = {
@@ -565,71 +565,71 @@ const secondaryRuleTierDialog = {
  * Rule Display Constants
  */
 const rulesetsDisplayContainer = {
-    id: "rulesetsDisplayContainer"
+    id: "rulesets-display-container"
 };
 
 const rulesetDisplay = {
     card: {
-        id: ""
+        id: "ruleset-display-card"
     },
     name: {
-        id: ""
+        id: "ruleset-display-card-name"
     },
     taxCategpry: {
-        id: ""
+        id: "ruleset-display-card-tax-category"
     },
     rules: {
-        id: ""
+        id: "ruleset-display-card-rules"
     }
 };
 
 const flatRateRuleDisplay = {
     card: {
-        id: ""
+        id: "flat-rate-rule-display-card"
     },
     name: {
-        id: ""
+        id: "flat-rate-rule-display-card-name"
     },
     variableName: {
-        id: ""
+        id: "flat-rate-rule-display-card-variable-name"
     },
     explainer: {
-        id: ""
+        id: "flat-rate-rule-display-card-explainer"
     },
     taxRate: {
-        id: ""
+        id: "flat-rate-rule-display-card-tax-rate"
     }
 };
 
 const tieredRateRuleDisplay = {
     card: {
-        id: ""
+        id: "tiered-rate-rule-display-card"
     },
     name: {
-        id: ""
+        id: "tiered-rate-rule-display-card-name"
     },
     variableName: {
-        id: ""
+        id: "tiered-rate-rule-display-card-variable-name"
     },
     explainer: {
-        id: ""
+        id: "tiered-rate-rule-display-card-explainer"
     }
 };
 
 const secondaryTieredRateRuleDisplay = {
     card: {
-        id: ""
+        id: "secondary-tiered-rate-rule-display-card"
     },
     name: {
-        id: ""
+        id: "secondary-tiered-rate-rule-display-card-name"
     },
     variableName: {
-        id: ""
+        id: "secondary-tiered-rate-rule-display-card-variable-name"
     },
     explainer: {
-        id: ""
+        id: "secondary-tiered-rate-rule-display-card-explainer"
     },
     primaryRule: {
-        id: ""
+        id: "secondary-tiered-rate-rule-display-card-primary-rule"
     }
 };
