@@ -224,61 +224,61 @@ const questionDisplayContainer = {
 
 const booleanQuestionDisplay = {
     card: {
-        id: ""
+        id: "boolean-question-display-card"
     },
     questionText: {
-        id: ""
+        id: "boolean-question-display-text"
     },
     variableName: {
-        id: ""
+        id: "boolean-question-display-variable-name"
     },
     explainer: {
-        id: ""
+        id: "boolean-question-display-explainer"
     },
     isMandatory: {
-        id: ""
+        id: "boolean-question-display-mandatory"
     }
 };
 
 const numericQuestionDisplay = {
     card: {
-        id: ""
+        id: "numeric-question-display-card"
     },
     questionText: {
-        id: ""
+        id: "numeric-question-display-text"
     },
     variableName: {
-        id: ""
+        id: "numeric-question-display-variable-name"
     },
     explainer: {
-        id: ""
+        id: "numeric-question-display-explainer"
     },
     isMandatory: {
-        id: ""
+        id: "numeric-question-display-mandatory"
     },
-    validRuleSummary: {
-        id: ""
+    validationRuleSummary: {
+        id: "numeric-question-display-validation-rule-summary"
     }
 };
 
 const multipleChoiceQuestionDisplay = {
     card: {
-        id: ""
+        id: "multichoice-question-display-card"
     },
     questionText: {
-        id: ""
+        id: "multichoice-question-display-text"
     },
     variableName: {
-        id: ""
+        id: "multichoice-question-display-variable-name"
     },
     explainer: {
-        id: ""
+        id: "multichoice-question-display-explainer"
     },
     isMandatory: {
-        id: ""
+        id: "multichoice-question-display-mandatory"
     },
     isMultiselect: {
-        id: ""
+        id: "multichoice-question-display-multiselect"
     }
 };
 
