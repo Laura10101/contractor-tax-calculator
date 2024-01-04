@@ -33,16 +33,16 @@
     {% endblock %}
     
     <title>Contractor Tax Calculator - Configure Rules</title>
-  </head>
-  <body>
+    </head>
+    <body>
     <header class="container-fluid fixed-top">
-      <div id="topnav" class="row bg-white pt-lg-2 d-none d-lg-flex">
-          <div class="col-12 col-lg-4 my-auto py-1 py-lg-0 text-center text-lg-left">
-              <a href="" class="nav-link main-logo-link">
-                  <h2 class="logo-font text-black my-0"><strong>Tax</strong> Calculator</h2>
-              </a>
-          </div>
-          <div class="col-12 col-lg-4 my-auto py-1 py-lg-0 text-center text-lg-left">
+        <div id="topnav" class="row bg-white pt-lg-2 d-none d-lg-flex">
+            <div class="col-12 col-lg-4 my-auto py-1 py-lg-0 text-center text-lg-left">
+                <a href="" class="nav-link main-logo-link">
+                    <h2 class="logo-font text-black my-0"><strong>Tax</strong> Calculator</h2>
+                </a>
+            </div>
+            <div class="col-12 col-lg-4 my-auto py-1 py-lg-0 text-center text-lg-left">
             <div class="dropdown">
                 <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
                     Select Jurisdiction
@@ -62,9 +62,277 @@
                     </button>
                 </div>
             </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Question type dialog -->
+    <div class="modal fade" id="questionTypeModal" tabindex="-1" aria-labelledby="questionTypeModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Select Question Type</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            Which type of question should be created?
+                        </div>
+                        <div class="col">
+                            <select class="custom-select">
+                                <option value="boolean">Boolean</option>
+                                <option value="numeric">Numeric</option>
+                                <option value="multiple_choice">Multiple choice</option>
+                              </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
           </div>
-      </div>
-  </header>
+        </div>
+    </div>
+    <!-- End question type dialog -->
+
+    <!-- Boolean question dialog -->
+    <div class="modal fade" id="booleanQuestionModal" tabindex="-1" aria-labelledby="booleanQuestionModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Create Boolean Question</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            Question text
+                        </div>
+                        <div class="col">
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            Explainer
+                        </div>
+                        <div class="col">
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            Variable Name
+                        </div>
+                        <div class="col">
+                            <input class="form-control" type="text">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            Mandatory?
+                        </div>
+                        <div class="col">
+                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </div>
+    </div>
+    <!-- End boolean question dialog -->
+
+    <!-- Numeric question dialog -->
+    <div class="modal fade" id="numericQuestionModal" tabindex="-1" aria-labelledby="numericQuestionModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Create Numeric Question</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            Question text
+                        </div>
+                        <div class="col">
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            Explainer
+                        </div>
+                        <div class="col">
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            Variable Name
+                        </div>
+                        <div class="col">
+                            <input class="form-control" type="text">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            Mandatory?
+                        </div>
+                        <div class="col">
+                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            Integer (non-decimal)?
+                        </div>
+                        <div class="col">
+                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <p>Minimum value</p>
+                            <p>Leave blank if none</p>
+                        </div>
+                        <div class="col">
+                            <input class="form-control" type="text">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <p>Maximum value</p>
+                            <p>Leave blank if none</p>
+                        </div>
+                        <div class="col">
+                            <input class="form-control" type="text">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </div>
+    </div>
+    <!-- End numeric question dialog -->
+
+    <!-- Multiple choice question dialog -->
+    <div class="modal fade" id="multipleChoiceQuestionModal" tabindex="-1" aria-labelledby="multipleChoiceModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="multipleChoiceModalLabel">Create Multiple Choice Question</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            Question text
+                        </div>
+                        <div class="col">
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            Explainer
+                        </div>
+                        <div class="col">
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            Variable Name
+                        </div>
+                        <div class="col">
+                            <input class="form-control" type="text">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            Mandatory?
+                        </div>
+                        <div class="col">
+                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            Allow multiselect?
+                        </div>
+                        <div class="col">
+                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            Options
+                        </div>
+                        <div class="col">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col">
+                                        <i class="fas fa-plus"></i> Option
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <table class="table">
+                                            <tr>
+                                                <td>Option text</td>
+                                                <td><i class="fas fa-trash-alt"></i></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </div>
+    </div>
+    <!-- End multiple choice question dialog -->
+
+    <!-- Flat rate rule dialog -->
+    <!-- End flat rate rule dialog -->
+
+    <!-- Tiered rate rule dialog -->
+    <!-- End tiered rate rule dialog -->
+
+    <!-- Secondary tiered rate rule dialog -->
+    <!-- End secondary tiered rate rule dialog -->
+
     <div class="content content-container">
         {% block content %}
             <div class="row">
@@ -80,7 +348,7 @@
                         <!-- Form manager options -->
                         <div class="row">
                             <div class="col">
-                                <button type="button" class="btn btn-primary">
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#questionTypeModal">
                                     <i class="fas fa-plus"></i> Question
                                 </button>
                             </div>
@@ -101,7 +369,7 @@
                                                     </td>
                                                     <td>Text</td>
                                                     <td rowspan="4">
-                                                        <i class="fas fa-edit"></i>
+                                                        <i class="fas fa-edit" data-toggle="modal" data-target="#booleanQuestionModal"></i>
                                                         <i class="fas fa-trash-alt"></i>
                                                         <i class="fas fa-arrow-up"></i>
                                                         <i class="fas fa-arrow-down"></i>
@@ -138,7 +406,7 @@
                                                     </td>
                                                     <td>Text</td>
                                                     <td rowspan="5">
-                                                        <i class="fas fa-edit"></i>
+                                                        <i class="fas fa-edit" data-toggle="modal" data-target="#numericQuestionModal"></i>
                                                         <i class="fas fa-trash-alt"></i>
                                                         <i class="fas fa-arrow-up"></i>
                                                         <i class="fas fa-arrow-down"></i>
@@ -178,7 +446,7 @@
                                                     </td>
                                                     <td>Text</td>
                                                     <td rowspan="5">
-                                                        <i class="fas fa-edit"></i>
+                                                        <i class="fas fa-edit" data-toggle="modal" data-target="#multipleChoiceQuestionModal"></i>
                                                         <i class="fas fa-trash-alt"></i>
                                                         <i class="fas fa-arrow-up"></i>
                                                         <i class="fas fa-arrow-down"></i>
