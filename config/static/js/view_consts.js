@@ -219,6 +219,66 @@ multipleChoiceQuestionDialog = {
  * Question Display Constants
  */
 
+booleanQuestionDisplay = {
+    card: {
+        id: ""
+    },
+    questionText: {
+        id: ""
+    },
+    variableName: {
+        id: ""
+    },
+    explainer: {
+        id: ""
+    },
+    isMandatory: {
+        id: ""
+    }
+};
+
+numericQuestionDisplay = {
+    card: {
+        id: ""
+    },
+    questionText: {
+        id: ""
+    },
+    variableName: {
+        id: ""
+    },
+    explainer: {
+        id: ""
+    },
+    isMandatory: {
+        id: ""
+    },
+    validRuleSummary: {
+        id: ""
+    }
+};
+
+multipleChoiceQuestionDisplay = {
+    card: {
+        id: ""
+    },
+    questionText: {
+        id: ""
+    },
+    variableName: {
+        id: ""
+    },
+    explainer: {
+        id: ""
+    },
+    isMandatory: {
+        id: ""
+    },
+    isMultiselect: {
+        id: ""
+    }
+};
+
 /*
  * Rule Dialog Constants
  */
