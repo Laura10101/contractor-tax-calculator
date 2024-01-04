@@ -30,6 +30,7 @@
     {% endblock %}
 
     {% block extra_js %}
+        <script src="{% static 'js/view_consts.js' %}"></script>
     {% endblock %}
     
     <title>Contractor Tax Calculator - Configure Rules</title>
@@ -729,7 +730,7 @@
             <div class="tab-content" id="nav-tabContent">
                 <!-- Forms config -->
                 <div class="tab-pane fade show active" id="nav-forms" role="tabpanel" aria-labelledby="nav-forms-tab">
-                    <div class="content">
+                    <div class="container">
                         <!-- Form manager options -->
                         <div class="row">
                             <div class="col">
@@ -739,118 +740,121 @@
                             </div>
                         </div>
                         <!-- End form manager options -->
+                        <div class="row">
+                            <div class="col">
+                                <!-- Boolean question -->
+                                <div class="card">
+                                    <div class="card-body">
+                                        <table class="table table-borderless">
+                                            <tbody>
+                                                <tr>
+                                                    <td rowspan="4">
+                                                        <i class="fas fa-toggle-on"></i>
+                                                        Boolean Question
+                                                    </td>
+                                                    <td>Text</td>
+                                                    <td rowspan="4">
+                                                        <i class="fas fa-edit" data-toggle="modal" data-target="#booleanQuestionModal"></i>
+                                                        <i class="fas fa-trash-alt"></i>
+                                                        <i class="fas fa-arrow-up"></i>
+                                                        <i class="fas fa-arrow-down"></i>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Variable Name</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Explainer</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Mandatory</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!-- End boolean question -->
 
-                        <!-- Boolean question -->
-                        <div class="card">
-                            <div class="card-body">
-                                <table class="table table-borderless">
-                                    <tbody>
-                                        <tr>
-                                            <td rowspan="4">
-                                                <i class="fas fa-toggle-on"></i>
-                                                Boolean Question
-                                            </td>
-                                            <td>Text</td>
-                                            <td rowspan="4">
-                                                <i class="fas fa-edit" data-toggle="modal" data-target="#booleanQuestionModal"></i>
-                                                <i class="fas fa-trash-alt"></i>
-                                                <i class="fas fa-arrow-up"></i>
-                                                <i class="fas fa-arrow-down"></i>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Variable Name</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Explainer</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Mandatory</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                <!-- Numeric question -->
+                                <div class="card">
+                                    <div class="card-body">
+                                        <table class="table table-borderless">
+                                            <tbody>
+                                                <tr>
+                                                    <td rowspan="5">
+                                                        <i class="fas fa-chart-pie"></i>
+                                                        Numeric Question
+                                                    </td>
+                                                    <td>Text</td>
+                                                    <td rowspan="5">
+                                                        <i class="fas fa-edit" data-toggle="modal" data-target="#numericQuestionModal"></i>
+                                                        <i class="fas fa-trash-alt"></i>
+                                                        <i class="fas fa-arrow-up"></i>
+                                                        <i class="fas fa-arrow-down"></i>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Variable Name</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Explainer</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Mandatory</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Integer between 0 and 100</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!-- End numeric question -->
+
+                                <!-- Multiple choice question -->
+                                <div class="card">
+                                    <div class="card-body">
+                                        <table class="table table-borderless">
+                                            <tbody>
+                                                <tr>
+                                                    <td rowspan="5">
+                                                        <i class="fas fa-tasks"></i>
+                                                        Multiple Choice Question
+                                                    </td>
+                                                    <td>Text</td>
+                                                    <td rowspan="5">
+                                                        <i class="fas fa-edit" data-toggle="modal" data-target="#multipleChoiceQuestionModal"></i>
+                                                        <i class="fas fa-trash-alt"></i>
+                                                        <i class="fas fa-arrow-up"></i>
+                                                        <i class="fas fa-arrow-down"></i>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Variable Name</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Explainer</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Mandatory</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Multiselect</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!-- End multiple choice question -->
                             </div>
                         </div>
-                        <!-- End boolean question -->
-
-                        <!-- Numeric question -->
-                        <div class="card">
-                            <div class="card-body">
-                                <table class="table table-borderless">
-                                    <tbody>
-                                        <tr>
-                                            <td rowspan="5">
-                                                <i class="fas fa-chart-pie"></i>
-                                                Numeric Question
-                                            </td>
-                                            <td>Text</td>
-                                            <td rowspan="5">
-                                                <i class="fas fa-edit" data-toggle="modal" data-target="#numericQuestionModal"></i>
-                                                <i class="fas fa-trash-alt"></i>
-                                                <i class="fas fa-arrow-up"></i>
-                                                <i class="fas fa-arrow-down"></i>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Variable Name</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Explainer</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Mandatory</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Integer between 0 and 100</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <!-- End numeric question -->
-
-                        <!-- Multiple choice question -->
-                        <div class="card">
-                            <div class="card-body">
-                                <table class="table table-borderless">
-                                    <tbody>
-                                        <tr>
-                                            <td rowspan="5">
-                                                <i class="fas fa-tasks"></i>
-                                                Multiple Choice Question
-                                            </td>
-                                            <td>Text</td>
-                                            <td rowspan="5">
-                                                <i class="fas fa-edit" data-toggle="modal" data-target="#multipleChoiceQuestionModal"></i>
-                                                <i class="fas fa-trash-alt"></i>
-                                                <i class="fas fa-arrow-up"></i>
-                                                <i class="fas fa-arrow-down"></i>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Variable Name</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Explainer</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Mandatory</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Multiselect</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <!-- End multiple choice question -->
                     </div>
                 </div>
                 <!-- End forms config -->
 
                 <!-- Rules config -->
                 <div class="tab-pane fade" id="nav-rules" role="tabpanel" aria-labelledby="nav-rules-tab">
-                    <div class="content">
+                    <div class="container">
                         <!-- Rule manager options -->
                         <div class="row">
                             <div class="col">
@@ -861,139 +865,143 @@
                         </div>
                         <!-- Rule form manager options -->
 
-                        <!-- Ruleset -->
                         <div class="row">
                             <div class="col">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <table class="table table-borderless">
-                                            <tbody>
-                                                <tr>
-                                                    <!-- Ruleset details -->
-                                                    <td>
-                                                        <i class="fas fa-list-ol"></i>
-                                                        <p>Ruleset name</p>
-                                                        <p>Tax category name</p>
-                                                    </td>
-                                                    <!-- End ruleset details -->
+                                <!-- Ruleset -->
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <table class="table table-borderless">
+                                                    <tbody>
+                                                        <tr>
+                                                            <!-- Ruleset details -->
+                                                            <td>
+                                                                <i class="fas fa-list-ol"></i>
+                                                                <p>Ruleset name</p>
+                                                                <p>Tax category name</p>
+                                                            </td>
+                                                            <!-- End ruleset details -->
 
-                                                    <!-- Rules -->
-                                                    <td>
-                                                        <!-- Flat rate rule -->
-                                                        <div class="card">
-                                                            <div class="card-body">
-                                                                <table class="table table-borderless">
-                                                                    <tbody>
-                                                                        <tr>
-                                                                            <td rowspan="4">
-                                                                                <i class="fas fa-percent"></i>
-                                                                                Flat rate rule
-                                                                            </td>
-                                                                            <td>Name</td>
-                                                                            <td rowspan="4">
-                                                                                <i class="fas fa-edit" data-toggle="modal" data-target="#flatRateRuleModal"></i>
-                                                                                <i class="fas fa-trash-alt"></i>
-                                                                                <i class="fas fa-arrow-up"></i>
-                                                                                <i class="fas fa-arrow-down"></i>
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>Variable Name</td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>Explainer</td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>Flat rate</td>
-                                                                        </tr>
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                        <!-- End flat rate rule -->
+                                                            <!-- Rules -->
+                                                            <td>
+                                                                <!-- Flat rate rule -->
+                                                                <div class="card">
+                                                                    <div class="card-body">
+                                                                        <table class="table table-borderless">
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td rowspan="4">
+                                                                                        <i class="fas fa-percent"></i>
+                                                                                        Flat rate rule
+                                                                                    </td>
+                                                                                    <td>Name</td>
+                                                                                    <td rowspan="4">
+                                                                                        <i class="fas fa-edit" data-toggle="modal" data-target="#flatRateRuleModal"></i>
+                                                                                        <i class="fas fa-trash-alt"></i>
+                                                                                        <i class="fas fa-arrow-up"></i>
+                                                                                        <i class="fas fa-arrow-down"></i>
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Variable Name</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Explainer</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Flat rate</td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- End flat rate rule -->
 
-                                                        <!-- Tiered rate rule -->
-                                                        <div class="card">
-                                                            <div class="card-body">
-                                                                <table class="table table-borderless">
-                                                                    <tbody>
-                                                                        <tr>
-                                                                            <td rowspan="3">
-                                                                                <i class="fas fa-layer-group"></i>
-                                                                                Tiered rate rule
-                                                                            </td>
-                                                                            <td>Name</td>
-                                                                            <td rowspan="3">
-                                                                                <i class="fas fa-edit" data-toggle="modal" data-target="#tieredRateRuleModal"></i>
-                                                                                <i class="fas fa-trash-alt"></i>
-                                                                                <i class="fas fa-arrow-up"></i>
-                                                                                <i class="fas fa-arrow-down"></i>
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>Variable Name</td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>Explainer</td>
-                                                                        </tr>
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                        <!-- End tiered rate rule -->
+                                                                <!-- Tiered rate rule -->
+                                                                <div class="card">
+                                                                    <div class="card-body">
+                                                                        <table class="table table-borderless">
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td rowspan="3">
+                                                                                        <i class="fas fa-layer-group"></i>
+                                                                                        Tiered rate rule
+                                                                                    </td>
+                                                                                    <td>Name</td>
+                                                                                    <td rowspan="3">
+                                                                                        <i class="fas fa-edit" data-toggle="modal" data-target="#tieredRateRuleModal"></i>
+                                                                                        <i class="fas fa-trash-alt"></i>
+                                                                                        <i class="fas fa-arrow-up"></i>
+                                                                                        <i class="fas fa-arrow-down"></i>
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Variable Name</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Explainer</td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- End tiered rate rule -->
 
-                                                        <!-- Secondary tiered rate rule -->
-                                                        <div class="card">
-                                                            <div class="card-body">
-                                                                <table class="table table-borderless">
-                                                                    <tbody>
-                                                                        <tr>
-                                                                            <td rowspan="4">
-                                                                                <i class="fas fa-link"></i>
-                                                                                Secondary tiered rate rule
-                                                                            </td>
-                                                                            <td>Name</td>
-                                                                            <td rowspan="4">
-                                                                                <i class="fas fa-edit" data-toggle="modal" data-target="#secondaryTieredRateRuleModal" ></i>
-                                                                                <i class="fas fa-trash-alt"></i>
-                                                                                <i class="fas fa-arrow-up"></i>
-                                                                                <i class="fas fa-arrow-down"></i>
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>Variable Name</td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>Explainer</td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>Primary rule</td>
-                                                                        </tr>
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                        <!-- End secondary tiered rate rule -->
-                                                    </td>
-                                                    <!-- End rules -->
+                                                                <!-- Secondary tiered rate rule -->
+                                                                <div class="card">
+                                                                    <div class="card-body">
+                                                                        <table class="table table-borderless">
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td rowspan="4">
+                                                                                        <i class="fas fa-link"></i>
+                                                                                        Secondary tiered rate rule
+                                                                                    </td>
+                                                                                    <td>Name</td>
+                                                                                    <td rowspan="4">
+                                                                                        <i class="fas fa-edit" data-toggle="modal" data-target="#secondaryTieredRateRuleModal" ></i>
+                                                                                        <i class="fas fa-trash-alt"></i>
+                                                                                        <i class="fas fa-arrow-up"></i>
+                                                                                        <i class="fas fa-arrow-down"></i>
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Variable Name</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Explainer</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Primary rule</td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- End secondary tiered rate rule -->
+                                                            </td>
+                                                            <!-- End rules -->
 
-                                                    <!-- Ruleset actions -->
-                                                    <td>
-                                                        <i class="fas fa-plus" data-toggle="modal" data-target="#ruleTypeModal"></i>
-                                                        <i class="fas fa-edit"></i>
-                                                        <i class="fas fa-trash-alt"></i>
-                                                        <i class="fas fa-arrow-up"></i>
-                                                        <i class="fas fa-arrow-down"></i>
-                                                    </td>
-                                                    <!-- End ruleset actions -->
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                                            <!-- Ruleset actions -->
+                                                            <td>
+                                                                <i class="fas fa-plus" data-toggle="modal" data-target="#ruleTypeModal"></i>
+                                                                <i class="fas fa-edit"></i>
+                                                                <i class="fas fa-trash-alt"></i>
+                                                                <i class="fas fa-arrow-up"></i>
+                                                                <i class="fas fa-arrow-down"></i>
+                                                            </td>
+                                                            <!-- End ruleset actions -->
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+                                <!-- End ruleset -->
                             </div>
                         </div>
-                        <!-- End ruleset -->
                     </div>
                 </div>
                 <!-- End rules config -->
