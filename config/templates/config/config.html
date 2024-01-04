@@ -488,7 +488,7 @@
                                 <div class="row">
                                     <div class="col">
                                         <h5>
-                                            Tiers <i class="fas fa-plus"></i>
+                                            Tiers <i class="fas fa-plus" data-toggle="modal" data-target="#ruleTierModal"></i>
                                         </h5>
                                     </div>
                                 </div>
@@ -511,6 +511,8 @@
                                                     <td>
                                                         <i class="fas fa-edit" data-toggle="modal" data-target="#ruleTierModal"></i>
                                                         <i class="fas fa-trash-alt"></i>
+                                                        <i class="fas fa-arrow-up"></i>
+                                                        <i class="fas fa-arrow-down"></i>
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -582,7 +584,7 @@
                                 <div class="row">
                                     <div class="col">
                                         <h5>
-                                            Tiers <i class="fas fa-plus"></i>
+                                            Tiers <i class="fas fa-plus" data-toggle="modal" data-target="#secondaryRuleTierModal"></i>
                                         </h5>
                                     </div>
                                 </div>
@@ -605,6 +607,8 @@
                                                     <td>
                                                         <i class="fas fa-edit" data-toggle="modal" data-target="#ruleTierModal"></i>
                                                         <i class="fas fa-trash-alt"></i>
+                                                        <i class="fas fa-arrow-up"></i>
+                                                        <i class="fas fa-arrow-down"></i>
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -624,6 +628,95 @@
         </div>
     </div>
     <!-- End secondary tiered rate rule dialog -->
+
+    <!-- Rule tier dialog -->
+    <div class="modal fade" id="ruleTierModal" tabindex="-1" aria-labelledby="ruleTierModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="ruleTierModalLabel">Create Tier for Tiered Rate Rule</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <p>Minimum value</p>
+                            <p>Leave blank if none</p>
+                        </div>
+                        <div class="col">
+                            <input class="form-control" type="text">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <p>Maximum value</p>
+                            <p>Leave blank if none</p>
+                        </div>
+                        <div class="col">
+                            <input class="form-control" type="text">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            Tax Rate
+                        </div>
+                        <div class="col">
+                            <input class="form-control" type="text">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </div>
+    </div>
+    <!-- End rule tier dialog -->
+
+    <!-- Secondary rule tier dialog -->
+    <div class="modal fade" id="secondaryRuleTierModal" tabindex="-1" aria-labelledby="secondaryRuleTierModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="secondaryRuleTierModalLabel">Create Tier for Secondary Tiered Rate Rule</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            Primary Tier
+                        </div>
+                        <div class="col">
+                            <select class="custom-select">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            Tax Rate
+                        </div>
+                        <div class="col">
+                            <input class="form-control" type="text">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </div>
+    </div>
+    <!-- End secondary rule tier dialog -->
 
     <div class="content content-container">
         {% block content %}
