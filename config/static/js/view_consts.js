@@ -501,3 +501,68 @@ secondaryRuleTierDialog = {
 /*
  * Rule Display Constants
  */
+rulesetDisplay = {
+    card: {
+        id: ""
+    },
+    name: {
+        id: ""
+    },
+    taxCategpry: {
+        id: ""
+    },
+    rules: {
+        id: ""
+    }
+};
+
+flatRateRuleDisplay = {
+    card: {
+        id: ""
+    },
+    name: {
+        id: ""
+    },
+    variableName: {
+        id: ""
+    },
+    explainer: {
+        id: ""
+    },
+    taxRate: {
+        id: ""
+    }
+};
+
+tieredRateRuleDisplay = {
+    card: {
+        id: ""
+    },
+    name: {
+        id: ""
+    },
+    variableName: {
+        id: ""
+    },
+    explainer: {
+        id: ""
+    }
+};
+
+secondaryTieredRateRuleDisplay = {
+    card: {
+        id: ""
+    },
+    name: {
+        id: ""
+    },
+    variableName: {
+        id: ""
+    },
+    explainer: {
+        id: ""
+    },
+    primaryRule: {
+        id: ""
+    }
+};
