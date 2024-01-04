@@ -6,210 +6,210 @@
 /*
  * Question Dialog Constants
  */
-questionTypeDialog = {
+const questionTypeDialog = {
     dialog: {
-        id: ""
+        id: "question-type-modal"
     },
 
     label: {
-        id: ""
+        id: "question-type-modal-label"
     },
 
     questionType: {
         label: {
-            id: ""
+            id: "question-type-modal-input-label"
         },
 
         input: {
-            id: ""
+            id: "question-type-modal-input-label"
         }
     }
 };
 
-booleanQuestionDialog = {
+const booleanQuestionDialog = {
     dialog: {
-        id: ""
+        id: "boolean-question-modal"
     },
 
     label: {
-        id: ""
+        id: "boolean-question-modal-label"
     },
 
     questionText: {
         label: {
-            id: ""
+            id: "boolean-question-modal-question-text-label"
         },
         input: {
-            id: ""
+            id: "boolean-question-modal-question-text-input"
         }
     },
 
     explainer: {
         label: {
-            id: ""
+            id: "boolean-question-modal-explainer-label"
         },
         input: {
-            id: ""
+            id: "boolean-question-modal-explainer-input"
         }
     },
 
     variableName: {
         label: {
-            id: ""
+            id: "boolean-question-modal-variable-name-label"
         },
         input: {
-            id: ""
+            id: "boolean-question-modal-variable-name-input"
         }
     },
 
     isMandatory: {
         label: {
-            id: ""
+            id: "boolean-question-modal-mandatory-label"
         },
         input: {
-            id: ""
+            id: "boolean-question-modal-mandatory-input"
         }
     }
 };
 
-numericQuestionDialog = {
+const numericQuestionDialog = {
     dialog: {
-        id: ""
+        id: "numeric-question-modal"
     },
 
     label: {
-        id: ""
+        id: "numeric-question-modal-label"
     },
 
     questionText: {
         label: {
-            id: ""
+            id: "numeric-question-modal-question-text-label"
         },
         input: {
-            id: ""
+            id: "numeric-question-modal-question-text-input"
         }
     },
 
     explainer: {
         label: {
-            id: ""
+            id: "numeric-question-modal-explainer-label"
         },
         input: {
-            id: ""
+            id: "numeric-question-modal-explainer-input"
         }
     },
 
     variableName: {
         label: {
-            id: ""
+            id: "numeric-question-modal-variable-name-label"
         },
         input: {
-            id: ""
+            id: "numeric-question-modal-variable-name-input"
         }
     },
 
     isMandatory: {
         label: {
-            id: ""
+            id: "numeric-question-modal-mandatory-label"
         },
         input: {
-            id: ""
+            id: "numeric-question-modal-mandatory-input"
         }
     },
 
     isInteger: {
         label: {
-            id: ""
+            id: "numeric-question-modal-is-integer-label"
         },
         input: {
-            id: ""
+            id: "numeric-question-modal-is-integer-input"
         }
     },
 
     minimumValue: {
         label: {
-            id: ""
+            id: "numeric-question-modal-min-label"
         },
         input: {
-            id: ""
+            id: "numeric-question-modal-min-input"
         }
     },
 
     maxiumValue: {
         label: {
-            id: ""
+            id: "numeric-question-modal-max-label"
         },
         input: {
-            id: ""
+            id: "numeric-question-modal-max-input"
         }
     }
 };
 
-multipleChoiceQuestionDialog = {
+const multipleChoiceQuestionDialog = {
     dialog: {
-        id: ""
+        id: "multichoice-question-modal"
     },
 
     label: {
-        id: ""
+        id: "multichoice-question-modal-label"
     },
 
     questionText: {
         label: {
-            id: ""
+            id: "multichoice-question-modal-question-text-label"
         },
         input: {
-            id: ""
+            id: "multichoice-question-modal-question-text-input"
         }
     },
 
     explainer: {
         label: {
-            id: ""
+            id: "multichoice-question-modal-explainer-label"
         },
         input: {
-            id: ""
+            id: "multichoice-question-modal-explainer-input"
         }
     },
 
     variableName: {
         label: {
-            id: ""
+            id: "multichoice-question-modal-variable-name-label"
         },
         input: {
-            id: ""
+            id: "multichoice-question-modal-variable-name-input"
         }
     },
 
     isMandatory: {
         label: {
-            id: ""
+            id: "multichoice-question-modal-mandatory-label"
         },
         input: {
-            id: ""
+            id: "multichoice-question-modal-mandatory-input"
         }
     },
 
     allowMultiselect: {
         label: {
-            id: ""
+            id: "multichoice-question-modal-multiselect-label"
         },
         input: {
-            id: ""
+            id: "multichoice-question-modal-multiselect-input"
         }
     },
 
     options: {
         label: {
-            id: ""
+            id: "multichoice-question-modal-options-label"
         },
         table: {
-            id: ""
+            id: "multichoice-question-modal-options-table"
         },
         optionRow: {
-            id: "",
+            id: "multichoice-question-modal-options-row",
             textCell: {
-                id: ""
+                id: "multichoice-question-modal-options-text"
             }
         }
     }
@@ -218,11 +218,11 @@ multipleChoiceQuestionDialog = {
 /*
  * Question Display Constants
  */
-questionDisplayContainer = {
-    id: ""
+const questionDisplayContainer = {
+    id: "questionsDisplayContainer"
 };
 
-booleanQuestionDisplay = {
+const booleanQuestionDisplay = {
     card: {
         id: ""
     },
@@ -240,7 +240,7 @@ booleanQuestionDisplay = {
     }
 };
 
-numericQuestionDisplay = {
+const numericQuestionDisplay = {
     card: {
         id: ""
     },
@@ -261,7 +261,7 @@ numericQuestionDisplay = {
     }
 };
 
-multipleChoiceQuestionDisplay = {
+const multipleChoiceQuestionDisplay = {
     card: {
         id: ""
     },
@@ -285,7 +285,7 @@ multipleChoiceQuestionDisplay = {
 /*
  * Rule Dialog Constants
  */
-rulesetDialog = {
+const rulesetDialog = {
     dialog: {
         id: ""
     },
@@ -305,7 +305,7 @@ rulesetDialog = {
     }
 };
 
-ruleTypeDialog = {
+const ruleTypeDialog = {
     dialog: {
         id: ""
     },
@@ -325,7 +325,7 @@ ruleTypeDialog = {
     }
 };
 
-flatRateRuleDialog = {
+const flatRateRuleDialog = {
     dialog: {
         id: ""
     },
@@ -371,7 +371,7 @@ flatRateRuleDialog = {
     }
 };
 
-tieredRateRuleDialog = {
+const tieredRateRuleDialog = {
     dialog: {
         id: ""
     },
@@ -429,7 +429,7 @@ tieredRateRuleDialog = {
     }
 };
 
-secondaryTieredRateRuleDialog = {
+const secondaryTieredRateRuleDialog = {
     dialog: {
         id: ""
     },
@@ -496,7 +496,7 @@ secondaryTieredRateRuleDialog = {
     }
 };
 
-ruleTierDialog = {
+const ruleTierDialog = {
     dialog: {
         id: ""
     },
@@ -533,7 +533,7 @@ ruleTierDialog = {
     }
 };
 
-secondaryRuleTierDialog = {
+const secondaryRuleTierDialog = {
     dialog: {
         id: ""
     },
@@ -564,11 +564,11 @@ secondaryRuleTierDialog = {
 /*
  * Rule Display Constants
  */
-rulesetDisplayContainer = {
-    id: ""
+const rulesetsDisplayContainer = {
+    id: "rulesetsDisplayContainer"
 };
 
-rulesetDisplay = {
+const rulesetDisplay = {
     card: {
         id: ""
     },
@@ -583,7 +583,7 @@ rulesetDisplay = {
     }
 };
 
-flatRateRuleDisplay = {
+const flatRateRuleDisplay = {
     card: {
         id: ""
     },
@@ -601,7 +601,7 @@ flatRateRuleDisplay = {
     }
 };
 
-tieredRateRuleDisplay = {
+const tieredRateRuleDisplay = {
     card: {
         id: ""
     },
@@ -616,7 +616,7 @@ tieredRateRuleDisplay = {
     }
 };
 
-secondaryTieredRateRuleDisplay = {
+const secondaryTieredRateRuleDisplay = {
     card: {
         id: ""
     },
