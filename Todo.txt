@@ -1,5 +1,48 @@
-- Complete calculation_results.html template
-- Automated testing for views
 - Fix all bugs
 - Look and feel for user apps
 - Add custom jurisdiction management app
+
+- Forms API:
+  * Post Form - NOT NEEDED
+  * Get form by jurisdiction IDs - Displaying form, config app
+  * Delete form - NOT NEEDED
+  * Post question - Config
+  * Delete question - Config
+  * Update question - Config
+  * Post multiple choice option - Config
+  * Delete multiple choice option - Config
+
+- Rules API:
+  * Post ruleset - config
+  * Delete ruleset - config
+  * Post tax category - config
+  * Delete tax category - config
+  * Post rule - config
+  * Delete rule - config
+  * Update rule - config
+  * Post rule tier - config
+  * Delete rule tier - config
+  * Update rule tier - config
+  * Post secondary rule tier - config
+  * Delete secondary rule tier - config
+  * Update secondary rule tier - config
+  * Post tax calculation - config
+  * Get tax calculations - config
+
+- Payments API:
+  * Post payment - after selecting option
+  * Update payment - on checkout submission
+  * Get payment status - when displaying checkout status
+  * Post stripe webhook - by stripe
+
+- Subscriptions API:
+  * Post subscription - Not needed
+  * Update subscription - Not needed
+  * Get subscription options - Display subscription options
+  * Get subscription option - Not needed?
+  * Get subscription status - Check subscription status
+
+- Jurisdiction API:
+  - Get by ids - multiple places
+  - Delete by ids - config
+  - Post jurisdiction - config
