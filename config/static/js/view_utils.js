@@ -544,3 +544,113 @@ function displayEditFlatRateRuleDialog(tier) {
 /*
  * Rule Display Helper Functions
  */
+function displayFlatRateRule(rulesetRulesDisplay, rule) {
+    ruleDisplay = document.getElementById(flatRateRuleDisplay.card.id).cloneNode(true);
+    ruleDisplay.id += "-" + ruleDisplay.id;
+    
+    ruleNameDisplay = ruleDisplay.querySelector("#" + flatRateRuleDisplay.name.id);
+    ruleNameDisplay.id += "-" + rule.id;
+    ruleNameDisplay.innerHTML = rule.name;
+
+    ruleVariableNameDisplay = ruleDisplay.querySelector("#" + flatRateRuleDisplay.variableName.id);
+    ruleVariableNameDisplay.id += "-" + rule.id;
+    ruleVariableNameDisplay.innerHTML = rule.variable_name;
+
+    ruleExplainerDisplay = ruleDisplay.querySelector("#" + flatRateRuleDisplay.explainer.id);
+    ruleExplainerDisplay.id += "-" + rule.id;
+    ruleExplainerDisplay.innerHTML = rule.explainer;
+
+    ruleTaxRateDisplay = ruleDisplay.querySelector("#" + flatRateRuleDisplay.taxRate.id);
+    ruleTaxRateDisplay.id += "-" + rule.id;
+    ruleTaxRateDisplay.innerHTML = rule.flat_rate;
+    
+    rulesetRulesDisplay.add(ruleDisplay);
+}
+
+function displayTieredRateRule(rulesetRulesDisplay, rule) {
+    ruleDisplay = document.getElementById(tieredRateRuleDisplay.card.id).cloneNode(true);
+    ruleDisplay.id += "-" + ruleDisplay.id;
+    
+    ruleNameDisplay = ruleDisplay.querySelector("#" + tieredRateRuleDisplay.name.id);
+    ruleNameDisplay.id += "-" + rule.id;
+    ruleNameDisplay.innerHTML = rule.name;
+
+    ruleVariableNameDisplay = ruleDisplay.querySelector("#" + tieredRateRuleDisplay.variableName.id);
+    ruleVariableNameDisplay.id += "-" + rule.id;
+    ruleVariableNameDisplay.innerHTML = rule.variable_name;
+
+    ruleExplainerDisplay = ruleDisplay.querySelector("#" + tieredRateRuleDisplay.explainer.id);
+    ruleExplainerDisplay.id += "-" + rule.id;
+    ruleExplainerDisplay.innerHTML = rule.explainer;
+    
+    rulesetRulesDisplay.add(rulesDisplay);
+}
+
+function displaySecondaryTieredRateRule(rulesetRulesDisplay, rule) {
+    ruleDisplay = document.getElementById(secondaryTieredRateRuleDisplay.card.id).cloneNode(true);
+    ruleDisplay.id += "-" + ruleDisplay.id;
+    
+    ruleNameDisplay = ruleDisplay.querySelector("#" + secondaryTieredRateRuleDisplay.name.id);
+    ruleNameDisplay.id += "-" + rule.id;
+    ruleNameDisplay.innerHTML = rule.name;
+
+    ruleVariableNameDisplay = ruleDisplay.querySelector("#" + secondaryTieredRateRuleDisplay.variableName.id);
+    ruleVariableNameDisplay.id += "-" + rule.id;
+    ruleVariableNameDisplay.innerHTML = rule.variable_name;
+
+    ruleExplainerDisplay = ruleDisplay.querySelector("#" + secondaryTieredRateRuleDisplay.explainer.id);
+    ruleExplainerDisplay.id += "-" + rule.id;
+    ruleExplainerDisplay.innerHTML = rule.explainer;
+
+    ruleExplainerDisplay = ruleDisplay.querySelector("#" + secondaryTieredRateRuleDisplay.primaryRule.id);
+    ruleExplainerDisplay.id += "-" + rule.id;
+    ruleExplainerDisplay.innerHTML = rule.primary_rule.name;
+    
+    rulesetRulesDisplay.add(rulesDisplay);
+}
+
+function displayRuleset(ruleset) {
+    rulesetDisplay = document.getElementById(rulesetDisplay.card.id).cloneNode(true);
+    rulesetDisplay.id += "-" + ruleset.id;
+    
+    rulesetNameDisplay = rulesetDisplay.querySelector("#" + rulesetDisplay.name.id);
+    rulesetNameDisplay.id += "-" + ruleset.id;
+    rulesetNameDisplay.innerHTML = ruleset.name;
+
+    rulesetTaxCategoryDisplay = rulesetDisplay.querySelector("#" + rulesetDisplay.taxCategpry.id);
+    rulesetTaxCategoryDisplay.id += "-" + ruleset.id;
+    rulesetTaxCategoryDisplay.innerHTML = ruleset.tax_category.name;
+
+    rulesetRulesDisplay = rulesetDisplay.querySelector("#" + rulesetDisplay.rules);
+    rulesetRulesDisplay.id += "-" + ruleset.id;
+
+    document.getElementById(rulesetsDisplayContainer.id).add(rulesetDisplay);
+
+    resetContainer(rulesetRulesDisplay.id, [
+        flatRateRuleDisplay.card.id,
+        tieredRateRuleDisplay.card.id,
+        secondaryTieredRateRuleDisplay.card.id
+    ]);
+
+    ruleset.rules.forEach(rule => {
+        switch(rule.type) {
+            case "flat_rate":
+                    displayFlatRateRule(rulesetRulesDisplay, rule);
+                break;
+            case "tiered_rate":
+                    displayTieredRateRule(rulesetRulesDisplay, rule);
+                break;
+            case "secondary_tiered_rate":
+                    displaySecondaryTieredRateRule(rulesetRulesDisplay, rule);
+                break;
+        }
+    });
+}
+
+function updateRulesetsDisplay(rulesets) {
+    resetContainer(rulesetsDisplayContainer.id, [rulesetDisplay.card.id]);
+
+    rulesets.forEach(ruleset => {
+        displayRuleset(ruleset);
+    });
+}
