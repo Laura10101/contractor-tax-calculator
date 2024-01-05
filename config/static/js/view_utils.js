@@ -56,6 +56,20 @@ function updateRuleTierTable(updatePrimary, tiers) {
     });
 }
 
+function resetContainer(containerId, prototypeIds) {
+    prototypes = {};
+    prototypeIds.forEach(prototypeId => {
+        prototypes[prototypeId] = document.getElementById(prototypeId);
+    });
+
+    container = document.getElementById(containerId);
+    removeAllChildNodes(container);
+
+    for (const prototypeId in prototypes) {
+        container.add(prototypes[prototypeId]);
+    }
+}
+
 /*
  * Jurisdiction Select Helper Functions
  */
@@ -231,6 +245,105 @@ function displayEditMultipleChoiceQuestionDialog() {
 /*
  * Question Display Helper Functions
  */
+function displayBooleanQuestion(question) {
+    questionDisplay = document.getElementById(booleanQuestionDisplay.card.id).cloneNode(true);
+    questionDisplay.id += "-" + question.id;
+    
+    questionTextDisplay = questionDisplay.querySelector("#" + booleanQuestionDisplay.questionText.id);
+    questionTextDisplay.id += "-" + question.id;
+    questionTextDisplay.innerHTML = question.text;
+
+    questionVariableNameDisplay = questionDisplay.querySelector("#" + booleanQuestionDisplay.variableName.id);
+    questionVariableNameDisplay.id += "-" + question.id;
+    questionVariableNameDisplay.innerHTML = question.variable_name;
+
+    questionExplainerDisplay = questionDisplay.querySelector("#" + booleanQuestionDisplay.explainer.id);
+    questionExplainerDisplay.id += "-" + question.id;
+    questionExplainerDisplay.innerHTML = question.explainer;
+
+    questionMandatoryDisplay = questionDisplay.querySelector("#" + booleanQuestionDisplay.isMandatory.id);
+    questionMandatoryDisplay.id += "-" + question.id;
+    questionMandatoryDisplay.innerHTML = question.is_mandatory ? "Mandatory" : "Optional";
+    
+    document.getElementById("#" + questionDisplay.id).add(questionDisplay);
+}
+
+function displayNumericQuestion(question) {
+    questionDisplay = document.getElementById(numericQuestionDisplay.card.id).cloneNode(true);
+    questionDisplay.id += "-" + question.id;
+    
+    questionTextDisplay = questionDisplay.querySelector("#" + numericQuestionDisplay.questionText.id);
+    questionTextDisplay.id += "-" + question.id;
+    questionTextDisplay.innerHTML = question.text;
+
+    questionVariableNameDisplay = questionDisplay.querySelector("#" + numericQuestionDisplay.variableName.id);
+    questionVariableNameDisplay.id += "-" + question.id;
+    questionVariableNameDisplay.innerHTML = question.variable_name;
+
+    questionExplainerDisplay = questionDisplay.querySelector("#" + numericQuestionDisplay.explainer.id);
+    questionExplainerDisplay.id += "-" + question.id;
+    questionExplainerDisplay.innerHTML = question.explainer;
+
+    questionMandatoryDisplay = questionDisplay.querySelector("#" + numericQuestionDisplay.isMandatory.id);
+    questionMandatoryDisplay.id += "-" + question.id;
+    questionMandatoryDisplay.innerHTML = question.is_mandatory ? "Mandatory" : "Optional";
+
+    questionValidationSummaryDisplay = questionDisplay.querySelector("#" + numericQuestionDisplay.validationRuleSummary.id);
+    questionValidationSummaryDisplay.id += "-" + question.id;
+    questionValidationSummaryDisplay.innerHTML = question.is_integer ? "Integer" : "Decimal";
+    questionValidationSummaryDisplay.innerHTML += " between " + question.min_value + " and " + question.max_value;
+
+    document.getElementById("#" + questionDisplay.id).add(questionDisplay);
+}
+
+function displayMultipleChoiceQuestion(question) {
+    questionDisplay = document.getElementById(multipleChoiceQuestionDisplay.card.id).cloneNode(true);
+    questionDisplay.id += "-" + question.id;
+    
+    questionTextDisplay = questionDisplay.querySelector("#" + multipleChoiceQuestionDisplay.questionText.id);
+    questionTextDisplay.id += "-" + question.id;
+    questionTextDisplay.innerHTML = question.text;
+
+    questionVariableNameDisplay = questionDisplay.querySelector("#" + multipleChoiceQuestionDisplay.variableName.id);
+    questionVariableNameDisplay.id += "-" + question.id;
+    questionVariableNameDisplay.innerHTML = question.variable_name;
+
+    questionExplainerDisplay = questionDisplay.querySelector("#" + multipleChoiceQuestionDisplay.explainer.id);
+    questionExplainerDisplay.id += "-" + question.id;
+    questionExplainerDisplay.innerHTML = question.explainer;
+
+    questionMandatoryDisplay = questionDisplay.querySelector("#" + multipleChoiceQuestionDisplay.isMandatory.id);
+    questionMandatoryDisplay.id += "-" + question.id;
+    questionMandatoryDisplay.innerHTML = question.is_mandatory ? "Mandatory" : "Optional";
+
+    questionMultiselectDisplay = questionDisplay.querySelector("#" + multipleChoiceQuestionDisplay.isMultiselect.id);
+    questionMultiselectDisplay.id += "-" + question.id;
+    questionMultiselectDisplay.innerHTML = question.is_multiselect ? "Allow multiple selections" : "Single selection only";  
+
+    document.getElementById("#" + questionDisplay.id).add(questionDisplay);
+}
+
+function updateQuestionDisplay(questions) {
+    resetContainer(questionDisplayContainer.id, [
+        booleanQuestionDisplay.card.id,
+        numericQuestionDisplay.card.id,
+        multipleChoiceQuestionDisplay.card.id
+    ]);
+
+    questions.forEach(question => {
+        switch (question.type) {
+            case "boolean":
+                    displayBooleanQuestion(question);
+                break;
+            case "numeric":
+                    displayNumericQuestion(question);
+                break;
+            case "multiple_choice":
+                    displayMultipleChoiceQuestion(question);
+                break;
+        }
+    });
+}
 
 /*
  * Rule Dialog Helper Functions
