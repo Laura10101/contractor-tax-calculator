@@ -4,6 +4,13 @@
  */
 
 /*
+ * Jurisdiction Select Constants
+ */
+const jurisdictionsSelect = {
+    id: "jurisdictions-select"
+}
+
+/*
  * Question Dialog Constants
  */
 const questionTypeDialog = {
