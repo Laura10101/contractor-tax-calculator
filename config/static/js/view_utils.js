@@ -134,7 +134,28 @@ function displayEditNumericQuestionDialog(question) {
 
 // Multiple Choice Question Dialog
 function updateMultipleChoiceQuestionDialogOptionsDisplay(options) {
+    // Get the row 
+    optionsTable = document.getElementById(multipleChoiceQuestionDialog.options.table.id);
+    prototypeOptionsRow = document.getElementById(multipleChoiceQuestionDialog.options.optionRow.id);
+    removeAllChildNodes(optionsTable);
 
+    // Add prototype row back in so it's available next time
+    optionsTable.add(prototypeOptionsRow);
+
+    // Display one row for each option
+    options.forEach(option => {
+        optionRow = prototypeOptionsRow.cloneNode(true);
+
+        // Update IDs to avoid duplicates
+        optionRow.id += "-" + option.id;
+        optionRow.firstChild.id += "-" + option.id;
+
+        // Update option name in display
+        optionRow.firstChild.innerHTML = option.name;
+
+        // Add the new row
+        optionsTable.add(optionRow);
+    });
 }
 
 function initMultipleChoiceQuestionDialog(dialogLabel, questionText, explainer, variableName, isMandatory, allowMultiselect, options) {
