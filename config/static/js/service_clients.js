@@ -242,33 +242,73 @@ function deleteRuleset(rulesetId, onSuccess, onFailure) {
 /*
  * Rules service client
  */
-function createFlatRateRule(rulesetId, onSuccess, onFailure) {
-    data = {};
+function createFlatRateRule(rulesetId, name, explainer, variableName, ordinal, taxRate, onSuccess, onFailure) {
+    data = {
+        name: name,
+        explainer: explainer,
+        variable_name: variableName,
+        ordinal: ordinal,
+        type: "flat_rate",
+        tax_rate: taxRate
+    };
     post(endpoints.rules.rules(rulesetId), data, onSuccess, onFailure);
 }
 
-function updateFlatRateRule(rulesetId, ruleId, onSuccess, onFailure) {
-    data = {};
+function updateFlatRateRule(rulesetId, ruleId, name, explainer, variableName, ordinal, taxRate, onSuccess, onFailure) {
+    data = {
+        name: name,
+        explainer: explainer,
+        variable_name: variableName,
+        ordinal: ordinal,
+        type: "flat_rate",
+        tax_rate: taxRate
+    };
     put(endpoints.rules.rules(rulesetId), ruleId, data, onSuccess, onFailure);
 }
 
-function createTieredRateRule(rulesetId, onSuccess, onFailure) {
-    data = {};
+function createTieredRateRule(rulesetId, name, explainer, variableName, ordinal, onSuccess, onFailure) {
+    data = {
+        name: name,
+        explainer: explainer,
+        variable_name: variableName,
+        ordinal: ordinal,
+        type: "tiered_rate"
+    };
     post(endpoints.rules.rules(rulesetId), data, onSuccess, onFailure);
 }
 
-function updateTieredRateRule(rulesetId, ruleId, onSuccess, onFailure) {
-    data = {};
+function updateTieredRateRule(rulesetId, name, explainer, variableName, ordinal, ruleId, onSuccess, onFailure) {
+    data = {
+        name: name,
+        explainer: explainer,
+        variable_name: variableName,
+        ordinal: ordinal,
+        type: "tiered_rate"
+    };
     put(endpoints.rules.rules(rulesetId), ruleId, data, onSuccess, onFailure);
 }
 
-function createSecondaryTieredRateRule(rulesetId, onSuccess, onFailure) {
-    data = {};
+function createSecondaryTieredRateRule(rulesetId, name, explainer, variableName, ordinal, primaryRuleId, onSuccess, onFailure) {
+    data = {
+        name: name,
+        explainer: explainer,
+        variable_name: variableName,
+        ordinal: ordinal,
+        type: "secondary_tiered_rate",
+        primary_rule_id: primaryRuleId
+    };
     post(endpoints.rules.rules(rulesetId), data, onSuccess, onFailure);
 }
 
-function updateSecondaryTieredRateRule(rulesetId, ruleId, onSuccess, onFailure) {
-    data = {};
+function updateSecondaryTieredRateRule(rulesetId, ruleId, name, explainer, variableName, ordinal, primaryRuleId, onSuccess, onFailure) {
+    data = {
+        name: name,
+        explainer: explainer,
+        variable_name: variableName,
+        ordinal: ordinal,
+        type: "secondary_tiered_rate",
+        primary_rule_id: primaryRuleId
+    };
     put(endpoints.rules.rules(rulesetId), ruleId, data, onSuccess, onFailure);
 }
 
