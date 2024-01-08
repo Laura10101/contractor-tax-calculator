@@ -7,11 +7,13 @@
  * Helper functions for HTTP requests
  */
 function queryToString(query) {
-
-}
-
-function httpError() {
-
+    queryString = "";
+    for (const key in query) {
+        if (query.hasOwnProperty(key)) {
+            string += key + "=" + query[key];
+        }
+    }
+    return queryString;
 }
 
 function query(url, query, success, error) {
@@ -81,4 +83,97 @@ function remove(url, id, success, error) {
         success: success,
         error: error
     });
+}
+
+/*
+ * Jurisdictions service client
+ */
+
+function getJurisdictions(onSuccess, onFailure) {
+
+}
+
+/*
+ * Tax categories service client
+ */
+function getTaxCategories(onSuccess, onFailure) {
+
+}
+
+/*
+ * Forms service client
+ */
+function getFormForJurisdiction(jurisdictionId, onSuccess, onFailure) {
+
+}
+
+/*
+ * Questions service client
+ */
+function createQuestion(onSuccess, onFailure) {
+
+}
+
+function updateQuestion(questionId, onSuccess, onFailure) {
+
+}
+
+function deleteQuestion(questionId, onSuccess, onFailure) {
+
+}
+
+/*
+ * Multiple choice options service client
+ */
+function createMultipleChoiceOption(name, onSuccess, onFailure) {
+
+}
+
+function deleteMultipleChoiceOption(optionId, onSuccess, onFailure) {
+
+}
+
+/*
+ * Rules service client
+ */
+function createRule(onSuccess, onFailure) {
+
+}
+
+function updateRule(questionId, onSuccess, onFailure) {
+
+}
+
+function deleteRule(questionId, onSuccess, onFailure) {
+
+}
+
+/*
+ * Rule tiers service client
+ */
+function createRuleTier(onSuccess, onFailure) {
+
+}
+
+function updateRuleTier(tierId, onSuccess, onFailure) {
+
+}
+
+function deleteRuleTier(tierId, onSuccess, onFailure) {
+
+}
+
+/*
+ * Secondary rule tiers service client
+ */
+function createSecondaryRuleTier(onSuccess, onFailure) {
+
+}
+
+function updateSecondaryRuleTier(tierId, onSuccess, onFailure) {
+
+}
+
+function deleteSecondaryRuleTier(tierId, onSuccess, onFailure) {
+    
 }

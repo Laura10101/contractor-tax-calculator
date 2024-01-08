@@ -5,6 +5,7 @@
  */
 let app = {
     jurisdictions: [],
-    jurisdictionRules: [],
-    jurisdictionQuestions: []
+    taxCategories: [],
+    jurisdictionForm: [],
+    jurisdictionRules: []
 }
