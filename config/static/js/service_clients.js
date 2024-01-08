@@ -217,13 +217,21 @@ function deleteMultipleChoiceOption(formId, questionId, optionId, onSuccess, onF
 /*
  * Rulesets service client
  */
-function createRuleset(onSuccess, onFailure) {
-    data = {};
+function createRuleset(jurisdictionId, taxCategoryId, ordinal, onSuccess, onFailure) {
+    data = {
+        jurisdiction_id: jurisdictionId,
+        tax_category_id: taxCategoryId,
+        ordinal: ordinal
+    };
     post(endpoints.rules.rulesets, data, onSuccess, onFailure);
 }
 
-function updateRuleset(rulesetId, onSuccess, onFailure) {
-    data = {};
+function updateRuleset(rulesetId, jurisdictionId, taxCategoryId, ordinal, onSuccess, onFailure) {
+    data = {
+        jurisdiction_id: jurisdictionId,
+        tax_category_id: taxCategoryId,
+        ordinal: ordinal
+    };
     put(endpoints.rules.rulesets, rulesetId, data, onSuccess, onFailure);
 }
 
