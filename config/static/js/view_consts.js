@@ -12,11 +12,28 @@ const endpoints = {
     },
 
     forms: {
-        base: "forms/"
+        base: "forms/",
+        questions: function(form_id) {
+            return form_id + "/questions/";
+        },
+        multipleChoiceOptions: function(formId, questionId) {
+            return formId + "/questions/" + questionId + "/options/";
+        }
     },
 
     rules: {
-        base: "rules/"
+        base: "rules/",
+        rulesets: "rules/rulesets/",
+        rules: function(rulesetId) {
+            return "rules/rulesets/" + rulesetId + "/rules/";
+        },
+        tiers: function(rulesetId, ruleId) {
+            return "rules/rulesets/" + rulesetId + "/rules/" + ruleId + "/tiers/";
+        },
+        secondaryTiers: function(rulesetId, ruleId) {
+            return "rules/rulesets/" + rulesetId + "/rules/" + ruleId + "/seocndarytiers/";
+        },
+        taxCategories: "rules/taxCategories/"
     }
 }
 
