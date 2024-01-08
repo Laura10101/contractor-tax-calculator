@@ -16,10 +16,15 @@ function queryToString(query) {
     return queryString;
 }
 
-function query(url, query, success, error) {
+function url(endpoint) {
+    return window.location.protocol + "//" + window.location.hostname + "/api/" + endpoint;
+}
+
+function query(endpoint, query, success, error) {
+    url = url(endpoint);
     $.ajax({
         type: "GET",
-        url: url + "?" + queryToString(query),
+        url: url + query == null ? "": "?" + queryToString(query),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: success,
@@ -27,7 +32,8 @@ function query(url, query, success, error) {
     });
 }
 
-function get(url, id, success, error) {
+function get(endpoint, id, success, error) {
+    url = url(endpoint);
     $.ajax({
         type: "GET",
         url: url + id + "/",
@@ -38,7 +44,8 @@ function get(url, id, success, error) {
     });
 }
 
-function post(url, data, success, error) {
+function post(endpoint, data, success, error) {
+    url = url(endpoint);
     $.ajax({
         type: "POST",
         url: url,
@@ -50,7 +57,8 @@ function post(url, data, success, error) {
     });
 }
 
-function put(url, id, data, success, error) {
+function put(endpoint, id, data, success, error) {
+    url = url(endpoint);
     $.ajax({
         type: "PUT",
         url: url + id + "/",
@@ -62,7 +70,8 @@ function put(url, id, data, success, error) {
     });
 }
 
-function patch(url, id, data, success, error) {
+function patch(endpoint, id, data, success, error) {
+    url = url(endpoint);
     $.ajax({
         type: "PATCH",
         url: url + id + "/",
@@ -74,7 +83,8 @@ function patch(url, id, data, success, error) {
     });
 }
 
-function remove(url, id, success, error) {
+function remove(endpoint, id, success, error) {
+    url = url(endpoint);
     $.ajax({
         type: "DELETE",
         url: url + id + "/",
@@ -90,90 +100,161 @@ function remove(url, id, success, error) {
  */
 
 function getJurisdictions(onSuccess, onFailure) {
-
+    query(endpoints.jurisdictions.base, null, onSuccess, onFailure);
 }
 
 /*
  * Tax categories service client
  */
 function getTaxCategories(onSuccess, onFailure) {
-
+    query(endpoints.rules.taxCategories, null, onSuccess, onFailure);
 }
 
 /*
  * Forms service client
  */
 function getFormForJurisdiction(jurisdictionId, onSuccess, onFailure) {
-
+    query = {
+        jurisdiction_ids: jurisdictionId
+    }
+    query(endpoints.forms.base, query, onSuccess, onFailure);
 }
 
 /*
  * Questions service client
  */
-function createQuestion(onSuccess, onFailure) {
-
+function createBooleanQuestion(formId, onSuccess, onFailure) {
+    data = {};
+    post(endpoints.forms.questions(formId), data, onSuccess, onFailure);
 }
 
-function updateQuestion(questionId, onSuccess, onFailure) {
-
+function updateBooleanQuestion(formId, questionId, onSuccess, onFailure) {
+    data = {};
+    put(endpoints.forms.questions(formId), questionId, data, onSuccess, onFailure);
 }
 
-function deleteQuestion(questionId, onSuccess, onFailure) {
+function createNumericQuestion(formId, onSuccess, onFailure) {
+    data = {};
+    post(endpoints.forms.questions(formId), data, onSuccess, onFailure);
+}
 
+function updateNumericQuestion(formId, questionId, onSuccess, onFailure) {
+    data = {};
+    put(endpoints.forms.questions(formId), questionId, data, onSuccess, onFailure);
+}
+
+function createMultipleChoiceQuestion(formId, onSuccess, onFailure) {
+    data = {};
+    post(endpoints.forms.questions(formId), data, onSuccess, onFailure);
+}
+
+function updateMultipleChoiceQuestion(formId, questionId, onSuccess, onFailure) {
+    data = {};
+    put(endpoints.forms.questions(formId), questionId, data, onSuccess, onFailure);
+}
+
+function deleteQuestion(formId, questionId, onSuccess, onFailure) {
+    remove(endpoints.forms.questions(formId), questionId, onSuccess, onFailure);
 }
 
 /*
  * Multiple choice options service client
  */
-function createMultipleChoiceOption(name, onSuccess, onFailure) {
-
+function createMultipleChoiceOption(formId, questionId, name, onSuccess, onFailure) {
+    data = {
+        name: name
+    }
+    post(endpoints.forms.multipleChoiceOptions(formId, questionId), data, onSuccess, onFailure);
 }
 
-function deleteMultipleChoiceOption(optionId, onSuccess, onFailure) {
+function deleteMultipleChoiceOption(formId, questionId, optionId, onSuccess, onFailure) {
+    remove(endpoints.forms.multipleChoiceOptions(formId, questionId), optionId, onSuccess, onFailure);
+}
 
+/*
+ * Rulesets service client
+ */
+function createRuleset(onSuccess, onFailure) {
+    data = {};
+    post(endpoints.rules.rulesets, data, onSuccess, onFailure);
+}
+
+function updateRuleset(rulesetId, onSuccess, onFailure) {
+    data = {};
+    put(endpoints.rules.rulesets, rulesetId, data, onSuccess, onFailure);
+}
+
+function deleteRuleset(rulesetId, onSuccess, onFailure) {
+    remove(endpoints.rules.rulesets, rulesetId, onSuccess, onFailure);
 }
 
 /*
  * Rules service client
  */
-function createRule(onSuccess, onFailure) {
-
+function createFlatRateRule(rulesetId, onSuccess, onFailure) {
+    data = {};
+    post(endpoints.rules.rules(rulesetId), data, onSuccess, onFailure);
 }
 
-function updateRule(questionId, onSuccess, onFailure) {
-
+function updateFlatRateRule(rulesetId, ruleId, onSuccess, onFailure) {
+    data = {};
+    put(endpoints.rules.rules(rulesetId), ruleId, data, onSuccess, onFailure);
 }
 
-function deleteRule(questionId, onSuccess, onFailure) {
+function createTieredRateRule(rulesetId, onSuccess, onFailure) {
+    data = {};
+    post(endpoints.rules.rules(rulesetId), data, onSuccess, onFailure);
+}
 
+function updateTieredRateRule(rulesetId, ruleId, onSuccess, onFailure) {
+    data = {};
+    put(endpoints.rules.rules(rulesetId), ruleId, data, onSuccess, onFailure);
+}
+
+function createSecondaryTieredRateRule(rulesetId, onSuccess, onFailure) {
+    data = {};
+    post(endpoints.rules.rules(rulesetId), data, onSuccess, onFailure);
+}
+
+function updateSecondaryTieredRateRule(rulesetId, ruleId, onSuccess, onFailure) {
+    data = {};
+    put(endpoints.rules.rules(rulesetId), ruleId, data, onSuccess, onFailure);
+}
+
+function deleteRule(rulesetId, ruleId, onSuccess, onFailure) {
+    remove(endpoints.rules.rules(rulesetId), ruleId, onSuccess, onFailure);
 }
 
 /*
  * Rule tiers service client
  */
-function createRuleTier(onSuccess, onFailure) {
-
+function createRuleTier(rulesetId, ruleId, onSuccess, onFailure) {
+    data = {};
+    post(endpoints.rules.tiers(rulesetId, ruleId), data, onSuccess, onFailure);
 }
 
-function updateRuleTier(tierId, onSuccess, onFailure) {
-
+function updateRuleTier(rulesetId, ruleId, tierId, onSuccess, onFailure) {
+    data = {};
+    put(endpoints.rules.tiers(rulesetId, ruleId), tierId, data, onSuccess, onFailure);
 }
 
-function deleteRuleTier(tierId, onSuccess, onFailure) {
-
+function deleteRuleTier(rulesetId, ruleId, tierId, onSuccess, onFailure) {
+    remove(endpoints.rules.rules(rulesetId, ruleId), tierId, onSuccess, onFailure);
 }
 
 /*
  * Secondary rule tiers service client
  */
 function createSecondaryRuleTier(onSuccess, onFailure) {
-
+    data = {};
+    post(endpoints.rules.secondaryTiers(rulesetId, ruleId), data, onSuccess, onFailure);
 }
 
 function updateSecondaryRuleTier(tierId, onSuccess, onFailure) {
-
+    data = {};
+    put(endpoints.rules.secondaryTiers(rulesetId, ruleId), tierId, data, onSuccess, onFailure);
 }
 
 function deleteSecondaryRuleTier(tierId, onSuccess, onFailure) {
-    
+    remove(endpoints.rules.secondaryTiers(rulesetId, ruleId), tierId, onSuccess, onFailure);
 }
