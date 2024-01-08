@@ -123,33 +123,75 @@ function getFormForJurisdiction(jurisdictionId, onSuccess, onFailure) {
 /*
  * Questions service client
  */
-function createBooleanQuestion(formId, onSuccess, onFailure) {
-    data = {};
+function createBooleanQuestion(formId, text, ordinal, explainer, isMandatory, onSuccess, onFailure) {
+    data = {
+        text: text,
+        ordinal: ordinal,
+        explainer: explainer,
+        is_mandatory: isMandatory,
+        type: "boolean"
+    };
     post(endpoints.forms.questions(formId), data, onSuccess, onFailure);
 }
 
-function updateBooleanQuestion(formId, questionId, onSuccess, onFailure) {
-    data = {};
+function updateBooleanQuestion(formId, text, ordinal, explainer, isMandatory, questionId, onSuccess, onFailure) {
+    data = {
+        text: text,
+        ordinal: ordinal,
+        explainer: explainer,
+        is_mandatory: isMandatory,
+        type: "boolean"
+    };
     put(endpoints.forms.questions(formId), questionId, data, onSuccess, onFailure);
 }
 
-function createNumericQuestion(formId, onSuccess, onFailure) {
-    data = {};
+function createNumericQuestion(formId, text, ordinal, explainer, isMandatory, isInteger, minValue, maxValue, onSuccess, onFailure) {
+    data = {
+        text: text,
+        ordinal: ordinal,
+        explainer: explainer,
+        is_mandatory: isMandatory,
+        type: "numeric",
+        is_integer: isInteger,
+        min_value: minValue,
+        max_value: maxValue
+    };
     post(endpoints.forms.questions(formId), data, onSuccess, onFailure);
 }
 
-function updateNumericQuestion(formId, questionId, onSuccess, onFailure) {
-    data = {};
+function updateNumericQuestion(formId, questionId, text, ordinal, explainer, isMandatory, isInteger, minValue, maxValue, onSuccess, onFailure) {
+    data = {
+        text: text,
+        ordinal: ordinal,
+        explainer: explainer,
+        is_mandatory: isMandatory,
+        type: "numeric",
+        is_integer: isInteger,
+        min_value: minValue,
+        max_value: maxValue
+    };
     put(endpoints.forms.questions(formId), questionId, data, onSuccess, onFailure);
 }
 
-function createMultipleChoiceQuestion(formId, onSuccess, onFailure) {
-    data = {};
+function createMultipleChoiceQuestion(formId, text, ordinal, explainer, isMandatory, onSuccess, onFailure) {
+    data = {
+        text: text,
+        ordinal: ordinal,
+        explainer: explainer,
+        is_mandatory: isMandatory,
+        type: "multiple_choice"
+    };
     post(endpoints.forms.questions(formId), data, onSuccess, onFailure);
 }
 
-function updateMultipleChoiceQuestion(formId, questionId, onSuccess, onFailure) {
-    data = {};
+function updateMultipleChoiceQuestion(formId, questionId, text, ordinal, explainer, isMandatory, onSuccess, onFailure) {
+    data = {
+        text: text,
+        ordinal: ordinal,
+        explainer: explainer,
+        is_mandatory: isMandatory,
+        type: "multiple_choice"
+    };
     put(endpoints.forms.questions(formId), questionId, data, onSuccess, onFailure);
 }
 
