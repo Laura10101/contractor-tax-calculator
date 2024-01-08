@@ -202,9 +202,10 @@ function deleteQuestion(formId, questionId, onSuccess, onFailure) {
 /*
  * Multiple choice options service client
  */
-function createMultipleChoiceOption(formId, questionId, name, onSuccess, onFailure) {
+function createMultipleChoiceOption(formId, questionId, text, explainer, onSuccess, onFailure) {
     data = {
-        name: name
+        text: text,
+        explainer: explainer
     }
     post(endpoints.forms.multipleChoiceOptions(formId, questionId), data, onSuccess, onFailure);
 }
