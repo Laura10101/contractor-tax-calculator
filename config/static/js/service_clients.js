@@ -319,13 +319,23 @@ function deleteRule(rulesetId, ruleId, onSuccess, onFailure) {
 /*
  * Rule tiers service client
  */
-function createRuleTier(rulesetId, ruleId, onSuccess, onFailure) {
-    data = {};
+function createRuleTier(rulesetId, ruleId, minValue, maxValue, ordinal, taxRate, onSuccess, onFailure) {
+    data = {
+        min_value: minValue,
+        max_value: maxValue,
+        ordinal: ordinal,
+        tax_rate: taxRate
+    };
     post(endpoints.rules.tiers(rulesetId, ruleId), data, onSuccess, onFailure);
 }
 
-function updateRuleTier(rulesetId, ruleId, tierId, onSuccess, onFailure) {
-    data = {};
+function updateRuleTier(rulesetId, ruleId, tierId, minValue, maxValue, ordinal, taxRate, onSuccess, onFailure) {
+    data = {
+        min_value: minValue,
+        max_value: maxValue,
+        ordinal: ordinal,
+        tax_rate: taxRate
+    };
     put(endpoints.rules.tiers(rulesetId, ruleId), tierId, data, onSuccess, onFailure);
 }
 
