@@ -4,6 +4,23 @@
  */
 
 /*
+ * HTTP constants
+ */
+const endpoints = {
+    jurisdictions: {
+        base: "jurisdictions/"
+    },
+
+    forms: {
+        base: "forms/"
+    },
+
+    rules: {
+        base: "rules/"
+    }
+}
+
+/*
  * Jurisdiction Select Constants
  */
 const jurisdictionsSelect = {
