@@ -346,16 +346,22 @@ function deleteRuleTier(rulesetId, ruleId, tierId, onSuccess, onFailure) {
 /*
  * Secondary rule tiers service client
  */
-function createSecondaryRuleTier(onSuccess, onFailure) {
-    data = {};
+function createSecondaryRuleTier(rulesetId, ruleId, primaryTierId, taxRate, onSuccess, onFailure) {
+    data = {
+        primary_tier_id: primaryTierId,
+        tax_rate: taxRate
+    };
     post(endpoints.rules.secondaryTiers(rulesetId, ruleId), data, onSuccess, onFailure);
 }
 
-function updateSecondaryRuleTier(tierId, onSuccess, onFailure) {
-    data = {};
+function updateSecondaryRuleTier(rulesetId, ruleId, tierId, primaryTierId, taxRate, onSuccess, onFailure) {
+    data = {
+        primary_tier_id: primaryTierId,
+        tax_rate: taxRate
+    };
     put(endpoints.rules.secondaryTiers(rulesetId, ruleId), tierId, data, onSuccess, onFailure);
 }
 
-function deleteSecondaryRuleTier(tierId, onSuccess, onFailure) {
+function deleteSecondaryRuleTier(rulesetId, ruleId, tierId, onSuccess, onFailure) {
     remove(endpoints.rules.secondaryTiers(rulesetId, ruleId), tierId, onSuccess, onFailure);
 }
