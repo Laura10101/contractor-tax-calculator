@@ -27,6 +27,10 @@ def delete_ruleset(id):
     ruleset.delete()
 
 ### TAX CATEGORIES ###
+# Get all tax categories
+def get_tax_categories():
+    return TaxCategory.objects.all()
+
 # Create tax category
 def create_tax_category(name):
     tax_category = TaxCategory()

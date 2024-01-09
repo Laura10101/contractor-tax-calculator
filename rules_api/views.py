@@ -73,6 +73,17 @@ class RuleSetDetail(APIView):
 # Create django rest tax categories list view 
 # Django rest views are classes inheriting APIView 
 class TaxCategoriesList(APIView):
+    def get(self, request):
+        tax_categories = get_tax_categories()
+        serialised_categories = []
+        for category in tax_categories:
+            serialised_category = {
+                'tax_category_id': category.id,
+                'name': category.name
+            }
+            serialised_categories.append(serialised_category)
+        return Response(serialised_categories)
+
     def post(self, request):
         # Define the list of required attributes 
         required_attributes = [
