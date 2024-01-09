@@ -16,6 +16,77 @@ def contains_required_attributes(request, required_attributes):
 # Create django rest rule sets list view 
 # Django rest views are classes inheriting APIView 
 class RuleSetsList(APIView):
+    def __serialise_rule_tier(self, tier):
+        return {
+            'id': tier.id,
+            'min_value': tier.min_value,
+            'max_value': tier.max_value,
+            'ordinal': tier.ordinal,
+            'tier_rate': tier.tier_rate
+        }
+
+    def __serialise_secondary_rule_tier(self, tier):
+        return {
+            'id': tier.id,
+            'tier_rate': tier.tier_rate,
+            'primary_tier_id': tier.primary_tier.id
+        }
+
+    def __serialise_rule(self, rule):
+        serialised_rule = {
+            'id': rule.id,
+            'name': rule.name,
+            'explainer': rule.explainer,
+            'ordinal': rule.ordinal,
+            'variable_name': rule.variable_name
+        }
+        if isinstance(rule, FlatRateRule):
+            serialised_rule['tax_rate'] = rule.flat_rate
+        else:
+            serialised_rule['tiers'] = []
+            for tier in rule.tiers.all():
+                if isinstance(rule, TieredRateRule):
+                    serialised_rule['tiers'].append(self.__serialise_rule_tier(tier))
+                else:
+                    serialised_rule['tiers'].append(self.__serialise_secondary_rule_tier(tier))
+
+        if isinstance(rule, SecondaryTieredRateRule):
+            serialised_rule['primary_rule_id'] = rule.primary_rule.id
+
+        return serialised_rule
+
+
+    def get(self, request):
+        if 'jurisdiction_id' not in request.GET.keys():
+            # Code to return an HTTP 400 error
+            # From: https://stackoverflow.com/questions/23492000/how-to-return-http-400-response-in-django
+            return Response(
+                { 'error' : 'Invalid request. Please specify jurisdiction ID' },
+                status=status.HTTP_400_BAD_REQUEST
+                )
+        try:
+            jurisdiction_id = int(request.GET['jurisdiction_id'])
+        except:
+            return Response(
+                { 'error' : 'Invalid request. Jurisdiction ID must be a valid integer' },
+                status=status.HTTP_400_BAD_REQUEST
+                )
+        rulesets = get_rulesets_by_jurisdiction_id(jurisdiction_id)
+        serialised_rulesets = []
+        for ruleset in rulesets:
+            serialised_ruleset = {
+                'id': ruleset.id,
+                'name': str(ruleset),
+                'tax_category_id': ruleset.tax_category.id,
+                'ordinal': ruleset.ordinal,
+                'rules': []
+            }
+            for rule in ruleset.rules.all():
+                serialised_ruleset['rules'].append(self.__serialise_rule(rule))
+            serialised_rulesets.append(serialised_ruleset)
+        
+        return Response(serialised_rulesets)
+
     def post(self, request):
         # Define the list of required attributes 
         required_attributes = [
