@@ -2,7 +2,6 @@
  * view_consts.js
  * Defines constants used to simplify access to key DOM elements and other resources
  */
-
 /*
  * HTTP constants
  */
@@ -33,9 +32,9 @@ const endpoints = {
         secondaryTiers: function(rulesetId, ruleId) {
             return "rules/rulesets/" + rulesetId + "/rules/" + ruleId + "/seocndarytiers/";
         },
-        taxCategories: "rules/taxCategories/"
+        taxCategories: "rules/taxcategories/"
     }
-}
+};
 
 /*
  * Error Modal Constants
@@ -52,14 +51,14 @@ const errorDialog = {
     message: {
         id: "error-modal-message"
     }
-}
+};
 
 /*
  * Jurisdiction Select Constants
  */
 const jurisdictionsSelect = {
     id: "jurisdictions-select"
-}
+};
 
 /*
  * Question Dialog Constants
