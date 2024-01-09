@@ -3,7 +3,8 @@
  */
 
 function error(message) {
-
+    document.getElementById(errorDialog.message.id).innerHTML = message;
+    showDialog(errorDialog.dialog.id);
 }
 
 // Remove all child nodes of a parent DOM element

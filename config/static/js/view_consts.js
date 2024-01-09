@@ -38,6 +38,23 @@ const endpoints = {
 }
 
 /*
+ * Error Modal Constants
+ */
+const errorDialog = {
+    dialog: {
+        id: "error-modal"
+    },
+
+    label: {
+        id: "error-modal-label"
+    },
+
+    message: {
+        id: "error-modal-message"
+    }
+}
+
+/*
  * Jurisdiction Select Constants
  */
 const jurisdictionsSelect = {
