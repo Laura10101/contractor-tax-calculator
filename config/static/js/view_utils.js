@@ -2,6 +2,10 @@
  * General Helper Functions
  */
 
+function error(message) {
+
+}
+
 // Remove all child nodes of a parent DOM element
 // Taken from https://www.javascripttutorial.net/dom/manipulating/remove-all-child-nodes/
 function removeAllChildNodes(parent) {
@@ -90,6 +94,10 @@ function initJurisdictionsSelect(jurisdictions, selectionChangedCallback) {
 
     // Set onChange callback function
     select.addEventListener("change", selectionChangedCallback);
+}
+
+function getSelectedJurisdictionId() {
+    return document.getElementById(jurisdictionsSelect.id).value;
 }
 
 /*

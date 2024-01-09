@@ -217,6 +217,13 @@ function deleteMultipleChoiceOption(formId, questionId, optionId, onSuccess, onF
 /*
  * Rulesets service client
  */
+function getRulesetsForJurisdiction(jurisdictionId, onSuccess, onFailure) {
+    query = {
+        jurisdiction_id: jurisdictionId
+    };
+    query(endpoints.rules.rulesets, query, onSuccess, onFailure);
+}
+
 function createRuleset(jurisdictionId, taxCategoryId, ordinal, onSuccess, onFailure) {
     data = {
         jurisdiction_id: jurisdictionId,
