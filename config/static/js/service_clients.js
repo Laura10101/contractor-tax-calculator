@@ -16,12 +16,12 @@ function queryToString(query) {
     return queryString;
 }
 
-function url(endpoint) {
+function toUrl(endpoint) {
     return window.location.protocol + "//" + window.location.hostname + "/api/" + endpoint;
 }
 
 function query(endpoint, query, success, error) {
-    url = url(endpoint);
+    url = toUrl(endpoint);
     $.ajax({
         type: "GET",
         url: url + query == null ? "": "?" + queryToString(query),
@@ -33,7 +33,7 @@ function query(endpoint, query, success, error) {
 }
 
 function get(endpoint, id, success, error) {
-    url = url(endpoint);
+    url = toUrl(endpoint);
     $.ajax({
         type: "GET",
         url: url + id + "/",
@@ -45,7 +45,7 @@ function get(endpoint, id, success, error) {
 }
 
 function post(endpoint, data, success, error) {
-    url = url(endpoint);
+    url = toUrl(endpoint);
     $.ajax({
         type: "POST",
         url: url,
@@ -58,7 +58,7 @@ function post(endpoint, data, success, error) {
 }
 
 function put(endpoint, id, data, success, error) {
-    url = url(endpoint);
+    url = toUrl(endpoint);
     $.ajax({
         type: "PUT",
         url: url + id + "/",
@@ -71,7 +71,7 @@ function put(endpoint, id, data, success, error) {
 }
 
 function patch(endpoint, id, data, success, error) {
-    url = url(endpoint);
+    url = toUrl(endpoint);
     $.ajax({
         type: "PATCH",
         url: url + id + "/",
@@ -84,7 +84,7 @@ function patch(endpoint, id, data, success, error) {
 }
 
 function remove(endpoint, id, success, error) {
-    url = url(endpoint);
+    url = toUrl(endpoint);
     $.ajax({
         type: "DELETE",
         url: url + id + "/",
