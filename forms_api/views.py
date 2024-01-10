@@ -81,6 +81,7 @@ class FormsList(APIView):
                     'explainer': question.explainer,
                     'is_mandatory': question.is_mandatory,
                     'variable_name': question.variable_name,
+                    'ordinal': question.ordinal,
                 }
 
                 if isinstance(question, BooleanQuestion):
