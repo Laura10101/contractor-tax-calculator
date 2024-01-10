@@ -87,12 +87,12 @@ function saveQuestionSucceeded() {
     refreshQuestionsDisplay();
 }
 
-function saveQuestionFailed() {
+function saveQuestionFailed(request, status, message) {
     error("An error occurred while attempting to save question.");
 }
 
 function saveQuestion() {
-    formId = app.jurisdictionForm.id;
+    formId = app.jurisdictionForm.forms[Object.keys(app.jurisdictionForm.forms)[0]].id;
 
     if (app.dialogState.mode == dialogStates.modes.create) {
         

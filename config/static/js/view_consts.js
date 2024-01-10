@@ -36,10 +36,10 @@ const endpoints = {
     forms: {
         base: "forms/",
         questions: function(form_id) {
-            return form_id + "/questions/";
+            return "forms/" + form_id + "/questions/";
         },
         multipleChoiceOptions: function(formId, questionId) {
-            return formId + "/questions/" + questionId + "/options/";
+            return "forms/" + formId + "/questions/" + questionId + "/options/";
         }
     },
 

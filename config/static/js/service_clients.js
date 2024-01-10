@@ -168,7 +168,7 @@ function updateNumericQuestion(formId, questionId, text, ordinal, explainer, isM
         type: "numeric",
         is_integer: isInteger,
         min_value: minValue,
-        max_value: maxValue
+        max_value: maxValue == "" || maxValue == null ? null : maxValue
     };
     put(endpoints.forms.questions(formId), questionId, data, onSuccess, onFailure);
 }
