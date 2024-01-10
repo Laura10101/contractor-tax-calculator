@@ -9,3 +9,13 @@ let app = {
     jurisdictionForm: [],
     jurisdictionRules: []
 }
+
+function getTaxCategoryById(id) {
+    let category = null;
+    app.taxCategories.forEach(taxCategory => {
+        if (taxCategory.tax_category_id == id) {
+            category = taxCategory;
+        }
+    });
+    return category;
+}

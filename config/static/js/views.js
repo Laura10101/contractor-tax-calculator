@@ -21,7 +21,7 @@ function displayRulesetsLoadError() {
  */
 function displayQuestions(data) {
     app.jurisdictionForm = data;
-    updateQuestionDisplay(app.jurisdictionForm);
+    updateQuestionDisplay(app.jurisdictionForm.forms[Object.keys(app.jurisdictionForm.forms)[0]].questions);
 }
 
 function displayQuestionsLoadError() {
@@ -38,7 +38,7 @@ function jurisdictionSelected() {
 }
 
 function loadJurisdictionSelect(data) {
-    app.jurisdictions = data;
+    app.jurisdictions = data.jurisdictions;
     initJurisdictionsSelect(app.jurisdictions, jurisdictionSelected);
 }
 

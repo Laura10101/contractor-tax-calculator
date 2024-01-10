@@ -71,7 +71,7 @@ function resetContainer(containerId, prototypeIds) {
     removeAllChildNodes(container);
 
     for (const prototypeId in prototypes) {
-        container.add(prototypes[prototypeId]);
+        container.appendChild(prototypes[prototypeId]);
     }
 }
 
@@ -87,10 +87,10 @@ function initJurisdictionsSelect(jurisdictions, selectionChangedCallback) {
     // Display only jurisdictions from the new list in the select box
     removeAllChildNodes(select);
     jurisdictions.forEach(jurisdiction => {
-        jurisdictionOption = document.createElement("option");
-        jurisdictionOption.text = jurisdiction.name;
-        jurisdictionOption.value = jurisdiction.id;
-        select.add(jurisdictionOption);
+            jurisdictionOption = document.createElement("option");
+            jurisdictionOption.text = jurisdiction.name;
+            jurisdictionOption.value = jurisdiction.id;
+            select.add(jurisdictionOption);
     });
 
     // Set onChange callback function
@@ -256,6 +256,7 @@ function displayEditMultipleChoiceQuestionDialog() {
  */
 function displayBooleanQuestion(question) {
     questionDisplay = document.getElementById(booleanQuestionDisplay.card.id).cloneNode(true);
+    questionDisplay.classList.remove("hidden");
     questionDisplay.id += "-" + question.id;
     
     questionTextDisplay = questionDisplay.querySelector("#" + booleanQuestionDisplay.questionText.id);
@@ -274,11 +275,12 @@ function displayBooleanQuestion(question) {
     questionMandatoryDisplay.id += "-" + question.id;
     questionMandatoryDisplay.innerHTML = question.is_mandatory ? "Mandatory" : "Optional";
     
-    document.getElementById("#" + questionDisplay.id).add(questionDisplay);
+    document.getElementById(questionDisplayContainer.id).appendChild(questionDisplay);
 }
 
 function displayNumericQuestion(question) {
     questionDisplay = document.getElementById(numericQuestionDisplay.card.id).cloneNode(true);
+    questionDisplay.classList.remove("hidden");
     questionDisplay.id += "-" + question.id;
     
     questionTextDisplay = questionDisplay.querySelector("#" + numericQuestionDisplay.questionText.id);
@@ -302,11 +304,12 @@ function displayNumericQuestion(question) {
     questionValidationSummaryDisplay.innerHTML = question.is_integer ? "Integer" : "Decimal";
     questionValidationSummaryDisplay.innerHTML += " between " + question.min_value + " and " + question.max_value;
 
-    document.getElementById("#" + questionDisplay.id).add(questionDisplay);
+    document.getElementById(questionDisplayContainer.id).appendChild(questionDisplay);
 }
 
 function displayMultipleChoiceQuestion(question) {
     questionDisplay = document.getElementById(multipleChoiceQuestionDisplay.card.id).cloneNode(true);
+    questionDisplay.classList.remove("hidden");
     questionDisplay.id += "-" + question.id;
     
     questionTextDisplay = questionDisplay.querySelector("#" + multipleChoiceQuestionDisplay.questionText.id);
@@ -329,7 +332,7 @@ function displayMultipleChoiceQuestion(question) {
     questionMultiselectDisplay.id += "-" + question.id;
     questionMultiselectDisplay.innerHTML = question.is_multiselect ? "Allow multiple selections" : "Single selection only";  
 
-    document.getElementById("#" + questionDisplay.id).add(questionDisplay);
+    document.getElementById(questionDisplayContainer.id).appendChild(questionDisplay);
 }
 
 function updateQuestionDisplay(questions) {
@@ -555,6 +558,7 @@ function displayEditFlatRateRuleDialog(tier) {
  */
 function displayFlatRateRule(rulesetRulesDisplay, rule) {
     ruleDisplay = document.getElementById(flatRateRuleDisplay.card.id).cloneNode(true);
+    ruleDisplay.classList.remove("hidden");
     ruleDisplay.id += "-" + ruleDisplay.id;
     
     ruleNameDisplay = ruleDisplay.querySelector("#" + flatRateRuleDisplay.name.id);
@@ -566,18 +570,22 @@ function displayFlatRateRule(rulesetRulesDisplay, rule) {
     ruleVariableNameDisplay.innerHTML = rule.variable_name;
 
     ruleExplainerDisplay = ruleDisplay.querySelector("#" + flatRateRuleDisplay.explainer.id);
+    if (rule.explainer == null || rule.explainer == "") {
+        ruleExplainerDisplay.classList.add("hidden");
+    }
     ruleExplainerDisplay.id += "-" + rule.id;
     ruleExplainerDisplay.innerHTML = rule.explainer;
 
     ruleTaxRateDisplay = ruleDisplay.querySelector("#" + flatRateRuleDisplay.taxRate.id);
     ruleTaxRateDisplay.id += "-" + rule.id;
-    ruleTaxRateDisplay.innerHTML = rule.flat_rate;
+    ruleTaxRateDisplay.innerHTML = rule.tax_rate;
     
-    rulesetRulesDisplay.add(ruleDisplay);
+    rulesetRulesDisplay.appendChild(ruleDisplay);
 }
 
 function displayTieredRateRule(rulesetRulesDisplay, rule) {
     ruleDisplay = document.getElementById(tieredRateRuleDisplay.card.id).cloneNode(true);
+    ruleDisplay.classList.remove("hidden");
     ruleDisplay.id += "-" + ruleDisplay.id;
     
     ruleNameDisplay = ruleDisplay.querySelector("#" + tieredRateRuleDisplay.name.id);
@@ -589,14 +597,18 @@ function displayTieredRateRule(rulesetRulesDisplay, rule) {
     ruleVariableNameDisplay.innerHTML = rule.variable_name;
 
     ruleExplainerDisplay = ruleDisplay.querySelector("#" + tieredRateRuleDisplay.explainer.id);
+    if (rule.explainer == null || rule.explainer == "") {
+        ruleExplainerDisplay.classList.add("hidden");
+    }
     ruleExplainerDisplay.id += "-" + rule.id;
     ruleExplainerDisplay.innerHTML = rule.explainer;
     
-    rulesetRulesDisplay.add(rulesDisplay);
+    rulesetRulesDisplay.appendChild(ruleDisplay);
 }
 
 function displaySecondaryTieredRateRule(rulesetRulesDisplay, rule) {
     ruleDisplay = document.getElementById(secondaryTieredRateRuleDisplay.card.id).cloneNode(true);
+    ruleDisplay.classList.remove("hidden");
     ruleDisplay.id += "-" + ruleDisplay.id;
     
     ruleNameDisplay = ruleDisplay.querySelector("#" + secondaryTieredRateRuleDisplay.name.id);
@@ -608,6 +620,9 @@ function displaySecondaryTieredRateRule(rulesetRulesDisplay, rule) {
     ruleVariableNameDisplay.innerHTML = rule.variable_name;
 
     ruleExplainerDisplay = ruleDisplay.querySelector("#" + secondaryTieredRateRuleDisplay.explainer.id);
+    if (rule.explainer == null || rule.explainer == "") {
+        ruleExplainerDisplay.classList.add("hidden");
+    }
     ruleExplainerDisplay.id += "-" + rule.id;
     ruleExplainerDisplay.innerHTML = rule.explainer;
 
@@ -615,31 +630,26 @@ function displaySecondaryTieredRateRule(rulesetRulesDisplay, rule) {
     ruleExplainerDisplay.id += "-" + rule.id;
     ruleExplainerDisplay.innerHTML = rule.primary_rule.name;
     
-    rulesetRulesDisplay.add(rulesDisplay);
+    rulesetRulesDisplay.appendChild(ruleDisplay);
 }
 
 function displayRuleset(ruleset) {
-    rulesetDisplay = document.getElementById(rulesetDisplay.card.id).cloneNode(true);
-    rulesetDisplay.id += "-" + ruleset.id;
+    display = document.getElementById(rulesetDisplay.card.id).cloneNode(true);
+    display.classList.remove("hidden");
+    display.id += "-" + ruleset.id;
     
-    rulesetNameDisplay = rulesetDisplay.querySelector("#" + rulesetDisplay.name.id);
+    rulesetNameDisplay = display.querySelector("#" + rulesetDisplay.name.id);
     rulesetNameDisplay.id += "-" + ruleset.id;
     rulesetNameDisplay.innerHTML = ruleset.name;
 
-    rulesetTaxCategoryDisplay = rulesetDisplay.querySelector("#" + rulesetDisplay.taxCategpry.id);
+    rulesetTaxCategoryDisplay = display.querySelector("#" + rulesetDisplay.taxCategpry.id);
     rulesetTaxCategoryDisplay.id += "-" + ruleset.id;
-    rulesetTaxCategoryDisplay.innerHTML = ruleset.tax_category.name;
+    rulesetTaxCategoryDisplay.innerHTML = getTaxCategoryById(ruleset.tax_category_id).name;
 
-    rulesetRulesDisplay = rulesetDisplay.querySelector("#" + rulesetDisplay.rules);
+    rulesetRulesDisplay = display.querySelector("#" + rulesetDisplay.rules.id);
     rulesetRulesDisplay.id += "-" + ruleset.id;
 
-    document.getElementById(rulesetsDisplayContainer.id).add(rulesetDisplay);
-
-    resetContainer(rulesetRulesDisplay.id, [
-        flatRateRuleDisplay.card.id,
-        tieredRateRuleDisplay.card.id,
-        secondaryTieredRateRuleDisplay.card.id
-    ]);
+    document.getElementById(rulesetsDisplayContainer.id).appendChild(display);
 
     ruleset.rules.forEach(rule => {
         switch(rule.type) {

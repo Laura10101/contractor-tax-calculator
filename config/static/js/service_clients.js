@@ -10,7 +10,7 @@ function queryToString(query) {
     queryString = "";
     for (const key in query) {
         if (query.hasOwnProperty(key)) {
-            string += key + "=" + query[key];
+            queryString += key + "=" + query[key];
         }
     }
     return queryString;
@@ -24,7 +24,7 @@ function query(endpoint, query, success, error) {
     url = toUrl(endpoint);
     $.ajax({
         type: "GET",
-        url: url + query == null ? "": "?" + queryToString(query),
+        url: query == null ? url: url + "?" + queryToString(query),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: success,
@@ -114,10 +114,10 @@ function getTaxCategories(onSuccess, onFailure) {
  * Forms service client
  */
 function getFormForJurisdiction(jurisdictionId, onSuccess, onFailure) {
-    query = {
+    queryParameters = {
         jurisdiction_ids: jurisdictionId
     }
-    query(endpoints.forms.base, query, onSuccess, onFailure);
+    query(endpoints.forms.base, queryParameters, onSuccess, onFailure);
 }
 
 /*
@@ -218,10 +218,10 @@ function deleteMultipleChoiceOption(formId, questionId, optionId, onSuccess, onF
  * Rulesets service client
  */
 function getRulesetsForJurisdiction(jurisdictionId, onSuccess, onFailure) {
-    query = {
+    queryParameters = {
         jurisdiction_id: jurisdictionId
     };
-    query(endpoints.rules.rulesets, query, onSuccess, onFailure);
+    query(endpoints.rules.rulesets, queryParameters, onSuccess, onFailure);
 }
 
 function createRuleset(jurisdictionId, taxCategoryId, ordinal, onSuccess, onFailure) {
