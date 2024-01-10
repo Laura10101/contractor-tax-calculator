@@ -58,6 +58,99 @@ function displayTaxCategoryLoadError() {
 }
 
 /*
+ * Boolean Question Views
+ */
+function createBooleanQuestion() {
+
+}
+
+function editBooleanQuestion(id) {
+
+}
+
+function deleteBooleanQuestion(id) {
+
+}
+
+function moveBooleanQuestionUp(id) {
+
+}
+
+function moveBooleanQuestionDown(id) {
+    
+}
+
+/*
+ * Numeric Question Views
+ */
+function createNumericQuestion() {
+
+}
+
+function editNumericQuestion(id) {
+
+}
+
+function deleteNumericQuestion(id) {
+
+}
+
+function moveNumericQuestionUp(id) {
+
+}
+
+function moveNumericQuestionDown(id) {
+    
+}
+
+/*
+ * Multiple Choice Question Views
+ */
+function createMultipleChoiceQuestion() {
+
+}
+
+function editMultipleChoiceQuestion(id) {
+
+}
+
+function deleteMultipleChoiceQuestion(id) {
+
+}
+
+function moveMultipleChoiceQuestionUp(id) {
+
+}
+
+function moveMultipleChoiceQuestionDown(id) {
+    
+}
+
+/*
+ * Multiple Choice Option Views
+ */
+
+/*
+ * Flat Rate Rule Views
+ */
+
+/*
+ * Tiered Rate Rule Views
+ */
+
+/*
+ * Rule Tier Views
+ */
+
+/*
+ * Secondary Tiered Rate Rule Views
+ */
+
+/*
+ * Secondary Rule Tier Views
+ */
+
+/*
  * Initialisation functions
  */
 function init() {
