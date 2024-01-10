@@ -41,13 +41,16 @@ class RuleSetsList(APIView):
             'variable_name': rule.variable_name
         }
         if isinstance(rule, FlatRateRule):
+            serialised_rule['type'] = 'flat_rate'
             serialised_rule['tax_rate'] = rule.flat_rate
         else:
             serialised_rule['tiers'] = []
             for tier in rule.tiers.all():
                 if isinstance(rule, TieredRateRule):
+                    serialised_rule['type'] = 'tiered_rate'
                     serialised_rule['tiers'].append(self.__serialise_rule_tier(tier))
                 else:
+                    serialised_rule['type'] = 'secondary_tiered_rate'
                     serialised_rule['tiers'].append(self.__serialise_secondary_rule_tier(tier))
 
         if isinstance(rule, SecondaryTieredRateRule):
