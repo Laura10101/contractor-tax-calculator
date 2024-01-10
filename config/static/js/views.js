@@ -58,72 +58,32 @@ function displayTaxCategoryLoadError() {
 }
 
 /*
- * Boolean Question Views
+ * Question Views
  */
-function createBooleanQuestion() {
-
+function editQuestion(question) {
+    switch (question.type) {
+        case "boolean":
+                displayEditBooleanQuestionDialog(question);
+            break;
+        case "numeric":
+                displayEditNumericQuestionDialog(question);
+            break;
+        case "multiple_choice":
+                displayEditMultipleChoiceQuestionDialog(question);
+            break;
+    }
 }
 
-function editBooleanQuestion(id) {
-
-}
-
-function deleteBooleanQuestion(id) {
-
-}
-
-function moveBooleanQuestionUp(id) {
-
-}
-
-function moveBooleanQuestionDown(id) {
+function deleteQuestion(question) {
     
 }
 
-/*
- * Numeric Question Views
- */
-function createNumericQuestion() {
+function moveQuestionUp(question) {
 
 }
 
-function editNumericQuestion(id) {
+function moveQuestionDown(question) {
 
-}
-
-function deleteNumericQuestion(id) {
-
-}
-
-function moveNumericQuestionUp(id) {
-
-}
-
-function moveNumericQuestionDown(id) {
-    
-}
-
-/*
- * Multiple Choice Question Views
- */
-function createMultipleChoiceQuestion() {
-
-}
-
-function editMultipleChoiceQuestion(id) {
-
-}
-
-function deleteMultipleChoiceQuestion(id) {
-
-}
-
-function moveMultipleChoiceQuestionUp(id) {
-
-}
-
-function moveMultipleChoiceQuestionDown(id) {
-    
 }
 
 /*

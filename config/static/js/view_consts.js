@@ -192,7 +192,7 @@ const numericQuestionDialog = {
         }
     },
 
-    maxiumValue: {
+    maximumValue: {
         label: {
             id: "numeric-question-modal-max-label"
         },

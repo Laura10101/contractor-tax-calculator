@@ -152,7 +152,7 @@ function displayEditBooleanQuestionDialog(question) {
         "Edit Boolean Question",
         question.text,
         question.explainer,
-        question.variableName,
+        question.variable_name,
         question.is_mandatory
     );
     // Show the dialog
@@ -161,7 +161,6 @@ function displayEditBooleanQuestionDialog(question) {
 
 
 // Numeric Question Dialog Helpers
-
 function initNumericQuestionDialog(dialogLabel, questionText, explainer, variableName, isMandatory, isInteger, minValue, maxValue) {
     document.getElementById(numericQuestionDialog.label.id).innerText = dialogLabel;
     document.getElementById(numericQuestionDialog.questionText.input.id).value = questionText;
@@ -175,7 +174,7 @@ function initNumericQuestionDialog(dialogLabel, questionText, explainer, variabl
 
 function displayCreateNumericQuestionDialog() {
     // Initialise the boolean question dialog with appropriate values for a create
-    initBooleanQuestionDialog("Create Numeric Question", "", "", "", false, false, "", "");
+    initNumericQuestionDialog("Create Numeric Question", "", "", "", false, false, "", "");
     // Show the dialog
     showDialog(numericQuestionDialog.dialog.id);
 }
@@ -185,12 +184,14 @@ function displayEditNumericQuestionDialog(question) {
         "Edit Numeric Question",
         question.text,
         question.explainer,
-        question.variableName,
+        question.variable_name,
         question.is_mandatory,
         question.is_integer,
         question.min_value,
         question.max_value
     );
+    // Show the dialog
+    showDialog(numericQuestionDialog.dialog.id);
 }
 
 // Multiple Choice Question Dialog
@@ -231,18 +232,18 @@ function initMultipleChoiceQuestionDialog(dialogLabel, questionText, explainer, 
 
 function displayCreateMultipleChoiceQuestionDialog() {
     // Initialise the boolean question dialog with appropriate values for a create
-    initBooleanQuestionDialog("Create Multiple Choice Question", "", "", "", false, false, []);
+    initMultipleChoiceQuestionDialog("Create Multiple Choice Question", "", "", "", false, false, []);
     // Show the dialog
     showDialog(multipleChoiceQuestionDialog.dialog.id);
 }
 
-function displayEditMultipleChoiceQuestionDialog() {
+function displayEditMultipleChoiceQuestionDialog(question) {
     // Initialise the boolean question dialog with appropriate values for a create
-    initBooleanQuestionDialog(
+    initMultipleChoiceQuestionDialog(
         "Edit Multiple Choice Question",
         question.text,
         question.explainer,
-        question.variableName,
+        question.variable_name,
         question.is_mandatory,
         question.is_multiselect,
         question.options
@@ -255,10 +256,12 @@ function displayEditMultipleChoiceQuestionDialog() {
  * Question Display Helper Functions
  */
 function displayBooleanQuestion(question) {
+    // Create a new question display for this question
     questionDisplay = document.getElementById(booleanQuestionDisplay.card.id).cloneNode(true);
     questionDisplay.classList.remove("hidden");
     questionDisplay.id += "-" + question.id;
-    
+
+    // Update the data
     questionTextDisplay = questionDisplay.querySelector("#" + booleanQuestionDisplay.questionText.id);
     questionTextDisplay.id += "-" + question.id;
     questionTextDisplay.innerHTML = question.text;
@@ -275,6 +278,10 @@ function displayBooleanQuestion(question) {
     questionMandatoryDisplay.id += "-" + question.id;
     questionMandatoryDisplay.innerHTML = question.is_mandatory ? "Mandatory" : "Optional";
     
+    // Set the action event handlers
+    questionDisplay.querySelector(".edit-button").onclick = function() { editQuestion(question); }
+
+    // Add the question display to the container
     document.getElementById(questionDisplayContainer.id).appendChild(questionDisplay);
 }
 
@@ -304,6 +311,9 @@ function displayNumericQuestion(question) {
     questionValidationSummaryDisplay.innerHTML = question.is_integer ? "Integer" : "Decimal";
     questionValidationSummaryDisplay.innerHTML += " between " + question.min_value + " and " + question.max_value;
 
+    // Set the action event handlers
+    questionDisplay.querySelector(".edit-button").onclick = function() { editQuestion(question); }
+
     document.getElementById(questionDisplayContainer.id).appendChild(questionDisplay);
 }
 
@@ -331,6 +341,12 @@ function displayMultipleChoiceQuestion(question) {
     questionMultiselectDisplay = questionDisplay.querySelector("#" + multipleChoiceQuestionDisplay.isMultiselect.id);
     questionMultiselectDisplay.id += "-" + question.id;
     questionMultiselectDisplay.innerHTML = question.is_multiselect ? "Allow multiple selections" : "Single selection only";  
+
+    // Set the action event handlers
+    questionDisplay.querySelector(".edit-button").onclick = function() { 
+        alert("Clicked");
+        editQuestion(question);
+    }
 
     document.getElementById(questionDisplayContainer.id).appendChild(questionDisplay);
 }
