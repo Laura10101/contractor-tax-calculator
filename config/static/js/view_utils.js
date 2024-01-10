@@ -2,9 +2,17 @@
  * General Helper Functions
  */
 
+function showMessage(message) {
+    document.getElementById(statusDialog.message.id).innerHTML = message;
+    showDialog(statusDialog.dialog.id);
+}
+
 function error(message) {
-    document.getElementById(errorDialog.message.id).innerHTML = message;
-    showDialog(errorDialog.dialog.id);
+    showMessage(message);
+}
+
+function success(message) {
+    showMessage(message);
 }
 
 // Remove all child nodes of a parent DOM element

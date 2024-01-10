@@ -60,17 +60,69 @@ function displayTaxCategoryLoadError() {
 /*
  * Question Views
  */
+function refreshQuestionsDisplay() {
+    jurisdictionId = getSelectedJurisdictionId();
+    getFormForJurisdiction(jurisdictionId, displayQuestions, displayQuestionsLoadError);
+}
+
 function editQuestion(question) {
     switch (question.type) {
         case "boolean":
+                setDialogState(dialogStates.modes.edit, dialogStates.entityTypes.booleanQuestion, question);
                 displayEditBooleanQuestionDialog(question);
             break;
         case "numeric":
+                setDialogState(dialogStates.modes.edit, dialogStates.entityTypes.numericQuestion, question);
                 displayEditNumericQuestionDialog(question);
             break;
         case "multiple_choice":
+                setDialogState(dialogStates.modes.edit, dialogStates.entityTypes.multipleChoiceQuestion, question);
                 displayEditMultipleChoiceQuestionDialog(question);
             break;
+    }
+}
+
+function saveQuestionSucceeded() {
+    success("The question was successfully saved.");
+    refreshQuestionsDisplay();
+}
+
+function saveQuestionFailed() {
+    error("An error occurred while attempting to save question.");
+}
+
+function saveQuestion() {
+    formId = app.jurisdictionForm.id;
+
+    if (app.dialogState.mode == dialogStates.modes.create) {
+        
+    } else if (app.dialogState.mode == dialogStates.modes.edit) {
+        question = app.dialogState.entity;
+
+        switch(app.dialogState.entityType) {
+            case dialogStates.entityTypes.booleanQuestion:
+                break;
+            case dialogStates.entityTypes.numericQuestion:
+                    hideDialog(numericQuestionDialog.dialog.id);
+                    updateNumericQuestion(
+                        formId,
+                        question.id,
+                        document.getElementById(numericQuestionDialog.questionText.input.id).value,
+                        question.ordinal,
+                        document.getElementById(numericQuestionDialog.explainer.input.id).value,
+                        document.getElementById(numericQuestionDialog.isMandatory.input.id).checked,
+                        document.getElementById(numericQuestionDialog.isInteger.input.id).checked,
+                        document.getElementById(numericQuestionDialog.minimumValue.input.id).value,
+                        document.getElementById(numericQuestionDialog.maximumValue.input.id).value,
+                        saveQuestionSucceeded,
+                        saveQuestionFailed
+                    );
+                break;
+            case dialogStates.entityTypes.multipleChoiceQuestion:
+                break;
+        }
+    } else {
+        error("Invalid dialog mode " + app.dialogState.mode + " found when saving question.");
     }
 }
 

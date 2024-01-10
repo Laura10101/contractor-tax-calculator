@@ -3,6 +3,29 @@
  * Defines constants used to simplify access to key DOM elements and other resources
  */
 /*
+ * Model state constants
+ */
+const dialogStates = {
+    modes: {
+        create: "create",
+        edit: "edit"
+    },
+
+    entityTypes: {
+        booleanQuestion: "boolean_question",
+        numericQuestion: "numeric_question",
+        multipleChoiceQuestion: "multiple_choice_question",
+        multipleChoiceOption: "multiple_choice_option",
+        ruleset: "ruleset",
+        flatRateRule: "flat_rate_rule",
+        tieredRateRule: "tiered_rate_rule",
+        secondaryTieredRateRule: "secondary_tiered_rate_rule",
+        ruleTier: "rule_tier",
+        secondaryRuleTier: "secondary_rule_tier"
+    }
+};
+
+/*
  * HTTP constants
  */
 const endpoints = {
@@ -37,19 +60,19 @@ const endpoints = {
 };
 
 /*
- * Error Modal Constants
+ * Status Modal Constants
  */
-const errorDialog = {
+const statusDialog = {
     dialog: {
-        id: "error-modal"
+        id: "status-modal"
     },
 
     label: {
-        id: "error-modal-label"
+        id: "status-modal-label"
     },
 
     message: {
-        id: "error-modal-message"
+        id: "status-modal-message"
     }
 };
 

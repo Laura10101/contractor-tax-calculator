@@ -6,8 +6,27 @@
 let app = {
     jurisdictions: [],
     taxCategories: [],
-    jurisdictionForm: [],
-    jurisdictionRules: []
+    jurisdictionForm: {},
+    jurisdictionRules: [],
+    dialogState: {
+        mode: null,
+        entityType: null,
+        entity: null
+    }
+}
+
+function clearDialogState() {
+    app.dialogState = {
+
+    };
+}
+
+function setDialogState(mode, entityType, entity) {
+    app.dialogState = {
+        mode: mode,
+        entityType: entityType,
+        entity: entity
+    };
 }
 
 function getTaxCategoryById(id) {
