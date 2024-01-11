@@ -188,7 +188,7 @@ function updateMultipleChoiceQuestionDialogOptionsDisplay(options) {
     removeAllChildNodes(optionsTable);
 
     // Add prototype row back in so it's available next time
-    optionsTable.add(prototypeOptionsRow);
+    optionsTable.appendChild(prototypeOptionsRow);
 
     // Display one row for each option
     options.forEach(option => {
@@ -202,7 +202,7 @@ function updateMultipleChoiceQuestionDialogOptionsDisplay(options) {
         optionRow.firstChild.innerHTML = option.name;
 
         // Add the new row
-        optionsTable.add(optionRow);
+        optionsTable.appendChild(optionRow);
     });
 }
 
