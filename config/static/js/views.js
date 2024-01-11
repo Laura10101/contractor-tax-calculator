@@ -40,6 +40,7 @@ function jurisdictionSelected() {
 function loadJurisdictionSelect(data) {
     app.jurisdictions = data.jurisdictions;
     initJurisdictionsSelect(app.jurisdictions, jurisdictionSelected);
+    jurisdictionSelected();
 }
 
 function displayJurisdictionLoadError() {
@@ -124,14 +125,13 @@ function saveQuestion() {
             // Create boolean question
             case dialogStates.entityTypes.booleanQuestion:
                     hideDialog(booleanQuestionDialog.dialog.id);
-                    formId, text, ordinal, explainer, isMandatory, onSuccess, onFailure
                     createBooleanQuestion(
                         formId,
-                        document.getElementById(numericQuestionDialog.questionText.input.id).value,
+                        document.getElementById(booleanQuestionDialog.questionText.input.id).value,
                         1,
-                        document.getElementById(numericQuestionDialog.explainer.input.id).value,
-                        document.getElementById(numericQuestionDialog.variableName.input.id).value,
-                        document.getElementById(numericQuestionDialog.isMandatory.input.id).checked,
+                        document.getElementById(booleanQuestionDialog.explainer.input.id).value,
+                        document.getElementById(booleanQuestionDialog.variableName.input.id).value,
+                        document.getElementById(booleanQuestionDialog.isMandatory.input.id).checked,
                         saveQuestionSucceeded,
                         saveQuestionFailed
                     );
@@ -158,11 +158,11 @@ function saveQuestion() {
                     hideDialog(multipleChoiceQuestionDialog.dialog.id);
                     createMultipleChoiceQuestion(
                         formId,
-                        document.getElementById(numericQuestionDialog.questionText.input.id).value,
+                        document.getElementById(multipleChoiceQuestionDialog.questionText.input.id).value,
                         1,
-                        document.getElementById(numericQuestionDialog.explainer.input.id).value,
-                        document.getElementById(numericQuestionDialog.variableName.input.id).value,
-                        document.getElementById(numericQuestionDialog.isMandatory.input.id).checked,
+                        document.getElementById(multipleChoiceQuestionDialog.explainer.input.id).value,
+                        document.getElementById(multipleChoiceQuestionDialog.variableName.input.id).value,
+                        document.getElementById(multipleChoiceQuestionDialog.isMandatory.input.id).checked,
                         saveQuestionSucceeded,
                         saveQuestionFailed
                     )
