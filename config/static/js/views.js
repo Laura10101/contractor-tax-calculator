@@ -179,10 +179,10 @@ function saveQuestion() {
                     updateBooleanQuestion(
                         formId,
                         question.id,
-                        document.getElementById(numericQuestionDialog.questionText.input.id).value,
+                        document.getElementById(booleanQuestionDialog.questionText.input.id).value,
                         question.ordinal,
-                        document.getElementById(numericQuestionDialog.explainer.input.id).value,
-                        document.getElementById(numericQuestionDialog.isMandatory.input.id).checked,
+                        document.getElementById(booleanQuestionDialog.explainer.input.id).value,
+                        document.getElementById(booleanQuestionDialog.isMandatory.input.id).checked,
                         saveQuestionSucceeded,
                         saveQuestionFailed
                     )
@@ -210,10 +210,10 @@ function saveQuestion() {
                     updateMultipleChoiceQuestion(
                         formId,
                         question.id,
-                        document.getElementById(numericQuestionDialog.questionText.input.id).value,
+                        document.getElementById(multipleChoiceQuestionDialog.questionText.input.id).value,
                         question.ordinal,
-                        document.getElementById(numericQuestionDialog.explainer.input.id).value,
-                        document.getElementById(numericQuestionDialog.isMandatory.input.id).checked,
+                        document.getElementById(multipleChoiceQuestionDialog.explainer.input.id).value,
+                        document.getElementById(multipleChoiceQuestionDialog.isMandatory.input.id).checked,
                         saveQuestionSucceeded,
                         saveQuestionFailed
                     )
