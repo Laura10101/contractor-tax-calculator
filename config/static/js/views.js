@@ -120,6 +120,51 @@ function saveQuestion() {
     formId = app.jurisdictionForm.forms[Object.keys(app.jurisdictionForm.forms)[0]].id;
 
     if (app.dialogState.mode == dialogStates.modes.create) {
+        switch (app.dialogState.entityType) {
+            case dialogStates.entityTypes.booleanQuestion:
+                    hideDialog(booleanQuestionDialog.dialog.id);
+                    formId, text, ordinal, explainer, isMandatory, onSuccess, onFailure
+                    createBooleanQuestion(
+                        formId,
+                        document.getElementById(numericQuestionDialog.questionText.input.id).value,
+                        1,
+                        document.getElementById(numericQuestionDialog.explainer.input.id).value,
+                        document.getElementById(numericQuestionDialog.variableName.input.id).value,
+                        document.getElementById(numericQuestionDialog.isMandatory.input.id).checked,
+                        saveQuestionSucceeded,
+                        saveQuestionFailed
+                    );
+                break;
+            case dialogStates.entityTypes.numericQuestion:
+                    hideDialog(numericQuestionDialog.dialog.id);
+                    createNumericQuestion(
+                        formId,
+                        document.getElementById(numericQuestionDialog.questionText.input.id).value,
+                        1,
+                        document.getElementById(numericQuestionDialog.explainer.input.id).value,
+                        document.getElementById(numericQuestionDialog.variableName.input.id).value,
+                        document.getElementById(numericQuestionDialog.isMandatory.input.id).checked,
+                        document.getElementById(numericQuestionDialog.isInteger.input.id).checked,
+                        document.getElementById(numericQuestionDialog.minimumValue.input.id).value,
+                        document.getElementById(numericQuestionDialog.maximumValue.input.id).value,
+                        saveQuestionSucceeded,
+                        saveQuestionFailed
+                    )
+                break;
+            case dialogStates.entityTypes.multipleChoiceQuestion:
+                    hideDialog(multipleChoiceQuestionDialog.dialog.id);
+                    createMultipleChoiceQuestion(
+                        formId,
+                        document.getElementById(numericQuestionDialog.questionText.input.id).value,
+                        1,
+                        document.getElementById(numericQuestionDialog.explainer.input.id).value,
+                        document.getElementById(numericQuestionDialog.variableName.input.id).value,
+                        document.getElementById(numericQuestionDialog.isMandatory.input.id).checked,
+                        saveQuestionSucceeded,
+                        saveQuestionFailed
+                    )
+                break;
+        }
         
     } else if (app.dialogState.mode == dialogStates.modes.edit) {
         question = app.dialogState.entity;
@@ -130,6 +175,7 @@ function saveQuestion() {
                     updateBooleanQuestion(
                         formId,
                         question.id,
+                        document.getElementById(numericQuestionDialog.questionText.input.id).value,
                         question.ordinal,
                         document.getElementById(numericQuestionDialog.explainer.input.id).value,
                         document.getElementById(numericQuestionDialog.isMandatory.input.id).checked,

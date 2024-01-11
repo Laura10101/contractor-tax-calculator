@@ -123,11 +123,12 @@ function getFormForJurisdiction(jurisdictionId, onSuccess, onFailure) {
 /*
  * Questions service client
  */
-function createBooleanQuestion(formId, text, ordinal, explainer, isMandatory, onSuccess, onFailure) {
+function createBooleanQuestion(formId, text, ordinal, explainer, variableName, isMandatory, onSuccess, onFailure) {
     data = {
         text: text,
         ordinal: ordinal,
         explainer: explainer,
+        variable_name: variableName,
         is_mandatory: isMandatory,
         type: "boolean"
     };
@@ -145,11 +146,12 @@ function updateBooleanQuestion(formId, questionId, text, ordinal, explainer, isM
     put(endpoints.forms.questions(formId), questionId, data, onSuccess, onFailure);
 }
 
-function createNumericQuestion(formId, text, ordinal, explainer, isMandatory, isInteger, minValue, maxValue, onSuccess, onFailure) {
+function createNumericQuestion(formId, text, ordinal, explainer, variableName, isMandatory, isInteger, minValue, maxValue, onSuccess, onFailure) {
     data = {
         text: text,
         ordinal: ordinal,
         explainer: explainer,
+        variable_name: variableName,
         is_mandatory: isMandatory,
         type: "numeric",
         is_integer: isInteger,
@@ -173,11 +175,12 @@ function updateNumericQuestion(formId, questionId, text, ordinal, explainer, isM
     put(endpoints.forms.questions(formId), questionId, data, onSuccess, onFailure);
 }
 
-function createMultipleChoiceQuestion(formId, text, ordinal, explainer, isMandatory, onSuccess, onFailure) {
+function createMultipleChoiceQuestion(formId, text, ordinal, explainer, variableName, isMandatory, onSuccess, onFailure) {
     data = {
         text: text,
         ordinal: ordinal,
         explainer: explainer,
+        variable_name: variableName,
         is_mandatory: isMandatory,
         type: "multiple_choice"
     };
