@@ -351,10 +351,7 @@ function displayMultipleChoiceQuestion(question) {
     questionMultiselectDisplay.innerHTML = question.is_multiselect ? "Allow multiple selections" : "Single selection only";  
 
     // Set the action event handlers
-    questionDisplay.querySelector(".edit-button").onclick = function() { 
-        alert("Clicked");
-        editQuestion(question);
-    }
+    questionDisplay.querySelector(".edit-button").onclick = function() { editQuestion(question); }
 
     document.getElementById(questionDisplayContainer.id).appendChild(questionDisplay);
 }

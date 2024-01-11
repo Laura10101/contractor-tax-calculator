@@ -101,6 +101,16 @@ function saveQuestion() {
 
         switch(app.dialogState.entityType) {
             case dialogStates.entityTypes.booleanQuestion:
+                    hideDialog(booleanQuestionDialog.dialog.id);
+                    updateBooleanQuestion(
+                        formId,
+                        question.id,
+                        question.ordinal,
+                        document.getElementById(numericQuestionDialog.explainer.input.id).value,
+                        document.getElementById(numericQuestionDialog.isMandatory.input.id).checked,
+                        saveQuestionSucceeded,
+                        saveQuestionFailed
+                    )
                 break;
             case dialogStates.entityTypes.numericQuestion:
                     hideDialog(numericQuestionDialog.dialog.id);
@@ -119,6 +129,17 @@ function saveQuestion() {
                     );
                 break;
             case dialogStates.entityTypes.multipleChoiceQuestion:
+                    hideDialog(multipleChoiceQuestionDialog.dialog.id);
+                    updateMultipleChoiceQuestion(
+                        formId,
+                        question.id,
+                        document.getElementById(numericQuestionDialog.questionText.input.id).value,
+                        question.ordinal,
+                        document.getElementById(numericQuestionDialog.explainer.input.id).value,
+                        document.getElementById(numericQuestionDialog.isMandatory.input.id).checked,
+                        saveQuestionSucceeded,
+                        saveQuestionFailed
+                    )
                 break;
         }
     } else {

@@ -134,7 +134,7 @@ function createBooleanQuestion(formId, text, ordinal, explainer, isMandatory, on
     post(endpoints.forms.questions(formId), data, onSuccess, onFailure);
 }
 
-function updateBooleanQuestion(formId, text, ordinal, explainer, isMandatory, questionId, onSuccess, onFailure) {
+function updateBooleanQuestion(formId, questionId, text, ordinal, explainer, isMandatory, onSuccess, onFailure) {
     data = {
         text: text,
         ordinal: ordinal,
