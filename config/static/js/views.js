@@ -70,7 +70,7 @@ function questionTypeSelected() {
     hideDialog(questionTypeDialog.dialog.id);
 
     // Get the question type
-    questionType = document.getElementById(questionTypeDialog.questionType.input.value);
+    questionType = document.getElementById(questionTypeDialog.questionType.input.id).value;
 
     // Trigger the appropriate create dialog
     switch(questionType) {

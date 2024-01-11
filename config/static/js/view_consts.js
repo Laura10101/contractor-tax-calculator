@@ -101,7 +101,7 @@ const questionTypeDialog = {
         },
 
         input: {
-            id: "question-type-modal-input-label"
+            id: "question-type-modal-input"
         }
     }
 };
