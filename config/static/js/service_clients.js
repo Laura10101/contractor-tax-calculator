@@ -176,8 +176,8 @@ function createNumericQuestion(formId, text, ordinal, explainer, variableName, i
         is_mandatory: isMandatory,
         type: "numeric",
         is_integer: isInteger,
-        min_value: minValue,
-        max_value: maxValue
+        min_value: minValue == "" || minValue == null ? null : minValue,
+        max_value: maxValue == "" || maxValue == null ? null : maxValue
     };
     post(endpoints.forms.questions(formId), data, onSuccess, onFailure);
 }
@@ -190,7 +190,7 @@ function updateNumericQuestion(formId, questionId, text, ordinal, explainer, isM
         is_mandatory: isMandatory,
         type: "numeric",
         is_integer: isInteger,
-        min_value: minValue,
+        min_value: minValue == "" || minValue == null ? null : minValue,
         max_value: maxValue == "" || maxValue == null ? null : maxValue
     };
     put(endpoints.forms.questions(formId), questionId, data, onSuccess, onFailure);
