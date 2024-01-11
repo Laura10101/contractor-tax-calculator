@@ -121,6 +121,7 @@ function saveQuestion() {
 
     if (app.dialogState.mode == dialogStates.modes.create) {
         switch (app.dialogState.entityType) {
+            // Create boolean question
             case dialogStates.entityTypes.booleanQuestion:
                     hideDialog(booleanQuestionDialog.dialog.id);
                     formId, text, ordinal, explainer, isMandatory, onSuccess, onFailure
@@ -135,6 +136,7 @@ function saveQuestion() {
                         saveQuestionFailed
                     );
                 break;
+            // Create numeric question
             case dialogStates.entityTypes.numericQuestion:
                     hideDialog(numericQuestionDialog.dialog.id);
                     createNumericQuestion(
@@ -151,6 +153,7 @@ function saveQuestion() {
                         saveQuestionFailed
                     )
                 break;
+            // Create multiple choice questions
             case dialogStates.entityTypes.multipleChoiceQuestion:
                     hideDialog(multipleChoiceQuestionDialog.dialog.id);
                     createMultipleChoiceQuestion(
@@ -170,6 +173,7 @@ function saveQuestion() {
         question = app.dialogState.entity;
 
         switch(app.dialogState.entityType) {
+            // Edit boolean question
             case dialogStates.entityTypes.booleanQuestion:
                     hideDialog(booleanQuestionDialog.dialog.id);
                     updateBooleanQuestion(
@@ -183,6 +187,7 @@ function saveQuestion() {
                         saveQuestionFailed
                     )
                 break;
+            // Edit numeric question
             case dialogStates.entityTypes.numericQuestion:
                     hideDialog(numericQuestionDialog.dialog.id);
                     updateNumericQuestion(
@@ -199,6 +204,7 @@ function saveQuestion() {
                         saveQuestionFailed
                     );
                 break;
+            // Edit multiple choice question
             case dialogStates.entityTypes.multipleChoiceQuestion:
                     hideDialog(multipleChoiceQuestionDialog.dialog.id);
                     updateMultipleChoiceQuestion(
