@@ -149,6 +149,7 @@ def test_post_boolean_question_with_null_data():
     question_text = None
     ordinal = None
     explainer = None
+    variable = None
     is_mandatory = None
 
     data = {
@@ -157,6 +158,7 @@ def test_post_boolean_question_with_null_data():
         'text': question_text,
         'ordinal': ordinal,
         'explainer': explainer,
+        'variable_name': variable,
         'is_mandatory': is_mandatory
     }
     request_url = url + str(form_id) + '/questions/'
@@ -170,6 +172,7 @@ def test_post_boolean_question_with_null_form_id():
     question_text = 'How do you like your eggs in the morning?'
     ordinal = 1
     explainer = 'A very serious tax-related question'
+    variable = 'fake_var_name'
     is_mandatory = True
 
     data = {
@@ -178,6 +181,7 @@ def test_post_boolean_question_with_null_form_id():
         'text': question_text,
         'ordinal': ordinal,
         'explainer': explainer,
+        'variable_name': variable,
         'is_mandatory': is_mandatory
     }
     request_url = url + str(form_id) + '/questions/'
@@ -191,6 +195,7 @@ def test_post_boolean_question_with_non_existent_form_id():
     question_text = 'How do you like your eggs in the morning?'
     ordinal = 1
     explainer = 'A very serious tax-related question'
+    variable = 'fake_var_name'
     is_mandatory = True
 
     data = {
@@ -198,6 +203,7 @@ def test_post_boolean_question_with_non_existent_form_id():
         'text': question_text,
         'ordinal': ordinal,
         'explainer': explainer,
+        'variable_name': variable,
         'is_mandatory': is_mandatory
     }
     request_url = url + str(form_id) + '/questions/'
@@ -211,6 +217,7 @@ def test_post_boolean_question_with_non_numeric_form_id():
     question_text = 'How do you like your eggs in the morning?'
     ordinal = 1
     explainer = 'A very serious tax-related question'
+    variable = 'fake_var_name'
     is_mandatory = True
 
     data = {
@@ -219,6 +226,7 @@ def test_post_boolean_question_with_non_numeric_form_id():
         'text': question_text,
         'ordinal': ordinal,
         'explainer': explainer,
+        'variable_name': variable,
         'is_mandatory': is_mandatory
     }
     request_url = url + str(form_id) + '/questions/'
@@ -232,6 +240,7 @@ def test_post_boolean_question_with_null_text():
     question_text = None
     ordinal = 1
     explainer = 'A very serious tax-related question'
+    variable = 'fake_var_name'
     is_mandatory = True
 
     data = {
@@ -240,6 +249,7 @@ def test_post_boolean_question_with_null_text():
         'text': question_text,
         'ordinal': ordinal,
         'explainer': explainer,
+        'variable_name': variable,
         'is_mandatory': is_mandatory
     }
     request_url = url + str(form_id) + '/questions/'
@@ -253,6 +263,7 @@ def test_post_boolean_question_with_null_ordinal():
     question_text = 'How do you like your eggs in the morning?'
     ordinal = None
     explainer = 'A very serious tax-related question'
+    variable = 'fake_var_name'
     is_mandatory = True
 
     data = {
@@ -261,6 +272,7 @@ def test_post_boolean_question_with_null_ordinal():
         'text': question_text,
         'ordinal': ordinal,
         'explainer': explainer,
+        'variable_name': variable,
         'is_mandatory': is_mandatory
     }
     request_url = url + str(form_id) + '/questions/'
@@ -274,6 +286,7 @@ def test_post_boolean_question_with_non_numeric_ordinal():
     question_text = 'How do you like your eggs in the morning?'
     ordinal = 'Try again'
     explainer = 'A very serious tax-related question'
+    variable = 'fake_var_name'
     is_mandatory = True
 
     data = {
@@ -282,6 +295,7 @@ def test_post_boolean_question_with_non_numeric_ordinal():
         'text': question_text,
         'ordinal': ordinal,
         'explainer': explainer,
+        'variable_name': variable,
         'is_mandatory': is_mandatory
     }
     request_url = url + str(form_id) + '/questions/'
@@ -295,6 +309,7 @@ def test_post_boolean_question_with_null_explainer():
     question_text = 'How do you like your eggs in the morning?'
     ordinal = 1
     explainer = None
+    variable = 'fake_var_name'
     is_mandatory = True
 
     data = {
@@ -303,6 +318,7 @@ def test_post_boolean_question_with_null_explainer():
         'text': question_text,
         'ordinal': ordinal,
         'explainer': explainer,
+        'variable_name': variable,
         'is_mandatory': is_mandatory
     }
     request_url = url + str(form_id) + '/questions/'
@@ -316,6 +332,7 @@ def test_post_boolean_question_with_null_is_mandatory():
     question_text = 'How do you like your eggs in the morning?'
     ordinal = 1
     explainer = 'A very serious tax-related question'
+    variable = 'fake_var_name'
     is_mandatory = None
 
     data = {
@@ -324,6 +341,7 @@ def test_post_boolean_question_with_null_is_mandatory():
         'text': question_text,
         'ordinal': ordinal,
         'explainer': explainer,
+        'variable_name': variable,
         'is_mandatory': is_mandatory
     }
     request_url = url + str(form_id) + '/questions/'
@@ -337,6 +355,7 @@ def test_post_boolean_question():
     question_text = 'How do you like your eggs in the morning?'
     ordinal = 1
     explainer = 'A very serious tax-related question'
+    variable = 'fake_var_name'
     is_mandatory = True
 
     data = {
@@ -345,6 +364,7 @@ def test_post_boolean_question():
         'text': question_text,
         'ordinal': ordinal,
         'explainer': explainer,
+        'variable_name': variable,
         'is_mandatory': is_mandatory
     }
     request_url = url + str(form_id) + '/questions/'
@@ -366,9 +386,10 @@ def test_put_boolean_question_with_null_data():
     question_text = 'How do you like your eggs in the morning?'
     ordinal = 1
     explainer = 'A very serious tax-related question'
+    variable = 'fake_var_name'
     is_mandatory = True
     
-    id = create_boolean_question(form_id, question_text, ordinal, explainer, is_mandatory)
+    id = create_boolean_question(form_id, question_text, ordinal, explainer, variable, is_mandatory)
 
     new_text = None
     new_ordinal = None
@@ -393,9 +414,10 @@ def test_put_boolean_question_with_null_text():
     question_text = 'How do you like your eggs in the morning?'
     ordinal = 1
     explainer = 'A very serious tax-related question'
+    variable = 'fake_var_name'
     is_mandatory = True
     
-    id = create_boolean_question(form_id, question_text, ordinal, explainer, is_mandatory)
+    id = create_boolean_question(form_id, question_text, ordinal, explainer, variable, is_mandatory)
 
     new_text = None
     new_ordinal = 2
@@ -420,9 +442,10 @@ def test_put_boolean_question_with_null_ordinal():
     question_text = 'How do you like your eggs in the morning?'
     ordinal = 1
     explainer = 'A very serious tax-related question'
+    variable = 'fake_var_name'
     is_mandatory = True
     
-    id = create_boolean_question(form_id, question_text, ordinal, explainer, is_mandatory)
+    id = create_boolean_question(form_id, question_text, ordinal, explainer, variable, is_mandatory)
 
     new_text = 'Please describe how you like your eggs in the morning.'
     new_ordinal = None
@@ -447,9 +470,10 @@ def test_put_boolean_question_with_non_numeric_ordinal():
     question_text = 'How do you like your eggs in the morning?'
     ordinal = 1
     explainer = 'A very serious tax-related question'
+    variable = 'fake_var_name'
     is_mandatory = True
     
-    id = create_boolean_question(form_id, question_text, ordinal, explainer, is_mandatory)
+    id = create_boolean_question(form_id, question_text, ordinal, explainer, variable, is_mandatory)
 
     new_text = 'Please describe how you like your eggs in the morning.'
     new_ordinal = 'Hmmm'
@@ -474,9 +498,10 @@ def test_put_boolean_question_with_null_explainer():
     question_text = 'How do you like your eggs in the morning?'
     ordinal = 1
     explainer = 'A very serious tax-related question'
+    variable = 'fake_var_name'
     is_mandatory = True
     
-    id = create_boolean_question(form_id, question_text, ordinal, explainer, is_mandatory)
+    id = create_boolean_question(form_id, question_text, ordinal, explainer, variable, is_mandatory)
 
     new_text = 'Please describe how you like your eggs in the morning.'
     new_ordinal = 2
@@ -501,9 +526,10 @@ def test_put_boolean_question_with_null_is_mandatory():
     question_text = 'How do you like your eggs in the morning?'
     ordinal = 1
     explainer = 'A very serious tax-related question'
+    variable = 'fake_var_name'
     is_mandatory = True
     
-    id = create_boolean_question(form_id, question_text, ordinal, explainer, is_mandatory)
+    id = create_boolean_question(form_id, question_text, ordinal, explainer, variable, is_mandatory)
 
     new_text = 'Please describe how you like your eggs in the morning.'
     new_ordinal = 2
@@ -528,9 +554,10 @@ def test_put_boolean_question():
     question_text = 'How do you like your eggs in the morning?'
     ordinal = 1
     explainer = 'A very serious tax-related question'
+    variable = 'fake_var_name'
     is_mandatory = True
     
-    id = create_boolean_question(form_id, question_text, ordinal, explainer, is_mandatory)
+    id = create_boolean_question(form_id, question_text, ordinal, explainer, variable, is_mandatory)
 
     new_text = 'Please describe how you like your eggs in the morning.'
     new_ordinal = 2
@@ -563,6 +590,7 @@ def test_put_boolean_question_with_non_existent_id():
     new_text = 'Please describe how you like your eggs in the morning.'
     new_ordinal = 2
     new_explainer = 'Boiled or fried and whether or not you are satisfied by eggs alone.'
+    new_variable = 'fake_var_name'
     new_is_mandatory = False
 
     data = {
@@ -584,6 +612,7 @@ def test_post_multiple_choice_question_with_null_data():
     question_text = None
     ordinal = None
     explainer = None
+    variable = None
     is_mandatory = None
 
     data = {
@@ -592,6 +621,7 @@ def test_post_multiple_choice_question_with_null_data():
         'text': question_text,
         'ordinal': ordinal,
         'explainer': explainer,
+        'variable_name': variable,
         'is_mandatory': is_mandatory
     }
     request_url = url + str(form_id) + '/questions/'
@@ -605,6 +635,7 @@ def test_post_multiple_choice_question_with_null_form_id():
     question_text = 'How do you like your eggs in the morning?'
     ordinal = 1
     explainer = 'A very serious tax-related question'
+    variable = 'fake_var_name'
     is_mandatory = True
 
     data = {
@@ -613,6 +644,7 @@ def test_post_multiple_choice_question_with_null_form_id():
         'text': question_text,
         'ordinal': ordinal,
         'explainer': explainer,
+        'variable_name': variable,
         'is_mandatory': is_mandatory
     }
     request_url = url + str(form_id) + '/questions/'
@@ -626,6 +658,7 @@ def test_post_multiple_choice_question_with_non_existent_form_id():
     question_text = 'How do you like your eggs in the morning?'
     ordinal = 1
     explainer = 'A very serious tax-related question'
+    variable = 'fake_var_name'
     is_mandatory = True
 
     data = {
@@ -634,6 +667,7 @@ def test_post_multiple_choice_question_with_non_existent_form_id():
         'text': question_text,
         'ordinal': ordinal,
         'explainer': explainer,
+        'variable_name': variable,
         'is_mandatory': is_mandatory
     }
     request_url = url + str(form_id) + '/questions/'
@@ -647,6 +681,7 @@ def test_post_multiple_choice_question_with_non_numeric_form_id():
     question_text = 'How do you like your eggs in the morning?'
     ordinal = 1
     explainer = 'A very serious tax-related question'
+    variable = 'fake_var_name'
     is_mandatory = True
 
     data = {
@@ -655,6 +690,7 @@ def test_post_multiple_choice_question_with_non_numeric_form_id():
         'text': question_text,
         'ordinal': ordinal,
         'explainer': explainer,
+        'variable_name': variable,
         'is_mandatory': is_mandatory
     }
     request_url = url + str(form_id) + '/questions/'
@@ -668,6 +704,7 @@ def test_post_multiple_choice_question_with_null_text():
     question_text = None
     ordinal = 1
     explainer = 'A very serious tax-related question'
+    variable = 'fake_var_name'
     is_mandatory = True
 
     data = {
@@ -676,6 +713,7 @@ def test_post_multiple_choice_question_with_null_text():
         'text': question_text,
         'ordinal': ordinal,
         'explainer': explainer,
+        'variable_name': variable,
         'is_mandatory': is_mandatory
     }
     request_url = url + str(form_id) + '/questions/'
@@ -689,6 +727,7 @@ def test_post_multiple_choice_question_with_null_ordinal():
     question_text = 'How do you like your eggs in the morning?'
     ordinal = None
     explainer = 'A very serious tax-related question'
+    variable = 'fake_var_name'
     is_mandatory = True
 
     data = {
@@ -697,6 +736,7 @@ def test_post_multiple_choice_question_with_null_ordinal():
         'text': question_text,
         'ordinal': ordinal,
         'explainer': explainer,
+        'variable_name': variable,
         'is_mandatory': is_mandatory
     }
     request_url = url + str(form_id) + '/questions/'
@@ -710,6 +750,7 @@ def test_post_multiple_choice_question_with_non_numeric_ordinal():
     question_text = 'How do you like your eggs in the morning?'
     ordinal = 'Try again'
     explainer = 'A very serious tax-related question'
+    variable = 'fake_var_name'
     is_mandatory = True
 
     data = {
@@ -718,6 +759,7 @@ def test_post_multiple_choice_question_with_non_numeric_ordinal():
         'text': question_text,
         'ordinal': ordinal,
         'explainer': explainer,
+        'variable_name': variable,
         'is_mandatory': is_mandatory
     }
     request_url = url + str(form_id) + '/questions/'
@@ -731,6 +773,7 @@ def test_post_multiple_choice_question_with_null_explainer():
     question_text = 'How do you like your eggs in the morning?'
     ordinal = 1
     explainer = None
+    variable = 'fake_var_name'
     is_mandatory = True
 
     data = {
@@ -739,6 +782,7 @@ def test_post_multiple_choice_question_with_null_explainer():
         'text': question_text,
         'ordinal': ordinal,
         'explainer': explainer,
+        'variable_name': variable,
         'is_mandatory': is_mandatory
     }
     request_url = url + str(form_id) + '/questions/'
@@ -752,6 +796,7 @@ def test_post_multiple_choice_question_with_null_is_mandatory():
     question_text = 'How do you like your eggs in the morning?'
     ordinal = 1
     explainer = 'A very serious tax-related question'
+    variable = 'fake_var_name'
     is_mandatory = None
 
     data = {
@@ -760,6 +805,7 @@ def test_post_multiple_choice_question_with_null_is_mandatory():
         'text': question_text,
         'ordinal': ordinal,
         'explainer': explainer,
+        'variable_name': variable,
         'is_mandatory': is_mandatory
     }
     request_url = url + str(form_id) + '/questions/'
@@ -773,6 +819,7 @@ def test_post_multiple_choice_question():
     question_text = 'How do you like your eggs in the morning?'
     ordinal = 1
     explainer = 'A very serious tax-related question'
+    variable = 'fake_var_name'
     is_mandatory = True
 
     data = {
@@ -781,6 +828,7 @@ def test_post_multiple_choice_question():
         'text': question_text,
         'ordinal': ordinal,
         'explainer': explainer,
+        'variable_name': variable,
         'is_mandatory': is_mandatory
     }
     request_url = url + str(form_id) + '/questions/'
@@ -804,9 +852,10 @@ def test_put_multiple_choice_question_with_null_data():
     question_text = 'How do you like your eggs in the morning?'
     ordinal = 1
     explainer = 'A very serious tax-related question'
+    variable = 'fake_var_name'
     is_mandatory = True
     
-    id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, is_mandatory)
+    id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, variable, is_mandatory)
 
     new_text = None
     new_ordinal = None
@@ -831,9 +880,10 @@ def test_put_multiple_choice_question_with_null_text():
     question_text = 'How do you like your eggs in the morning?'
     ordinal = 1
     explainer = 'A very serious tax-related question'
+    variable = 'fake_var_name'
     is_mandatory = True
     
-    id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, is_mandatory)
+    id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, variable, is_mandatory)
 
     new_text = None
     new_ordinal = 2
@@ -858,9 +908,10 @@ def test_put_multiple_choice_question_with_null_ordinal():
     question_text = 'How do you like your eggs in the morning?'
     ordinal = 1
     explainer = 'A very serious tax-related question'
+    variable = 'fake_var_name'
     is_mandatory = True
     
-    id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, is_mandatory)
+    id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, variable, is_mandatory)
 
     new_text = 'Please describe how you like your eggs in the morning.'
     new_ordinal = None
@@ -885,9 +936,10 @@ def test_put_multiple_choice_question_with_non_numeric_ordinal():
     question_text = 'How do you like your eggs in the morning?'
     ordinal = 1
     explainer = 'A very serious tax-related question'
+    variable = 'fake_var_name'
     is_mandatory = True
     
-    id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, is_mandatory)
+    id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, variable, is_mandatory)
 
     new_text = 'Please describe how you like your eggs in the morning.'
     new_ordinal = 'Hmmm'
@@ -912,9 +964,10 @@ def test_put_multiple_choice_question_with_null_explainer():
     question_text = 'How do you like your eggs in the morning?'
     ordinal = 1
     explainer = 'A very serious tax-related question'
+    variable = 'fake_var_name'
     is_mandatory = True
     
-    id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, is_mandatory)
+    id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, variable, is_mandatory)
 
     new_text = 'Please describe how you like your eggs in the morning.'
     new_ordinal = 2
@@ -939,9 +992,10 @@ def test_put_multiple_choice_question_with_null_is_mandatory():
     question_text = 'How do you like your eggs in the morning?'
     ordinal = 1
     explainer = 'A very serious tax-related question'
+    variable = 'fake_var_name'
     is_mandatory = True
     
-    id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, is_mandatory)
+    id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, variable, is_mandatory)
 
     new_text = 'Please describe how you like your eggs in the morning.'
     new_ordinal = 2
@@ -966,9 +1020,10 @@ def test_put_multiple_choice_question():
     question_text = 'How do you like your eggs in the morning?'
     ordinal = 1
     explainer = 'A very serious tax-related question'
+    variable = 'fake_var_name'
     is_mandatory = True
     
-    id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, is_mandatory)
+    id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, variable, is_mandatory)
 
     new_text = 'Please describe how you like your eggs in the morning.'
     new_ordinal = 2
@@ -1001,6 +1056,7 @@ def test_put_multiple_choice_question_with_non_existent_id():
     new_text = 'Please describe how you like your eggs in the morning.'
     new_ordinal = 2
     new_explainer = 'Boiled or fried and whether or not you are satisfied by eggs alone.'
+    new_variable = 'fake_var_name'
     new_is_mandatory = False
 
     data = {
@@ -1022,6 +1078,7 @@ def test_post_numeric_question_with_null_data():
     question_text = None
     ordinal = None
     explainer = None
+    variable = None
     is_mandatory = None
     is_integer = None
     min_value = None
@@ -1033,6 +1090,7 @@ def test_post_numeric_question_with_null_data():
         'text': question_text,
         'ordinal': ordinal,
         'explainer': explainer,
+        'variable_name': variable,
         'is_mandatory': is_mandatory,
         'is_integer': is_integer,
         'min_value': min_value,
@@ -1049,6 +1107,7 @@ def test_post_numeric_question_with_null_form_id():
     question_text = 'How do you like your eggs in the morning?'
     ordinal = 1
     explainer = 'A very serious tax-related question'
+    variable = 'fake_var_name'
     is_mandatory = True
     is_integer = False
     min_value = 0
@@ -1060,6 +1119,7 @@ def test_post_numeric_question_with_null_form_id():
         'text': question_text,
         'ordinal': ordinal,
         'explainer': explainer,
+        'variable_name': variable,
         'is_mandatory': is_mandatory,
         'is_integer': is_integer,
         'min_value': min_value,
@@ -1076,6 +1136,7 @@ def test_post_numeric_question_with_non_existent_form_id():
     question_text = 'How do you like your eggs in the morning?'
     ordinal = 1
     explainer = 'A very serious tax-related question'
+    variable = 'fake_var_name'
     is_mandatory = True
     is_integer = False
     min_value = 0
@@ -1087,6 +1148,7 @@ def test_post_numeric_question_with_non_existent_form_id():
         'text': question_text,
         'ordinal': ordinal,
         'explainer': explainer,
+        'variable_name': variable,
         'is_mandatory': is_mandatory,
         'is_integer': is_integer,
         'min_value': min_value,
@@ -1103,6 +1165,7 @@ def test_post_numeric_question_with_non_numeric_form_id():
     question_text = 'How do you like your eggs in the morning?'
     ordinal = 1
     explainer = 'A very serious tax-related question'
+    variable = 'fake_var_name'
     is_mandatory = True
     is_integer = False
     min_value = 0
@@ -1114,6 +1177,7 @@ def test_post_numeric_question_with_non_numeric_form_id():
         'text': question_text,
         'ordinal': ordinal,
         'explainer': explainer,
+        'variable_name': variable,
         'is_mandatory': is_mandatory,
         'is_integer': is_integer,
         'min_value': min_value,
@@ -1130,6 +1194,7 @@ def test_post_numeric_question_with_null_text():
     question_text = None
     ordinal = 1
     explainer = 'A very serious tax-related question'
+    variable = 'fake_var_name'
     is_mandatory = True
     is_integer = False
     min_value = 0
@@ -1141,6 +1206,7 @@ def test_post_numeric_question_with_null_text():
         'text': question_text,
         'ordinal': ordinal,
         'explainer': explainer,
+        'variable_name': variable,
         'is_mandatory': is_mandatory,
         'is_integer': is_integer,
         'min_value': min_value,
@@ -1157,6 +1223,7 @@ def test_post_numeric_question_with_null_ordinal():
     question_text = 'How do you like your eggs in the morning?'
     ordinal = None
     explainer = 'A very serious tax-related question'
+    variable = 'fake_var_name'
     is_mandatory = True
     is_integer = False
     min_value = 0
@@ -1168,6 +1235,7 @@ def test_post_numeric_question_with_null_ordinal():
         'text': question_text,
         'ordinal': ordinal,
         'explainer': explainer,
+        'variable_name': variable,
         'is_mandatory': is_mandatory,
         'is_integer': is_integer,
         'min_value': min_value,
@@ -1184,6 +1252,7 @@ def test_post_numeric_question_with_non_numeric_ordinal():
     question_text = 'How do you like your eggs in the morning?'
     ordinal = 'Try again'
     explainer = 'A very serious tax-related question'
+    variable = 'fake_var_name'
     is_mandatory = True
     is_integer = False
     min_value = 0
@@ -1195,6 +1264,7 @@ def test_post_numeric_question_with_non_numeric_ordinal():
         'text': question_text,
         'ordinal': ordinal,
         'explainer': explainer,
+        'variable_name': variable,
         'is_mandatory': is_mandatory,
         'is_integer': is_integer,
         'min_value': min_value,
@@ -1211,6 +1281,7 @@ def test_post_numeric_question_with_null_explainer():
     question_text = 'How do you like your eggs in the morning?'
     ordinal = 1
     explainer = None
+    variable = 'fake_var_name'
     is_mandatory = True
     is_integer = False
     min_value = 0
@@ -1222,6 +1293,7 @@ def test_post_numeric_question_with_null_explainer():
         'text': question_text,
         'ordinal': ordinal,
         'explainer': explainer,
+        'variable_name': variable,
         'is_mandatory': is_mandatory,
         'is_integer': is_integer,
         'min_value': min_value,
@@ -1238,6 +1310,7 @@ def test_post_numeric_question_with_null_is_mandatory():
     question_text = 'How do you like your eggs in the morning?'
     ordinal = 1
     explainer = 'A very serious tax-related question'
+    variable = 'fake_var_name'
     is_mandatory = None
     is_integer = False
     min_value = 0
@@ -1249,6 +1322,7 @@ def test_post_numeric_question_with_null_is_mandatory():
         'text': question_text,
         'ordinal': ordinal,
         'explainer': explainer,
+        'variable_name': variable,
         'is_mandatory': is_mandatory,
         'is_integer': is_integer,
         'min_value': min_value,
@@ -1265,6 +1339,7 @@ def test_post_numeric_question():
     question_text = 'How do you like your eggs in the morning?'
     ordinal = 1
     explainer = 'A very serious tax-related question'
+    variable = 'fake_var_name'
     is_mandatory = True
     is_integer = False
     min_value = 0
@@ -1276,6 +1351,7 @@ def test_post_numeric_question():
         'text': question_text,
         'ordinal': ordinal,
         'explainer': explainer,
+        'variable_name': variable,
         'is_mandatory': is_mandatory,
         'is_integer': is_integer,
         'min_value': min_value,
@@ -1300,12 +1376,13 @@ def test_put_numeric_question_with_null_data():
     question_text = 'How do you like your eggs in the morning?'
     ordinal = 1
     explainer = 'A very serious tax-related question'
+    variable = 'fake_var_name'
     is_mandatory = True
     is_integer = False
     min_value = 0
     max_value = 100
 
-    id = create_numeric_question(form_id, question_text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value)
+    id = create_numeric_question(form_id, question_text, ordinal, explainer, variable, is_mandatory, is_integer, min_value, max_value)
 
     new_text = None
     new_ordinal = None
@@ -1336,12 +1413,13 @@ def test_put_numeric_question_with_null_text():
     question_text = 'How do you like your eggs in the morning?'
     ordinal = 1
     explainer = 'A very serious tax-related question'
+    variable = 'fake_var_name'
     is_mandatory = True
     is_integer = False
     min_value = 0
     max_value = 100
 
-    id = create_numeric_question(form_id, question_text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value)
+    id = create_numeric_question(form_id, question_text, ordinal, explainer, variable, is_mandatory, is_integer, min_value, max_value)
 
     new_text = None
     new_ordinal = 2
@@ -1372,12 +1450,13 @@ def test_put_numeric_question_with_null_ordinal():
     question_text = 'How do you like your eggs in the morning?'
     ordinal = 1
     explainer = 'A very serious tax-related question'
+    variable = 'fake_var_name'
     is_mandatory = True
     is_integer = False
     min_value = 0
     max_value = 100
 
-    id = create_numeric_question(form_id, question_text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value)
+    id = create_numeric_question(form_id, question_text, ordinal, explainer, variable, is_mandatory, is_integer, min_value, max_value)
 
     new_text = 'Please describe how you like your eggs in the morning.'
     new_ordinal = None
@@ -1408,12 +1487,13 @@ def test_put_numeric_question_with_non_numeric_ordinal():
     question_text = 'How do you like your eggs in the morning?'
     ordinal = 1
     explainer = 'A very serious tax-related question'
+    variable = 'fake_var_name'
     is_mandatory = True
     is_integer = False
     min_value = 0
     max_value = 100
 
-    id = create_numeric_question(form_id, question_text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value)
+    id = create_numeric_question(form_id, question_text, ordinal, explainer, variable, is_mandatory, is_integer, min_value, max_value)
 
     new_text = 'Please describe how you like your eggs in the morning.'
     new_ordinal = 'Hmmm'
@@ -1444,12 +1524,13 @@ def test_put_numeric_question_with_null_explainer():
     question_text = 'How do you like your eggs in the morning?'
     ordinal = 1
     explainer = 'A very serious tax-related question'
+    variable = 'fake_var_name'
     is_mandatory = True
     is_integer = False
     min_value = 0
     max_value = 100
 
-    id = create_numeric_question(form_id, question_text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value)
+    id = create_numeric_question(form_id, question_text, ordinal, explainer, variable, is_mandatory, is_integer, min_value, max_value)
 
     new_text = 'Please describe how you like your eggs in the morning.'
     new_ordinal = 2
@@ -1480,12 +1561,13 @@ def test_put_numeric_question_with_null_is_mandatory():
     question_text = 'How do you like your eggs in the morning?'
     ordinal = 1
     explainer = 'A very serious tax-related question'
+    variable = 'fake_var_name'
     is_mandatory = True
     is_integer = False
     min_value = 0
     max_value = 100
 
-    id = create_numeric_question(form_id, question_text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value)
+    id = create_numeric_question(form_id, question_text, ordinal, explainer, variable, is_mandatory, is_integer, min_value, max_value)
 
     new_text = 'Please describe how you like your eggs in the morning.'
     new_ordinal = 2
@@ -1516,12 +1598,13 @@ def test_put_numeric_question():
     question_text = 'How do you like your eggs in the morning?'
     ordinal = 1
     explainer = 'A very serious tax-related question'
+    variable = 'fake_var_name'
     is_mandatory = True
     is_integer = False
     min_value = 0
     max_value = 100
 
-    id = create_numeric_question(form_id, question_text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value)
+    id = create_numeric_question(form_id, question_text, ordinal, explainer, variable, is_mandatory, is_integer, min_value, max_value)
 
     new_text = 'Please describe how you like your eggs in the morning.'
     new_ordinal = 2
@@ -1564,6 +1647,7 @@ def test_put_numeric_question_with_non_existent_id():
     new_text = 'Please describe how you like your eggs in the morning.'
     new_ordinal = 2
     new_explainer = 'Boiled or fried and whether or not you are satisfied by eggs alone.'
+    new_variable = 'fake_var_name'
     new_is_mandatory = False
     new_is_integer = True
     new_min_val = -10
@@ -1595,6 +1679,7 @@ def test_delete_question():
         'My question is wonderful?',
         1,
         'A test question only',
+        'some_var_name',
         False
     )
     assert Form.objects.all().count() == 1
@@ -1613,7 +1698,7 @@ def test_delete_question_with_non_existent_id():
 # Test creation of multiple choice options
 # Helper
 def get_mock_multiple_choice_question(form_id):
-    return create_multiple_choice_question(form_id, 'Wibble', 1, 'Wobble', True)
+    return create_multiple_choice_question(form_id, 'Wibble', 1, 'Wobble', 'some_var', True)
 
 @pytest.mark.django_db
 def test_post_option_with_null_text():

@@ -145,6 +145,7 @@ class FormQuestionList(APIView):
             'text',
             'ordinal',
             'explainer',
+            'variable_name',
             'is_mandatory',
             'type',
         ]
@@ -159,19 +160,20 @@ class FormQuestionList(APIView):
         text = request.data['text']
         ordinal = request.data['ordinal']
         explainer = request.data['explainer']
+        variable_name = request.data['variable_name']
         is_mandatory = request.data['is_mandatory']
         
         # Call the apropriate post method depending on Q type, using switch statement
         try:
             match request.data['type']:
                 case "boolean":
-                    question_id = create_boolean_question(form_pk, text, ordinal, explainer, is_mandatory)
+                    question_id = create_boolean_question(form_pk, text, ordinal, explainer, variable_name, is_mandatory)
 
                 case "numeric":
-                    question_id = self.__post_numeric_question(request, form_pk, text, ordinal, explainer, is_mandatory)
+                    question_id = self.__post_numeric_question(request, form_pk, text, ordinal, explainer, variable_name, is_mandatory)
 
                 case "multiple_choice":
-                    question_id = create_multiple_choice_question(form_pk, text, ordinal, explainer, is_mandatory)
+                    question_id = create_multiple_choice_question(form_pk, text, ordinal, explainer, variable_name, is_mandatory)
 
                 case _:
                     return Response(
@@ -202,7 +204,7 @@ class FormQuestionList(APIView):
     # Private controller methods to handle creating questions with specific attributes
 
     # Method to create Numeric question 
-    def __post_numeric_question(self, request, form_pk, text, ordinal, explainer, is_mandatory):
+    def __post_numeric_question(self, request, form_pk, text, ordinal, explainer, variable_name, is_mandatory):
         # Validate that the specific attributes required are present
         specific_attributes = [
             'is_integer',
@@ -224,7 +226,7 @@ class FormQuestionList(APIView):
 
         # Call apropriate services method
         question_id = create_numeric_question(
-            form_pk, text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value
+            form_pk, text, ordinal, explainer, variable_name, is_mandatory, is_integer, min_value, max_value
             )
         # Return question id
         return question_id

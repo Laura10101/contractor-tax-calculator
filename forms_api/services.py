@@ -30,7 +30,7 @@ def delete_form(id):
 # Create new method to create questions 
 # Requires 3 methods - one for each type of question
 
-def create_boolean_question(form_id, text, ordinal, explainer, is_mandatory):
+def create_boolean_question(form_id, text, ordinal, explainer, variable_name, is_mandatory):
     if form_id is None or not isinstance(form_id, int):
         raise ValidationError('The form_id must be a valid integer when creating a question')
     # Get form object by its primary key 
@@ -41,13 +41,14 @@ def create_boolean_question(form_id, text, ordinal, explainer, is_mandatory):
     new_question.text=text
     new_question.ordinal=ordinal
     new_question.explainer=explainer
+    new_question.variable_name=variable_name
     new_question.is_mandatory=is_mandatory
     new_question.full_clean()
     new_question.save()
     # Return ID of newly created question
     return new_question.id
 
-def create_multiple_choice_question(form_id, text, ordinal, explainer, is_mandatory, is_multiselect=False):
+def create_multiple_choice_question(form_id, text, ordinal, explainer, variable_name, is_mandatory, is_multiselect=False):
     if form_id is None or not isinstance(form_id, int):
         raise ValidationError('The form_id must be a valid integer when creating a question')
     # Get form object by its primary key 
@@ -58,6 +59,7 @@ def create_multiple_choice_question(form_id, text, ordinal, explainer, is_mandat
     new_question.text=text
     new_question.ordinal=ordinal
     new_question.explainer=explainer
+    new_question.variable_name=variable_name
     new_question.is_mandatory=is_mandatory
     new_question.is_multiselect=is_multiselect
     new_question.full_clean()
@@ -66,7 +68,7 @@ def create_multiple_choice_question(form_id, text, ordinal, explainer, is_mandat
     # Return ID of newly created question
     return new_question.id
     
-def create_numeric_question(form_id, text, ordinal, explainer, is_mandatory, is_integer, min_value, max_value):
+def create_numeric_question(form_id, text, ordinal, explainer, variable_name, is_mandatory, is_integer, min_value, max_value):
     if form_id is None or not isinstance(form_id, int):
         raise ValidationError('The form_id must be a valid integer when creating a question')
     # Get form object by its primary key 
@@ -78,6 +80,7 @@ def create_numeric_question(form_id, text, ordinal, explainer, is_mandatory, is_
     new_question.text=text
     new_question.ordinal=ordinal
     new_question.explainer=explainer
+    new_question.variable_name=variable_name
     new_question.is_mandatory=is_mandatory
     new_question.is_integer=is_integer
     new_question.min_value=min_value
