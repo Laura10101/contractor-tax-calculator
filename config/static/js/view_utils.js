@@ -113,28 +113,6 @@ function getSelectedJurisdictionId() {
  * Question Dialog Helper Functions
  */
 
-// Handle selection of a question type via question type modal
-function questionTypeChosen() {
-    // Close the modal
-    hideDialog(questionTypeDialog.dialog.id);
-
-    // Display the appropraite create question dialog for the selected question type
-    questionType = document.getElementById(questionTypeDialog.questionType.input.id).value;
-    switch(questionType) {
-        case "boolean":
-            displayCreateBooleanQuestionDialog();
-        break;
-
-        case "numeric":
-            displayCreateNumericQuestionDialog();
-        break;
-        
-        case "multiple_choice":
-            displayCreateMultipleChoiceQuestionDialog();
-        break;
-    }
-}
-
 // Boolean Question Dialog Helpers
 
 // Set the label and input values on a boolean question dialog

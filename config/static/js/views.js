@@ -65,6 +65,30 @@ function refreshQuestionsDisplay() {
     getFormForJurisdiction(jurisdictionId, displayQuestions, displayQuestionsLoadError);
 }
 
+function questionTypeSelected() {
+    // Hide question type dialog
+    hideDialog(questionTypeDialog.dialog.id);
+
+    // Get the question type
+    questionType = document.getElementById(questionTypeDialog.questionType.input.value);
+
+    // Trigger the appropriate create dialog
+    switch(questionType) {
+        case "boolean":
+                setDialogState(dialogStates.modes.create, dialogStates.entityTypes.booleanQuestion, null);
+                displayCreateBooleanQuestionDialog();
+            break;
+        case "numeric":
+                setDialogState(dialogStates.modes.create, dialogStates.entityTypes.numericQuestion, null);
+                displayCreateNumericQuestionDialog();
+            break;
+        case "multiple_choice":
+                setDialogState(dialogStates.modes.create, dialogStates.entityTypes.multipleChoiceQuestion, null);
+                displayCreateMultipleChoiceQuestionDialog();
+            break;
+    }
+}
+
 function editQuestion(question) {
     switch (question.type) {
         case "boolean":
@@ -84,6 +108,7 @@ function editQuestion(question) {
 
 function saveQuestionSucceeded() {
     success("The question was successfully saved.");
+    clearDialogState();
     refreshQuestionsDisplay();
 }
 
