@@ -224,8 +224,26 @@ function saveQuestion() {
     }
 }
 
+function deleteQuestionSucceeded(request, status, message) {
+    success("The selected question was successfully deleted.");
+    clearDialogState();
+    refreshQuestionsDisplay();
+}
+
+function deleteQuestionFailed(request, status, message) {
+    error("An error occurred while attempting to save question.");
+}
+
+function confirmDeleteQuestion() {
+    hideDialog(confirmationDialog.dialog.id);
+    formId = getFormId();
+    question = app.dialogState.entity;
+    removeQuestion(formId, question.id, deleteQuestionSucceeded, deleteQuestionFailed);
+}
+
 function deleteQuestion(question) {
-    
+    setDialogState(dialogStates.modes.delete, dialogStates.entityTypes.question, question);
+    confirm("Please confirm you wish for the following question to be deleted: " + question.text + ".", confirmDeleteQuestion);
 }
 
 function moveQuestionUp(question) {

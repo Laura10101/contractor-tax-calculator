@@ -13,6 +13,7 @@ const dialogStates = {
     },
 
     entityTypes: {
+        question: "question",
         booleanQuestion: "boolean_question",
         numericQuestion: "numeric_question",
         multipleChoiceQuestion: "multiple_choice_question",

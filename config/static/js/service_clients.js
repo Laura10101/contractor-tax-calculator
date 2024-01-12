@@ -219,7 +219,7 @@ function updateMultipleChoiceQuestion(formId, questionId, text, ordinal, explain
     put(endpoints.forms.questions(formId), questionId, data, onSuccess, onFailure);
 }
 
-function deleteQuestion(formId, questionId, onSuccess, onFailure) {
+function removeQuestion(formId, questionId, onSuccess, onFailure) {
     remove(endpoints.forms.questions(formId), questionId, onSuccess, onFailure);
 }
 

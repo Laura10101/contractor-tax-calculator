@@ -29,6 +29,10 @@ function setDialogState(mode, entityType, entity) {
     };
 }
 
+function getFormId() {
+    return app.jurisdictionForm.forms[Object.keys(app.jurisdictionForm.forms)[0]].id;
+}
+
 function getTaxCategoryById(id) {
     let category = null;
     app.taxCategories.forEach(taxCategory => {
