@@ -228,6 +228,10 @@ function saveQuestion() {
 
 function deleteQuestionSucceeded(request, status, message) {
     success("The selected question was successfully deleted.");
+    questions = resequenceQuestionOrdinals(app.dialogState.entity);
+    questions.forEach(question => {
+        updateQuestion(question, doNothing, saveQuestionFailed);
+    })
     clearDialogState();
     refreshQuestionsDisplay();
 }

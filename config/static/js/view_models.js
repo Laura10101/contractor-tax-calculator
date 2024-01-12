@@ -88,3 +88,15 @@ function findNextQuestion(question) {
     });
     return nextQuestion;
 }
+
+function resequenceQuestionOrdinals(deletedQuestion) {
+    let questions = getQuestions();
+    let i = 0;
+    questions.forEach(question => {
+        if (question.id != deletedQuestion.id) {
+            i++;
+            question.ordinal = i;
+        }
+    });
+    return questions;
+}
