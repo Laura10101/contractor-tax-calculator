@@ -259,6 +259,10 @@ function moveQuestionDown(question) {
  */
 
 /*
+ * Ruleset Views
+ */
+
+/*
  * Flat Rate Rule Views
  */
 

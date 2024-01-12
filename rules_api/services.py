@@ -6,7 +6,7 @@ def get_rulesets_by_jurisdiction_id(jurisdiction_id):
     if not isinstance(jurisdiction_id, int):
         raise ValidationError('jurisdiction_id must be a valid (non-negative, non-null) integer')
 
-    return RuleSet.objects.filter(jurisdiction_id__exact=jurisdiction_id)
+    return RuleSet.objects.filter(jurisdiction_id__exact=jurisdiction_id).order_by('ordinal')
 
 # Create rule set
 def create_ruleset(jurisdiction_id, tax_category_id, ordinal):

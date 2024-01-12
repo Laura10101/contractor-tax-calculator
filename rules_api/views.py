@@ -45,7 +45,7 @@ class RuleSetsList(APIView):
             serialised_rule['tax_rate'] = rule.flat_rate
         else:
             serialised_rule['tiers'] = []
-            for tier in rule.tiers.all():
+            for tier in rule.tiers.order_by('ordinal').all():
                 if isinstance(rule, TieredRateRule):
                     serialised_rule['type'] = 'tiered_rate'
                     serialised_rule['tiers'].append(self.__serialise_rule_tier(tier))
@@ -84,7 +84,7 @@ class RuleSetsList(APIView):
                 'ordinal': ruleset.ordinal,
                 'rules': []
             }
-            for rule in ruleset.rules.all():
+            for rule in ruleset.rules.order_by('ordinal').all():
                 serialised_ruleset['rules'].append(self.__serialise_rule(rule))
             serialised_rulesets.append(serialised_ruleset)
         
