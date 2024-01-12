@@ -15,6 +15,12 @@ function success(message) {
     showMessage(message);
 }
 
+function confirm(message, onConfirm) {
+    document.getElementById(confirmationDialog.message.id).innerHTML = message;
+    document.getElementById(confirmationDialog.confirmationButton.id).onclick = onConfirm;
+    showDialog(confirmationDialog.dialog.id);
+}
+
 // Remove all child nodes of a parent DOM element
 // Taken from https://www.javascripttutorial.net/dom/manipulating/remove-all-child-nodes/
 function removeAllChildNodes(parent) {

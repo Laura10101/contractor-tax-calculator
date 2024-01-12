@@ -8,7 +8,8 @@
 const dialogStates = {
     modes: {
         create: "create",
-        edit: "edit"
+        edit: "edit",
+        delete: "delete"
     },
 
     entityTypes: {
@@ -73,6 +74,27 @@ const statusDialog = {
 
     message: {
         id: "status-modal-message"
+    }
+};
+
+/*
+ * Confirmation Modal Constants
+ */
+const confirmationDialog = {
+    dialog: {
+        id: "confirmation-modal"
+    },
+
+    label: {
+        id: "confirmation-modal-label"
+    },
+
+    message: {
+        id: "confirmation-modal-message"
+    },
+
+    confirmationButton: {
+        id: "confirmation-modal-confirm-btn"
     }
 };
 
