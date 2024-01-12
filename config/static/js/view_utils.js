@@ -273,6 +273,8 @@ function displayBooleanQuestion(question) {
     // Set the action event handlers
     questionDisplay.querySelector(".edit-button").onclick = function() { editQuestion(question); }
     questionDisplay.querySelector(".delete-button").onclick = function() { deleteQuestion(question); }
+    questionDisplay.querySelector(".move-up-button").onclick = function() { moveQuestionUp(question); }
+    questionDisplay.querySelector(".move-down-button").onclick = function() { moveQuestionDown(question); }
 
     // Add the question display to the container
     document.getElementById(questionDisplayContainer.id).appendChild(questionDisplay);
@@ -307,6 +309,8 @@ function displayNumericQuestion(question) {
     // Set the action event handlers
     questionDisplay.querySelector(".edit-button").onclick = function() { editQuestion(question); }
     questionDisplay.querySelector(".delete-button").onclick = function() { deleteQuestion(question); }
+    questionDisplay.querySelector(".move-up-button").onclick = function() { moveQuestionUp(question); }
+    questionDisplay.querySelector(".move-down-button").onclick = function() { moveQuestionDown(question); }
 
     document.getElementById(questionDisplayContainer.id).appendChild(questionDisplay);
 }
@@ -339,6 +343,8 @@ function displayMultipleChoiceQuestion(question) {
     // Set the action event handlers
     questionDisplay.querySelector(".edit-button").onclick = function() { editQuestion(question); }
     questionDisplay.querySelector(".delete-button").onclick = function() { deleteQuestion(question); }
+    questionDisplay.querySelector(".move-up-button").onclick = function() { moveQuestionUp(question); }
+    questionDisplay.querySelector(".move-down-button").onclick = function() { moveQuestionDown(question); }
 
     document.getElementById(questionDisplayContainer.id).appendChild(questionDisplay);
 }

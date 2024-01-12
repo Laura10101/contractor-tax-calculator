@@ -3,6 +3,8 @@
  * Provides view functions to render views and react to view actions
  */
 
+function doNothing() {}
+
 /*
  * Ruleset Views
  */
@@ -128,7 +130,7 @@ function saveQuestion() {
                     createBooleanQuestion(
                         formId,
                         document.getElementById(booleanQuestionDialog.questionText.input.id).value,
-                        1,
+                        getNextQuestionOrdinal(),
                         document.getElementById(booleanQuestionDialog.explainer.input.id).value,
                         document.getElementById(booleanQuestionDialog.variableName.input.id).value,
                         document.getElementById(booleanQuestionDialog.isMandatory.input.id).checked,
@@ -142,7 +144,7 @@ function saveQuestion() {
                     createNumericQuestion(
                         formId,
                         document.getElementById(numericQuestionDialog.questionText.input.id).value,
-                        1,
+                        getNextQuestionOrdinal(),
                         document.getElementById(numericQuestionDialog.explainer.input.id).value,
                         document.getElementById(numericQuestionDialog.variableName.input.id).value,
                         document.getElementById(numericQuestionDialog.isMandatory.input.id).checked,
@@ -159,7 +161,7 @@ function saveQuestion() {
                     createMultipleChoiceQuestion(
                         formId,
                         document.getElementById(multipleChoiceQuestionDialog.questionText.input.id).value,
-                        1,
+                        getNextQuestionOrdinal(),
                         document.getElementById(multipleChoiceQuestionDialog.explainer.input.id).value,
                         document.getElementById(multipleChoiceQuestionDialog.variableName.input.id).value,
                         document.getElementById(multipleChoiceQuestionDialog.isMandatory.input.id).checked,
@@ -246,12 +248,31 @@ function deleteQuestion(question) {
     confirm("Please confirm you wish for the following question to be deleted: " + question.text + ".", confirmDeleteQuestion);
 }
 
-function moveQuestionUp(question) {
+function swapOrdinals(question, findNewPosition) {
+    // Find the question that needs to be swapped
+    let questionToSwap = findNewPosition(question);
 
+    if (questionToSwap != null) {
+        // Swap the ordinals
+        let originalOrdinal = question.ordinal;
+        question.ordinal = questionToSwap.ordinal;
+        questionToSwap.ordinal = originalOrdinal;
+
+        // Save the questions
+        updateQuestion(question, doNothing, saveQuestionFailed);
+        updateQuestion(questionToSwap, doNothing, saveQuestionFailed);
+
+        // Refresh the question display
+        refreshQuestionsDisplay();
+    }
+}
+
+function moveQuestionUp(question) {
+    swapOrdinals(question, findPreviousQuestion);
 }
 
 function moveQuestionDown(question) {
-
+    swapOrdinals(question, findNextQuestion);
 }
 
 /*

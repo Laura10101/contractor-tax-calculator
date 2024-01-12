@@ -190,8 +190,8 @@ function updateNumericQuestion(formId, questionId, text, ordinal, explainer, isM
         is_mandatory: isMandatory,
         type: "numeric",
         is_integer: isInteger,
-        min_value: minValue == "" || minValue == null ? null : minValue,
-        max_value: maxValue == "" || maxValue == null ? null : maxValue
+        min_value: typeof(minValue) == "number" ? (minValue == null ? null : minValue) : (minValue == "" || minValue == null ? null : minValue),
+        max_value: typeof(maxValue) == "number" ? (maxValue == null ? null : maxValue) : (maxValue == "" || maxValue == null ? null : maxValue),
     };
     put(endpoints.forms.questions(formId), questionId, data, onSuccess, onFailure);
 }
@@ -213,10 +213,36 @@ function updateMultipleChoiceQuestion(formId, questionId, text, ordinal, explain
         text: text,
         ordinal: ordinal,
         explainer: explainer,
-        is_mandatory: isMandatory,
+        is_mandatory: is_mandatory,
         type: "multiple_choice"
     };
     put(endpoints.forms.questions(formId), questionId, data, onSuccess, onFailure);
+}
+
+function updateQuestion(question, onSuccess, onFailure) {
+    formId = getFormId();
+    switch (question.type) {
+        case "boolean":
+                updateBooleanQuestion(formId, question.id, question.text, question.ordinal, question.explainer, question.is_mandatory, onSuccess, onFailure);
+            break;
+        case "numeric":
+                updateNumericQuestion(
+                    formId,
+                    question.id,
+                    question.text,
+                    question.ordinal,
+                    question.explainer,
+                    question.is_mandatory,
+                    question.is_integer,
+                    question.min_value,
+                    question.max_value,
+                    onSuccess,
+                    onFailure);
+            break;
+        case "multiple_choice":
+                    updateMultipleChoiceQuestion(formId, question.id, question.text, question.ordinal, question.explainer, question.is_mandatory, onSuccess, onFailure);
+            break;
+    }
 }
 
 function removeQuestion(formId, questionId, onSuccess, onFailure) {

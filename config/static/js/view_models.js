@@ -42,3 +42,49 @@ function getTaxCategoryById(id) {
     });
     return category;
 }
+
+function getQuestions() {
+    return app.jurisdictionForm.forms[Object.keys(app.jurisdictionForm.forms)[0]].questions;
+}
+
+function getNextQuestionOrdinal() {
+    return getQuestions().length + 1;
+}
+
+function findPreviousQuestion(question) {
+    let questions = getQuestions();
+    let previousQuestion = null;
+    questions.forEach(candidateQuestion => {
+        if (candidateQuestion.id != question.id) {
+            if (previousQuestion == null) {
+                if (candidateQuestion.ordinal < question.ordinal) {
+                    previousQuestion = candidateQuestion;
+                }
+            } else {
+                if (candidateQuestion.ordinal > previousQuestion.ordinal && candidateQuestion.ordinal < question.ordinal) {
+                    previousQuestion = candidateQuestion;
+                }
+            }
+        }
+    });
+    return previousQuestion;
+}
+
+function findNextQuestion(question) {
+    let questions = getQuestions();
+    let nextQuestion = null;
+    questions.forEach(candidateQuestion => {
+        if (candidateQuestion.id != question.id) {
+            if (nextQuestion == null) {
+                if (candidateQuestion.ordinal > question.ordinal) {
+                    nextQuestion = candidateQuestion;
+                }
+            } else {
+                if (candidateQuestion.ordinal < nextQuestion.ordinal && candidateQuestion.ordinal > question.ordinal) {
+                    nextQuestion = candidateQuestion;
+                }
+            }
+        }
+    });
+    return nextQuestion;
+}
