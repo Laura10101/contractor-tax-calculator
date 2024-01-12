@@ -74,7 +74,7 @@ class FormsList(APIView):
         forms_by_jurisdiction_id = {}
         for form in forms:
             questions = []
-            for question in form.questions.all():
+            for question in form.questions.order_by('ordinal').all():
                 serialised_question = {
                     'id': question.id,
                     'text': question.text,
