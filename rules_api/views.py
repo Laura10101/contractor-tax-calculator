@@ -144,6 +144,32 @@ class RuleSetDetail(APIView):
         # Return response 
         return Response(response)
 
+    def patch(self, request, pk):
+        # Define the list of required attributes 
+        required_attributes = [
+            'ordinal',
+        ]
+        # Validate data 
+        if not contains_required_attributes(request, required_attributes):
+            return Response(
+                { 'error' : 'Invalid request. Please supply all required attributes.' },
+                status=status.HTTP_400_BAD_REQUEST
+                )
+        # Extract data required for service method 
+        ordinal = request.data['ordinal']
+        # Invoke service method 
+        try:
+            update_ruleset_ordinal(pk, ordinal)
+        except ValidationError as e:
+            return Response(
+                { 'error' : str(e) },
+                status=status.HTTP_400_BAD_REQUEST
+                )
+        # Create response 
+        response = { 'ruleset_id' : pk }
+        # Return response 
+        return Response(response)
+
 # Create django rest tax categories list view 
 # Django rest views are classes inheriting APIView 
 class TaxCategoriesList(APIView):
