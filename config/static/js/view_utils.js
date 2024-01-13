@@ -396,13 +396,6 @@ function displayCreateRulesetDialog() {
     showDialog(rulesetDialog.dialog.id);
 }
 
-function displayEditRulesetDialog() {
-    // Initialise the ruleset dialog with appropriate values for a create
-    initRulesetDialog("Edit Ruleset", app.taxCategories);
-    // Show the dialog
-    showDialog(rulesetDialog.dialog.id);
-}
-
 // Handle selection of a question type via question type modal
 function ruleTypeChosen() {
     // Close the modal

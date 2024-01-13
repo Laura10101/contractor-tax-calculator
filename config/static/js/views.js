@@ -305,19 +305,12 @@ function saveRuleset() {
 
     if (app.dialogState.mode == dialogStates.modes.create) {
         postRuleset(jurisdictionId, taxCategoryId, ordinal, saveRulesetSucceeded, saveRulesetFailed);
-    } else if (app.dialogState.mode == dialogStates.modes.edit) {
-        putRuleset(app.dialogState.entity.id, jurisdictionId, taxCategoryId, ordinal, saveRulesetSucceeded, saveRulesetFailed);
     }
 }
 
 function createRuleset() {
     setDialogState(dialogStates.modes.create, dialogStates.entityTypes.ruleset, null);
     displayCreateRulesetDialog();
-}
-
-function editRuleset(ruleset) {
-    setDialogState(dialogState.modes.create, dialogStates.entityTypes.ruleset, ruleset);
-    displayEditRulesetDialog();
 }
 
 
