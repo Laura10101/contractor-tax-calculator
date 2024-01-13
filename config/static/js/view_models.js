@@ -17,7 +17,9 @@ let app = {
 
 function clearDialogState() {
     app.dialogState = {
-
+        mode: null,
+        entityType: null,
+        entity: null
     };
 }
 
@@ -99,4 +101,8 @@ function resequenceQuestionOrdinals(deletedQuestion) {
         }
     });
     return questions;
+}
+
+function getNextRulesetOrdinal() {
+    return app.jurisdictionRules.length + 1;
 }

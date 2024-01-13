@@ -274,16 +274,16 @@ function getRulesetsForJurisdiction(jurisdictionId, onSuccess, onFailure) {
     query(endpoints.rules.rulesets, queryParameters, onSuccess, onFailure);
 }
 
-function createRuleset(jurisdictionId, taxCategoryId, ordinal, onSuccess, onFailure) {
+function postRuleset(jurisdictionId, taxCategoryId, ordinal, onSuccess, onFailure) {
     data = {
-        jurisdiction_id: jurisdictionId,
-        tax_category_id: taxCategoryId,
+        jurisdiction_id: parseInt(jurisdictionId),
+        tax_category_id: parseInt(taxCategoryId),
         ordinal: ordinal
     };
     post(endpoints.rules.rulesets, data, onSuccess, onFailure);
 }
 
-function updateRuleset(rulesetId, jurisdictionId, taxCategoryId, ordinal, onSuccess, onFailure) {
+function putRuleset(rulesetId, jurisdictionId, taxCategoryId, ordinal, onSuccess, onFailure) {
     data = {
         jurisdiction_id: jurisdictionId,
         tax_category_id: taxCategoryId,

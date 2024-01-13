@@ -379,14 +379,28 @@ function updateQuestionDisplay(questions) {
 // Ruleset Dialog Helpers
 function initRulesetDialog(dialogLabel, taxCategories) {
     document.getElementById(rulesetDialog.label.id).innerText = dialogLabel;
-    select = document.getElementById(rulesetDialog.taxCategory.id);
+    select = document.getElementById(rulesetDialog.taxCategory.input.id);
     removeAllChildNodes(select);
     taxCategories.forEach(category => {
         option = document.createElement("option");
         option.text = category.name;
-        option.value = category.id;
+        option.value = category.tax_category_id;
         select.add(option);
     });
+}
+
+function displayCreateRulesetDialog() {
+    // Initialise the ruleset dialog with appropriate values for a create
+    initRulesetDialog("Create Ruleset", app.taxCategories);
+    // Show the dialog
+    showDialog(rulesetDialog.dialog.id);
+}
+
+function displayEditRulesetDialog() {
+    // Initialise the ruleset dialog with appropriate values for a create
+    initRulesetDialog("Edit Ruleset", app.taxCategories);
+    // Show the dialog
+    showDialog(rulesetDialog.dialog.id);
 }
 
 // Handle selection of a question type via question type modal
@@ -678,6 +692,12 @@ function displayRuleset(ruleset) {
                 break;
         }
     });
+
+    // Set event handlers on buttons
+    display.querySelector(".edit-button").onclick = function() { editRuleset(ruleset); }
+    display.querySelector(".delete-button").onclick = function() { deleteRuleset(ruleset); }
+    display.querySelector(".move-up-button").onclick = function() { moveRulesetUp(ruleset); }
+    display.querySelector(".move-down-button").onclick = function() { moveRulesetDown(ruleset); }
 }
 
 function updateRulesetsDisplay(rulesets) {

@@ -4,20 +4,6 @@
  */
 
 function doNothing() {}
-
-/*
- * Ruleset Views
- */
-function displayRulesets(data) {
-    app.jurisdictionRules = data;
-    updateRulesetsDisplay(app.jurisdictionRules);
-}
-
-function displayRulesetsLoadError() {
-    error("An error occurred while loading rulesets for selected jurisdiction.");
-}
-
-
 /*
  * Forms Views
  */
@@ -286,6 +272,54 @@ function moveQuestionDown(question) {
 /*
  * Ruleset Views
  */
+function displayRulesets(data) {
+    app.jurisdictionRules = data;
+    updateRulesetsDisplay(app.jurisdictionRules);
+}
+
+function displayRulesetsLoadError() {
+    error("An error occurred while loading rulesets for selected jurisdiction.");
+}
+
+function refreshRulesetsDisplay() {
+    jurisdictionId = getSelectedJurisdictionId();
+    getRulesetsForJurisdiction(jurisdictionId, displayRulesets, displayRulesetsLoadError);
+}
+
+function saveRulesetSucceeded() {
+    success("The ruleset was successfully saved.");
+    clearDialogState();
+    refreshRulesetsDisplay();
+}
+
+function saveRulesetFailed(request, status, message) {
+    error("An error occurred while attempting to save ruleset.");
+}
+
+function saveRuleset() {
+    hideDialog(rulesetDialog.dialog.id);
+
+    jurisdictionId = getSelectedJurisdictionId();
+    taxCategoryId = document.getElementById(rulesetDialog.taxCategory.input.id).value;
+    ordinal = getNextRulesetOrdinal();
+
+    if (app.dialogState.mode == dialogStates.modes.create) {
+        postRuleset(jurisdictionId, taxCategoryId, ordinal, saveRulesetSucceeded, saveRulesetFailed);
+    } else if (app.dialogState.mode == dialogStates.modes.edit) {
+        putRuleset(app.dialogState.entity.id, jurisdictionId, taxCategoryId, ordinal, saveRulesetSucceeded, saveRulesetFailed);
+    }
+}
+
+function createRuleset() {
+    setDialogState(dialogStates.modes.create, dialogStates.entityTypes.ruleset, null);
+    displayCreateRulesetDialog();
+}
+
+function editRuleset(ruleset) {
+    setDialogState(dialogState.modes.create, dialogStates.entityTypes.ruleset, ruleset);
+    displayEditRulesetDialog();
+}
+
 
 /*
  * Flat Rate Rule Views
