@@ -315,16 +315,16 @@ function createRuleset() {
 
 function deleteRulesetSucceeded() {
     success("The selected ruleset was successfully deleted.");
-    /*rulesets = resequenceRulesetOrdinals(app.dialogState.entity);
+    rulesets = resequenceRulesetOrdinals(app.dialogState.entity);
     rulesets.forEach(ruleset => {
-        putRuleset(
-            ruleset.id,
-            getSelectedJurisdictionId(),
-            ruleset.jurisdiction_id,
-            ruleset.ordinal,
-            doNothing,
-            deleteRulesetFailed);
-    });*/
+        if (ruleset.id != app.dialogState.entity.id) {
+            patchRuleset(
+                ruleset.id,
+                ruleset.ordinal,
+                doNothing,
+                saveRulesetFailed);
+        }
+    });
     clearDialogState();
     refreshRulesetsDisplay();
 }

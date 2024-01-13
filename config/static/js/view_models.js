@@ -106,3 +106,15 @@ function resequenceQuestionOrdinals(deletedQuestion) {
 function getNextRulesetOrdinal() {
     return app.jurisdictionRules.length + 1;
 }
+
+function resequenceRulesetOrdinals(deletedRuleset) {
+    let rulesets = app.jurisdictionRules;
+    let i = 0;
+    rulesets.forEach(ruleset => {
+        if (ruleset.id != deletedRuleset.id) {
+            i++;
+            ruleset.ordinal = i;
+        }
+    });
+    return rulesets;
+}

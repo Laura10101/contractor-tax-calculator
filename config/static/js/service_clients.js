@@ -283,13 +283,11 @@ function postRuleset(jurisdictionId, taxCategoryId, ordinal, onSuccess, onFailur
     post(endpoints.rules.rulesets, data, onSuccess, onFailure);
 }
 
-function putRuleset(rulesetId, jurisdictionId, taxCategoryId, ordinal, onSuccess, onFailure) {
+function patchRuleset(rulesetId, ordinal, onSuccess, onFailure) {
     data = {
-        jurisdiction_id: jurisdictionId,
-        tax_category_id: taxCategoryId,
         ordinal: ordinal
     };
-    put(endpoints.rules.rulesets, rulesetId, data, onSuccess, onFailure);
+    patch(endpoints.rules.rulesets, rulesetId, data, onSuccess, onFailure);
 }
 
 function removeRuleset(rulesetId, onSuccess, onFailure) {
