@@ -313,6 +313,35 @@ function createRuleset() {
     displayCreateRulesetDialog();
 }
 
+function deleteRulesetSucceeded() {
+    success("The selected ruleset was successfully deleted.");
+    /*rulesets = resequenceRulesetOrdinals(app.dialogState.entity);
+    rulesets.forEach(ruleset => {
+        putRuleset(
+            ruleset.id,
+            getSelectedJurisdictionId(),
+            ruleset.jurisdiction_id,
+            ruleset.ordinal,
+            doNothing,
+            deleteRulesetFailed);
+    });*/
+    clearDialogState();
+    refreshRulesetsDisplay();
+}
+
+function deleteRulesetFailed() {
+    error("An error occurred while attempting to delete ruleset.");
+}
+
+function confirmDeleteRuleset() {
+    hideDialog(confirmationDialog.dialog.id);
+    removeRuleset(app.dialogState.entity.id, deleteRulesetSucceeded, deleteRulesetFailed);
+}
+
+function deleteRuleset(ruleset) {
+    setDialogState(dialogStates.modes.delete, dialogStates.entityTypes.ruleset, ruleset);
+    confirm("Please confirm you wish for the following ruleset to be deleted: " + ruleset.name + ".", confirmDeleteRuleset);
+}
 
 /*
  * Flat Rate Rule Views

@@ -672,6 +672,12 @@ function displayRuleset(ruleset) {
 
     document.getElementById(rulesetsDisplayContainer.id).appendChild(display);
 
+    // Set event handlers on buttons
+    display.querySelector(".delete-ruleset-button").onclick = function() { deleteRuleset(ruleset); }
+    display.querySelector(".move-ruleset-up-button").onclick = function() { moveRulesetUp(ruleset); }
+    display.querySelector(".move-ruleset-down-button").onclick = function() { moveRulesetDown(ruleset); }
+
+    // Display rules
     ruleset.rules.forEach(rule => {
         switch(rule.type) {
             case "flat_rate":
@@ -685,12 +691,6 @@ function displayRuleset(ruleset) {
                 break;
         }
     });
-
-    // Set event handlers on buttons
-    display.querySelector(".edit-button").onclick = function() { editRuleset(ruleset); }
-    display.querySelector(".delete-button").onclick = function() { deleteRuleset(ruleset); }
-    display.querySelector(".move-up-button").onclick = function() { moveRulesetUp(ruleset); }
-    display.querySelector(".move-down-button").onclick = function() { moveRulesetDown(ruleset); }
 }
 
 function updateRulesetsDisplay(rulesets) {

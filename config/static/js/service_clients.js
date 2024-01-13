@@ -292,7 +292,7 @@ function putRuleset(rulesetId, jurisdictionId, taxCategoryId, ordinal, onSuccess
     put(endpoints.rules.rulesets, rulesetId, data, onSuccess, onFailure);
 }
 
-function deleteRuleset(rulesetId, onSuccess, onFailure) {
+function removeRuleset(rulesetId, onSuccess, onFailure) {
     remove(endpoints.rules.rulesets, rulesetId, onSuccess, onFailure);
 }
 
