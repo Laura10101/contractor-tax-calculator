@@ -165,6 +165,11 @@ class RuleSetDetail(APIView):
                 { 'error' : str(e) },
                 status=status.HTTP_400_BAD_REQUEST
                 )
+        except RuleSet.DoesNotExist:
+            return Response(
+                { 'error' : 'Ruleset with id ' + str(pk) + ' was not found.' },
+                status=status.HTTP_404_NOT_FOUND
+                )
         # Create response 
         response = { 'ruleset_id' : pk }
         # Return response 

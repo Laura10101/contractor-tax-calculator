@@ -32,7 +32,7 @@ def update_ruleset_ordinal(ruleset_id, ordinal):
     if not isinstance(ordinal, int):
         raise ValidationError('ordinal must be a valid (non-negative, non-null) integer')
 
-    ruleset = Ruleset.objects.get(pk=ruleset_id)
+    ruleset = RuleSet.objects.get(pk=ruleset_id)
     ruleset.ordinal = ordinal
     ruleset.full_clean()
     ruleset.save()
