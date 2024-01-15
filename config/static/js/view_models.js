@@ -12,7 +12,8 @@ let app = {
         mode: null,
         entityType: null,
         entity: null
-    }
+    },
+    parentRuleset: null
 }
 
 function clearDialogState() {
@@ -21,6 +22,7 @@ function clearDialogState() {
         entityType: null,
         entity: null
     };
+    app.parentRuleset = null
 }
 
 function setDialogState(mode, entityType, entity) {
@@ -29,6 +31,10 @@ function setDialogState(mode, entityType, entity) {
         entityType: entityType,
         entity: entity
     };
+}
+
+function setParentRuleset(ruleset) {
+    app.parentRuleset = ruleset;
 }
 
 function getFormId() {
@@ -155,4 +161,24 @@ function resequenceRulesetOrdinals(deletedRuleset) {
         }
     });
     return rulesets;
+}
+
+function getTieredRateRulesForJurisdiction() {
+    rules = [];
+    app.jurisdictionRules.forEach(ruleset => {
+        ruleset.rules.forEach(rule => {
+            if (rule.type == 'tiered_rate') {
+                rules.push(rule);
+            }
+        });
+    });
+    return rules;
+}
+
+function getNextRuleOrdinal() {
+    if (app.parentRuleset != null) {
+        return app.parentRuleset.rules.length + 1;
+    } else {
+        return null;
+    }
 }

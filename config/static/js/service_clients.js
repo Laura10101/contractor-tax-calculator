@@ -304,7 +304,7 @@ function createFlatRateRule(rulesetId, name, explainer, variableName, ordinal, t
         variable_name: variableName,
         ordinal: ordinal,
         type: "flat_rate",
-        tax_rate: taxRate
+        tax_rate: parseInt(taxRate)
     };
     post(endpoints.rules.rules(rulesetId), data, onSuccess, onFailure);
 }
@@ -316,7 +316,7 @@ function updateFlatRateRule(rulesetId, ruleId, name, explainer, variableName, or
         variable_name: variableName,
         ordinal: ordinal,
         type: "flat_rate",
-        tax_rate: taxRate
+        tax_rate: parseInt(taxRate)
     };
     put(endpoints.rules.rules(rulesetId), ruleId, data, onSuccess, onFailure);
 }

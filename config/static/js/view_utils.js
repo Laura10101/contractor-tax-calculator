@@ -49,7 +49,7 @@ function updateRuleTierTable(updatePrimary, tiers) {
     removeAllChildNodes(table);
 
     // Add prototype row back in so it's available next time
-    table.add(prototypeRow);
+    table.appendChild(prototypeRow);
 
     // Display one row for each tier
     tiers.forEach(tier => {
@@ -71,7 +71,7 @@ function updateRuleTierTable(updatePrimary, tiers) {
         }
 
         // Add the new row
-        table.add(tierRow);
+        table.appendChild(tierRow);
     });
 }
 
@@ -443,15 +443,15 @@ function displayEditFlatRateRuleDialog(rule) {
         rule.flat_rate
     );
     // Show the dialog
-    showDialog(tieredRateRuleDialog.dialog.id);
+    showDialog(flatRateRuleDialog.dialog.id);
 }
 
 // Tiered Rate Rule Dialog Helpers
 function initTieredRateRuleDialog(dialogLabel, name, explainer, variableName, tiers) {
-    document.getElementById(flatRateRuleDialog.label.id).innerText = dialogLabel;
-    document.getElementById(flatRateRuleDialog.name.input.id).value = name;
-    document.getElementById(flatRateRuleDialog.explainer.input.id).value = explainer;
-    document.getElementById(flatRateRuleDialog.variableName.input.id).value = variableName;
+    document.getElementById(tieredRateRuleDialog.label.id).innerText = dialogLabel;
+    document.getElementById(tieredRateRuleDialog.name.input.id).value = name;
+    document.getElementById(tieredRateRuleDialog.explainer.input.id).value = explainer;
+    document.getElementById(tieredRateRuleDialog.variableName.input.id).value = variableName;
     updateRuleTierTable(true, tiers);
 }
 
@@ -486,23 +486,23 @@ function initPrimaryRulesSelect(rules) {
 }
 
 function initSecondaryTieredRateRuleDialog(dialogLabel, name, explainer, variableName, primaryRules, tiers) {
-    document.getElementById(flatRateRuleDialog.label.id).innerText = dialogLabel;
-    document.getElementById(flatRateRuleDialog.name.input.id).value = name;
-    document.getElementById(flatRateRuleDialog.explainer.input.id).value = explainer;
-    document.getElementById(flatRateRuleDialog.variableName.input.id).value = variableName;
+    document.getElementById(secondaryTieredRateRuleDialog.label.id).innerText = dialogLabel;
+    document.getElementById(secondaryTieredRateRuleDialog.name.input.id).value = name;
+    document.getElementById(secondaryTieredRateRuleDialog.explainer.input.id).value = explainer;
+    document.getElementById(secondaryTieredRateRuleDialog.variableName.input.id).value = variableName;
     initPrimaryRulesSelect(primaryRules);
     updateRuleTierTable(false, tiers);
 }
 
-function displayCreateSecondaryTieredRateRuleDialog() {
+function displayCreateSecondaryTieredRateRuleDialog(primaryRules) {
     // Initialise the boolean question dialog with appropriate values for a create
-    initTieredRateRuleDialog("Create Secondary Tiered Rate Rule", "", "", "", [], []);
+    initSecondaryTieredRateRuleDialog("Create Secondary Tiered Rate Rule", "", "", "", primaryRules, []);
     // Show the dialog
     showDialog(secondaryTieredRateRuleDialog.dialog.id);
 }
 
 function displayEditSecondaryTieredRateRuleDialog(rule, primaryRules) {
-    initTieredRateRuleDialog(
+    initSecondaryTieredRateRuleDialog(
         "Edit Secondary Tiered Rate Rule",
         rule.name,
         rule.explainer,
@@ -522,14 +522,14 @@ function initRuleTierDialog(dialogLabel, minValue, maxValue, taxRate) {
     document.getElementById(ruleTierDialog.taxRate.input.id).value = taxRate;
 }
 
-function displayCreateFlatRateRuleDialog() {
+function displayCreateRuleTierDialog() {
     // Initialise the boolean question dialog with appropriate values for a create
     initRuleTierDialog("Create Primary Rule Tier", "", "", "");
     // Show the dialog
     showDialog(ruleTierDialog.dialog.id);
 }
 
-function displayEditFlatRateRuleDialog(tier) {
+function displayEditRuleTierDialog(tier) {
     initRuleTierDialog(
         "Edit Primary Rule Tier",
         tier.min_value,
@@ -557,14 +557,14 @@ function initSecondaryRuleTierDialog(dialogLabel, primaryRuleTiers, taxRate) {
     document.getElementById(secondaryRuleTierDialog.taxRate.input.id).value = taxRate;
 }
 
-function displayCreateFlatRateRuleDialog() {
+function displayCreateSecondaryRuleTierDialog() {
     // Initialise the boolean question dialog with appropriate values for a create
     initSecondaryRuleTierDialog("Create Secondary Rule Tier", [], "");
     // Show the dialog
     showDialog(secondaryRuleTierDialog.dialog.id);
 }
 
-function displayEditFlatRateRuleDialog(tier) {
+function displayEditSecondaryRuleTierDialog(tier) {
     initSecondaryRuleTierDialog(
         "Edit Secondary Rule Tier",
         tier.primary_rule.tiers,
@@ -673,6 +673,7 @@ function displayRuleset(ruleset) {
     document.getElementById(rulesetsDisplayContainer.id).appendChild(display);
 
     // Set event handlers on buttons
+    display.querySelector(".add-rule-button").onclick = function() { addRule(ruleset); }
     display.querySelector(".delete-ruleset-button").onclick = function() { deleteRuleset(ruleset); }
     display.querySelector(".move-ruleset-up-button").onclick = function() { moveRulesetUp(ruleset); }
     display.querySelector(".move-ruleset-down-button").onclick = function() { moveRulesetDown(ruleset); }

@@ -19,6 +19,7 @@ const dialogStates = {
         multipleChoiceQuestion: "multiple_choice_question",
         multipleChoiceOption: "multiple_choice_option",
         ruleset: "ruleset",
+        rule: "rule",
         flatRateRule: "flat_rate_rule",
         tieredRateRule: "tiered_rate_rule",
         secondaryTieredRateRule: "secondary_tiered_rate_rule",

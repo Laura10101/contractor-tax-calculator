@@ -371,6 +371,125 @@ function moveRulesetDown(ruleset) {
 }
 
 /*
+ * Rule Views
+ */
+function addRule(ruleset) {
+    setParentRuleset(ruleset);
+    showDialog(ruleTypeDialog.dialog.id);
+}
+
+function ruleTypeSelected() {
+    // Hide rule type dialog
+    hideDialog(ruleTypeDialog.dialog.id);
+
+    // Get the rule type
+    ruleType = document.getElementById(ruleTypeDialog.ruleType.input.id).value;
+
+    // Trigger the appropriate create dialog
+    switch(ruleType) {
+        case "flat_rate":
+                setDialogState(dialogStates.modes.create, dialogStates.entityTypes.flatRateRule, null);
+                displayCreateFlatRateRuleDialog();
+            break;
+        case "tiered_rate":
+                setDialogState(dialogStates.modes.create, dialogStates.entityTypes.tieredRateRule, null);
+                displayCreateTieredRateRuleDialog();
+            break;
+        case "secondary_tiered_rate":
+                primaryRules = getTieredRateRulesForJurisdiction();
+                setDialogState(dialogStates.modes.create, dialogStates.entityTypes.secondaryTieredRateRule, null);
+                displayCreateSecondaryTieredRateRuleDialog(primaryRules);
+            break;
+    }
+}
+
+function saveRuleSucceeded() {
+    success("The rule was successfully saved.");
+    clearDialogState();
+    refreshRulesetsDisplay();
+}
+
+function saveRuleFailed(request, status, message) {
+    error("An error occurred while attempting to save rule.");
+}
+
+function saveRule() {
+    rulesetId = app.parentRuleset.id;
+
+    if (app.dialogState.mode == dialogStates.modes.create) {
+        switch (app.dialogState.entityType) {
+            // Create flat rate rule
+            case dialogStates.entityTypes.flatRateRule:
+                    hideDialog(flatRateRuleDialog.dialog.id);
+                    createFlatRateRule(
+                        rulesetId,
+                        document.getElementById(flatRateRuleDialog.name.input.id).value,
+                        document.getElementById(flatRateRuleDialog.explainer.input.id).value,
+                        document.getElementById(flatRateRuleDialog.variableName.input.id).value,
+                        getNextRuleOrdinal(),
+                        document.getElementById(flatRateRuleDialog.taxRate.input.id).value,
+                        saveRuleSucceeded,
+                        saveRuleFailed
+                    )
+                break;
+            // Create tiered rate rule
+            case dialogStates.entityTypes.tieredRateRule:
+                    hideDialog(tieredRateRuleDialog.dialog.id);
+                    createTieredRateRule(
+                        rulesetId,
+                        document.getElementById(tieredRateRuleDialog.name.input.id).value,
+                        document.getElementById(tieredRateRuleDialog.explainer.input.id).value,
+                        document.getElementById(tieredRateRuleDialog.variableName.input.id).value,
+                        getNextRuleOrdinal(),
+                        saveRuleSucceeded,
+                        saveRuleFailed
+                    );
+                break;
+            // Create secondary tiered rate rule
+            case dialogStates.entityTypes.secondaryTieredRateRule:
+                    hideDialog(secondaryTieredRateRuleDialog.dialog.id);
+                    createSecondaryTieredRateRule(
+                        rulesetId,
+                        document.getElementById(secondaryTieredRateRuleDialog.name.input.id).value,
+                        document.getElementById(secondaryTieredRateRuleDialog.explainer.input.id).value,
+                        document.getElementById(secondaryTieredRateRuleDialog.variableName.input.id).value,
+                        getNextRuleOrdinal(),
+                        document.getElementById(secondaryTieredRateRuleDialog.primaryRule.input.id).value,
+                        saveRuleSucceeded,
+                        saveRuleFailed
+                    );
+                break;
+        }
+        
+    } else if (app.dialogState.mode == dialogStates.modes.edit) {
+        switch(app.dialogState.entityType) {
+            // Edit flat rate rule
+            case dialogStates.entityTypes.flatRateRule:
+                    hideDialog(flatRateRuleDialog.dialog.id);
+                    updateFlatRateRule(
+                    );
+                break;
+            // Edit tiered rate rule
+            case dialogStates.entityTypes.tieredRateRule:
+                    hideDialog(tieredRateRuleDialog.dialog.id);
+                    updateTieredRateRule(
+
+                    );
+                break;
+            // Edit secondary tiered rate rule
+            case dialogStates.entityTypes.secondaryTieredRateRule:
+                    hideDialog(secondaryTieredRateRuleDialog.dialog.id);
+                    updateSecondaryTieredRateRule(
+
+                    );
+                break;
+        }
+    } else {
+        error("Invalid dialog mode " + app.dialogState.mode + " found when saving question.");
+    }
+}
+
+/*
  * Flat Rate Rule Views
  */
 
