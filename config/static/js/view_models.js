@@ -107,6 +107,44 @@ function getNextRulesetOrdinal() {
     return app.jurisdictionRules.length + 1;
 }
 
+function findPreviousRuleset(ruleset) {
+    let rulesets = app.jurisdictionRules;
+    let previousRuleset = null;
+    rulesets.forEach(candidateRuleset => {
+        if (candidateRuleset.id != ruleset.id) {
+            if (previousRuleset == null) {
+                if (candidateRuleset.ordinal < ruleset.ordinal) {
+                    previousRuleset = candidateRuleset;
+                }
+            } else {
+                if (candidateRuleset.ordinal > previousRuleset.ordinal && candidateRuleset.ordinal < ruleset.ordinal) {
+                    previousRuleset = candidateRuleset;
+                }
+            }
+        }
+    });
+    return previousRuleset;
+}
+
+function findNextRuleset(ruleset) {
+    let rulesets = app.jurisdictionRules;
+    let nextRuleset = null;
+    rulesets.forEach(candidateRuleset => {
+        if (candidateRuleset.id != ruleset.id) {
+            if (nextRuleset == null) {
+                if (candidateRuleset.ordinal > ruleset.ordinal) {
+                    nextRuleset = candidateRuleset;
+                }
+            } else {
+                if (candidateRuleset.ordinal < nextRuleset.ordinal && candidateRuleset.ordinal > ruleset.ordinal) {
+                    nextRuleset = candidateRuleset;
+                }
+            }
+        }
+    });
+    return nextRuleset;
+}
+
 function resequenceRulesetOrdinals(deletedRuleset) {
     let rulesets = app.jurisdictionRules;
     let i = 0;

@@ -238,7 +238,7 @@ function deleteQuestion(question) {
     confirm("Please confirm you wish for the following question to be deleted: " + question.text + ".", confirmDeleteQuestion);
 }
 
-function swapOrdinals(question, findNewPosition) {
+function swapQuestionOrdinals(question, findNewPosition) {
     // Find the question that needs to be swapped
     let questionToSwap = findNewPosition(question);
 
@@ -258,11 +258,11 @@ function swapOrdinals(question, findNewPosition) {
 }
 
 function moveQuestionUp(question) {
-    swapOrdinals(question, findPreviousQuestion);
+    swapQuestionOrdinals(question, findPreviousQuestion);
 }
 
 function moveQuestionDown(question) {
-    swapOrdinals(question, findNextQuestion);
+    swapQuestionOrdinals(question, findNextQuestion);
 }
 
 /*
@@ -341,6 +341,33 @@ function confirmDeleteRuleset() {
 function deleteRuleset(ruleset) {
     setDialogState(dialogStates.modes.delete, dialogStates.entityTypes.ruleset, ruleset);
     confirm("Please confirm you wish for the following ruleset to be deleted: " + ruleset.name + ".", confirmDeleteRuleset);
+}
+
+function swapRulesetOrdinals(ruleset, findNewPosition) {
+    // Find the question that needs to be swapped
+    let rulesetToSwap = findNewPosition(ruleset);
+
+    if (rulesetToSwap != null) {
+        // Swap the ordinals
+        let originalOrdinal = ruleset.ordinal;
+        ruleset.ordinal = rulesetToSwap.ordinal;
+        rulesetToSwap.ordinal = originalOrdinal;
+
+        // Save the questions
+        patchRuleset(ruleset.id, ruleset.ordinal, doNothing, saveRulesetFailed);
+        patchRuleset(rulesetToSwap.id, rulesetToSwap.ordinal, doNothing, saveRulesetFailed);
+
+        // Refresh the question display
+        refreshRulesetsDisplay();
+    }
+}
+
+function moveRulesetUp(ruleset) {
+    swapRulesetOrdinals(ruleset, findPreviousRuleset);
+}
+
+function moveRulesetDown(ruleset) {
+    swapRulesetOrdinals(ruleset, findNextRuleset);
 }
 
 /*
