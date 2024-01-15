@@ -43,14 +43,18 @@ class RuleSetsList(APIView):
         if isinstance(rule, FlatRateRule):
             serialised_rule['type'] = 'flat_rate'
             serialised_rule['tax_rate'] = rule.flat_rate
+            print(serialised_rule)
         else:
+            if isinstance(rule, TieredRateRule):
+                serialised_rule['type'] = 'tiered_rate'
+            elif isinstance(rule, SecondaryTieredRateRule):
+                serialised_rule['type'] = 'secondary_tiered_rate'
+
             serialised_rule['tiers'] = []
             for tier in rule.tiers.order_by('ordinal').all():
-                if isinstance(rule, TieredRateRule):
-                    serialised_rule['type'] = 'tiered_rate'
+                if isinstance(rule, TieredRateRule):    
                     serialised_rule['tiers'].append(self.__serialise_rule_tier(tier))
                 else:
-                    serialised_rule['type'] = 'secondary_tiered_rate'
                     serialised_rule['tiers'].append(self.__serialise_secondary_rule_tier(tier))
 
         if isinstance(rule, SecondaryTieredRateRule):
@@ -262,6 +266,7 @@ class RuleList(APIView):
                 status=status.HTTP_400_BAD_REQUEST
                 )
         try:
+            print('Rule type:' + rule_type)
             if rule_type == 'flat_rate':
                 rule_id = self.__post_flat_rate_rule(ruleset_pk, name, ordinal, explainer, variable_name, request)
             elif rule_type == 'tiered_rate':
