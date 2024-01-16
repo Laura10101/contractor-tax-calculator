@@ -47,6 +47,7 @@ class RuleSetsList(APIView):
             if isinstance(rule, TieredRateRule):
                 serialised_rule['type'] = 'tiered_rate'
             elif isinstance(rule, SecondaryTieredRateRule):
+                serialised_rule['primary_rule'] = self.__serialise_rule(rule.primary_rule)
                 serialised_rule['type'] = 'secondary_tiered_rate'
 
             serialised_rule['tiers'] = []

@@ -350,7 +350,7 @@ function createSecondaryTieredRateRule(rulesetId, name, explainer, variableName,
         variable_name: variableName,
         ordinal: ordinal,
         type: "secondary_tiered_rate",
-        primary_rule_id: primaryRuleId
+        primary_rule_id: parseInt(primaryRuleId)
     };
     post(endpoints.rules.rules(rulesetId), data, onSuccess, onFailure);
 }
@@ -362,7 +362,7 @@ function updateSecondaryTieredRateRule(rulesetId, ruleId, name, explainer, varia
         variable_name: variableName,
         ordinal: ordinal,
         type: "secondary_tiered_rate",
-        primary_rule_id: primaryRuleId
+        primary_rule_id: parseInt(primaryRuleId)
     };
     put(endpoints.rules.rules(rulesetId), ruleId, data, onSuccess, onFailure);
 }
