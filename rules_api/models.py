@@ -192,7 +192,7 @@ class RuleTier(models.Model):
 
 class SecondaryTieredRateRule(Rule):
     # Foreign key to primary rule that it is connected to 
-    primary_rule = models.ForeignKey(TieredRateRule, on_delete=models.DO_NOTHING)
+    primary_rule = models.ForeignKey(TieredRateRule, on_delete=models.DO_NOTHING, related_name='secondary_rules')
 
     def calculate(self, variable_table, ruleset_results):
         primary_income = variable_table[self.primary_rule.variable_name]

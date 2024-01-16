@@ -47,18 +47,23 @@ def delete_ruleset(id):
     # Django polymorphic
     # Issues are documented here: https://github.com/jazzband/django-polymorphic/issues/229
 
-    # Delete flat rate and secondary tiered rate rules first to avoid constraint violations between primary rules
-    # and secondary rules
+    # To avoid the Django polymorphic issues and also any constraints between tiered rate rules
+    # and secondary tiered rate rules, or between secondary and primary rule tiers,
+    # delete rules individually
+    # Start with the atomic rule types (secondary tiered and flat rate) and then do
+    # aggregate rule types (tiered rate)
     for rule in ruleset.rules.all():
         if isinstance(rule, SecondaryTieredRateRule) or isinstance(rule, FlatRateRule):
-            print('Deleting flat rate or secondary tiered rate rule')
             Rule.objects.get(pk=rule.id).delete()
 
-    # Now that no secondary rules are referencing tiered rate rules, we can
-    # delete tiered rate rules
+    # Not all secondary rules referencing a given tiered rate rule will be in the same ruleset
+    # so have to delete any secondary tiered rate rules referencing the primary tiered rate rule
     for rule in ruleset.rules.all():
         if isinstance(rule, TieredRateRule):
-            print('Deleting tiered rate rule')
+            # Delete the secondary rules first
+            for secondary_rule in rule.secondary_rules.all():
+                Rule.objects.get(pk=secondary_rule.id).delete()
+            
             Rule.objects.get(pk=rule.id).delete()
 
     # Finally, delete the ruleset
