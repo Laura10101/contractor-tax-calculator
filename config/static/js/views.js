@@ -378,6 +378,25 @@ function addRule(ruleset) {
     showDialog(ruleTypeDialog.dialog.id);
 }
 
+function editRule(ruleset, rule) {
+    setParentRuleset(ruleset);
+    switch (rule.type) {
+        case "flat_rate":
+                setDialogState(dialogStates.modes.edit, dialogStates.entityTypes.flatRateRule, rule);
+                displayEditFlatRateRuleDialog(rule);
+            break;
+        case "tiered_rate":
+                setDialogState(dialogStates.modes.edit, dialogStates.entityTypes.tieredRateRule, rule);
+                displayEditTieredRateRuleDialog(rule);
+            break;
+        case "secondary_tiered_rate":
+                setDialogState(dialogStates.modes.edit, dialogStates.entityTypes.secondaryTieredRateRule, rule);
+                primary_rules = getTieredRateRulesForJurisdiction();
+                displayEditSecondaryTieredRateRuleDialog(rule, primary_rules);
+            break;
+    }
+}
+
 function ruleTypeSelected() {
     // Hide rule type dialog
     hideDialog(ruleTypeDialog.dialog.id);
@@ -462,25 +481,50 @@ function saveRule() {
         }
         
     } else if (app.dialogState.mode == dialogStates.modes.edit) {
+        rule = app.dialogState.entity;
         switch(app.dialogState.entityType) {
             // Edit flat rate rule
             case dialogStates.entityTypes.flatRateRule:
                     hideDialog(flatRateRuleDialog.dialog.id);
                     updateFlatRateRule(
+                        rulesetId,
+                        rule.id,
+                        document.getElementById(flatRateRuleDialog.name.input.id).value,
+                        document.getElementById(flatRateRuleDialog.explainer.input.id).value,
+                        document.getElementById(flatRateRuleDialog.variableName.input.id).value,
+                        rule.ordinal,
+                        document.getElementById(flatRateRuleDialog.taxRate.input.id).value,
+                        saveRuleSucceeded,
+                        saveRuleFailed
                     );
                 break;
             // Edit tiered rate rule
             case dialogStates.entityTypes.tieredRateRule:
                     hideDialog(tieredRateRuleDialog.dialog.id);
                     updateTieredRateRule(
-
+                        rulesetId,
+                        rule.id,
+                        document.getElementById(tieredRateRuleDialog.name.input.id).value,
+                        document.getElementById(tieredRateRuleDialog.explainer.input.id).value,
+                        document.getElementById(tieredRateRuleDialog.variableName.input.id).value,
+                        rule.ordinal,
+                        saveRuleSucceeded,
+                        saveRuleFailed
                     );
                 break;
             // Edit secondary tiered rate rule
             case dialogStates.entityTypes.secondaryTieredRateRule:
                     hideDialog(secondaryTieredRateRuleDialog.dialog.id);
                     updateSecondaryTieredRateRule(
-
+                        rulesetId,
+                        rule.id,
+                        document.getElementById(secondaryTieredRateRuleDialog.name.input.id).value,
+                        document.getElementById(secondaryTieredRateRuleDialog.explainer.input.id).value,
+                        document.getElementById(secondaryTieredRateRuleDialog.variableName.input.id).value,
+                        rule.ordinal,
+                        document.getElementById(secondaryTieredRateRuleDialog.primaryRule.input.id).value,
+                        saveRuleSucceeded,
+                        saveRuleFailed
                     );
                 break;
         }
@@ -488,26 +532,6 @@ function saveRule() {
         error("Invalid dialog mode " + app.dialogState.mode + " found when saving question.");
     }
 }
-
-/*
- * Flat Rate Rule Views
- */
-
-/*
- * Tiered Rate Rule Views
- */
-
-/*
- * Rule Tier Views
- */
-
-/*
- * Secondary Tiered Rate Rule Views
- */
-
-/*
- * Secondary Rule Tier Views
- */
 
 /*
  * Initialisation functions

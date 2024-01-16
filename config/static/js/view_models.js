@@ -163,16 +163,20 @@ function resequenceRulesetOrdinals(deletedRuleset) {
     return rulesets;
 }
 
-function getTieredRateRulesForJurisdiction() {
+function getRulesByTypeForJurisdiction(type) {
     rules = [];
     app.jurisdictionRules.forEach(ruleset => {
         ruleset.rules.forEach(rule => {
-            if (rule.type == 'tiered_rate') {
+            if (rule.type == type) {
                 rules.push(rule);
             }
         });
     });
     return rules;
+}
+
+function getTieredRateRulesForJurisdiction() {
+    return getRulesByTypeForJurisdiction('tiered_rate');
 }
 
 function getNextRuleOrdinal() {

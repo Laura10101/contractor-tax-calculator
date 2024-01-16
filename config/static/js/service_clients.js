@@ -332,7 +332,7 @@ function createTieredRateRule(rulesetId, name, explainer, variableName, ordinal,
     post(endpoints.rules.rules(rulesetId), data, onSuccess, onFailure);
 }
 
-function updateTieredRateRule(rulesetId, name, explainer, variableName, ordinal, ruleId, onSuccess, onFailure) {
+function updateTieredRateRule(rulesetId, ruleId, name, explainer, variableName, ordinal, onSuccess, onFailure) {
     data = {
         name: name,
         explainer: explainer,

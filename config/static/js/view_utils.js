@@ -439,8 +439,8 @@ function displayEditFlatRateRuleDialog(rule) {
         "Edit Flat Rate Rule",
         rule.name,
         rule.explainer,
-        rule.variableName,
-        rule.flat_rate
+        rule.variable_name,
+        rule.tax_rate
     );
     // Show the dialog
     showDialog(flatRateRuleDialog.dialog.id);
@@ -467,7 +467,7 @@ function displayEditTieredRateRuleDialog(rule) {
         "Edit Tiered Rate Rule",
         rule.name,
         rule.explainer,
-        rule.variableName,
+        rule.variable_name,
         rule.tiers
     );
     // Show the dialog
@@ -506,7 +506,7 @@ function displayEditSecondaryTieredRateRuleDialog(rule, primaryRules) {
         "Edit Secondary Tiered Rate Rule",
         rule.name,
         rule.explainer,
-        rule.variableName,
+        rule.variable_name,
         primaryRules,
         rule.tiers
     );
@@ -577,7 +577,7 @@ function displayEditSecondaryRuleTierDialog(tier) {
 /*
  * Rule Display Helper Functions
  */
-function displayFlatRateRule(rulesetRulesDisplay, rule) {
+function displayFlatRateRule(rulesetRulesDisplay, ruleset, rule) {
     ruleDisplay = document.getElementById(flatRateRuleDisplay.card.id).cloneNode(true);
     ruleDisplay.classList.remove("hidden");
     ruleDisplay.id += "-" + ruleDisplay.id;
@@ -600,11 +600,17 @@ function displayFlatRateRule(rulesetRulesDisplay, rule) {
     ruleTaxRateDisplay = ruleDisplay.querySelector("#" + flatRateRuleDisplay.taxRate.id);
     ruleTaxRateDisplay.id += "-" + rule.id;
     ruleTaxRateDisplay.innerHTML = rule.tax_rate;
+
+    // Set event handlers on buttons
+    ruleDisplay.querySelector(".edit-button").onclick = function() { editRule(ruleset, rule); }
+    ruleDisplay.querySelector(".delete-button").onclick = function() { deleteRule(ruleset, rule); }
+    ruleDisplay.querySelector(".move-up-button").onclick = function() { moveRuleUp(ruleset, rule); }
+    ruleDisplay.querySelector(".move-down-button").onclick = function() { moveRuleDown(ruleset, rule); }
     
     rulesetRulesDisplay.appendChild(ruleDisplay);
 }
 
-function displayTieredRateRule(rulesetRulesDisplay, rule) {
+function displayTieredRateRule(rulesetRulesDisplay, ruleset, rule) {
     ruleDisplay = document.getElementById(tieredRateRuleDisplay.card.id).cloneNode(true);
     ruleDisplay.classList.remove("hidden");
     ruleDisplay.id += "-" + ruleDisplay.id;
@@ -623,11 +629,17 @@ function displayTieredRateRule(rulesetRulesDisplay, rule) {
     }
     ruleExplainerDisplay.id += "-" + rule.id;
     ruleExplainerDisplay.innerHTML = rule.explainer;
+
+    // Set event handlers on buttons
+    ruleDisplay.querySelector(".edit-button").onclick = function() { editRule(ruleset, rule); }
+    ruleDisplay.querySelector(".delete-button").onclick = function() { deleteRule(ruleset, rule); }
+    ruleDisplay.querySelector(".move-up-button").onclick = function() { moveRuleUp(ruleset, rule); }
+    ruleDisplay.querySelector(".move-down-button").onclick = function() { moveRuleDown(ruleset, rule); }
     
     rulesetRulesDisplay.appendChild(ruleDisplay);
 }
 
-function displaySecondaryTieredRateRule(rulesetRulesDisplay, rule) {
+function displaySecondaryTieredRateRule(rulesetRulesDisplay, ruleset, rule) {
     ruleDisplay = document.getElementById(secondaryTieredRateRuleDisplay.card.id).cloneNode(true);
     ruleDisplay.classList.remove("hidden");
     ruleDisplay.id += "-" + ruleDisplay.id;
@@ -650,6 +662,12 @@ function displaySecondaryTieredRateRule(rulesetRulesDisplay, rule) {
     ruleExplainerDisplay = ruleDisplay.querySelector("#" + secondaryTieredRateRuleDisplay.primaryRule.id);
     ruleExplainerDisplay.id += "-" + rule.id;
     ruleExplainerDisplay.innerHTML = rule.primary_rule.name;
+
+    // Set event handlers on buttons
+    ruleDisplay.querySelector(".edit-button").onclick = function() { editRule(ruleset, rule); }
+    ruleDisplay.querySelector(".delete-button").onclick = function() { deleteRule(ruleset, rule); }
+    ruleDisplay.querySelector(".move-up-button").onclick = function() { moveRuleUp(ruleset, rule); }
+    ruleDisplay.querySelector(".move-down-button").onclick = function() { moveRuleDown(ruleset, rule); }
     
     rulesetRulesDisplay.appendChild(ruleDisplay);
 }
@@ -682,13 +700,13 @@ function displayRuleset(ruleset) {
     ruleset.rules.forEach(rule => {
         switch(rule.type) {
             case "flat_rate":
-                    displayFlatRateRule(rulesetRulesDisplay, rule);
+                    displayFlatRateRule(rulesetRulesDisplay, ruleset, rule);
                 break;
             case "tiered_rate":
-                    displayTieredRateRule(rulesetRulesDisplay, rule);
+                    displayTieredRateRule(rulesetRulesDisplay, ruleset, rule);
                 break;
             case "secondary_tiered_rate":
-                    displaySecondaryTieredRateRule(rulesetRulesDisplay, rule);
+                    displaySecondaryTieredRateRule(rulesetRulesDisplay, ruleset, rule);
                 break;
         }
     });
