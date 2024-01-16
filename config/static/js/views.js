@@ -533,6 +533,74 @@ function saveRule() {
     }
 }
 
+function deleteRuleSucceeded() {
+    success("The selected rule was successfully deleted.");
+    rules = resequenceRuleOrdinals(app.dialogState.entity);
+    rules.forEach(rule => {
+        if (rule.id != app.dialogState.entity.id) {
+            switch(rule.type) {
+                case "flat_rate":
+                        updateFlatRateRule(
+                            app.parentRuleset.id,
+                            rule.id,
+                            rule.name,
+                            rule.explainer,
+                            rule.variable_name,
+                            rule.ordinal,
+                            rule.tax_rate,
+                            doNothing,
+                            saveRuleFailed
+                        );
+                    break;
+                case "tiered_rate":
+                        updateTieredRateRule(
+                            app.parentRuleset.id,
+                            rule.id,
+                            rule.name,
+                            rule.explainer,
+                            rule.variable_name,
+                            rule.ordinal,
+                            doNothing,
+                            saveRuleFailed
+                        );
+                    break;
+                case "secondary_tiered_rate":
+                        if (rule.primary_rule.id != app.dialogState.entity.id) {
+                            updateSecondaryTieredRateRule(
+                                app.parentRuleset.id,
+                                rule.id,
+                                rule.name,
+                                rule.explainer,
+                                rule.variable_name,
+                                rule.ordinal,
+                                rule.primary_rule.id,
+                                doNothing,
+                                saveRuleFailed
+                            );
+                        }
+                    break;
+            }
+        }
+    });
+    clearDialogState();
+    refreshRulesetsDisplay();
+}
+
+function deleteRuleFailed() {
+    error("An error occurred while attempting to delete rule.");
+}
+
+function confirmDeleteRule() {
+    hideDialog(confirmationDialog.dialog.id);
+    removeRule(app.parentRuleset.id, app.dialogState.entity.id, deleteRuleSucceeded, deleteRuleFailed);
+}
+
+function deleteRule(ruleset, rule) {
+    setParentRuleset(ruleset);
+    setDialogState(dialogStates.modes.delete, dialogStates.entityTypes.rule, rule);
+    confirm("Please confirm you wish for the following rule to be deleted: " + rule.name + ".", confirmDeleteRule);
+}
+
 /*
  * Initialisation functions
  */

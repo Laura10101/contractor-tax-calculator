@@ -90,6 +90,14 @@ def delete_tax_category(id):
 ### GENERIC RULES ###
 def delete_rule(id):
     rule = Rule.objects.get(pk=id)
+
+    # Delete secondary tier rate rules if the rule to be deleted
+    # is a tiered rate rule
+    if isinstance(rule, TieredRateRule):
+        # Delete the secondary rules first
+        for secondary_rule in rule.secondary_rules.all():
+            Rule.objects.get(pk=secondary_rule.id).delete()
+
     rule.delete()
 
 ### FLAT RATE RULES ###

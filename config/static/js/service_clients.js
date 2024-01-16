@@ -367,7 +367,7 @@ function updateSecondaryTieredRateRule(rulesetId, ruleId, name, explainer, varia
     put(endpoints.rules.rules(rulesetId), ruleId, data, onSuccess, onFailure);
 }
 
-function deleteRule(rulesetId, ruleId, onSuccess, onFailure) {
+function removeRule(rulesetId, ruleId, onSuccess, onFailure) {
     remove(endpoints.rules.rules(rulesetId), ruleId, onSuccess, onFailure);
 }
 

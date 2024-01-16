@@ -186,3 +186,15 @@ function getNextRuleOrdinal() {
         return null;
     }
 }
+
+function resequenceRuleOrdinals(deletedRule) {
+    let rules = app.parentRuleset.rules;
+    let i = 0;
+    rules.forEach(rule => {
+        if (rule.id != deletedRule.id) {
+            i++;
+            rule.ordinal = i;
+        }
+    });
+    return rules;
+}
