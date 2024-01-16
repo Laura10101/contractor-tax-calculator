@@ -227,7 +227,7 @@ def update_secondary_tiered_rate_rule(id, name, ordinal, explainer, variable_nam
     secondary_tiered_rate_rule.save()
 
 ### SECONDARY RULE TIER ###
-def create_secondary_rule_tier(secondary_rule_id, primary_tier_id, tier_rate):
+def create_secondary_rule_tier(secondary_rule_id, primary_tier_id, ordinal, tier_rate):
     if not isinstance(secondary_rule_id, int):
         raise SecondaryTieredRateRule.DoesNotExist('rule_id must be a non-negative integer value')
     
@@ -245,7 +245,7 @@ def create_secondary_rule_tier(secondary_rule_id, primary_tier_id, tier_rate):
     secondary_rule_tier.save()
     return secondary_rule_tier.id
 
-def update_secondary_rule_tier(id, tier_rate):
+def update_secondary_rule_tier(id, ordinal, tier_rate):
     if not isinstance(id, int):
         raise SecondaryRuleTier.DoesNotExist('tier_id must be a non-negative integer value')
     

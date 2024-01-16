@@ -208,6 +208,7 @@ class SecondaryRuleTier(models.Model):
     secondary_rule = models.ForeignKey(SecondaryTieredRateRule, on_delete=models.CASCADE, related_name='tiers')
     primary_tier = models.ForeignKey(RuleTier, on_delete=models.CASCADE, related_name='+')
     tier_rate = models.FloatField(null=False, blank=False, validators=[MinValueValidator(0.0)])
+    ordinal = models.IntegerField()
 
     def calculate(self, primary_income, secondary_income, ruleset_results):
         # Get the tier max and mins from the primary tier

@@ -43,7 +43,6 @@ class RuleSetsList(APIView):
         if isinstance(rule, FlatRateRule):
             serialised_rule['type'] = 'flat_rate'
             serialised_rule['tax_rate'] = rule.flat_rate
-            print(serialised_rule)
         else:
             if isinstance(rule, TieredRateRule):
                 serialised_rule['type'] = 'tiered_rate'
@@ -266,7 +265,6 @@ class RuleList(APIView):
                 status=status.HTTP_400_BAD_REQUEST
                 )
         try:
-            print('Rule type:' + rule_type)
             if rule_type == 'flat_rate':
                 rule_id = self.__post_flat_rate_rule(ruleset_pk, name, ordinal, explainer, variable_name, request)
             elif rule_type == 'tiered_rate':
@@ -280,9 +278,15 @@ class RuleList(APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
         except RuleSet.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            return Response(
+                { 'error': 'Ruleset with id=' + str(ruleset_pk) + ' was not found.' },
+                status=status.HTTP_404_NOT_FOUND
+            )
         except TieredRateRule.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            return Response(
+                { 'error': 'Tiered rate rule with id=' + str(request.data['primary_rule_id']) + ' was not found.' },
+                status=status.HTTP_404_NOT_FOUND
+            )
         
         # Generate and return response         
         response = { 'rule_id': rule_id }
@@ -489,6 +493,7 @@ class SecondaryRuleTiersList(APIView):
         # Define the list of required attributes 
         required_attributes = [
             'primary_tier_id',
+            'ordinal',
             'tax_rate'
         ]
         # Validate data 
@@ -500,6 +505,7 @@ class SecondaryRuleTiersList(APIView):
                 )
         # Extract data required for service method 
         primary_tier_id = request.data['primary_tier_id']
+        ordinal = request.data['ordinal']
         tax_rate = request.data['tax_rate']
         # Invoke service method
         print('rule_pk = ' + str(rule_pk))
@@ -507,6 +513,7 @@ class SecondaryRuleTiersList(APIView):
             secondary_tier_id = create_secondary_rule_tier(
                 rule_pk,
                 primary_tier_id,
+                ordinal,
                 tax_rate
             )
         except ValidationError as e:
@@ -537,6 +544,7 @@ class SecondaryRuleTierDetail(APIView):
     def put(self, request, ruleset_pk, rule_pk, pk):
         # Define the list of required attributes 
         required_attributes = [
+            'ordinal',
             'tax_rate'
         ]
         # Validate data 
@@ -546,10 +554,11 @@ class SecondaryRuleTierDetail(APIView):
                 status=status.HTTP_400_BAD_REQUEST
                 )
         # Extract data required for service method 
+        ordinal = request.data['ordinal']
         tax_rate = request.data['tax_rate']
         # Invoke service method
         try:
-            update_secondary_rule_tier(pk, tax_rate)
+            update_secondary_rule_tier(pk, ordinal, tax_rate)
         except ValidationError as e:
             return Response(
                 { 'error' : str(e) },
