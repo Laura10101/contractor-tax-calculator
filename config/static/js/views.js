@@ -601,6 +601,76 @@ function deleteRule(ruleset, rule) {
     confirm("Please confirm you wish for the following rule to be deleted: " + rule.name + ".", confirmDeleteRule);
 }
 
+function updateRuleOrdinal(ruleset, rule) {
+    switch(rule.type) {
+        case "flat_rate":
+                updateFlatRateRule(
+                    ruleset.id,
+                    rule.id,
+                    rule.name,
+                    rule.explainer,
+                    rule.variable_name,
+                    rule.ordinal,
+                    rule.tax_rate,
+                    doNothing,
+                    saveRuleFailed
+                );
+            break;
+        case "tiered_rate":
+                updateTieredRateRule(
+                    ruleset.id,
+                    rule.id,
+                    rule.name,
+                    rule.explainer,
+                    rule.variable_name,
+                    rule.ordinal,
+                    doNothing,
+                    saveRuleFailed
+                );
+            break;
+        case "secondary_tiered_rate":
+                updateSecondaryTieredRateRule(
+                    ruleset.id,
+                    rule.id,
+                    rule.name,
+                    rule.explainer,
+                    rule.variable_name,
+                    rule.ordinal,
+                    rule.primary_rule.id,
+                    doNothing,
+                    saveRuleFailed
+                );
+            break;
+    }
+}
+
+function swapRuleOrdinals(ruleset, rule, findNewPosition) {
+    // Find the rule that needs to be swapped
+    let ruleToSwap = findNewPosition(ruleset, rule);
+
+    if (ruleToSwap != null) {
+        // Swap the ordinals
+        let originalOrdinal = rule.ordinal;
+        rule.ordinal = ruleToSwap.ordinal;
+        ruleToSwap.ordinal = originalOrdinal;
+
+        // Save the ordinals
+        updateRuleOrdinal(ruleset, rule);
+        updateRuleOrdinal(ruleset, ruleToSwap);
+
+        // Refresh the ruleset display
+        refreshRulesetsDisplay();
+    }
+}
+
+function moveRuleUp(ruleset, rule) {
+    swapRuleOrdinals(ruleset, rule, findPreviousRule);
+}
+
+function moveRuleDown(ruleset, rule) {
+    swapRuleOrdinals(ruleset, rule, findNextRule);
+}
+
 /*
  * Initialisation functions
  */

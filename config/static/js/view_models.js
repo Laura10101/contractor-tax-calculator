@@ -187,6 +187,44 @@ function getNextRuleOrdinal() {
     }
 }
 
+function findPreviousRule(ruleset, rule) {
+    let rules = ruleset.rules;
+    let previousRule = null;
+    rules.forEach(candidateRule => {
+        if (candidateRule.id != rule.id) {
+            if (previousRule == null) {
+                if (candidateRule.ordinal < rule.ordinal) {
+                    previousRule = candidateRule;
+                }
+            } else {
+                if (candidateRule.ordinal > previousRule.ordinal && candidateRule.ordinal < rule.ordinal) {
+                    previousRule = candidateRule;
+                }
+            }
+        }
+    });
+    return previousRule;
+}
+
+function findNextRule(ruleset, rule) {
+    let rules = ruleset.rules;
+    let nextRule = null;
+    rules.forEach(candidateRule => {
+        if (candidateRule.id != rule.id) {
+            if (nextRule == null) {
+                if (candidateRule.ordinal > rule.ordinal) {
+                    nextRule = candidateRule;
+                }
+            } else {
+                if (candidateRule.ordinal < nextRule.ordinal && candidateRule.ordinal > rule.ordinal) {
+                    nextRule = candidateRule;
+                }
+            }
+        }
+    });
+    return nextRule;
+}
+
 function resequenceRuleOrdinals(deletedRule) {
     let rules = app.parentRuleset.rules;
     let i = 0;
