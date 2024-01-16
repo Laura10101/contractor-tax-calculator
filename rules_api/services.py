@@ -39,7 +39,29 @@ def update_ruleset_ordinal(ruleset_id, ordinal):
 
 # Delete rule set 
 def delete_ruleset(id):
+    # To avoid foreign key violations between secondary/tiered rate rules
+    # delete all secondary rules first
     ruleset = RuleSet.objects.get(pk=id)
+
+    # Delete rules manually to work around cascading delete issues in
+    # Django polymorphic
+    # Issues are documented here: https://github.com/jazzband/django-polymorphic/issues/229
+
+    # Delete flat rate and secondary tiered rate rules first to avoid constraint violations between primary rules
+    # and secondary rules
+    for rule in ruleset.rules.all():
+        if isinstance(rule, SecondaryTieredRateRule) or isinstance(rule, FlatRateRule):
+            print('Deleting flat rate or secondary tiered rate rule')
+            Rule.objects.get(pk=rule.id).delete()
+
+    # Now that no secondary rules are referencing tiered rate rules, we can
+    # delete tiered rate rules
+    for rule in ruleset.rules.all():
+        if isinstance(rule, TieredRateRule):
+            print('Deleting tiered rate rule')
+            Rule.objects.get(pk=rule.id).delete()
+
+    # Finally, delete the ruleset
     ruleset.delete()
 
 ### TAX CATEGORIES ###

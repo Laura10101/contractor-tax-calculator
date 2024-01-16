@@ -95,7 +95,7 @@ class RuleSet(models.Model):
         return Jurisdiction.objects.get(pk=self.jurisdiction_id).name + ' - ' + self.tax_category.name
 
 # This class is the parent class for the different types of rules 
-class Rule(PolymorphicModel): 
+class Rule(PolymorphicModel):
     ruleset = models.ForeignKey(RuleSet, on_delete=models.CASCADE, related_name='rules')
     name = models.CharField(max_length=255, null=False, blank=False)
     # ordinal to indicate order in which rules are applied  
@@ -192,7 +192,7 @@ class RuleTier(models.Model):
 
 class SecondaryTieredRateRule(Rule):
     # Foreign key to primary rule that it is connected to 
-    primary_rule = models.ForeignKey(TieredRateRule, on_delete=models.CASCADE)
+    primary_rule = models.ForeignKey(TieredRateRule, on_delete=models.DO_NOTHING)
 
     def calculate(self, variable_table, ruleset_results):
         primary_income = variable_table[self.primary_rule.variable_name]
@@ -206,7 +206,7 @@ class SecondaryTieredRateRule(Rule):
 # This class represents a tier of a secondary tiered rate rule 
 class SecondaryRuleTier(models.Model):
     secondary_rule = models.ForeignKey(SecondaryTieredRateRule, on_delete=models.CASCADE, related_name='tiers')
-    primary_tier = models.ForeignKey(RuleTier, on_delete=models.CASCADE, related_name='+')
+    primary_tier = models.ForeignKey(RuleTier, on_delete=models.DO_NOTHING, related_name='+')
     tier_rate = models.FloatField(null=False, blank=False, validators=[MinValueValidator(0.0)])
     ordinal = models.IntegerField()
 

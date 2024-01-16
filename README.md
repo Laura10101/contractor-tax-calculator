@@ -272,3 +272,4 @@ Alternatively, if using Gitpod, you can click below to create your own workspace
 - [How to create Django admin with readonly permissions for all users](https://thetldr.tech/how-to-create-django-admin-with-readonly-permission/)
 - [How to add an attribute to Django request](https://stackoverflow.com/questions/58467330/how-to-add-an-attribute-to-request-like-the-user-variable)
 - [Helper function to remove all child nodes of a DOM element](https://www.javascripttutorial.net/dom/manipulating/remove-all-child-nodes/)
+- [Django Polymorphic issues with cascading delete](https://github.com/jazzband/django-polymorphic/issues/229)
