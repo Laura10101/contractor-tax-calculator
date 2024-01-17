@@ -499,7 +499,6 @@ class SecondaryRuleTiersList(APIView):
         ]
         # Validate data 
         if not contains_required_attributes(request, required_attributes):
-            print('Missing required attributes')
             return Response(
                 { 'error' : 'Invalid request. Please supply all required attributes.' },
                 status=status.HTTP_400_BAD_REQUEST
@@ -523,9 +522,15 @@ class SecondaryRuleTiersList(APIView):
                 status=status.HTTP_400_BAD_REQUEST
                 )
         except SecondaryTieredRateRule.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            return Response(
+                { 'error' : 'No rule found with id=' + str(rule_pk) },
+                status=status.HTTP_404_NOT_FOUND
+                )
         except RuleTier.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            return Response(
+                { 'error' : 'No rule tier found with id=' + str(primary_tier_id) },
+                status=status.HTTP_404_NOT_FOUND
+                )
         # Generate and return response 
         response = { 'secondary_tier_id' : secondary_tier_id }
         # Return response 

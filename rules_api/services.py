@@ -276,6 +276,7 @@ def create_secondary_rule_tier(secondary_rule_id, primary_tier_id, ordinal, tier
     secondary_rule_tier.secondary_rule=secondary_rule
     secondary_rule_tier.primary_tier=primary_tier
     secondary_rule_tier.tier_rate=tier_rate
+    secondary_rule_tier.ordinal=ordinal
     secondary_rule_tier.full_clean()
     secondary_rule_tier.save()
     return secondary_rule_tier.id
