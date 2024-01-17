@@ -252,7 +252,7 @@ function removeQuestion(formId, questionId, onSuccess, onFailure) {
 /*
  * Multiple choice options service client
  */
-function createMultipleChoiceOption(formId, questionId, text, explainer, onSuccess, onFailure) {
+function postMultipleChoiceOption(formId, questionId, text, explainer, onSuccess, onFailure) {
     data = {
         text: text,
         explainer: explainer

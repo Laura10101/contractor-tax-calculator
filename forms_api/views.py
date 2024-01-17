@@ -95,7 +95,7 @@ class FormsList(APIView):
                     serialised_question['type'] = 'multiple_choice'
                     serialised_question['options'] = []
                     for option in question.options.all():
-                        serialised_question.append({
+                        serialised_question['options'].append({
                             'id': option.id,
                             'text': option.text,
                             'explainer': option.explainer,

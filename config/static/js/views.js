@@ -268,6 +268,51 @@ function moveQuestionDown(question) {
 /*
  * Multiple Choice Option Views
  */
+function displayMultipleChoiceOptions(data) {
+    app.jurisdictionForm = data;
+
+    moveParentStateToAppState();
+    question = findQuestionById(app.dialogState.entity.id);
+    options = question.options;
+    updateMultipleChoiceQuestionDialogOptionsDisplay(options);    
+}
+
+function displayMultipleChoiceOptionsError(request, status, message) {
+    error("An error occurred while refreshing multiple choice options for rule " + app.dialogState.entity.name);
+}
+
+function refreshMultipleChoiceOptionsDisplay() {
+    jurisdictionId = getSelectedJurisdictionId();
+    getFormForJurisdiction(jurisdictionId, displayMultipleChoiceOptions, )
+}
+
+function saveMultipleChoiceOptionSucceeded() {
+    success("The option was successfully saved.");
+    refreshMultipleChoiceOptionsDisplay();
+}
+
+function saveMultipleChoiceOptionFailed(request, status, message) {
+    error("An error occurred while attempting to save multiple choice option.");
+}
+
+function saveMultipleChoiceOption() {
+    hideDialog(multipleChoiceOptionDialog.dialog.id);
+
+    formId = getFormId();
+    questionId = app.parentState.entity.id;
+    name = document.getElementById(multipleChoiceOptionDialog.name.input.id).value;
+    explainer = document.getElementById(multipleChoiceOptionDialog.explainer.input.id).value;
+
+    if (app.dialogState.mode == dialogStates.modes.create) {
+        postMultipleChoiceOption(formId, questionId, name, explainer, saveMultipleChoiceOptionSucceeded, saveMultipleChoiceOptionFailed);
+    }
+}
+
+function createMultipleChoiceOption() {
+    moveAppStateToParentState();
+    setDialogState(dialogStates.modes.create, dialogStates.entityTypes.multipleChoiceOption, null);
+    displayCreateMultipleChoiceOptionDialog();
+}
 
 /*
  * Ruleset Views

@@ -13,6 +13,11 @@ let app = {
         entityType: null,
         entity: null
     },
+    parentState: {
+        mode: null,
+        entityType: null,
+        entity: null
+    },
     parentRuleset: null
 }
 
@@ -33,12 +38,42 @@ function setDialogState(mode, entityType, entity) {
     };
 }
 
+function setParentState(mode, entityType, entity) {
+    app.dialogState = {
+        mode: mode,
+        entityType: entityType,
+        entity: entity
+    };
+}
+
+function clearParentState() {
+    app.parentState = {
+        mode: null,
+        entityType: null,
+        entity: null
+    };
+}
+
+function moveAppStateToParentState() {
+    app.parentState = app.dialogState;
+    clearDialogState();
+}
+
+function moveParentStateToAppState() {
+    app.dialogState = app.parentState;
+    clearParentState();
+}
+
 function setParentRuleset(ruleset) {
     app.parentRuleset = ruleset;
 }
 
+function getForm() {
+    return app.jurisdictionForm.forms[Object.keys(app.jurisdictionForm.forms)[0]];
+}
+
 function getFormId() {
-    return app.jurisdictionForm.forms[Object.keys(app.jurisdictionForm.forms)[0]].id;
+    return getForm().id;
 }
 
 function getTaxCategoryById(id) {
@@ -57,6 +92,18 @@ function getQuestions() {
 
 function getNextQuestionOrdinal() {
     return getQuestions().length + 1;
+}
+
+function findQuestionById(questionId) {
+    let question = null;
+
+    getQuestions().forEach(candidateQuestion => {
+        if (candidateQuestion.id == questionId) {
+            question = candidateQuestion;
+        }
+    });
+
+    return question;
 }
 
 function findPreviousQuestion(question) {
@@ -223,6 +270,18 @@ function findNextRule(ruleset, rule) {
         }
     });
     return nextRule;
+}
+
+function findRuleById(ruleId) {
+    let rule = null;
+
+    app.jurisdictionRules.forEach(candidateRule => {
+        if (candidateRUle.id == ruleId) {
+            rule = candidateRule;
+        }
+    });
+
+    return rule;
 }
 
 function resequenceRuleOrdinals(deletedRule) {

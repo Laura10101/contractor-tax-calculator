@@ -319,6 +319,36 @@ const multipleChoiceQuestionDialog = {
     }
 };
 
+const multipleChoiceOptionDialog = {
+    dialog: {
+        id: "multiple-choice-option-modal"
+    },
+
+    label: {
+        id: "multiple-choice-option-modal-label"
+    },
+
+    name: {
+        label: {
+            id: "multiple-choice-option-modal-name-label"
+        },
+
+        input: {
+            id: "multiple-choice-option-modal-name"
+        }
+    },
+
+    explainer: {
+        label: {
+            id: "multiple-choice-option-modal-explainer-label"
+        },
+
+        input: {
+            id: "multiple-choice-option-modal-explainer"
+        }
+    }
+};
+
 /*
  * Question Display Constants
  */

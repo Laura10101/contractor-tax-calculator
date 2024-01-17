@@ -202,10 +202,11 @@ function updateMultipleChoiceQuestionDialogOptionsDisplay(options) {
 
         // Update IDs to avoid duplicates
         optionRow.id += "-" + option.id;
-        optionRow.firstChild.id += "-" + option.id;
+        optionRow.classList.remove("hidden");
+        optionRow.children[0].id += "-" + option.id;
 
         // Update option name in display
-        optionRow.firstChild.innerHTML = option.name;
+        optionRow.children[0].innerHTML = option.text;
 
         // Add the new row
         optionsTable.appendChild(optionRow);
@@ -243,6 +244,22 @@ function displayEditMultipleChoiceQuestionDialog(question) {
     // Show the dialog
     showDialog(multipleChoiceQuestionDialog.dialog.id);
 }
+
+/*
+ * Multiple Choice Option Helper Functions
+ */
+function initMultipleChoiceOptionDialog(name, explainer) {
+    document.getElementById(multipleChoiceOptionDialog.name.input.id).innerText = name;
+    document.getElementById(multipleChoiceOptionDialog.explainer.input.id).value = explainer;
+}
+
+function displayCreateMultipleChoiceOptionDialog() {
+    // Initialise the boolean question dialog with appropriate values for a create
+    initMultipleChoiceOptionDialog("", "");
+    // Show the dialog
+    showDialog(multipleChoiceOptionDialog.dialog.id);
+}
+
 
 /*
  * Question Display Helper Functions
