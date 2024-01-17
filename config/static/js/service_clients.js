@@ -260,7 +260,7 @@ function postMultipleChoiceOption(formId, questionId, text, explainer, onSuccess
     post(endpoints.forms.multipleChoiceOptions(formId, questionId), data, onSuccess, onFailure);
 }
 
-function deleteMultipleChoiceOption(formId, questionId, optionId, onSuccess, onFailure) {
+function removeMultipleChoiceOption(formId, questionId, optionId, onSuccess, onFailure) {
     remove(endpoints.forms.multipleChoiceOptions(formId, questionId), optionId, onSuccess, onFailure);
 }
 

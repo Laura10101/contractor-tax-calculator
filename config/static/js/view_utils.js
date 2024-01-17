@@ -208,6 +208,9 @@ function updateMultipleChoiceQuestionDialogOptionsDisplay(options) {
         // Update option name in display
         optionRow.children[0].innerHTML = option.text;
 
+        // Set delete button event handler
+        optionRow.querySelector(".delete-button").onclick = function() { deleteMultipleChoiceOption(option); }
+
         // Add the new row
         optionsTable.appendChild(optionRow);
     });

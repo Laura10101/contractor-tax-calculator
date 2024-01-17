@@ -314,6 +314,33 @@ function createMultipleChoiceOption() {
     displayCreateMultipleChoiceOptionDialog();
 }
 
+function deleteMultipleChoiceOptionSucceeded(request, status, message) {
+    showDialog(multipleChoiceQuestionDialog.dialog.id);
+    refreshMultipleChoiceOptionsDisplay();
+}
+
+function deleteMultipleChoiceOptionFailed(request, status, message) {
+    error("An error occurred while attempting to delete option.");
+    moveParentStateToAppState();
+    clearParentState();
+    showDialog(multipleChoiceQuestionDialog.dialog.id);
+}
+
+function confirmDeleteMultipleChoiceOption() {
+    hideDialog(confirmationDialog.dialog.id);
+    formId = getFormId();
+    question = app.parentState.entity;
+    option = app.dialogState.entity;
+    removeMultipleChoiceOption(formId, question.id, option.id, deleteMultipleChoiceOptionSucceeded, deleteMultipleChoiceOptionFailed);
+}
+
+function deleteMultipleChoiceOption(option) {
+    moveAppStateToParentState();
+    setDialogState(dialogStates.modes.delete, dialogStates.entityTypes.multipleChoiceOption, option);
+    hideDialog(multipleChoiceQuestionDialog.dialog.id);
+    confirm("Please confirm you wish for the following option to be deleted: " + option.text + ".", confirmDeleteMultipleChoiceOption);
+}
+
 /*
  * Ruleset Views
  */
