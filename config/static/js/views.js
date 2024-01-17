@@ -744,6 +744,91 @@ function moveRuleDown(ruleset, rule) {
 }
 
 /*
+ * Rule Tier Views
+ */
+function displayRuleTiersLoadedSucceeded(data) {
+    app.jurisdictionRules = data;
+
+    moveParentStateToAppState();
+    rule = findRuleById(app.dialogState.entity.id);
+    tiers = rule.tiers;
+    switch(app.dialogState.entityType) {
+        case dialogStates.entityTypes.tieredRateRule:
+                updateRuleTierTable(true, tiers);
+            break;
+        case dialogStates.entityTypes.secondaryTieredRateRule:
+                updateRuleTierTable(false, tiers);
+            break;
+    }
+}
+
+function displayRuleTiersLoadedError(request, status, message) {
+    error("An error occurred while refreshing rule tiers for rule " + app.parentState.entity.name);
+}
+
+function refreshRuleTiersDisplay() {
+    jurisdictionId = getSelectedJurisdictionId();
+    getRulesetsForJurisdiction(jurisdictionId, displayRuleTiersLoadedSucceeded, displayRuleTiersLoadedError);
+}
+
+function saveRuleTierSucceeded() {
+    success("The tier was successfully saved.");
+    refreshRuleTiersDisplay();
+}
+
+function saveRuleTierFailed(request, status, message) {
+    error("An error occurred while attempting to save rule tier.");
+}
+
+function saveRuleTier() {
+    rule = app.parentState.entity;
+    ruleset = findParentRuleset(rule.id);
+
+    if (app.dialogState.mode == dialogStates.modes.create)
+    {
+        switch (app.dialogState.entityType) {
+            case dialogStates.entityTypes.ruleTier:
+                    hideDialog(ruleTierDialog.dialog.id);
+                    postRuleTier(
+                        ruleset.id,
+                        rule.id,
+                        document.getElementById(ruleTierDialog.minimumValue.input.id).value,
+                        document.getElementById(ruleTierDialog.maximumValue.input.id).value,
+                        getNextRuleTierOrdinal(rule),
+                        document.getElementById(ruleTierDialog.taxRate.input.id).value,
+                        saveRuleTierSucceeded,
+                        saveRuleTierFailed
+                    );
+                break;
+            case dialogStates.entityTypes.secondaryRuleTier:
+                    hideDialog(secondaryRuleTierDialog.dialog.id);
+                    postSecondaryRuleTier(
+                        ruleset.id,
+                        rule.id,
+                        document.getElementById(secondaryRuleTierDialog.primaryTier.input.id).value,
+                        getNextRuleTierOrdinal(rule),
+                        document.getElementById(secondaryRuleTierDialog.taxRate.input.id).value,
+                        saveRuleTierSucceeded,
+                        saveRuleTierFailed
+                    );
+                break;
+        }
+    }
+}
+
+function createRuleTier(createPrimary) {
+    moveAppStateToParentState();
+    if (createPrimary) {
+        setDialogState(dialogStates.modes.create, dialogStates.entityTypes.ruleTier, null);
+        displayCreateRuleTierDialog();
+    } else {
+        primary_tiers = app.parentState.entity.primary_rule.tiers;
+        setDialogState(dialogStates.modes.create, dialogStates.entityTypes.secondaryRuleTier, null);
+        displayCreateSecondaryRuleTierDialog(primary_tiers);
+    }
+}
+
+/*
  * Initialisation functions
  */
 function init() {

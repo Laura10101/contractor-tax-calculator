@@ -571,7 +571,7 @@
                                 <div class="row">
                                     <div class="col">
                                         <h5 id="tiered-rate-rule-modal-tiers-label">
-                                            Tiers <i class="fas fa-plus" data-toggle="modal" data-target="#rule-tier-modal"></i>
+                                            Tiers <i class="fas fa-plus" onclick="createRuleTier(true)"></i>
                                         </h5>
                                     </div>
                                 </div>
@@ -667,7 +667,7 @@
                                 <div class="row">
                                     <div class="col">
                                         <h5 id="secondary-tiered-rate-rule-modal-tiers-label">
-                                            Tiers <i class="fas fa-plus" data-toggle="modal" data-target="#secondary-rule-tier-modal"></i>
+                                            Tiers <i class="fas fa-plus" onclick="createRuleTier(false)"></i>
                                         </h5>
                                     </div>
                                 </div>
@@ -754,7 +754,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
+              <button type="button" class="btn btn-primary" onclick="saveRuleTier()">Save changes</button>
             </div>
           </div>
         </div>
@@ -794,7 +794,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
+              <button type="button" class="btn btn-primary" onclick="saveRuleTier()">Save changes</button>
             </div>
           </div>
         </div>

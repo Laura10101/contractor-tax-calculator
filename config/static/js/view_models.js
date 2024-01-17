@@ -21,6 +21,9 @@ let app = {
     parentRuleset: null
 }
 
+/*
+ * State Management View Model Methods
+ */
 function clearDialogState() {
     app.dialogState = {
         mode: null,
@@ -68,6 +71,9 @@ function setParentRuleset(ruleset) {
     app.parentRuleset = ruleset;
 }
 
+/*
+ * View Model Accessor Methods
+ */
 function getForm() {
     return app.jurisdictionForm.forms[Object.keys(app.jurisdictionForm.forms)[0]];
 }
@@ -106,6 +112,59 @@ function findQuestionById(questionId) {
     return question;
 }
 
+function getTieredRateRulesForJurisdiction() {
+    return getRulesByTypeForJurisdiction('tiered_rate');
+}
+
+function findRuleById(ruleId) {
+    let rule = null;
+
+    app.jurisdictionRules.forEach(candidateRuleset => {
+        candidateRuleset.rules.forEach(candidateRule => {
+            if (candidateRule.id == ruleId) {
+                rule = candidateRule;
+            }
+        }); 
+    });
+
+    return rule;
+}
+
+function findParentRuleset(ruleId) {
+    let ruleset = null;
+
+    app.jurisdictionRules.forEach(candidateRuleset => {
+        candidateRuleset.rules.forEach(candidateRule => {
+            if (candidateRule.id == ruleId) {
+                ruleset = candidateRuleset;
+            }
+        });
+    });
+
+    return ruleset;
+}
+
+function findPrimaryRuleTierById(tierId) {
+    let tier = null;
+
+    app.jurisdictionRules.forEach(candidateRuleset => {
+        candidateRuleset.rules.forEach(candidateRule => {
+            if (candidateRule.type == "tiered_rate") {
+                candidateRule.tiers.forEach(candidateTier => {
+                    if (candidateTier.id == tierId) {
+                        tier = candidateTier;
+                    }
+                });
+            }
+        });
+    });
+
+    return tier;
+}
+
+/*
+ * Ordinal Traversal
+ */
 function findPreviousQuestion(question) {
     let questions = getQuestions();
     let previousQuestion = null;
@@ -222,10 +281,6 @@ function getRulesByTypeForJurisdiction(type) {
     return rules;
 }
 
-function getTieredRateRulesForJurisdiction() {
-    return getRulesByTypeForJurisdiction('tiered_rate');
-}
-
 function getNextRuleOrdinal() {
     if (app.parentRuleset != null) {
         return app.parentRuleset.rules.length + 1;
@@ -272,18 +327,6 @@ function findNextRule(ruleset, rule) {
     return nextRule;
 }
 
-function findRuleById(ruleId) {
-    let rule = null;
-
-    app.jurisdictionRules.forEach(candidateRule => {
-        if (candidateRUle.id == ruleId) {
-            rule = candidateRule;
-        }
-    });
-
-    return rule;
-}
-
 function resequenceRuleOrdinals(deletedRule) {
     let rules = app.parentRuleset.rules;
     let i = 0;
@@ -294,4 +337,16 @@ function resequenceRuleOrdinals(deletedRule) {
         }
     });
     return rules;
+}
+
+function getNextRuleTierOrdinal(rule) {
+    if (rule != null) {
+        if (rule.type == "tiered_rate" || rule.type == "secondary_tiered_rate") {
+            return rule.tiers.length + 1;
+        } else {
+            return null;
+        }
+    } else {
+        return null;
+    }
 }

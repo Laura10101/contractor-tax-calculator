@@ -56,7 +56,7 @@ const endpoints = {
             return "rules/rulesets/" + rulesetId + "/rules/" + ruleId + "/tiers/";
         },
         secondaryTiers: function(rulesetId, ruleId) {
-            return "rules/rulesets/" + rulesetId + "/rules/" + ruleId + "/seocndarytiers/";
+            return "rules/rulesets/" + rulesetId + "/rules/" + ruleId + "/secondarytiers/";
         },
         taxCategories: "rules/taxcategories/"
     }

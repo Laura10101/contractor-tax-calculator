@@ -374,7 +374,7 @@ function removeRule(rulesetId, ruleId, onSuccess, onFailure) {
 /*
  * Rule tiers service client
  */
-function createRuleTier(rulesetId, ruleId, minValue, maxValue, ordinal, taxRate, onSuccess, onFailure) {
+function postRuleTier(rulesetId, ruleId, minValue, maxValue, ordinal, taxRate, onSuccess, onFailure) {
     data = {
         min_value: minValue,
         max_value: maxValue,
@@ -401,9 +401,10 @@ function deleteRuleTier(rulesetId, ruleId, tierId, onSuccess, onFailure) {
 /*
  * Secondary rule tiers service client
  */
-function createSecondaryRuleTier(rulesetId, ruleId, primaryTierId, taxRate, onSuccess, onFailure) {
+function postSecondaryRuleTier(rulesetId, ruleId, primaryTierId, ordinal, taxRate, onSuccess, onFailure) {
     data = {
-        primary_tier_id: primaryTierId,
+        primary_tier_id: parseInt(primaryTierId),
+        ordinal: ordinal,
         tax_rate: taxRate
     };
     post(endpoints.rules.secondaryTiers(rulesetId, ruleId), data, onSuccess, onFailure);

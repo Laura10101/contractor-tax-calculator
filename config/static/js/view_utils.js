@@ -57,17 +57,19 @@ function updateRuleTierTable(updatePrimary, tiers) {
 
         // Update IDs to avoid duplicates
         tierRow.id += "-" + tier.id;
+        tierRow.classList.remove("hidden");
         tierRow.firstChild.id += "-" + tier.id;
 
         // Update tier data in display
         if (updatePrimary) {
-            tierRow.childNodes[0].innerHTML = tier.min_value;
-            tierRow.childNodes[1].innerHTML = tier.max_value;
-            tierRow.childNodes[2].innerHTML = tier.tier_rate;
+            tierRow.children[0].innerHTML = tier.min_value;
+            tierRow.children[1].innerHTML = tier.max_value;
+            tierRow.children[2].innerHTML = tier.tier_rate;
         } else {
-            tierRow.childNodes[0].innerHTML = tier.primary_tier.min_value;
-            tierRow.childNodes[1].innerHTML = tier.primary_tier.max_value;
-            tierRow.childNodes[2].innerHTML = tier.tier_rate;
+            primaryTier = findPrimaryRuleTierById(tier.primary_tier_id);
+            tierRow.children[0].innerHTML = primaryTier.min_value;
+            tierRow.children[1].innerHTML = primaryTier.max_value;
+            tierRow.children[2].innerHTML = tier.tier_rate;
         }
 
         // Add the new row
@@ -566,7 +568,7 @@ function initPrimaryRuleTiersSelect(tiers) {
     tiers.forEach(tier => {
         option = document.createElement("option");
         option.text = tier.min_value + " - " + tier.max_value + " (" + tier.tier_rate + ")";
-        option.value = rule.id;
+        option.value = tier.id;
         select.add(option);
     });
 }
@@ -577,17 +579,17 @@ function initSecondaryRuleTierDialog(dialogLabel, primaryRuleTiers, taxRate) {
     document.getElementById(secondaryRuleTierDialog.taxRate.input.id).value = taxRate;
 }
 
-function displayCreateSecondaryRuleTierDialog() {
+function displayCreateSecondaryRuleTierDialog(primaryTiers) {
     // Initialise the boolean question dialog with appropriate values for a create
-    initSecondaryRuleTierDialog("Create Secondary Rule Tier", [], "");
+    initSecondaryRuleTierDialog("Create Secondary Rule Tier", primaryTiers, "");
     // Show the dialog
     showDialog(secondaryRuleTierDialog.dialog.id);
 }
 
-function displayEditSecondaryRuleTierDialog(tier) {
+function displayEditSecondaryRuleTierDialog(tier, primaryTiers) {
     initSecondaryRuleTierDialog(
         "Edit Secondary Rule Tier",
-        tier.primary_rule.tiers,
+        primaryTiers,
         tier.tier_rate
     );
     // Show the dialog
