@@ -29,6 +29,7 @@ class RuleSetsList(APIView):
         return {
             'id': tier.id,
             'tier_rate': tier.tier_rate,
+            'ordinal': tier.ordinal,
             'primary_tier_id': tier.primary_tier.id
         }
 
