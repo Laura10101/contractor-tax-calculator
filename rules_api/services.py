@@ -286,6 +286,7 @@ def update_secondary_rule_tier(id, ordinal, tier_rate):
         raise SecondaryRuleTier.DoesNotExist('tier_id must be a non-negative integer value')
     
     secondary_rule_tier = SecondaryRuleTier.objects.get(pk=id)
+    secondary_rule_tier.ordinal=ordinal
     secondary_rule_tier.tier_rate=tier_rate
     secondary_rule_tier.full_clean()
     secondary_rule_tier.save()
