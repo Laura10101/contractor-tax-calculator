@@ -350,3 +350,53 @@ function getNextRuleTierOrdinal(rule) {
         return null;
     }
 }
+
+function findPreviousRuleTier(rule, tier) {
+    let tiers = rule.tiers;
+    let previousTier = null;
+    tiers.forEach(candidateTier => {
+        if (candidateTier.id != tier.id) {
+            if (previousTier == null) {
+                if (candidateTier.ordinal < tier.ordinal) {
+                    previousTier = candidateTier;
+                }
+            } else {
+                if (candidateTier.ordinal > previousTier.ordinal && candidateTier.ordinal < tier.ordinal) {
+                    previousTier = candidateTier;
+                }
+            }
+        }
+    });
+    return previousTier;
+}
+
+function findNextRuleTier(rule, tier) {
+    let tiers = rule.tiers;
+    let nextTier = null;
+    tiers.forEach(candidateTier => {
+        if (candidateTier.id != tier.id) {
+            if (nextTier == null) {
+                if (candidateTier.ordinal > tier.ordinal) {
+                    nextTier = candidateTier;
+                }
+            } else {
+                if (candidateTier.ordinal < nextTier.ordinal && candidateTier.ordinal > tier.ordinal) {
+                    nextTier = candidateTier;
+                }
+            }
+        }
+    });
+    return nextTier;
+}
+
+function resequenceRuleTierOrdinals(deletedTier) {
+    let tiers = app.parentState.entity.tiers;
+    let i = 0;
+    tiers.forEach(tier => {
+        if (tier.id != deletedTier.id) {
+            i++;
+            tier.ordinal = i;
+        }
+    });
+    return tiers;
+}

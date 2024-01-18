@@ -749,7 +749,9 @@ function moveRuleDown(ruleset, rule) {
 function displayRuleTiersLoadedSucceeded(data) {
     app.jurisdictionRules = data;
 
-    moveParentStateToAppState();
+    if (parentState.entity != null) {
+        moveParentStateToAppState();
+    }
     rule = findRuleById(app.dialogState.entity.id);
     tiers = rule.tiers;
     switch(app.dialogState.entityType) {
@@ -869,6 +871,61 @@ function editRuleTier(editPrimary, tier) {
         setDialogState(dialogStates.modes.edit, dialogStates.entityTypes.secondaryRuleTier, tier);
         displayEditSecondaryRuleTierDialog(tier, primaryTiers);
     }
+}
+
+function saveRuleTierOrdinal(isPrimary, tier) {
+    rule = app.dialogState.entity;
+    ruleset = findParentRuleset(rule.id);
+    if (isPrimary) {
+        updateRuleTier(
+            ruleset.id,
+            rule.id,
+            tier.id,
+            tier.min_value,
+            tier.max_value,
+            tier.ordinal,
+            tier.tier_rate,
+            doNothing,
+            saveRuleTierFailed
+        );
+    } else {
+        updateSecondaryRuleTier(
+            ruleset.id,
+            rule.id,
+            tier.id,
+            tier.primary_tier_id,
+            tier.ordinal,
+            tier.tier_rate,
+            doNothing,
+            saveRuleTierFailed
+        );
+    }
+}
+
+function swapRuleTierOrdinals(swapPrimary, tier, findNewPosition) {
+    // Find the tier that needs to be swapped
+    let tierToSwap = findNewPosition(app.dialogState.entity, tier);
+
+    if (tierToSwap != null) {
+        // Swap the ordinals
+        let originalOrdinal = tier.ordinal;
+        tier.ordinal = tierToSwap.ordinal;
+        tierToSwap.ordinal = originalOrdinal;
+
+        // Save the questions
+        saveRuleTierOrdinal(swapPrimary, tier);
+        saveRuleTierOrdinal(swapPrimary, tierToSwap);
+    }
+
+    refreshRuleTiersDisplay();
+}
+
+function moveRuleTierUp(isPrimary, tier) {
+    swapRuleTierOrdinals(isPrimary, tier, findPreviousRuleTier);
+}
+
+function moveRuleTierDown(isPrimary, tier) {
+    swapRuleTierOrdinals(isPrimary, tier, findNextRuleTier);
 }
 
 /*
