@@ -72,6 +72,12 @@ function updateRuleTierTable(updatePrimary, tiers) {
             tierRow.children[2].innerHTML = tier.tier_rate;
         }
 
+        // Add event handlers to tier actions
+        tierRow.querySelector(".edit-button").onclick = function() { editRuleTier(updatePrimary, tier); }
+        tierRow.querySelector(".delete-button").onclick = function() { deleteRuleTier(updatePrimary, tier); }
+        tierRow.querySelector(".move-up-button").onclick = function() { moveRuleTierUp(updatePrimary, tier); }
+        tierRow.querySelector(".move-down-button").onclick = function() { moveRuleTierDown(updatePrimary, tier); }
+
         // Add the new row
         table.appendChild(tierRow);
     });

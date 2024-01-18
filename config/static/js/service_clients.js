@@ -410,9 +410,10 @@ function postSecondaryRuleTier(rulesetId, ruleId, primaryTierId, ordinal, taxRat
     post(endpoints.rules.secondaryTiers(rulesetId, ruleId), data, onSuccess, onFailure);
 }
 
-function updateSecondaryRuleTier(rulesetId, ruleId, tierId, primaryTierId, taxRate, onSuccess, onFailure) {
+function updateSecondaryRuleTier(rulesetId, ruleId, tierId, primaryTierId, ordinal, taxRate, onSuccess, onFailure) {
     data = {
         primary_tier_id: primaryTierId,
+        ordinal: ordinal,
         tax_rate: taxRate
     };
     put(endpoints.rules.secondaryTiers(rulesetId, ruleId), tierId, data, onSuccess, onFailure);

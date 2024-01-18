@@ -813,6 +813,37 @@ function saveRuleTier() {
                     );
                 break;
         }
+    } else if (app.dialogState.mode == dialogStates.modes.edit) {
+        tier = app.dialogState.entity;
+        switch (app.dialogState.entityType) {
+            case dialogStates.entityTypes.ruleTier:
+                    hideDialog(ruleTierDialog.dialog.id);
+                    updateRuleTier(
+                        ruleset.id,
+                        rule.id,
+                        tier.id,
+                        document.getElementById(ruleTierDialog.minimumValue.input.id).value,
+                        document.getElementById(ruleTierDialog.maximumValue.input.id).value,
+                        tier.ordinal,
+                        document.getElementById(ruleTierDialog.taxRate.input.id).value,
+                        saveRuleTierSucceeded,
+                        saveRuleTierFailed
+                    );
+                break;
+            case dialogStates.entityTypes.secondaryRuleTier:
+                    hideDialog(secondaryRuleTierDialog.dialog.id);
+                    updateSecondaryRuleTier(
+                        ruleset.id,
+                        rule.id,
+                        tier.id,
+                        tier.primary_tier_id,
+                        tier.ordinal,
+                        document.getElementById(secondaryRuleTierDialog.taxRate.input.id).value,
+                        saveRuleTierSucceeded,
+                        saveRuleTierFailed
+                    );
+                break;
+        }
     }
 }
 
@@ -822,9 +853,21 @@ function createRuleTier(createPrimary) {
         setDialogState(dialogStates.modes.create, dialogStates.entityTypes.ruleTier, null);
         displayCreateRuleTierDialog();
     } else {
-        primary_tiers = app.parentState.entity.primary_rule.tiers;
+        primaryTiers = app.parentState.entity.primary_rule.tiers;
         setDialogState(dialogStates.modes.create, dialogStates.entityTypes.secondaryRuleTier, null);
-        displayCreateSecondaryRuleTierDialog(primary_tiers);
+        displayCreateSecondaryRuleTierDialog(primaryTiers);
+    }
+}
+
+function editRuleTier(editPrimary, tier) {
+    moveAppStateToParentState();
+    if (editPrimary) {
+        setDialogState(dialogStates.modes.edit, dialogStates.entityTypes.ruleTier, tier);
+        displayEditRuleTierDialog(tier);
+    } else {
+        primaryTiers = app.parentState.entity.primary_rule.tiers;
+        setDialogState(dialogStates.modes.edit, dialogStates.entityTypes.secondaryRuleTier, tier);
+        displayEditSecondaryRuleTierDialog(tier, primaryTiers);
     }
 }
 
