@@ -93,7 +93,7 @@ def create_mock_secondary_tiered_rate_rule(primary_rule, variable_name, ruleset=
     )
 
 def create_mock_secondary_rule_tier(secondary_rule, primary_tier, tier_rate):
-    return SecondaryRuleTier.objects.create(secondary_rule=secondary_rule, primary_tier=primary_tier, tier_rate=tier_rate)
+    return SecondaryRuleTier.objects.create(secondary_rule=secondary_rule, primary_tier=primary_tier, ordinal=1, tier_rate=tier_rate)
 
 def create_mock_simple_secondary_tiered_rate_rule(min_value, max_value, primary_variable,
             secondary_variable, primary_rate, secondary_rate):
