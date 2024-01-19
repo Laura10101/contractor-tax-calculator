@@ -394,8 +394,8 @@ function updateRuleTier(rulesetId, ruleId, tierId, minValue, maxValue, ordinal, 
     put(endpoints.rules.tiers(rulesetId, ruleId), tierId, data, onSuccess, onFailure);
 }
 
-function deleteRuleTier(rulesetId, ruleId, tierId, onSuccess, onFailure) {
-    remove(endpoints.rules.rules(rulesetId, ruleId), tierId, onSuccess, onFailure);
+function removeRuleTier(rulesetId, ruleId, tierId, onSuccess, onFailure) {
+    remove(endpoints.rules.tiers(rulesetId, ruleId), tierId, onSuccess, onFailure);
 }
 
 /*
@@ -419,6 +419,6 @@ function updateSecondaryRuleTier(rulesetId, ruleId, tierId, primaryTierId, ordin
     put(endpoints.rules.secondaryTiers(rulesetId, ruleId), tierId, data, onSuccess, onFailure);
 }
 
-function deleteSecondaryRuleTier(rulesetId, ruleId, tierId, onSuccess, onFailure) {
+function removeSecondaryRuleTier(rulesetId, ruleId, tierId, onSuccess, onFailure) {
     remove(endpoints.rules.secondaryTiers(rulesetId, ruleId), tierId, onSuccess, onFailure);
 }

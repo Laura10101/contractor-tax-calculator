@@ -136,13 +136,16 @@ WSGI_APPLICATION = 'contractor_tax_calculator.wsgi.application'
 
 if 'DATABASE_URL' in os.environ:
     DATABASES = {
-        'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
+        # Reduce number of DB connections using conn_max_age parameter
+        # https://medium.com/@nixon1333/reduce-no-of-db-connection-with-django-d21328b1bed4
+        'default': dj_database_url.parse(os.environ.get('DATABASE_URL'), conn_max_age=0)
     }
 else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': BASE_DIR / 'db.sqlite3',
+            'CONN_MAX_AGE': 0,
         }
     }
 

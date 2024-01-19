@@ -928,6 +928,79 @@ function moveRuleTierDown(isPrimary, tier) {
     swapRuleTierOrdinals(isPrimary, tier, findNextRuleTier);
 }
 
+function deleteRuleTierSucceeded() {
+    success("The selected rule tier was successfully deleted.");
+    rule = app.parentState.entity;
+    ruleset = findParentRuleset(rule.id);
+
+    tiers = resequenceRuleTierOrdinals(app.dialogState.entity);
+    tiers.forEach(tier => {
+        if (tier.id != app.dialogState.entity.id) {
+            switch(app.dialogState.entityType) {
+                case dialogStates.entityTypes.ruleTier:
+                        updateRuleTier(
+                            ruleset.id,
+                            rule.id,
+                            tier.id,
+                            tier.min_value,
+                            tier.max_value,
+                            tier.ordinal,
+                            tier.tier_rate,
+                            doNothing,
+                            saveRuleTierFailed
+                        );
+                    break;
+                case dialogStates.entityTypes.secondaryRuleTier:
+                        updateSecondaryRuleTier(
+                            ruleset.id,
+                            rule.id,
+                            tier.id,
+                            tier.primary_tier_id,
+                            tier.ordinal,
+                            tier.tier_rate,
+                            doNothing,
+                            saveRuleTierFailed
+                        );
+                    break;
+            }
+        }
+    });
+    moveParentStateToAppState();
+    refreshRuleTiersDisplay();
+}
+
+function deleteRuleTierFailed(request, status, message) {
+    error("An error occurred while attempting to delete rule tier.");
+    moveParentStateToAppState();
+}
+
+function confirmDeleteRuleTier() {
+    hideDialog(confirmationDialog.dialog.id);
+
+    tier = app.dialogState.entity;
+    rule = app.parentState.entity;
+    ruleset = findParentRuleset(rule.id);
+
+    switch(app.dialogState.entityType) {
+        case dialogStates.entityTypes.ruleTier:
+                removeRuleTier(ruleset.id, rule.id, tier.id, deleteRuleTierSucceeded, deleteRuleTierFailed);
+            break;
+        case dialogStates.entityTypes.secondaryRuleTier:
+                removeSecondaryRuleTier(ruleset.id, rule.id, tier.id, deleteRuleTierSucceeded, deleteRuleTierFailed);
+            break;
+    }
+}
+
+function deleteRuleTier(isPrimary, tier) {
+    moveAppStateToParentState();
+    if (isPrimary) {
+        setDialogState(dialogStates.modes.delete, dialogStates.entityTypes.ruleTier, tier);
+    } else {
+        setDialogState(dialogStates.modes.delete, dialogStates.entityTypes.secondaryRuleTier, tier);
+    }
+    confirm("Please confirm you wish for the selected rule tier to be deleted.", confirmDeleteRuleTier);
+}
+
 /*
  * Initialisation functions
  */
