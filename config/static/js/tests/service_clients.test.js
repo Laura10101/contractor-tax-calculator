@@ -49,7 +49,19 @@ describe("Service client helper functions", () => {
     });
 
     describe("URL generation", () => {
-
+        beforeAll(() => {
+            window = {
+                location: {
+                    protocol: "https:",
+                    hostname: "www.test.com"
+                }
+            };
+        });
+        test("should correctly convert relative endpoint into absolute URL", () => {
+            endpoint = "test/";
+            url = toUrl(endpoint);
+            expect(url).toBe("https://www.test.com/api/test/");
+        });
     });
 });
 
