@@ -27,7 +27,11 @@ function queryToString(query) {
     queryString = "";
     for (const key in query) {
         if (query.hasOwnProperty(key)) {
-            queryString += key + "=" + query[key];
+            if (queryString == "") {
+                queryString = key + "=" + query[key];   
+            } else {
+                queryString += "&" + key + "=" + query[key];
+            }
         }
     }
     return queryString;
@@ -422,3 +426,38 @@ function updateSecondaryRuleTier(rulesetId, ruleId, tierId, primaryTierId, ordin
 function removeSecondaryRuleTier(rulesetId, ruleId, tierId, onSuccess, onFailure) {
     remove(endpoints.rules.secondaryTiers(rulesetId, ruleId), tierId, onSuccess, onFailure);
 }
+
+module.exports = {
+    queryToString,
+    toUrl,
+    getJurisdictions,
+    getTaxCategories,
+    getFormForJurisdiction,
+    createBooleanQuestion,
+    updateBooleanQuestion,
+    createNumericQuestion,
+    updateNumericQuestion,
+    createMultipleChoiceQuestion,
+    updateMultipleChoiceQuestion,
+    updateQuestion,
+    removeQuestion,
+    postMultipleChoiceOption,
+    removeMultipleChoiceOption,
+    getRulesetsForJurisdiction,
+    postRuleset,
+    patchRuleset,
+    removeRuleset,
+    createFlatRateRule,
+    updateFlatRateRule,
+    createTieredRateRule,
+    updateTieredRateRule,
+    createSecondaryTieredRateRule,
+    updateSecondaryTieredRateRule,
+    removeRule,
+    postRuleTier,
+    updateRuleTier,
+    removeRuleTier,
+    postSecondaryRuleTier,
+    updateSecondaryRuleTier,
+    removeSecondaryRuleTier
+};
