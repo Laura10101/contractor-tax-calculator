@@ -1774,10 +1774,11 @@ def test_create_secondary_rule_tier_with_null_data():
 
     secondary_rule_id = None
     primary_tier_id = None
+    ordinal = None
     tier_rate = None
     
     with pytest.raises(SecondaryTieredRateRule.DoesNotExist):
-        id = create_secondary_rule_tier(secondary_rule_id, primary_tier_id, tier_rate)
+        id = create_secondary_rule_tier(secondary_rule_id, primary_tier_id, ordinal, tier_rate)
 
 @pytest.mark.django_db
 def test_create_secondary_rule_tier_with_null_rule_id():
@@ -1787,10 +1788,11 @@ def test_create_secondary_rule_tier_with_null_rule_id():
 
     secondary_rule_id = None
     primary_tier_id = primary_tier.id
+    ordinal = 1
     tier_rate = 8
     
     with pytest.raises(SecondaryTieredRateRule.DoesNotExist):
-        id = create_secondary_rule_tier(secondary_rule_id, primary_tier_id, tier_rate)
+        id = create_secondary_rule_tier(secondary_rule_id, primary_tier_id, ordinal, tier_rate)
 
 @pytest.mark.django_db
 def test_create_secondary_rule_tier_with_non_existent_rule_id():
@@ -1800,10 +1802,11 @@ def test_create_secondary_rule_tier_with_non_existent_rule_id():
 
     secondary_rule_id = 479
     primary_tier_id = primary_tier.id
+    ordinal = 1
     tier_rate = 8
     
     with pytest.raises(SecondaryTieredRateRule.DoesNotExist):
-        id = create_secondary_rule_tier(secondary_rule_id, primary_tier_id, tier_rate)
+        id = create_secondary_rule_tier(secondary_rule_id, primary_tier_id, ordinal, tier_rate)
 
 @pytest.mark.django_db
 def test_create_secondary_rule_tier_with_non_numeric_rule_id():
@@ -1813,10 +1816,11 @@ def test_create_secondary_rule_tier_with_non_numeric_rule_id():
 
     secondary_rule_id = 'ABC'
     primary_tier_id = primary_tier.id
+    ordinal = 1
     tier_rate = 8
     
     with pytest.raises(SecondaryTieredRateRule.DoesNotExist):
-        id = create_secondary_rule_tier(secondary_rule_id, primary_tier_id, tier_rate)
+        id = create_secondary_rule_tier(secondary_rule_id, primary_tier_id, ordinal, tier_rate)
 
 @pytest.mark.django_db
 def test_create_secondary_rule_tier_with_null_primary_tier_id():
@@ -1826,10 +1830,11 @@ def test_create_secondary_rule_tier_with_null_primary_tier_id():
 
     secondary_rule_id = secondary_rule.id
     primary_tier_id = None
+    ordinal = 1
     tier_rate = 8
     
     with pytest.raises(RuleTier.DoesNotExist):
-        id = create_secondary_rule_tier(secondary_rule_id, primary_tier_id, tier_rate)
+        id = create_secondary_rule_tier(secondary_rule_id, primary_tier_id, ordinal, tier_rate)
 
 @pytest.mark.django_db
 def test_create_secondary_rule_tier_with_non_existent_primary_tier_id():
@@ -1839,10 +1844,11 @@ def test_create_secondary_rule_tier_with_non_existent_primary_tier_id():
 
     secondary_rule_id = secondary_rule.id
     primary_tier_id = 479
+    ordinal = 1
     tier_rate = 8
     
     with pytest.raises(RuleTier.DoesNotExist):
-        id = create_secondary_rule_tier(secondary_rule_id, primary_tier_id, tier_rate)
+        id = create_secondary_rule_tier(secondary_rule_id, primary_tier_id, ordinal, tier_rate)
 
 @pytest.mark.django_db
 def test_create_secondary_rule_tier_with_non_numeric_primary_tier_id():
@@ -1852,10 +1858,40 @@ def test_create_secondary_rule_tier_with_non_numeric_primary_tier_id():
 
     secondary_rule_id = secondary_rule.id
     primary_tier_id = 'ABC'
+    ordinal = 1
     tier_rate = 8
     
     with pytest.raises(RuleTier.DoesNotExist):
-        id = create_secondary_rule_tier(secondary_rule_id, primary_tier_id, tier_rate)
+        id = create_secondary_rule_tier(secondary_rule_id, primary_tier_id, ordinal, tier_rate)
+
+
+@pytest.mark.django_db
+def test_create_secondary_rule_tier_with_null_ordinal():
+    primary_rule = create_mock_tiered_rate_rule('salary', 1, create_mock_ruleset())
+    secondary_rule = create_mock_secondary_tiered_rate_rule(primary_rule, 'dividends', primary_rule.ruleset)
+    primary_tier = create_mock_rule_tier(primary_rule, 10000, 45000, 20)
+
+    secondary_rule_id = secondary_rule.id
+    primary_tier_id = primary_tier.id
+    ordinal = None
+    tier_rate = 8
+    
+    with pytest.raises(ValidationError):
+        id = create_secondary_rule_tier(secondary_rule_id, primary_tier_id, ordinal, tier_rate)
+
+@pytest.mark.django_db
+def test_create_secondary_rule_tier_with_non_numeric_ordinal():
+    primary_rule = create_mock_tiered_rate_rule('salary', 1, create_mock_ruleset())
+    secondary_rule = create_mock_secondary_tiered_rate_rule(primary_rule, 'dividends', primary_rule.ruleset)
+    primary_tier = create_mock_rule_tier(primary_rule, 10000, 45000, 20)
+
+    secondary_rule_id = secondary_rule.id
+    primary_tier_id = primary_tier.id
+    ordinal = 'ABC'
+    tier_rate = 8
+    
+    with pytest.raises(ValidationError):
+        id = create_secondary_rule_tier(secondary_rule_id, primary_tier_id, ordinal, tier_rate)
 
 @pytest.mark.django_db
 def test_create_secondary_rule_tier_with_null_tier_rate():
@@ -1865,10 +1901,11 @@ def test_create_secondary_rule_tier_with_null_tier_rate():
 
     secondary_rule_id = secondary_rule.id
     primary_tier_id = primary_tier.id
+    ordinal = 1
     tier_rate = None
     
     with pytest.raises(ValidationError):
-        id = create_secondary_rule_tier(secondary_rule_id, primary_tier_id, tier_rate)
+        id = create_secondary_rule_tier(secondary_rule_id, primary_tier_id, ordinal, tier_rate)
 
 @pytest.mark.django_db
 def test_create_secondary_rule_tier_with_non_numeric_tier_rate():
@@ -1878,10 +1915,11 @@ def test_create_secondary_rule_tier_with_non_numeric_tier_rate():
 
     secondary_rule_id = secondary_rule.id
     primary_tier_id = primary_tier.id
+    ordinal = 1
     tier_rate = 'ABC'
     
     with pytest.raises(ValidationError):
-        id = create_secondary_rule_tier(secondary_rule_id, primary_tier_id, tier_rate)
+        id = create_secondary_rule_tier(secondary_rule_id, primary_tier_id, ordinal, tier_rate)
 
 @pytest.mark.django_db
 def test_create_valid_secondary_rule_tier():
@@ -1891,9 +1929,10 @@ def test_create_valid_secondary_rule_tier():
 
     secondary_rule_id = secondary_rule.id
     primary_tier_id = primary_tier.id
+    ordinal = 1
     tier_rate = 8
     
-    id = create_secondary_rule_tier(secondary_rule_id, primary_tier_id, tier_rate)
+    id = create_secondary_rule_tier(secondary_rule_id, primary_tier_id, ordinal, tier_rate)
     assert id is not None
 
     tier = SecondaryRuleTier.objects.get(pk=id)
@@ -1905,6 +1944,53 @@ def test_create_valid_secondary_rule_tier():
 
 # Secondary rule tier updates
 @pytest.mark.django_db
+def test_update_secondary_rule_tier_with_null_ordinal():
+    primary_rule = create_mock_tiered_rate_rule('salary', 1, create_mock_ruleset())
+    secondary_rule = create_mock_secondary_tiered_rate_rule(primary_rule, 'dividends', primary_rule.ruleset)
+    primary_tier = create_mock_rule_tier(primary_rule, 10000, 45000, 20)
+
+    secondary_rule_id = secondary_rule.id
+    primary_tier_id = primary_tier.id
+    ordinal = 1
+    tier_rate = 8
+    
+    id = create_secondary_rule_tier(secondary_rule_id, primary_tier_id, ordinal, tier_rate)
+    assert id is not None
+
+    tier = SecondaryRuleTier.objects.get(pk=id)
+    assert tier is not None
+
+    ordinal = None
+    tier_rate = 39.5
+
+    with pytest.raises(ValidationError):
+        update_secondary_rule_tier(id, ordinal, tier_rate)
+
+# Secondary rule tier updates
+@pytest.mark.django_db
+def test_update_secondary_rule_tier_with_non_numeric_ordinal():
+    primary_rule = create_mock_tiered_rate_rule('salary', 1, create_mock_ruleset())
+    secondary_rule = create_mock_secondary_tiered_rate_rule(primary_rule, 'dividends', primary_rule.ruleset)
+    primary_tier = create_mock_rule_tier(primary_rule, 10000, 45000, 20)
+
+    secondary_rule_id = secondary_rule.id
+    primary_tier_id = primary_tier.id
+    ordinal = 1
+    tier_rate = 8
+    
+    id = create_secondary_rule_tier(secondary_rule_id, primary_tier_id, ordinal, tier_rate)
+    assert id is not None
+
+    tier = SecondaryRuleTier.objects.get(pk=id)
+    assert tier is not None
+
+    ordinal = 'ABC'
+    tier_rate = 39.5
+
+    with pytest.raises(ValidationError):
+        update_secondary_rule_tier(id, ordinal, tier_rate)
+
+@pytest.mark.django_db
 def test_update_secondary_rule_tier_with_null_tier_rate():
     primary_rule = create_mock_tiered_rate_rule('salary', 1, create_mock_ruleset())
     secondary_rule = create_mock_secondary_tiered_rate_rule(primary_rule, 'dividends', primary_rule.ruleset)
@@ -1912,18 +1998,20 @@ def test_update_secondary_rule_tier_with_null_tier_rate():
 
     secondary_rule_id = secondary_rule.id
     primary_tier_id = primary_tier.id
+    ordinal = 1
     tier_rate = 8
     
-    id = create_secondary_rule_tier(secondary_rule_id, primary_tier_id, tier_rate)
+    id = create_secondary_rule_tier(secondary_rule_id, primary_tier_id, ordinal, tier_rate)
     assert id is not None
 
     tier = SecondaryRuleTier.objects.get(pk=id)
     assert tier is not None
 
+    ordinal = 2
     tier_rate = None
 
     with pytest.raises(ValidationError):
-        update_secondary_rule_tier(id, tier_rate)
+        update_secondary_rule_tier(id, ordinal, tier_rate)
 
 @pytest.mark.django_db
 def test_update_secondary_rule_tier_with_non_numeric_tier_rate():
@@ -1933,18 +2021,20 @@ def test_update_secondary_rule_tier_with_non_numeric_tier_rate():
 
     secondary_rule_id = secondary_rule.id
     primary_tier_id = primary_tier.id
+    ordinal = 1
     tier_rate = 8
     
-    id = create_secondary_rule_tier(secondary_rule_id, primary_tier_id, tier_rate)
+    id = create_secondary_rule_tier(secondary_rule_id, primary_tier_id, ordinal, tier_rate)
     assert id is not None
 
     tier = SecondaryRuleTier.objects.get(pk=id)
     assert tier is not None
 
+    ordinal = 2
     tier_rate = 'ABC'
 
     with pytest.raises(ValidationError):
-        update_secondary_rule_tier(id, tier_rate)
+        update_secondary_rule_tier(id, ordinal, tier_rate)
 
 @pytest.mark.django_db
 def test_update_valid_secondary_rule_tier():
@@ -1954,17 +2044,19 @@ def test_update_valid_secondary_rule_tier():
 
     secondary_rule_id = secondary_rule.id
     primary_tier_id = primary_tier.id
+    ordinal = 1
     tier_rate = 8
     
-    id = create_secondary_rule_tier(secondary_rule_id, primary_tier_id, tier_rate)
+    id = create_secondary_rule_tier(secondary_rule_id, primary_tier_id, ordinal, tier_rate)
     assert id is not None
 
     tier = SecondaryRuleTier.objects.get(pk=id)
     assert tier is not None
 
+    ordinal = 2
     tier_rate = 25
 
-    update_secondary_rule_tier(id, tier_rate)
+    update_secondary_rule_tier(id, ordinal, tier_rate)
 
     tier = SecondaryRuleTier.objects.get(pk=id)
     assert tier.tier_rate == tier_rate
