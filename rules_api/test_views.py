@@ -2895,10 +2895,12 @@ def test_post_secondary_rule_tier_with_null_data():
     ruleset_id = None
     rule_id = None
     primary_tier_id = None
+    ordinal = None
     tier_rate = None
 
     body = {
         'primary_tier_id': primary_tier_id,
+        'ordinal': ordinal,
         'tax_rate': tier_rate,
     }
 
@@ -2918,10 +2920,12 @@ def test_post_secondary_rule_tier_with_null_rule_id():
     ruleset_id = primary_rule.ruleset.id
     rule_id = None
     primary_tier_id = primary_tier.id
+    ordinal = 1
     tier_rate = 20
 
     body = {
         'primary_tier_id': primary_tier_id,
+        'ordinal': ordinal,
         'tax_rate': tier_rate,
     }
 
@@ -2941,10 +2945,12 @@ def test_post_secondary_rule_tier_with_non_existent_rule_id():
     ruleset_id = primary_rule.ruleset.id
     rule_id = 479
     primary_tier_id = primary_tier.id
+    ordinal = 1
     tier_rate = 20
 
     body = {
         'primary_tier_id': primary_tier_id,
+        'ordinal': ordinal,
         'tax_rate': tier_rate,
     }
 
@@ -2964,10 +2970,12 @@ def test_post_secondary_rule_tier_with_non_numeric_rule_id():
     ruleset_id = primary_rule.ruleset.id
     rule_id = 'ABC'
     primary_tier_id = primary_tier.id
+    ordinal = 1
     tier_rate = 20
 
     body = {
         'primary_tier_id': primary_tier_id,
+        'ordinal': ordinal,
         'tax_rate': tier_rate,
     }
 
@@ -2987,10 +2995,12 @@ def test_post_secondary_rule_tier_with_null_primary_tier_id():
     ruleset_id = primary_rule.ruleset.id
     rule_id = secondary_rule.id
     primary_tier_id = None
+    ordinal = 1
     tier_rate = 20
 
     body = {
         'primary_tier_id': primary_tier_id,
+        'ordinal': ordinal,
         'tax_rate': tier_rate,
     }
 
@@ -3010,10 +3020,12 @@ def test_post_secondary_rule_tier_with_non_existent_primary_tier_id():
     ruleset_id = primary_rule.ruleset.id
     rule_id = secondary_rule.id
     primary_tier_id = 479
+    ordinal = 1
     tier_rate = 20
 
     body = {
         'primary_tier_id': primary_tier_id,
+        'ordinal': ordinal,
         'tax_rate': tier_rate,
     }
 
@@ -3033,10 +3045,12 @@ def test_post_secondary_rule_tier_with_non_numeric_primary_tier_id():
     ruleset_id = primary_rule.ruleset.id
     rule_id = secondary_rule.id
     primary_tier_id = 'ABC'
+    ordinal = 1
     tier_rate = 20
 
     body = {
         'primary_tier_id': primary_tier_id,
+        'ordinal': ordinal,
         'tax_rate': tier_rate,
     }
 
@@ -3045,6 +3059,56 @@ def test_post_secondary_rule_tier_with_non_numeric_primary_tier_id():
 
     assert response is not None
     assert response.status_code == 404
+
+@pytest.mark.django_db
+def test_post_secondary_rule_tier_with_null_ordinal():
+    primary_rule = create_mock_tiered_rate_rule('salary', 1, create_mock_ruleset())
+    secondary_rule = create_mock_secondary_tiered_rate_rule(primary_rule, 'dividends', primary_rule.ruleset)
+    primary_tier = create_mock_rule_tier(primary_rule, 10000, 45000, 20)
+
+
+    ruleset_id = primary_rule.ruleset.id
+    rule_id = secondary_rule.id
+    primary_tier_id = primary_tier.id
+    ordinal = None
+    tier_rate = 20
+
+    body = {
+        'primary_tier_id': primary_tier_id,
+        'ordinal': ordinal,
+        'tax_rate': tier_rate,
+    }
+
+    request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/secondarytiers/'
+    response = client.post(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status_code == 400
+
+@pytest.mark.django_db
+def test_post_secondary_rule_tier_with_non_numeric_ordinal():
+    primary_rule = create_mock_tiered_rate_rule('salary', 1, create_mock_ruleset())
+    secondary_rule = create_mock_secondary_tiered_rate_rule(primary_rule, 'dividends', primary_rule.ruleset)
+    primary_tier = create_mock_rule_tier(primary_rule, 10000, 45000, 20)
+
+
+    ruleset_id = primary_rule.ruleset.id
+    rule_id = secondary_rule.id
+    primary_tier_id = primary_tier.id
+    ordinal = 'ABC'
+    tier_rate = 20
+
+    body = {
+        'primary_tier_id': primary_tier_id,
+        'ordinal': ordinal,
+        'tax_rate': tier_rate,
+    }
+
+    request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/secondarytiers/'
+    response = client.post(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_post_secondary_rule_tier_with_null_tier_rate():
@@ -3056,10 +3120,12 @@ def test_post_secondary_rule_tier_with_null_tier_rate():
     ruleset_id = primary_rule.ruleset.id
     rule_id = secondary_rule.id
     primary_tier_id = primary_tier.id
+    ordinal = 1
     tier_rate = None
 
     body = {
         'primary_tier_id': primary_tier_id,
+        'ordinal': ordinal,
         'tax_rate': tier_rate,
     }
 
@@ -3079,10 +3145,12 @@ def test_post_secondary_rule_tier_with_non_numeric_tier_rate():
     ruleset_id = primary_rule.ruleset.id
     rule_id = secondary_rule.id
     primary_tier_id = primary_tier.id
+    ordinal = 1
     tier_rate = 'ABC'
 
     body = {
         'primary_tier_id': primary_tier_id,
+        'ordinal': ordinal,
         'tax_rate': tier_rate,
     }
 
@@ -3102,10 +3170,12 @@ def test_post_valid_secondary_rule_tier():
     ruleset_id = primary_rule.ruleset.id
     rule_id = secondary_rule.id
     primary_tier_id = primary_tier.id
+    ordinal = 1
     tier_rate = 20
 
     body = {
         'primary_tier_id': primary_tier_id,
+        'ordinal': ordinal,
         'tax_rate': tier_rate,
     }
 
@@ -3134,16 +3204,19 @@ def test_put_secondary_rule_tier_with_null_data():
     ruleset_id = primary_rule.ruleset.id
     rule_id = secondary_rule.id
     primary_tier_id = primary_tier.id
+    ordinal = 1
     tier_rate = 20
 
-    tier_id = create_secondary_rule_tier(rule_id, primary_tier_id, tier_rate)
+    tier_id = create_secondary_rule_tier(rule_id, primary_tier_id, ordinal, tier_rate)
     assert tier_id is not None
 
     ruleset_id = None
     rule_id = None
+    ordinal = None
     tier_rate = None
 
     body = {
+        'ordinal': ordinal,
         'tax_rate': tier_rate,
     }
 
@@ -3163,17 +3236,20 @@ def test_put_secondary_rule_tier_with_null_tier_id():
     ruleset_id = primary_rule.ruleset.id
     rule_id = secondary_rule.id
     primary_tier_id = primary_tier.id
+    ordinal = 1
     tier_rate = 20
 
-    tier_id = create_secondary_rule_tier(rule_id, primary_tier_id, tier_rate)
+    tier_id = create_secondary_rule_tier(rule_id, primary_tier_id, ordinal, tier_rate)
     assert tier_id is not None
 
     ruleset_id = primary_rule.ruleset.id
     rule_id = secondary_rule.id
     primary_tier_id = primary_tier.id
+    ordinal = 2
     tier_rate = 30
 
     body = {
+        'ordinal': ordinal,
         'tax_rate': tier_rate,
     }
 
@@ -3193,17 +3269,20 @@ def test_put_secondary_rule_tier_with_non_existent_tier_id():
     ruleset_id = primary_rule.ruleset.id
     rule_id = secondary_rule.id
     primary_tier_id = primary_tier.id
+    ordinal = 1
     tier_rate = 20
 
-    tier_id = create_secondary_rule_tier(rule_id, primary_tier_id, tier_rate)
+    tier_id = create_secondary_rule_tier(rule_id, primary_tier_id, ordinal, tier_rate)
     assert tier_id is not None
 
     ruleset_id = primary_rule.ruleset.id
     rule_id = secondary_rule.id
     primary_tier_id = primary_tier.id
+    ordinal = 2
     tier_rate = 30
 
     body = {
+        'ordinal': ordinal,
         'tax_rate': tier_rate,
     }
 
@@ -3224,17 +3303,20 @@ def test_put_secondary_rule_tier_with_non_numeric_tier_id():
     rule_id = secondary_rule.id
     print(str(rule_id))
     primary_tier_id = primary_tier.id
+    ordinal = 1
     tier_rate = 20
 
-    tier_id = create_secondary_rule_tier(rule_id, primary_tier_id, tier_rate)
+    tier_id = create_secondary_rule_tier(rule_id, primary_tier_id, ordinal, tier_rate)
     assert tier_id is not None
 
     ruleset_id = primary_rule.ruleset.id
     rule_id = secondary_rule.id
     primary_tier_id = primary_tier.id
+    ordinal = 2
     tier_rate = 30
 
     body = {
+        'ordinal': ordinal,
         'tax_rate': tier_rate,
     }
 
@@ -3243,6 +3325,72 @@ def test_put_secondary_rule_tier_with_non_numeric_tier_id():
 
     assert response is not None
     assert response.status_code == 404
+
+@pytest.mark.django_db
+def test_put_secondary_rule_tier_with_null_ordinal():
+    primary_rule = create_mock_tiered_rate_rule('salary', 1, create_mock_ruleset())
+    secondary_rule = create_mock_secondary_tiered_rate_rule(primary_rule, 'dividends', primary_rule.ruleset)
+    primary_tier = create_mock_rule_tier(primary_rule, 10000, 45000, 20)
+
+
+    ruleset_id = secondary_rule.ruleset.id
+    rule_id = secondary_rule.id
+    primary_tier_id = primary_tier.id
+    ordinal = 1
+    tier_rate = 20
+
+    tier_id = create_secondary_rule_tier(rule_id, primary_tier_id, ordinal, tier_rate)
+    assert tier_id is not None
+
+    ruleset_id = primary_rule.ruleset.id
+    rule_id = secondary_rule.id
+    primary_tier_id = primary_tier.id
+    ordinal = None
+    tier_rate = 30
+
+    body = {
+        'ordinal': ordinal,
+        'tax_rate': tier_rate,
+    }
+
+    request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/secondarytiers/' + str(tier_id) + '/'
+    response = client.put(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status_code == 400
+
+@pytest.mark.django_db
+def test_put_secondary_rule_tier_with_non_numeric_ordinal():
+    primary_rule = create_mock_tiered_rate_rule('salary', 1, create_mock_ruleset())
+    secondary_rule = create_mock_secondary_tiered_rate_rule(primary_rule, 'dividends', primary_rule.ruleset)
+    primary_tier = create_mock_rule_tier(primary_rule, 10000, 45000, 20)
+
+
+    ruleset_id = secondary_rule.ruleset.id
+    rule_id = secondary_rule.id
+    primary_tier_id = primary_tier.id
+    ordinal = 1
+    tier_rate = 20
+
+    tier_id = create_secondary_rule_tier(rule_id, primary_tier_id, ordinal, tier_rate)
+    assert tier_id is not None
+
+    ruleset_id = primary_rule.ruleset.id
+    rule_id = secondary_rule.id
+    primary_tier_id = primary_tier.id
+    ordinal = 'ABC'
+    tier_rate = 30
+
+    body = {
+        'ordinal': ordinal,
+        'tax_rate': tier_rate,
+    }
+
+    request_url = url + 'rulesets/' + str(ruleset_id) + '/rules/' + str(rule_id) + '/secondarytiers/' + str(tier_id) + '/'
+    response = client.put(request_url, body, format='json')
+
+    assert response is not None
+    assert response.status_code == 400
 
 @pytest.mark.django_db
 def test_put_secondary_rule_tier_with_null_tier_rate():
@@ -3254,17 +3402,20 @@ def test_put_secondary_rule_tier_with_null_tier_rate():
     ruleset_id = secondary_rule.ruleset.id
     rule_id = secondary_rule.id
     primary_tier_id = primary_tier.id
+    ordinal = 1
     tier_rate = 20
 
-    tier_id = create_secondary_rule_tier(rule_id, primary_tier_id, tier_rate)
+    tier_id = create_secondary_rule_tier(rule_id, primary_tier_id, ordinal, tier_rate)
     assert tier_id is not None
 
     ruleset_id = primary_rule.ruleset.id
     rule_id = secondary_rule.id
     primary_tier_id = primary_tier.id
+    ordinal = 2
     tier_rate = None
 
     body = {
+        'ordinal': ordinal,
         'tax_rate': tier_rate,
     }
 
@@ -3284,17 +3435,20 @@ def test_put_secondary_rule_tier_with_non_numeric_tier_rate():
     ruleset_id = primary_rule.ruleset.id
     rule_id = secondary_rule.id
     primary_tier_id = primary_tier.id
+    ordinal = 1
     tier_rate = 20
 
-    tier_id = create_secondary_rule_tier(rule_id, primary_tier_id, tier_rate)
+    tier_id = create_secondary_rule_tier(rule_id, primary_tier_id, ordinal, tier_rate)
     assert tier_id is not None
 
     ruleset_id = primary_rule.ruleset.id
     rule_id = secondary_rule.id
     primary_tier_id = primary_tier.id
+    ordinal = 1
     tier_rate = 'ABC'
 
     body = {
+        'ordinal': ordinal,
         'tax_rate': tier_rate,
     }
 
@@ -3314,17 +3468,20 @@ def test_put_valid_secondary_rule_tier():
     ruleset_id = primary_rule.ruleset.id
     rule_id = secondary_rule.id
     primary_tier_id = primary_tier.id
+    ordinal = 1
     tier_rate = 20
 
-    tier_id = create_secondary_rule_tier(rule_id, primary_tier_id, tier_rate)
+    tier_id = create_secondary_rule_tier(rule_id, primary_tier_id, ordinal, tier_rate)
     assert tier_id is not None
 
     ruleset_id = primary_rule.ruleset.id
     rule_id = secondary_rule.id
     primary_tier_id = primary_tier.id
+    ordinal = 2
     tier_rate = 30
 
     body = {
+        'ordinal': ordinal,
         'tax_rate': tier_rate,
     }
 
