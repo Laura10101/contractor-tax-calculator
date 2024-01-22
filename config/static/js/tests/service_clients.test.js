@@ -298,7 +298,59 @@ describe("Question service clients", () => {
 
     describe("Numeric questions", () => {
         describe("POST", () => {
+            test("should correctly update numeric question, returning 200 and a valid id", done => {
+                // Approach to testing asynchronous code adapted from Jest documentation
+                // https://jestjs.io/docs/asynchronous
+                function checkAjaxResponse(data, textStatus, request) {
+                    console.log("Checking create numeric question results");
+                    console.log(data);
+                    console.log(textStatus);
+                    console.log(request);
+                    console.log(request.status);
+                    expect(request).toBeDefined();
+                    expect(request.status).toBe(200);
+                    expect(data).toBeDefined();
+                    expect(data.id).toBeDefined();
+                    done();
+                }
+    
+                let text = "A boolean question test";
+                let explainer = "Created by automated test";
+                let ordinal = 1;
+                let variableName = "boolean_var";
+                let isMandatory = true;
+                let minValue = 1;
+                let maxValue = 100;
+                let isInteger = true;
+                createNumericQuestion(1, text, ordinal, explainer, variableName, isMandatory, isInteger, minValue, maxValue, checkAjaxResponse, checkAjaxResponse);
+            }, 10000);
 
+            test("should fail to create numeric question, returning 400", done => {
+                // Approach to testing asynchronous code adapted from Jest documentation
+                // https://jestjs.io/docs/asynchronous
+                function checkAjaxResponse(data, textStatus, request) {
+                    console.log("Checking create numeric question results");
+                    console.log(data);
+                    console.log(textStatus);
+                    console.log(request);
+                    console.log(request.status);
+                    expect(data).toBeDefined();
+                    expect(data.status).toBe(400);
+                    expect(data).toBeDefined();
+                    expect(data.responseJSON.error).toBeDefined();
+                    done();
+                }
+    
+                let text = "A boolean question test";
+                let explainer = "Created by automated test";
+                let ordinal = 1;
+                let variableName = null;
+                let isMandatory = true;
+                let minValue = null;
+                let maxValue = null;
+                let isInteger = true;
+                createNumericQuestion(1, text, ordinal, explainer, variableName, isMandatory, isInteger, minValue, maxValue, checkAjaxResponse, checkAjaxResponse);
+            }, 10000);
         });
 
         describe("PUT", () => {
