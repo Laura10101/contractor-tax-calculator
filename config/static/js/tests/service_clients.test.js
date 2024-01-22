@@ -1,3 +1,4 @@
+const { app } = require("../view_models");
 const {
     queryToString,
     toUrl,
@@ -33,6 +34,12 @@ const {
     removeSecondaryRuleTier
 } = require("../service_clients");
 
+beforeAll(() => {
+    app.apiHost.protocol = "https:";
+    app.apiHost.hostname = "8000-laura10101-contractorta-g5o2od5xoex.ws-eu107.gitpod.io";
+    jest.useRealTimers();
+});
+
 describe("Service client helper functions", () => {
     describe("Query string generation", () => {
         test("should return return valid http query string", () => {
@@ -50,26 +57,34 @@ describe("Service client helper functions", () => {
         test("should correctly convert relative endpoint into absolute URL", () => {
             endpoint = "test/";
             url = toUrl(endpoint);
-            expect(url).toBe("http://" + window.location.hostname + "/api/test/");
+            expect(url).toBe("https://8000-laura10101-contractorta-g5o2od5xoex.ws-eu107.gitpod.io/api/test/");
         });
     });
 });
 
 describe("Jurisdiction service client", () => {
     describe("GET", () => {
-        test("should correctly retrieve jurisdictions with a 200 response", () => {
+        test("should correctly retrieve jurisdictions with a 200 response", done => {
             // Approach to testing asynchronous code adapted from Jest documentation
             // https://jestjs.io/docs/asynchronous
-            function checkAjaxResponse(request, status, message) {
-                expect(status).toBe(200);
-                expect(request.data).toBeDefined();
-                let data = request.data;
-                expect(data.questions).tobBeDefined();
+            function checkAjaxResponse(data, textStatus, request) {
+                console.log(data);
+                console.log(textStatus);
+                console.log(request);
+                console.log(request.status);
+                expect(request).toBeDefined();
+                expect(request.status).toBe(200);
+                expect(data).toBeDefined();
+                expect(data.jurisdictions).toBeDefined();
+                data.jurisdictions.forEach(jurisdiction => {
+                    expect(jurisdiction.id).toBeDefined();
+                    expect(jurisdiction.name).toBeDefined();
+                });
                 done();
             }
 
             getJurisdictions(checkAjaxResponse, checkAjaxResponse);
-        });
+        }, 10000);
     });
 });
 
