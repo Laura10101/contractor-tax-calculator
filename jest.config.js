@@ -148,7 +148,12 @@ const config = {
   testEnvironment: "jsdom",
 
   // Options that will be passed to the testEnvironment
-  // testEnvironmentOptions: {},
+  // Configured to work around CORS issues
+  // https://jestjs.io/docs/configuration
+  testEnvironmentOptions:
+  {
+    url: "https://8000-laura10101-contractorta-g5o2od5xoex.ws-eu107.gitpod.io/",
+  },
 
   // Adds a location field to test results
   // testLocationInResults: false,
