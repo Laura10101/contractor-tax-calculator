@@ -314,10 +314,10 @@ describe("Question service clients", () => {
                     done();
                 }
     
-                let text = "A boolean question test";
+                let text = "A numeric question test";
                 let explainer = "Created by automated test";
                 let ordinal = 1;
-                let variableName = "boolean_var";
+                let variableName = "numeric_var";
                 let isMandatory = true;
                 let minValue = 1;
                 let maxValue = 100;
@@ -341,7 +341,7 @@ describe("Question service clients", () => {
                     done();
                 }
     
-                let text = "A boolean question test";
+                let text = "A numeric question test";
                 let explainer = "Created by automated test";
                 let ordinal = 1;
                 let variableName = null;
@@ -381,7 +381,7 @@ describe("Question service clients", () => {
                     expect(data).toBeDefined();
                     expect(data.id).toBeDefined();
                     let id = data.id;
-                    let text = "A boolean question test UPDATED";
+                    let text = "A numeric question test UPDATED";
                     let explainer = "Created by automated test UPDATED";
                     let ordinal = 1;
                     let variableName = "numeric_var";
@@ -397,7 +397,7 @@ describe("Question service clients", () => {
                     done(data.responseJSON.error);
                 }
     
-                let text = "A boolean question test";
+                let text = "A numeric question test";
                 let explainer = "Created by automated test";
                 let ordinal = 1;
                 let variableName = "numeric_var";
@@ -434,7 +434,7 @@ describe("Question service clients", () => {
                     expect(data).toBeDefined();
                     expect(data.id).toBeDefined();
                     let id = data.id;
-                    let text = "A boolean question test UPDATED";
+                    let text = "A numeric question test UPDATED";
                     let explainer = "Created by automated test UPDATED";
                     let ordinal = null;
                     let variableName = "numeric_var";
@@ -450,7 +450,7 @@ describe("Question service clients", () => {
                     done(data.responseJSON.error);
                 }
     
-                let text = "A boolean question test";
+                let text = "A numeric question test";
                 let explainer = "Created by automated test";
                 let ordinal = 1;
                 let variableName = "numeric_var";
@@ -465,11 +465,149 @@ describe("Question service clients", () => {
 
     describe("Multiple choice questions", () => {
         describe("POST", () => {
+            test("should correctly create a multiple choice question, returning a 200 response and a valid ID", done => {
+                // Approach to testing asynchronous code adapted from Jest documentation
+                // https://jestjs.io/docs/asynchronous
+                function checkAjaxResponse(data, textStatus, request) {
+                    console.log(data);
+                    console.log(textStatus);
+                    console.log(request);
+                    console.log(request.status);
+                    expect(request).toBeDefined();
+                    expect(request.status).toBe(200);
+                    expect(data).toBeDefined();
+                    expect(data.id).toBeDefined();
+                    done();
+                }
+    
+                let text = "A multiple choice test";
+                let explainer = "Created by automated test";
+                let ordinal = 1;
+                let variableName = "multiple_choice_var";
+                let isMandatory = true;
+                createMultipleChoiceQuestion(1, text, ordinal, explainer, variableName, isMandatory, checkAjaxResponse, checkAjaxResponse);
+            }, 10000);
 
+            test("should correctly return a 400 response", done => {
+                // Approach to testing asynchronous code adapted from Jest documentation
+                // https://jestjs.io/docs/asynchronous
+                function checkAjaxResponse(data, textStatus, request) {
+                    console.log("Multiple choice question - invalid test");
+                    console.log(data);
+                    console.log(textStatus);
+                    console.log(request);
+                    console.log(data.status);
+                    expect(request).toBeDefined();
+                    expect(data.status).toBe(400);
+                    expect(data).toBeDefined();
+                    expect(data.responseJSON.error).toBeDefined();
+                    done();
+                }
+    
+                let text = "A multiple choice question test";
+                let explainer = "Created by automated test";
+                let ordinal = 1;
+                let variableName = null;
+                let isMandatory = true;
+                createMultipleChoiceQuestion(1, text, ordinal, explainer, variableName, isMandatory, checkAjaxResponse, checkAjaxResponse);
+            }, 10000);
         });
 
         describe("PUT", () => {
+            test("should correctly update a multiple choice, returning a 200 response and a valid ID", done => {
+                // Approach to testing asynchronous code adapted from Jest documentation
+                // https://jestjs.io/docs/asynchronous
+                function checkAjaxResponse(data, textStatus, request) {
+                    console.log("Checking multiple choice update results");
+                    console.log(data);
+                    console.log(textStatus);
+                    console.log(request);
+                    console.log(request.status);
+                    expect(request).toBeDefined();
+                    expect(request.status).toBe(200);
+                    expect(data).toBeDefined();
+                    expect(data.id).toBeDefined();
+                    done();
+                }
 
+                function testUpdateMultipleChoiceQuestion(data, textStatus, request) {
+                    console.log("Updating multiple choice question");
+                    console.log(data);
+                    console.log(textStatus);
+                    console.log(request);
+                    console.log(request.status);
+                    expect(request).toBeDefined();
+                    expect(request.status).toBe(200);
+                    expect(data).toBeDefined();
+                    expect(data.id).toBeDefined();
+                    let id = data.id;
+                    let text = "A multiple choice question test - UPDATED";
+                    let explainer = "Created by automated test - UPDATED";
+                    let ordinal = 2;
+                    let isMandatory = true;
+                    updateMultipleChoiceQuestion(1, id, text, ordinal, explainer, isMandatory, checkAjaxResponse, checkAjaxResponse);
+                }
+
+                function failTest(data, textStatus, request) {
+                    console.log(data.responseJSON);
+                    done(data.responseJSON.error);
+                }
+    
+                let text = "A multiple choice question test";
+                let explainer = "Created by automated test";
+                let ordinal = 1;
+                let variableName = "multiple_choice_var";
+                let isMandatory = true;
+                createMultipleChoiceQuestion(1, text, ordinal, explainer, variableName, isMandatory, testUpdateMultipleChoiceQuestion, failTest);
+            }, 10000);
+
+            test("should fail to update a multiple choice, returning a 400 response", done => {
+                // Approach to testing asynchronous code adapted from Jest documentation
+                // https://jestjs.io/docs/asynchronous
+                function checkAjaxResponse(data, textStatus, request) {
+                    console.log("Checking multiple choice question update results");
+                    console.log(data);
+                    console.log(textStatus);
+                    console.log(request);
+                    console.log(data.status);
+                    expect(request).toBeDefined();
+                    expect(data.status).toBe(400);
+                    expect(data).toBeDefined();
+                    expect(data.responseJSON.error).toBeDefined();
+                    done();
+                }
+    
+                function testUpdateMultipleChoiceQuestion(data, textStatus, request) {
+                    console.log("Updating multiple choice question");
+                    console.log(data);
+                    console.log(textStatus);
+                    console.log(request);
+                    console.log(request.status);
+                    expect(request).toBeDefined();
+                    expect(request.status).toBe(200);
+                    expect(data).toBeDefined();
+                    expect(data.id).toBeDefined();
+                    let id = data.id;
+                    let text = null;
+                    let explainer = "Created by automated test - UPDATED";
+                    let ordinal = 2;
+                    let variableName = null;
+                    let isMandatory = true;
+                    updateMultipleChoiceQuestion(1, id, text, ordinal, explainer, isMandatory, checkAjaxResponse, checkAjaxResponse);
+                }
+    
+                function failTest(data, textStatus, request) {
+                    console.log(data.responseJSON);
+                    done(data.responseJSON.error);
+                }
+    
+                let text = "A multiple choice question test";
+                let explainer = "Created by automated test";
+                let ordinal = 1;
+                let variableName = "multiple_choice_var";
+                let isMandatory = true;
+                createMultipleChoiceQuestion(1, text, ordinal, explainer, variableName, isMandatory, testUpdateMultipleChoiceQuestion, failTest);
+            }, 10000);
         });
     });
 
