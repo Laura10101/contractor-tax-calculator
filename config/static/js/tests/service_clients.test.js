@@ -198,7 +198,101 @@ describe("Question service clients", () => {
         });
 
         describe("PUT", () => {
+            test("should correctly update a boolean question, returning a 200 response and a valid ID", done => {
+                // Approach to testing asynchronous code adapted from Jest documentation
+                // https://jestjs.io/docs/asynchronous
+                function checkAjaxResponse(data, textStatus, request) {
+                    console.log("Checking boolean question update results");
+                    console.log(data);
+                    console.log(textStatus);
+                    console.log(request);
+                    console.log(request.status);
+                    expect(request).toBeDefined();
+                    expect(request.status).toBe(200);
+                    expect(data).toBeDefined();
+                    expect(data.id).toBeDefined();
+                    done();
+                }
 
+                function testUpdateBooleanQuestion(data, textStatus, request) {
+                    console.log("Updating boolean question");
+                    console.log(data);
+                    console.log(textStatus);
+                    console.log(request);
+                    console.log(request.status);
+                    expect(request).toBeDefined();
+                    expect(request.status).toBe(200);
+                    expect(data).toBeDefined();
+                    expect(data.id).toBeDefined();
+                    let id = data.id;
+                    let text = "A boolean question test - UPDATED";
+                    let explainer = "Created by automated test - UPDATED";
+                    let ordinal = 2;
+                    let variableName = "boolean_var";
+                    let isMandatory = true;
+                    updateBooleanQuestion(1, id, text, ordinal, explainer, isMandatory, checkAjaxResponse, checkAjaxResponse);
+                }
+
+                function failTest(data, textStatus, request) {
+                    console.log(data.responseJSON);
+                    done(data.responseJSON.error);
+                }
+    
+                let text = "A boolean question test";
+                let explainer = "Created by automated test";
+                let ordinal = 1;
+                let variableName = "boolean_var";
+                let isMandatory = true;
+                createBooleanQuestion(1, text, ordinal, explainer, variableName, isMandatory, testUpdateBooleanQuestion, failTest);
+            }, 10000);
+
+            test("should fail to update a boolean question, returning a 400 response", done => {
+                // Approach to testing asynchronous code adapted from Jest documentation
+                // https://jestjs.io/docs/asynchronous
+                function checkAjaxResponse(data, textStatus, request) {
+                    console.log("Checking boolean question update results");
+                    console.log(data);
+                    console.log(textStatus);
+                    console.log(request);
+                    console.log(data.status);
+                    expect(request).toBeDefined();
+                    expect(data.status).toBe(400);
+                    expect(data).toBeDefined();
+                    expect(data.responseJSON.error).toBeDefined();
+                    done();
+                }
+    
+                function testUpdateBooleanQuestion(data, textStatus, request) {
+                    console.log("Updating boolean question");
+                    console.log(data);
+                    console.log(textStatus);
+                    console.log(request);
+                    console.log(request.status);
+                    expect(request).toBeDefined();
+                    expect(request.status).toBe(200);
+                    expect(data).toBeDefined();
+                    expect(data.id).toBeDefined();
+                    let id = data.id;
+                    let text = null;
+                    let explainer = "Created by automated test - UPDATED";
+                    let ordinal = 2;
+                    let variableName = null;
+                    let isMandatory = true;
+                    updateBooleanQuestion(1, id, text, ordinal, explainer, isMandatory, checkAjaxResponse, checkAjaxResponse);
+                }
+    
+                function failTest(data, textStatus, request) {
+                    console.log(data.responseJSON);
+                    done(data.responseJSON.error);
+                }
+    
+                let text = "A boolean question test";
+                let explainer = "Created by automated test";
+                let ordinal = 1;
+                let variableName = "boolean_var";
+                let isMandatory = true;
+                createBooleanQuestion(1, text, ordinal, explainer, variableName, isMandatory, testUpdateBooleanQuestion, failTest);
+            }, 10000);
         });
     });
 
