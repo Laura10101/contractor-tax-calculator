@@ -221,7 +221,7 @@ function updateMultipleChoiceQuestion(formId, questionId, text, ordinal, explain
         text: text,
         ordinal: ordinal,
         explainer: explainer,
-        is_mandatory: is_mandatory,
+        is_mandatory: isMandatory,
         type: "multiple_choice"
     };
     put(endpoints.forms.questions(formId), questionId, data, onSuccess, onFailure);
