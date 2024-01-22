@@ -1,4 +1,5 @@
 const { endpoints } = require("./view_consts.js");
+const { app } = require("./view_models.js");
 const $ = require("jquery");
 
 /*
@@ -41,7 +42,7 @@ function queryToString(query) {
 }
 
 function toUrl(endpoint) {
-    return window.location.protocol + "//" + window.location.hostname + "/api/" + endpoint;
+    return app.apiHost.protocol + "//" + app.apiHost.hostname + "/api/" + endpoint;
 }
 
 function query(endpoint, query, success, error) {

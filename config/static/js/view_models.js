@@ -4,6 +4,10 @@
  * to state data 
  */
 let app = {
+    apiHost: {
+        protocol: "",
+        hostname: ""
+    },
     jurisdictions: [],
     taxCategories: [],
     jurisdictionForm: {},
@@ -19,6 +23,14 @@ let app = {
         entity: null
     },
     parentRuleset: null
+}
+
+/*
+ * API Host View Model Methods
+ */
+function setApiHost(protocol, hostname) {
+    app.apiHost.protocol = protocol;
+    app.apiHost.hostname = hostname;
 }
 
 /*
@@ -400,3 +412,7 @@ function resequenceRuleTierOrdinals(deletedTier) {
     });
     return tiers;
 }
+
+module.exports = {
+    app
+};

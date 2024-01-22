@@ -1005,6 +1005,7 @@ function deleteRuleTier(isPrimary, tier) {
  * Initialisation functions
  */
 function init() {
+    setApiHost(window.location.protocol, window.location.hostname);
     getJurisdictions(loadJurisdictionSelect, displayJurisdictionLoadError);
     getTaxCategories(loadTaxCategorySelect, displayTaxCategoryLoadError);
 }
