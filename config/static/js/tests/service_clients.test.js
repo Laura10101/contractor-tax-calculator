@@ -33,8 +33,6 @@ const {
     removeSecondaryRuleTier
 } = require("../service_clients");
 
-const { default: expect } = require("expect");
-
 describe("Service client helper functions", () => {
     describe("Query string generation", () => {
         test("should return return valid http query string", () => {
@@ -49,25 +47,29 @@ describe("Service client helper functions", () => {
     });
 
     describe("URL generation", () => {
-        beforeAll(() => {
-            window = {
-                location: {
-                    protocol: "https:",
-                    hostname: "www.test.com"
-                }
-            };
-        });
         test("should correctly convert relative endpoint into absolute URL", () => {
             endpoint = "test/";
             url = toUrl(endpoint);
-            expect(url).toBe("https://www.test.com/api/test/");
+            expect(url).toBe("http://" + window.location.hostname + "/api/test/");
         });
     });
 });
 
 describe("Jurisdiction service client", () => {
     describe("GET", () => {
+        test("should correctly retrieve jurisdictions with a 200 response", () => {
+            // Approach to testing asynchronous code adapted from Jest documentation
+            // https://jestjs.io/docs/asynchronous
+            function checkAjaxResponse(request, status, message) {
+                expect(status).toBe(200);
+                expect(request.data).toBeDefined();
+                let data = request.data;
+                expect(data.questions).tobBeDefined();
+                done();
+            }
 
+            getJurisdictions(checkAjaxResponse, checkAjaxResponse);
+        });
     });
 });
 

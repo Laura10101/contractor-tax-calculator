@@ -274,3 +274,4 @@ Alternatively, if using Gitpod, you can click below to create your own workspace
 - [Helper function to remove all child nodes of a DOM element](https://www.javascripttutorial.net/dom/manipulating/remove-all-child-nodes/)
 - [Django Polymorphic issues with cascading delete](https://github.com/jazzband/django-polymorphic/issues/229)
 - [Django - Reduce no. of DB connections](https://medium.com/@nixon1333/reduce-no-of-db-connection-with-django-d21328b1bed4)
+- [Jest - testing asynchronous code](https://jestjs.io/docs/asynchronous)

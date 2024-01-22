@@ -1,3 +1,6 @@
+const { endpoints } = require("./view_consts.js");
+const $ = require("jquery");
+
 /*
  * service_clients.js
  * Provides wrapper functions for easy access to required API endpoints

@@ -767,3 +767,8 @@ const secondaryTieredRateRuleDisplay = {
         id: "secondary-tiered-rate-rule-display-card-primary-rule"
     }
 };
+
+module.exports = {
+    dialogStates,
+    endpoints
+};
