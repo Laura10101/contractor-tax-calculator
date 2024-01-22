@@ -90,20 +90,111 @@ describe("Jurisdiction service client", () => {
 
 describe("Tax category service client", () => {
     describe("GET", () => {
+        test("should correctly retrieve tax categories with a 200 response", done => {
+            // Approach to testing asynchronous code adapted from Jest documentation
+            // https://jestjs.io/docs/asynchronous
+            function checkAjaxResponse(data, textStatus, request) {
+                console.log(data);
+                console.log(textStatus);
+                console.log(request);
+                console.log(request.status);
+                expect(request).toBeDefined();
+                expect(request.status).toBe(200);
+                expect(data).toBeDefined();
+                data.forEach(category => {
+                    expect(category.tax_category_id).toBeDefined();
+                    expect(category.name).toBeDefined();
+                });
+                done();
+            }
 
+            getTaxCategories(checkAjaxResponse, checkAjaxResponse);
+        }, 10000);
     });
 });
 
 describe("Form service client", () => {
     describe("GET", () => {
+        test("should correctly retrieve the form for the default jurisdiction with id = 1, returning a 200 response", done => {
+            // Approach to testing asynchronous code adapted from Jest documentation
+            // https://jestjs.io/docs/asynchronous
+            function checkAjaxResponse(data, textStatus, request) {
+                console.log(data);
+                console.log(textStatus);
+                console.log(request);
+                console.log(request.status);
+                expect(request).toBeDefined();
+                expect(request.status).toBe(200);
+                expect(data).toBeDefined();
+                expect(data.forms).toBeDefined();
+                let form = data.forms['1'];
+                expect(form).toBeDefined();
+                expect(form.id).toBe(1);
+                expect(form.jurisdiction_id).toBe(1);
+                expect(form.questions).toBeDefined();
+                let questions = form.questions;
+                questions.forEach(question => {
+                    expect(question.text).toBeDefined();
+                    expect(question.explainer).toBeDefined();
+                    expect(question.ordinal).toBeDefined();
+                });
+                done();
+            }
 
+            getFormForJurisdiction(1, checkAjaxResponse, checkAjaxResponse);
+        }, 10000);
     });
 });
 
 describe("Question service clients", () => {
     describe("Boolean questions", () => {
         describe("POST", () => {
+            test("should correctly create a boolean question, returning a 200 response and a valid ID", done => {
+                // Approach to testing asynchronous code adapted from Jest documentation
+                // https://jestjs.io/docs/asynchronous
+                function checkAjaxResponse(data, textStatus, request) {
+                    console.log(data);
+                    console.log(textStatus);
+                    console.log(request);
+                    console.log(request.status);
+                    expect(request).toBeDefined();
+                    expect(request.status).toBe(200);
+                    expect(data).toBeDefined();
+                    expect(data.id).toBeDefined();
+                    done();
+                }
+    
+                let text = "A boolean question test";
+                let explainer = "Created by automated test";
+                let ordinal = 1;
+                let variableName = "boolean_var";
+                let isMandatory = true;
+                createBooleanQuestion(1, text, ordinal, explainer, variableName, isMandatory, checkAjaxResponse, checkAjaxResponse);
+            }, 10000);
 
+            test("should correctly return a 400 response", done => {
+                // Approach to testing asynchronous code adapted from Jest documentation
+                // https://jestjs.io/docs/asynchronous
+                function checkAjaxResponse(data, textStatus, request) {
+                    console.log("Boolean question - invalid test");
+                    console.log(data);
+                    console.log(textStatus);
+                    console.log(request);
+                    console.log(data.status);
+                    expect(request).toBeDefined();
+                    expect(data.status).toBe(400);
+                    expect(data).toBeDefined();
+                    expect(data.responseJSON.error).toBeDefined();
+                    done();
+                }
+    
+                let text = "A boolean question test";
+                let explainer = "Created by automated test";
+                let ordinal = 1;
+                let variableName = null;
+                let isMandatory = true;
+                createBooleanQuestion(1, text, ordinal, explainer, variableName, isMandatory, checkAjaxResponse, checkAjaxResponse);
+            }, 10000);
         });
 
         describe("PUT", () => {
