@@ -861,7 +861,81 @@ describe("Ruleset service client", () => {
     });
 
     describe("PATCH", () => {
+        test("should correctly update a ruleset, returning a 200 response", done => {
+            // Approach to testing asynchronous code adapted from Jest documentation
+            // https://jestjs.io/docs/asynchronous
+            function checkAjaxResponse(data, textStatus, request) {
+                console.log(data);
+                console.log(textStatus);
+                console.log(request);
+                console.log(request.status);
+                expect(request).toBeDefined();
+                expect(request.status).toBe(200);
 
+                done();
+            }
+
+            function testUpdateRuleset(data, textStatus, request) {
+                console.log("Updating ruleset");
+                console.log(data);
+                console.log(textStatus);
+                console.log(request);
+                console.log(request.status);
+                expect(request).toBeDefined();
+                expect(request.status).toBe(200);
+                expect(data).toBeDefined();
+                expect(data.ruleset_id).toBeDefined();
+                
+                let id = data.ruleset_id;
+                let ordinal = 2;
+                patchRuleset(id, ordinal, checkAjaxResponse, checkAjaxResponse);
+            }
+
+            function failTest(data, textStatus, request) {
+                console.log(data.responseJSON);
+                done(data.responseJSON.error);
+            }
+
+            postRuleset(2, 1, 1, testUpdateRuleset, failTest);
+        }, 10000);
+
+        test("should fail to update a ruleset, returning a 400 response", done => {
+            // Approach to testing asynchronous code adapted from Jest documentation
+            // https://jestjs.io/docs/asynchronous
+            function checkAjaxResponse(data, textStatus, request) {
+                console.log(data);
+                console.log(textStatus);
+                console.log(request);
+                console.log(request.status);
+                expect(request).toBeDefined();
+                expect(data.status).toBe(400);
+
+                done();
+            }
+
+            function testUpdateRuleset(data, textStatus, request) {
+                console.log("Updating ruleset");
+                console.log(data);
+                console.log(textStatus);
+                console.log(request);
+                console.log(request.status);
+                expect(request).toBeDefined();
+                expect(request.status).toBe(200);
+                expect(data).toBeDefined();
+                expect(data.ruleset_id).toBeDefined();
+                
+                let id = data.ruleset_id;
+                let ordinal = null;
+                patchRuleset(id, ordinal, checkAjaxResponse, checkAjaxResponse);
+            }
+
+            function failTest(data, textStatus, request) {
+                console.log(data.responseJSON);
+                done(data.responseJSON.error);
+            }
+
+            postRuleset(3, 1, 1, testUpdateRuleset, failTest);
+        }, 10000);
     });
 
     describe("DELETE", () => {
