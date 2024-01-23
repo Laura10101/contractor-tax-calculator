@@ -939,7 +939,42 @@ describe("Ruleset service client", () => {
     });
 
     describe("DELETE", () => {
+        test("should correctly delete a ruleset, returning a 200 response", done => {
+            // Approach to testing asynchronous code adapted from Jest documentation
+            // https://jestjs.io/docs/asynchronous
+            function checkAjaxResponse(data, textStatus, request) {
+                console.log(data);
+                console.log(textStatus);
+                console.log(request);
+                console.log(request.status);
+                expect(request).toBeDefined();
+                expect(request.status).toBe(200);
 
+                done();
+            }
+
+            function testRemoveRuleset(data, textStatus, request) {
+                console.log("Removing ruleset");
+                console.log(data);
+                console.log(textStatus);
+                console.log(request);
+                console.log(request.status);
+                expect(request).toBeDefined();
+                expect(request.status).toBe(200);
+                expect(data).toBeDefined();
+                expect(data.ruleset_id).toBeDefined();
+                
+                let id = data.ruleset_id;
+                removeRuleset(id, checkAjaxResponse, checkAjaxResponse);
+            }
+
+            function failTest(data, textStatus, request) {
+                console.log(data.responseJSON);
+                done(data.responseJSON.error);
+            }
+
+            postRuleset(4, 1, 1, testRemoveRuleset, failTest);
+        }, 10000);
     });
 });
 
