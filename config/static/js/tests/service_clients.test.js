@@ -1046,7 +1046,102 @@ describe("Rule service clients", () => {
         });
 
         describe("PUT", () => {
+            test("should correctly update a flat rate rule, returning a 200 response", done => {
+                // Approach to testing asynchronous code adapted from Jest documentation
+                // https://jestjs.io/docs/asynchronous
+                function checkAjaxResponse(data, textStatus, request) {
+                    console.log(data);
+                    console.log(textStatus);
+                    console.log(request);
+                    console.log(request.status);
+                    expect(request).toBeDefined();
+                    expect(request.status).toBe(200);
+                    expect(data).toBeDefined();
 
+                    done();
+                }
+
+                function testUpdateFlatRateRule(data, textStatus, request) {
+                    console.log(data);
+                    console.log(textStatus);
+                    console.log(request);
+                    console.log(request.status);
+                    expect(request).toBeDefined();
+                    expect(request.status).toBe(200);
+                    expect(data).toBeDefined();
+                    expect(data.rule_id).toBeDefined();
+
+                    let ruleId = data.rule_id;
+                    let name = "A flat rate rule test UPDATED";
+                    let explainer = "Created by automated test UPDATED";
+                    let ordinal = 1;
+                    let variableName = "numeric_var";
+                    let taxRate = 22;
+                    updateFlatRateRule(rulesetId, ruleId, name, explainer, variableName, ordinal, taxRate, checkAjaxResponse, checkAjaxResponse);
+
+                    done();
+                }
+
+                function failTest(data, textStatus, request) {
+                    console.log(data.responseJSON);
+                    done(data.responseJSON.error);
+                }
+    
+                let name = "A flat rate rule test";
+                let explainer = "Created by automated test";
+                let ordinal = 1;
+                let variableName = "numeric_var";
+                let taxRate = 20;
+                createFlatRateRule(rulesetId, name, explainer, variableName, ordinal, taxRate, testUpdateFlatRateRule, failTest);
+            }, 10000);
+
+            test("should fail to update a flat rate rule, returning a 400 response", done => {
+                // Approach to testing asynchronous code adapted from Jest documentation
+                // https://jestjs.io/docs/asynchronous
+                function checkAjaxResponse(data, textStatus, request) {
+                    console.log(data);
+                    console.log(textStatus);
+                    console.log(request);
+                    console.log(request.status);
+                    expect(data).toBeDefined();
+                    expect(data.status).toBe(400);
+
+                    done();
+                }
+
+                function testUpdateFlatRateRule(data, textStatus, request) {
+                    console.log(data);
+                    console.log(textStatus);
+                    console.log(request);
+                    console.log(request.status);
+                    expect(request).toBeDefined();
+                    expect(request.status).toBe(200);
+                    expect(data).toBeDefined();
+                    expect(data.rule_id).toBeDefined();
+
+                    let ruleId = data.rule_id;
+                    let name = null;
+                    let explainer = "Created by automated test UPDATED";
+                    let ordinal = 1;
+                    let variableName = "numeric_var";
+                    let taxRate = 22;
+                    updateFlatRateRule(rulesetId, ruleId, name, explainer, variableName, ordinal, taxRate, checkAjaxResponse, checkAjaxResponse);
+
+                    done();
+                }
+
+                function failTest(data, textStatus, request) {
+                    console.log(data.responseJSON);
+                    done(data.responseJSON.error);
+                }
+    
+                let name = "A flat rate rule test";
+                let explainer = "Created by automated test";
+                let ordinal = 1;
+                let variableName = "numeric_var";
+                let taxRate = 20;
+                createFlatRateRule(rulesetId, name, explainer, variableName, ordinal, taxRate, testUpdateFlatRateRule, failTest);
+            }, 10000);
         });
     });
 
@@ -1099,7 +1194,98 @@ describe("Rule service clients", () => {
         });
 
         describe("PUT", () => {
+            test("should correctly update a tiered rate rule, returning a 200 response", done => {
+                // Approach to testing asynchronous code adapted from Jest documentation
+                // https://jestjs.io/docs/asynchronous
+                function checkAjaxResponse(data, textStatus, request) {
+                    console.log(data);
+                    console.log(textStatus);
+                    console.log(request);
+                    console.log(request.status);
+                    expect(request).toBeDefined();
+                    expect(request.status).toBe(200);
+                    expect(data).toBeDefined();
 
+                    done();
+                }
+
+                function testUpdateTieredRateRule(data, textStatus, request) {
+                    console.log(data);
+                    console.log(textStatus);
+                    console.log(request);
+                    console.log(request.status);
+                    expect(request).toBeDefined();
+                    expect(request.status).toBe(200);
+                    expect(data).toBeDefined();
+                    expect(data.rule_id).toBeDefined();
+
+                    let ruleId = data.rule_id;
+                    let name = "A tiered rate rule test UPDATED";
+                    let explainer = "Created by automated test UPDATED";
+                    let ordinal = 1;
+                    let variableName = "numeric_var";
+                    updateTieredRateRule(rulesetId, ruleId, name, explainer, variableName, ordinal, checkAjaxResponse, checkAjaxResponse)
+
+                    done();
+                }
+
+                function failTest(data, textStatus, request) {
+                    console.log(data.responseJSON);
+                    done(data.responseJSON.error);
+                }
+    
+                let name = "A flat rate rule test";
+                let explainer = "Created by automated test";
+                let ordinal = 1;
+                let variableName = "numeric_var";
+                createTieredRateRule(rulesetId, name, explainer, variableName, ordinal, testUpdateTieredRateRule, failTest);
+            }, 10000);
+
+            test("should fail to update a tiered rate rule, returning a 400 response", done => {
+                // Approach to testing asynchronous code adapted from Jest documentation
+                // https://jestjs.io/docs/asynchronous
+                function checkAjaxResponse(data, textStatus, request) {
+                    console.log(data);
+                    console.log(textStatus);
+                    console.log(request);
+                    console.log(request.status);
+                    expect(data).toBeDefined();
+                    expect(data.status).toBe(400);
+
+                    done();
+                }
+
+                function testUpdateTieredRateRule(data, textStatus, request) {
+                    console.log(data);
+                    console.log(textStatus);
+                    console.log(request);
+                    console.log(request.status);
+                    expect(request).toBeDefined();
+                    expect(request.status).toBe(200);
+                    expect(data).toBeDefined();
+                    expect(data.rule_id).toBeDefined();
+
+                    let ruleId = data.rule_id;
+                    let name = null;
+                    let explainer = "Created by automated test UPDATED";
+                    let ordinal = 1;
+                    let variableName = "numeric_var";
+                    updateTieredRateRule(rulesetId, ruleId, name, explainer, variableName, ordinal, checkAjaxResponse, checkAjaxResponse)
+
+                    done();
+                }
+
+                function failTest(data, textStatus, request) {
+                    console.log(data.responseJSON);
+                    done(data.responseJSON.error);
+                }
+    
+                let name = "A flat rate rule test";
+                let explainer = "Created by automated test";
+                let ordinal = 1;
+                let variableName = "numeric_var";
+                createTieredRateRule(rulesetId, name, explainer, variableName, ordinal, testUpdateTieredRateRule, failTest);
+            }, 10000);
         });
     });
 
@@ -1150,7 +1336,98 @@ describe("Rule service clients", () => {
         });
 
         describe("PUT", () => {
+            test("should correctly update a secondary tiered rate rule, returning a 200 response", done => {
+                // Approach to testing asynchronous code adapted from Jest documentation
+                // https://jestjs.io/docs/asynchronous
+                function checkAjaxResponse(data, textStatus, request) {
+                    console.log(data);
+                    console.log(textStatus);
+                    console.log(request);
+                    console.log(request.status);
+                    expect(request).toBeDefined();
+                    expect(request.status).toBe(200);
+                    expect(data).toBeDefined();
 
+                    done();
+                }
+
+                function testUpdateSecondaryTieredRateRule(data, textStatus, request) {
+                    console.log(data);
+                    console.log(textStatus);
+                    console.log(request);
+                    console.log(request.status);
+                    expect(request).toBeDefined();
+                    expect(request.status).toBe(200);
+                    expect(data).toBeDefined();
+                    expect(data.rule_id).toBeDefined();
+
+                    let ruleId = data.rule_id;
+                    let name = "Secondary tiered rate rule UPDATED";
+                    let explainer = "Created by automated test";
+                    let ordinal = 2;
+                    let variableName = "numeric_var";
+                    updateSecondaryTieredRateRule(rulesetId, ruleId, name, explainer, variableName, ordinal, tieredRateRuleId, checkAjaxResponse, checkAjaxResponse);
+
+                    done();
+                }
+
+                function failTest(data, textStatus, request) {
+                    console.log(data.responseJSON);
+                    done(data.responseJSON.error);
+                }
+    
+                let name = "Secondary tiered rate rule";
+                let explainer = "Created by automated test";
+                let ordinal = 1;
+                let variableName = "numeric_var";
+                createSecondaryTieredRateRule(rulesetId, name, explainer, variableName, ordinal, tieredRateRuleId, testUpdateSecondaryTieredRateRule, failTest);
+            }, 10000);
+
+            test("should fail to update a secondary tiered rate rule, returning a 400 response", done => {
+                // Approach to testing asynchronous code adapted from Jest documentation
+                // https://jestjs.io/docs/asynchronous
+                function checkAjaxResponse(data, textStatus, request) {
+                    console.log(data);
+                    console.log(textStatus);
+                    console.log(request);
+                    console.log(request.status);
+                    expect(data).toBeDefined();
+                    expect(data.status).toBe(400);
+
+                    done();
+                }
+
+                function testUpdateSecondaryTieredRateRule(data, textStatus, request) {
+                    console.log(data);
+                    console.log(textStatus);
+                    console.log(request);
+                    console.log(request.status);
+
+                    expect(request).toBeDefined();
+                    expect(request.status).toBe(200);
+                    expect(data).toBeDefined();
+
+                    let ruleId = data.rule_id;
+                    let name = null;
+                    let explainer = "Created by automated test";
+                    let ordinal = 1;
+                    let variableName = "numeric_var";
+                    updateSecondaryTieredRateRule(rulesetId, ruleId, name, explainer, variableName, ordinal, tieredRateRuleId, checkAjaxResponse, checkAjaxResponse);
+
+                    done();
+                }
+
+                function failTest(data, textStatus, request) {
+                    console.log(data.responseJSON);
+                    done(data.responseJSON.error);
+                }
+    
+                let name = "Secondary tiered rate rule";
+                let explainer = "Created by automated test";
+                let ordinal = 1;
+                let variableName = "numeric_var";
+                createSecondaryTieredRateRule(rulesetId, name, explainer, variableName, ordinal, tieredRateRuleId, testUpdateSecondaryTieredRateRule, failTest);
+            }, 10000);
         });
     });
 
