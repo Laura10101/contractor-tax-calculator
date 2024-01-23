@@ -1530,7 +1530,47 @@ describe("Rule tier service clients", () => {
         });
 
         describe("DELETE", () => {
-
+            test("should correctly remove a primary rule tier, returning a 200 response", done => {
+                // Approach to testing asynchronous code adapted from Jest documentation
+                // https://jestjs.io/docs/asynchronous
+                function checkAjaxResponse(data, textStatus, request) {
+                    console.log(data);
+                    console.log(textStatus);
+                    console.log(request);
+                    console.log(request.status);
+                    expect(request).toBeDefined();
+                    expect(request.status).toBe(200);
+                    expect(data).toBeDefined();
+    
+                    done();
+                }
+    
+                function testRemoveRuleTier(data, textStatus, request) {
+                    console.log(data);
+                    console.log(textStatus);
+                    console.log(request);
+                    console.log(request.status);
+                    expect(request).toBeDefined();
+                    expect(request.status).toBe(200);
+                    expect(data).toBeDefined();
+                    expect(data.tier_id).toBeDefined();
+    
+                    removeRuleTier(rulesetId, tieredRateRuleId, data.tier_id, checkAjaxResponse, checkAjaxResponse);
+    
+                    done();
+                }
+    
+                function failTest(data, textStatus, request) {
+                    console.log(data.responseJSON);
+                    done(data.responseJSON.error);
+                }
+    
+                let minValue = 10000;
+                let maxValue = 25000;
+                let ordinal = 1;
+                let taxRate = 20;
+                postRuleTier(rulesetId, tieredRateRuleId, minValue, maxValue, ordinal, taxRate, testRemoveRuleTier, failTest);
+            }, 10000);
         });
     });
 
@@ -1580,7 +1620,45 @@ describe("Rule tier service clients", () => {
         });
 
         describe("DELETE", () => {
-
+            test("should correctly remove a secondary rule tier, returning a 200 response", done => {
+                // Approach to testing asynchronous code adapted from Jest documentation
+                // https://jestjs.io/docs/asynchronous
+                function checkAjaxResponse(data, textStatus, request) {
+                    console.log(data);
+                    console.log(textStatus);
+                    console.log(request);
+                    console.log(request.status);
+                    expect(request).toBeDefined();
+                    expect(request.status).toBe(200);
+                    expect(data).toBeDefined();
+    
+                    done();
+                }
+    
+                function testRemoveRuleTier(data, textStatus, request) {
+                    console.log(data);
+                    console.log(textStatus);
+                    console.log(request);
+                    console.log(request.status);
+                    expect(request).toBeDefined();
+                    expect(request.status).toBe(200);
+                    expect(data).toBeDefined();
+                    expect(data.secondary_tier_id).toBeDefined();
+    
+                    removeSecondaryRuleTier(rulesetId, secondaryTieredRateRuleId, data.secondary_tier_id, checkAjaxResponse, checkAjaxResponse);
+    
+                    done();
+                }
+    
+                function failTest(data, textStatus, request) {
+                    console.log(data.responseJSON);
+                    done(data.responseJSON.error);
+                }
+    
+                let ordinal = 1;
+                let taxRate = 20;
+                postSecondaryRuleTier(rulesetId, secondaryTieredRateRuleId, primaryRuleTierId, ordinal, taxRate, testRemoveRuleTier, failTest);
+            }, 10000);
         });
     });
 });
