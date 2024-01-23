@@ -272,7 +272,20 @@ describe("View model accessor methods", () => {
     });
 
     describe("Rule tiers", () => {
+        test("return correct primary rule tier given a valid id", () => {
+            let tier = findPrimaryRuleTierById(3);
+            expect(tier).toBeDefined();
+            expect(tier.id).toBe(3);
+            expect(tier.min_value).toBe(0);
+            expect(tier.max_value).toBe(15000);
+            expect(tier.ordinal).toBe(1);
+            expect(tier.tier_rate).toBe(12.0);
+        });
 
+        test("return null given an invalid rule tier id", () => {
+            let tier = findPrimaryRuleTierById(42);
+            expect(tier).toBeNull();
+        });
     });
 });
 
