@@ -161,6 +161,7 @@ describe("Question service clients", () => {
                     expect(request.status).toBe(200);
                     expect(data).toBeDefined();
                     expect(data.id).toBeDefined();
+
                     done();
                 }
     
@@ -224,6 +225,7 @@ describe("Question service clients", () => {
                     expect(request.status).toBe(200);
                     expect(data).toBeDefined();
                     expect(data.id).toBeDefined();
+
                     let id = data.id;
                     let text = "A boolean question test - UPDATED";
                     let explainer = "Created by automated test - UPDATED";
@@ -272,6 +274,7 @@ describe("Question service clients", () => {
                     expect(request.status).toBe(200);
                     expect(data).toBeDefined();
                     expect(data.id).toBeDefined();
+                    
                     let id = data.id;
                     let text = null;
                     let explainer = "Created by automated test - UPDATED";
@@ -306,11 +309,12 @@ describe("Question service clients", () => {
                     console.log(data);
                     console.log(textStatus);
                     console.log(request);
-                    console.log(request.status);
+                    console.log(request.status);                    
                     expect(request).toBeDefined();
                     expect(request.status).toBe(200);
                     expect(data).toBeDefined();
                     expect(data.id).toBeDefined();
+                    
                     done();
                 }
     
@@ -380,6 +384,7 @@ describe("Question service clients", () => {
                     expect(request.status).toBe(200);
                     expect(data).toBeDefined();
                     expect(data.id).toBeDefined();
+                    
                     let id = data.id;
                     let text = "A numeric question test UPDATED";
                     let explainer = "Created by automated test UPDATED";
@@ -433,6 +438,7 @@ describe("Question service clients", () => {
                     expect(request.status).toBe(200);
                     expect(data).toBeDefined();
                     expect(data.id).toBeDefined();
+                    
                     let id = data.id;
                     let text = "A numeric question test UPDATED";
                     let explainer = "Created by automated test UPDATED";
@@ -477,6 +483,7 @@ describe("Question service clients", () => {
                     expect(request.status).toBe(200);
                     expect(data).toBeDefined();
                     expect(data.id).toBeDefined();
+                    
                     done();
                 }
     
@@ -540,6 +547,7 @@ describe("Question service clients", () => {
                     expect(request.status).toBe(200);
                     expect(data).toBeDefined();
                     expect(data.id).toBeDefined();
+                    
                     let id = data.id;
                     let text = "A multiple choice question test - UPDATED";
                     let explainer = "Created by automated test - UPDATED";
@@ -587,6 +595,7 @@ describe("Question service clients", () => {
                     expect(request.status).toBe(200);
                     expect(data).toBeDefined();
                     expect(data.id).toBeDefined();
+                    
                     let id = data.id;
                     let text = null;
                     let explainer = "Created by automated test - UPDATED";
@@ -612,13 +621,151 @@ describe("Question service clients", () => {
     });
 
     describe("DELETE", () => {
+        test("should correctly update a multiple choice, returning a 200 response and a valid ID", done => {
+            // Approach to testing asynchronous code adapted from Jest documentation
+            // https://jestjs.io/docs/asynchronous
+            function checkAjaxResponse(data, textStatus, request) {
+                console.log("Checking question deletion results");
+                console.log(data);
+                console.log(textStatus);
+                console.log(request);
+                console.log(request.status);
+                expect(request).toBeDefined();
+                expect(request.status).toBe(200);
+                done();
+            }
+
+            function testRemoveMultipleChoiceQuestion(data, textStatus, request) {
+                console.log("Updating multiple choice question");
+                console.log(data);
+                console.log(textStatus);
+                console.log(request);
+                console.log(request.status);
+                expect(request).toBeDefined();
+                expect(request.status).toBe(200);
+                expect(data).toBeDefined();
+                expect(data.id).toBeDefined();
+
+                removeQuestion(1, data.id, checkAjaxResponse, checkAjaxResponse);
+            }
+
+            function failTest(data, textStatus, request) {
+                console.log(data.responseJSON);
+                done(data.responseJSON.error);
+            }
+
+            let text = "A multiple choice question test";
+            let explainer = "Created by automated test";
+            let ordinal = 1;
+            let variableName = "multiple_choice_var";
+            let isMandatory = true;
+            createMultipleChoiceQuestion(1, text, ordinal, explainer, variableName, isMandatory, testRemoveMultipleChoiceQuestion, failTest);
+        }, 10000);
+    });
+});
+
+describe("Multiple choice options", () => {
+    describe("POST", () => {
+        test("should correctly create a multiple choice option, returning a 200 response and a valid ID", done => {
+            // Approach to testing asynchronous code adapted from Jest documentation
+            // https://jestjs.io/docs/asynchronous
+            function checkAjaxResponse(data, textStatus, request) {
+                console.log(data);
+                console.log(textStatus);
+                console.log(request);
+                console.log(request.status);
+                expect(request).toBeDefined();
+                expect(request.status).toBe(200);
+                expect(data).toBeDefined();
+                expect(data.option_id).toBeDefined();
+                
+                done();
+            }
+            
+            function testCreateMultipleChoiceOption(data, textStatus, request) {
+                console.log("Creating multiple choice option");
+                console.log(data);
+                console.log(textStatus);
+                console.log(request);
+                console.log(request.status);
+                expect(request).toBeDefined();
+                expect(request.status).toBe(200);
+                expect(data).toBeDefined();
+                expect(data.id).toBeDefined();
+
+                let text = "A test option";
+                let explainer = "A wonderful test";
+
+                postMultipleChoiceOption(1, data.id, text, explainer, checkAjaxResponse, checkAjaxResponse);
+            }
+
+            function failTest(data, textStatus, request) {
+                console.log(data.responseJSON);
+                done(data.responseJSON.error);
+            }
+
+            let text = "A multiple choice test";
+            let explainer = "Created by automated test";
+            let ordinal = 1;
+            let variableName = "multiple_choice_var";
+            let isMandatory = true;
+            createMultipleChoiceQuestion(1, text, ordinal, explainer, variableName, isMandatory, testCreateMultipleChoiceOption, failTest);
+        }, 10000);
+
+        test("should fail to create a multiple choice option, returning a 400 response", done => {
+            // Approach to testing asynchronous code adapted from Jest documentation
+            // https://jestjs.io/docs/asynchronous
+            function checkAjaxResponse(data, textStatus, request) {
+                console.log(data);
+                console.log(textStatus);
+                console.log(request);
+                console.log(request.status);
+                expect(request).toBeDefined();
+                expect(data.status).toBe(400);
+                expect(data).toBeDefined();
+                
+                done();
+            }
+            
+            function testCreateMultipleChoiceOption(data, textStatus, request) {
+                console.log("Creating multiple choice option");
+                console.log(data);
+                console.log(textStatus);
+                console.log(request);
+                console.log(request.status);
+                expect(request).toBeDefined();
+                expect(request.status).toBe(200);
+                expect(data).toBeDefined();
+                expect(data.id).toBeDefined();
+
+                let text = null;
+                let explainer = "A wonderful test";
+
+                postMultipleChoiceOption(1, data.id, text, explainer, checkAjaxResponse, checkAjaxResponse);
+            }
+
+            function failTest(data, textStatus, request) {
+                console.log(data.responseJSON);
+                done(data.responseJSON.error);
+            }
+
+            let text = "A multiple choice test";
+            let explainer = "Created by automated test";
+            let ordinal = 1;
+            let variableName = "multiple_choice_var";
+            let isMandatory = true;
+            createMultipleChoiceQuestion(1, text, ordinal, explainer, variableName, isMandatory, testCreateMultipleChoiceOption, failTest);
+        }, 10000);
+    });
+
+    describe("DELETE", () => {
 
     });
 });
 
 describe("Ruleset service client", () => {
     describe("POST", () => {
-
+        
     });
 
     describe("PATCH", () => {
