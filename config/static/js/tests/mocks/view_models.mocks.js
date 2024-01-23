@@ -228,3 +228,20 @@ const rules = [
         ]
     }
 ];
+
+function deepClone(object) {
+    // Deep clone code taken from:
+    // https://developer.mozilla.org/en-US/docs/Glossary/Deep_copy
+    return JSON.parse(JSON.stringify(object));
+}
+
+function buildAppState() {
+    return {
+        jurisdictions: deepClone(jurisdictions),
+        taxCategories: deepClone(taxCategories),
+        jurisdictionForm: deepClone(forms),
+        jurisdictionRules: deepClone(rules)
+    }
+}
+
+module.exports = { buildAppState };

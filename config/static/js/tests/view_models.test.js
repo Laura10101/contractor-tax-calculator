@@ -1,4 +1,5 @@
 const { dialogStates } = require("../view_consts");
+const { buildAppState } = require("./mocks/view_models.mocks.js");
 const {
     app,
     clearDialogState,
@@ -100,7 +101,36 @@ describe("App state management", () => {
 });
 
 describe("View model accessor methods", () => {
+    beforeEach(() => {
+        appState = buildAppState();
+        app.jurisdictions = appState.jurisdictions;
+        app.taxCategories = appState.taxCategories;
+        app.jurisdictionForm = appState.jurisdictionForm;
+        app.jurisdictionRules = appState.jurisdictionRules;
+    });
+    describe("Jurisdictions", () => {
 
+    });
+
+    describe("Forms", () => {
+        test("should return the correct form from view model", () => {
+            let form = getForm();
+            expect(form).toBeDefined();
+            expect(form.id).toBe(1);
+            expect(form.jurisdiction_id).toBe(1);
+            expect(form.questions).toBeDefined();
+            expect(form.questions.length).toBe(3);
+        });
+
+        test("should return the correct form id from view model", () => {
+            let formId = getFormId();
+            expect(formId).toBe(1);
+        });
+    });
+
+    describe("Tax categories", () => {
+
+    });
 });
 
 describe("View model search functions", () => {
