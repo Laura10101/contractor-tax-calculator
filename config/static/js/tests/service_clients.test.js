@@ -1536,7 +1536,43 @@ describe("Rule tier service clients", () => {
 
     describe("Secondary rule tiers", () => {
         describe("POST", () => {
+            test("should correctly create a secondary rule tier, returning 200 and a valid id", done => {
+                // Approach to testing asynchronous code adapted from Jest documentation
+                // https://jestjs.io/docs/asynchronous
+                function checkAjaxResponse(data, textStatus, request) {
+                    console.log(data);
+                    console.log(textStatus);
+                    console.log(request);
+                    console.log(request.status);
+                    expect(request).toBeDefined();
+                    expect(request.status).toBe(200);
+                    expect(data).toBeDefined();
+                    expect(data.secondary_tier_id).toBeDefined();
+                    done();
+                }
+                
+                let ordinal = 1;
+                let taxRate = 20;
+                postSecondaryRuleTier(rulesetId, secondaryTieredRateRuleId, primaryRuleTierId, ordinal, taxRate, checkAjaxResponse, checkAjaxResponse);
+            });
 
+            test("should fail to create a secondary rule tier, returning 400", done => {
+                // Approach to testing asynchronous code adapted from Jest documentation
+                // https://jestjs.io/docs/asynchronous
+                function checkAjaxResponse(data, textStatus, request) {
+                    console.log(data);
+                    console.log(textStatus);
+                    console.log(request);
+                    console.log(request.status);
+                    expect(data).toBeDefined();
+                    expect(data.status).toBe(400);
+                    done();
+                }
+
+                let ordinal = null;
+                let taxRate = null;
+                postSecondaryRuleTier(rulesetId, secondaryTieredRateRuleId, primaryRuleTierId, ordinal, taxRate, checkAjaxResponse, checkAjaxResponse);
+            });
         });
 
         describe("PUT", () => {
