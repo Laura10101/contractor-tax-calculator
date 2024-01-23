@@ -134,18 +134,19 @@ WSGI_APPLICATION = 'contractor_tax_calculator.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-if 'DATABASE_URL' in os.environ:
+if 'DATABASE_URL' in os.environ and os.environ.get('USE_TEST_DB') == 'False':
+    print('Using ElephantSQL as database')
     DATABASES = {
         # Reduce number of DB connections using conn_max_age parameter
         # https://medium.com/@nixon1333/reduce-no-of-db-connection-with-django-d21328b1bed4
         'default': dj_database_url.parse(os.environ.get('DATABASE_URL'), conn_max_age=0)
     }
 else:
+    print('Using SQL Litle as database')
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': BASE_DIR / 'db.sqlite3',
-            'CONN_MAX_AGE': 0,
         }
     }
 
