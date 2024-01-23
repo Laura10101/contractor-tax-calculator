@@ -1432,7 +1432,48 @@ describe("Rule service clients", () => {
     });
 
     describe("DELETE", () => {
+        test("should correctly remove a flat rate rule, returning a 200 response", done => {
+            // Approach to testing asynchronous code adapted from Jest documentation
+            // https://jestjs.io/docs/asynchronous
+            function checkAjaxResponse(data, textStatus, request) {
+                console.log(data);
+                console.log(textStatus);
+                console.log(request);
+                console.log(request.status);
+                expect(request).toBeDefined();
+                expect(request.status).toBe(200);
+                expect(data).toBeDefined();
 
+                done();
+            }
+
+            function testRemoveFlatRateRule(data, textStatus, request) {
+                console.log(data);
+                console.log(textStatus);
+                console.log(request);
+                console.log(request.status);
+                expect(request).toBeDefined();
+                expect(request.status).toBe(200);
+                expect(data).toBeDefined();
+                expect(data.rule_id).toBeDefined();
+
+                let ruleId = data.rule_id;
+                removeRule(rulesetId, ruleId, checkAjaxResponse, checkAjaxResponse);
+
+                done();
+            }
+
+            function failTest(data, textStatus, request) {
+                console.log(data.responseJSON);
+                done(data.responseJSON.error);
+            }
+
+            let name = "A flat rate rule test";
+            let explainer = "Created by automated test";
+            let ordinal = 1;
+            let variableName = "numeric_var";
+            createTieredRateRule(rulesetId, name, explainer, variableName, ordinal, testRemoveFlatRateRule, failTest);
+        }, 10000);
     });
 });
 
