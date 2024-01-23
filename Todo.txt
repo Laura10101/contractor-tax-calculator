@@ -1,6 +1,5 @@
 - Fix all bugs
 - Look and feel for user apps
-- Add custom jurisdiction management app
 
 - Forms API:
   * Post Form - NOT NEEDED
