@@ -823,7 +823,41 @@ describe("Multiple choice options", () => {
 
 describe("Ruleset service client", () => {
     describe("POST", () => {
-        
+        test("should correctly create a ruleset, returning a 200 response and a valid ID", done => {
+            // Approach to testing asynchronous code adapted from Jest documentation
+            // https://jestjs.io/docs/asynchronous
+            function checkAjaxResponse(data, textStatus, request) {
+                console.log(data);
+                console.log(textStatus);
+                console.log(request);
+                console.log(request.status);
+                expect(request).toBeDefined();
+                expect(request.status).toBe(200);
+                expect(data).toBeDefined();
+                expect(data.ruleset_id).toBeDefined();
+
+                done();
+            }
+
+            postRuleset(1, 1, 1, checkAjaxResponse, checkAjaxResponse);
+        }, 10000);
+
+        test("should fail to create a ruleset, returning a 400 response", done => {
+            // Approach to testing asynchronous code adapted from Jest documentation
+            // https://jestjs.io/docs/asynchronous
+            function checkAjaxResponse(data, textStatus, request) {
+                console.log(data);
+                console.log(textStatus);
+                console.log(request);
+                console.log(request.status);
+                expect(data).toBeDefined();
+                expect(data.status).toBe(400);
+
+                done();
+            }
+
+            postRuleset(null, null, 1, checkAjaxResponse, checkAjaxResponse);
+        }, 10000);
     });
 
     describe("PATCH", () => {
