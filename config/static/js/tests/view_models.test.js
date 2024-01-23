@@ -109,10 +109,6 @@ describe("View model accessor methods", () => {
         app.jurisdictionRules = appState.jurisdictionRules;
     });
 
-    describe("Jurisdictions", () => {
-
-    });
-
     describe("Forms", () => {
         test("should return the correct form from view model", () => {
             let form = getForm();
@@ -142,10 +138,38 @@ describe("View model accessor methods", () => {
             expect(taxCategory).toBeNull();
         });
     });
-});
 
-describe("View model search functions", () => {
+    describe("Questions", () => {
+        test("should return the correct list of questions", () => {
+            let questions = getQuestions();
+            expect(questions.length).toBe(3);
+            
+            expect(questions[0].id).toBe(3);
+            expect(questions[0].type).toBe("boolean");
+            expect(questions[0].ordinal).toBe(1);
 
+            expect(questions[1].id).toBe(4);
+            expect(questions[1].type).toBe("numeric");
+            expect(questions[1].ordinal).toBe(2);
+
+            expect(questions[2].id).toBe(7);
+            expect(questions[2].type).toBe("multiple_choice");
+            expect(questions[2].ordinal).toBe(3);
+        });
+
+        test("should return the correct question given a valid id", () => {
+            let question = findQuestionById(3);
+            expect(question.id).toBe(3);
+            expect(question.text).toBe("A boolean question test");
+            expect(question.type).toBe("boolean");
+            expect(question.ordinal).toBe(1);
+        });
+
+        test("should return null given an invalid id", () => {
+            let question = findQuestionById(42);
+            expect(question).toBeNull();
+        });
+    });
 });
 
 describe("Ordinal traversal and management", () => {
