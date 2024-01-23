@@ -1303,6 +1303,7 @@ describe("Rule service clients", () => {
                     expect(request.status).toBe(200);
                     expect(data).toBeDefined();
                     expect(data.rule_id).toBeDefined();
+                    secondaryTieredRateRuleId = data.rule_id;
                     done();
                 }
     
@@ -1480,7 +1481,48 @@ describe("Rule service clients", () => {
 describe("Rule tier service clients", () => {
     describe("Primary rule tiers", () => {
         describe("POST", () => {
+            test("should correctly create a primary rule tier, returning 200 and a valid id", done => {
+                // Approach to testing asynchronous code adapted from Jest documentation
+                // https://jestjs.io/docs/asynchronous
+                function checkAjaxResponse(data, textStatus, request) {
+                    console.log(data);
+                    console.log(textStatus);
+                    console.log(request);
+                    console.log(request.status);
+                    expect(request).toBeDefined();
+                    expect(request.status).toBe(200);
+                    expect(data).toBeDefined();
+                    expect(data.tier_id).toBeDefined();
+                    primaryRuleTierId = data.tier_id;
+                    done();
+                }
 
+                let minValue = 10000;
+                let maxValue = 25000;
+                let ordinal = 1;
+                let taxRate = 20;
+                postRuleTier(rulesetId, tieredRateRuleId, minValue, maxValue, ordinal, taxRate, checkAjaxResponse, checkAjaxResponse);
+            });
+
+            test("should fail to create a primary rule tier, returning 400", done => {
+                // Approach to testing asynchronous code adapted from Jest documentation
+                // https://jestjs.io/docs/asynchronous
+                function checkAjaxResponse(data, textStatus, request) {
+                    console.log(data);
+                    console.log(textStatus);
+                    console.log(request);
+                    console.log(request.status);
+                    expect(data).toBeDefined();
+                    expect(data.status).toBe(400);
+                    done();
+                }
+
+                let minValue = null;
+                let maxValue = null;
+                let ordinal = 1;
+                let taxRate = 20;
+                postRuleTier(rulesetId, tieredRateRuleId, minValue, maxValue, ordinal, taxRate, checkAjaxResponse, checkAjaxResponse);
+            });
         });
 
         describe("PUT", () => {
