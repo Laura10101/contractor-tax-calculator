@@ -276,3 +276,5 @@ Alternatively, if using Gitpod, you can click below to create your own workspace
 - [Django - Reduce no. of DB connections](https://medium.com/@nixon1333/reduce-no-of-db-connection-with-django-d21328b1bed4)
 - [Jest - testing asynchronous code](https://jestjs.io/docs/asynchronous)
 - [Jest - configure test URL](https://jestjs.io/docs/configuration)
+- [W3Schools - Remove file if it exists](https://www.w3schools.com/python/python_file_remove.asp)
+- [Django - running Django in standalone mode](https://docs.djangoproject.com/en/5.0/topics/settings/)
