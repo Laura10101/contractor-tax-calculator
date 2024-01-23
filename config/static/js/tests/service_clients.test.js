@@ -1526,7 +1526,91 @@ describe("Rule tier service clients", () => {
         });
 
         describe("PUT", () => {
+            test("should correctly update a rule tier, returning 200", done => {
+                // Approach to testing asynchronous code adapted from Jest documentation
+                // https://jestjs.io/docs/asynchronous
+                function checkAjaxResponse(data, textStatus, request) {
+                    console.log(data);
+                    console.log(textStatus);
+                    console.log(request);
+                    console.log(request.status);
+                    expect(request).toBeDefined();
+                    expect(request.status).toBe(200);
+                    done();
+                }
 
+                function testUpdateRuleTier(data, textStatus, request) {
+                    console.log(data);
+                    console.log(textStatus);
+                    console.log(request);
+                    console.log(request.status);
+                    expect(request).toBeDefined();
+                    expect(request.status).toBe(200);
+                    expect(data).toBeDefined();
+                    expect(data.tier_id).toBeDefined();
+                    let tierId = data.tier_id;
+                    let minValue = 12000;
+                    let maxValue = 27000;
+                    let ordinal = 1;
+                    let taxRate = 22;
+                    updateRuleTier(rulesetId, tieredRateRuleId, tierId, minValue, maxValue, ordinal, taxRate, checkAjaxResponse, checkAjaxResponse);
+                    done();
+                }
+
+                function failTest(data, textStatus, request) {
+                    console.log(data.responseJSON);
+                    done(data.responseJSON.error);
+                }
+                
+                let minValue = 10000;
+                let maxValue = 25000;
+                let ordinal = 1;
+                let taxRate = 20;
+                postRuleTier(rulesetId, tieredRateRuleId, minValue, maxValue, ordinal, taxRate, testUpdateRuleTier, failTest);
+            });
+
+            test("should fail to update a rule tier, returning 400", done => {
+                // Approach to testing asynchronous code adapted from Jest documentation
+                // https://jestjs.io/docs/asynchronous
+                function checkAjaxResponse(data, textStatus, request) {
+                    console.log(data);
+                    console.log(textStatus);
+                    console.log(request);
+                    console.log(request.status);
+                    expect(data).toBeDefined();
+                    expect(data.status).toBe(400);
+                    done();
+                }
+
+                function testUpdateRuleTier(data, textStatus, request) {
+                    console.log(data);
+                    console.log(textStatus);
+                    console.log(request);
+                    console.log(request.status);
+                    expect(request).toBeDefined();
+                    expect(request.status).toBe(200);
+                    expect(data).toBeDefined();
+                    expect(data.tier_id).toBeDefined();
+                    let tierId = data.tier_id;
+                    let minValue = null;
+                    let maxValue = 27000;
+                    let ordinal = 1;
+                    let taxRate = 22;
+                    updateRuleTier(rulesetId, tieredRateRuleId, tierId, minValue, maxValue, ordinal, taxRate, checkAjaxResponse, checkAjaxResponse);
+                    done();
+                }
+
+                function failTest(data, textStatus, request) {
+                    console.log(data.responseJSON);
+                    done(data.responseJSON.error);
+                }
+                
+                let minValue = 10000;
+                let maxValue = 25000;
+                let ordinal = 1;
+                let taxRate = 20;
+                postRuleTier(rulesetId, tieredRateRuleId, minValue, maxValue, ordinal, taxRate, testUpdateRuleTier, failTest);
+            });
         });
 
         describe("DELETE", () => {
@@ -1616,7 +1700,83 @@ describe("Rule tier service clients", () => {
         });
 
         describe("PUT", () => {
+            test("should correctly update a secondary rule tier, returning 200", done => {
+                // Approach to testing asynchronous code adapted from Jest documentation
+                // https://jestjs.io/docs/asynchronous
+                function checkAjaxResponse(data, textStatus, request) {
+                    console.log(data);
+                    console.log(textStatus);
+                    console.log(request);
+                    console.log(request.status);
+                    expect(request).toBeDefined();
+                    expect(request.status).toBe(200);
+                    done();
+                }
 
+                function testUpdateSecondaryRuleTier(data, textStatus, request) {
+                    console.log(data);
+                    console.log(textStatus);
+                    console.log(request);
+                    console.log(request.status);
+                    expect(request).toBeDefined();
+                    expect(request.status).toBe(200);
+                    expect(data).toBeDefined();
+                    expect(data.secondary_tier_id).toBeDefined();
+                    let tierId = data.secondary_tier_id;
+                    let ordinal = 1;
+                    let taxRate = 20;
+                    updateSecondaryRuleTier(rulesetId, secondaryTieredRateRuleId, tierId, primaryRuleTierId, ordinal, taxRate, checkAjaxResponse, checkAjaxResponse);
+                    done();
+                }
+
+                function failTest(data, textStatus, request) {
+                    console.log(data.responseJSON);
+                    done(data.responseJSON.error);
+                }
+                
+                let ordinal = 1;
+                let taxRate = 20;
+                postSecondaryRuleTier(rulesetId, secondaryTieredRateRuleId, primaryRuleTierId, ordinal, taxRate, testUpdateSecondaryRuleTier, failTest);
+            });
+
+            test("should fail to update a secondary rule tier, returning 400", done => {
+                // Approach to testing asynchronous code adapted from Jest documentation
+                // https://jestjs.io/docs/asynchronous
+                function checkAjaxResponse(data, textStatus, request) {
+                    console.log(data);
+                    console.log(textStatus);
+                    console.log(request);
+                    console.log(request.status);
+                    expect(data).toBeDefined();
+                    expect(data.status).toBe(400);
+                    done();
+                }
+
+                function testUpdateSecondaryRuleTier(data, textStatus, request) {
+                    console.log(data);
+                    console.log(textStatus);
+                    console.log(request);
+                    console.log(request.status);
+                    expect(request).toBeDefined();
+                    expect(request.status).toBe(200);
+                    expect(data).toBeDefined();
+                    expect(data.secondary_tier_id).toBeDefined();
+                    let tierId = data.secondary_tier_id;
+                    let ordinal = null;
+                    let taxRate = null;
+                    updateSecondaryRuleTier(rulesetId, secondaryTieredRateRuleId, tierId, primaryRuleTierId, ordinal, taxRate, checkAjaxResponse, checkAjaxResponse);
+                    done();
+                }
+
+                function failTest(data, textStatus, request) {
+                    console.log(data.responseJSON);
+                    done(data.responseJSON.error);
+                }
+                
+                let ordinal = 1;
+                let taxRate = 20;
+                postSecondaryRuleTier(rulesetId, secondaryTieredRateRuleId, primaryRuleTierId, ordinal, taxRate, testUpdateSecondaryRuleTier, failTest);
+            });
         });
 
         describe("DELETE", () => {
