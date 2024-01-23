@@ -186,7 +186,89 @@ describe("View model accessor methods", () => {
     });
 
     describe("Rules", () => {
+        test("return a valid rule given a valid rule id", () => {
+            let rule = findRuleById(13);
+            expect(rule).toBeDefined();
+            expect(rule.id).toBe(13);
+            expect(rule.ordinal).toBe(1);
+            expect(rule.name).toBe("Income Tax Bands");
+            expect(rule.type).toBe("tiered_rate");
+        });
 
+        test("return null given an invalid rule id", () => {
+            let rule = findRuleById(42);
+            expect(rule).toBeNull();
+        });
+
+        test("return all tiered rate rules for the current jurisdiction contained in the app state", () => {
+            let tieredRules = getTieredRateRulesForJurisdiction();
+            expect(tieredRules).toBeDefined();
+            expect(tieredRules.length).toBe(2);
+
+            expect(tieredRules[0].id).toBe(13);
+            expect(tieredRules[0].ordinal).toBe(1);
+            expect(tieredRules[0].name).toBe("Income Tax Bands");
+            expect(tieredRules[0].type).toBe("tiered_rate");
+
+            expect(tieredRules[1].id).toBe(44);
+            expect(tieredRules[1].ordinal).toBe(2);
+            expect(tieredRules[1].name).toBe("Rule 2");
+            expect(tieredRules[1].type).toBe("tiered_rate");
+        });
+
+        test("return all flat rate rules for the current jurisdiction", () => {
+            let rules = getRulesByTypeForJurisdiction("flat_rate");
+            expect(rules).toBeDefined();
+            expect(rules.length).toBe(2);
+
+            expect(rules[0].id).toBe(19);
+            expect(rules[0].ordinal).toBe(1);
+            expect(rules[0].name).toBe("Corporation Tax");
+            expect(rules[0].type).toBe("flat_rate");
+
+            expect(rules[1].id).toBe(41);
+            expect(rules[1].ordinal).toBe(1);
+            expect(rules[1].name).toBe("Rule 1");
+            expect(rules[1].type).toBe("flat_rate");
+        });
+
+        test("return all tiered rate rules for the current jurisdiction", () => {
+            let rules = getRulesByTypeForJurisdiction("tiered_rate");
+            expect(rules).toBeDefined();
+            expect(rules.length).toBe(2);
+
+            expect(rules[0].id).toBe(13);
+            expect(rules[0].ordinal).toBe(1);
+            expect(rules[0].name).toBe("Income Tax Bands");
+            expect(rules[0].type).toBe("tiered_rate");
+
+            expect(rules[1].id).toBe(44);
+            expect(rules[1].ordinal).toBe(2);
+            expect(rules[1].name).toBe("Rule 2");
+            expect(rules[1].type).toBe("tiered_rate");
+        });
+
+        test("return all secondary tiered rate rules for the current jurisdiction", () => {
+            let rules = getRulesByTypeForJurisdiction("secondary_tiered_rate");
+            expect(rules).toBeDefined();
+            expect(rules.length).toBe(2);
+
+            expect(rules[0].id).toBe(15);
+            expect(rules[0].ordinal).toBe(1);
+            expect(rules[0].name).toBe("Dividend Tax Bands");
+            expect(rules[0].type).toBe("secondary_tiered_rate");
+
+            expect(rules[1].id).toBe(45);
+            expect(rules[1].ordinal).toBe(3);
+            expect(rules[1].name).toBe("Rule 3");
+            expect(rules[1].type).toBe("secondary_tiered_rate");
+        });
+
+        test("return empty array given an invalid rule type", () => {
+            let rules = getRulesByTypeForJurisdiction("nonsense");
+            expect(rules).toBeDefined();
+            expect(rules.length).toBe(0);
+        });
     });
 
     describe("Rule tiers", () => {
