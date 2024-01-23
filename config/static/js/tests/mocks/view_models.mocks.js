@@ -34,7 +34,7 @@ const forms = {
             explainer: "Created by automated test",
             is_mandatory: true,
             variable_name: "numeric_var",
-            ordinal: 1,
+            ordinal: 2,
             type: "numeric",
             is_integer: true,
             min_value: 1,
@@ -46,7 +46,7 @@ const forms = {
             explainer: "Created by automated test",
             is_mandatory: true,
             variable_name: "multiple_choice_var",
-            ordinal: 1,
+            ordinal: 3,
             type: "multiple_choice",
             options: []
           }
