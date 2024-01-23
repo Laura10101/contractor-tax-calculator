@@ -108,6 +108,7 @@ describe("View model accessor methods", () => {
         app.jurisdictionForm = appState.jurisdictionForm;
         app.jurisdictionRules = appState.jurisdictionRules;
     });
+
     describe("Jurisdictions", () => {
 
     });
@@ -129,7 +130,17 @@ describe("View model accessor methods", () => {
     });
 
     describe("Tax categories", () => {
+        test("should return the correct tax category for a valid id", () => {
+            let taxCategory = getTaxCategoryById(1);
+            expect(taxCategory).toBeDefined();
+            expect(taxCategory.tax_category_id).toBe(1);
+            expect(taxCategory.name).toBe("Dividend Tax");
+        });
 
+        test("should return null for an invalid id", () => {
+            let taxCategory = getTaxCategoryById(42);
+            expect(taxCategory).toBeNull();
+        });
     });
 });
 
