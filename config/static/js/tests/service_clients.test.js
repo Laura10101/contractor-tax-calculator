@@ -759,7 +759,65 @@ describe("Multiple choice options", () => {
     });
 
     describe("DELETE", () => {
+        test("should correctly delete a multiple choice option, returning a 200 response", done => {
+            let questionId = null;
+            // Approach to testing asynchronous code adapted from Jest documentation
+            // https://jestjs.io/docs/asynchronous
+            function checkAjaxResponse(data, textStatus, request) {
+                console.log(data);
+                console.log(textStatus);
+                console.log(request);
+                console.log(request.status);
+                expect(request).toBeDefined();
+                expect(request.status).toBe(200);
+                
+                done();
+            }
 
+            function testRemoveMultipleChoiceOption(data, textStatus, request) {
+                console.log("Creating multiple choice option");
+                console.log(data);
+                console.log(textStatus);
+                console.log(request);
+                console.log(request.status);
+                expect(request).toBeDefined();
+                expect(request.status).toBe(200);
+                expect(data).toBeDefined();
+                expect(data.option_id).toBeDefined();
+                removeMultipleChoiceOption(1, questionId, data.option_id, checkAjaxResponse, checkAjaxResponse);
+            }
+            
+            function testCreateMultipleChoiceOption(data, textStatus, request) {
+                console.log("Creating multiple choice option");
+                console.log(data);
+                console.log(textStatus);
+                console.log(request);
+                console.log(request.status);
+                expect(request).toBeDefined();
+                expect(request.status).toBe(200);
+                expect(data).toBeDefined();
+                expect(data.id).toBeDefined();
+                questionId = data.id;
+                console.log("questionID set to " + questionId);
+
+                let text = "A test option";
+                let explainer = "A wonderful test";
+
+                postMultipleChoiceOption(1, data.id, text, explainer, testRemoveMultipleChoiceOption, failTest);
+            }
+
+            function failTest(data, textStatus, request) {
+                console.log(data.responseJSON);
+                done(data.responseJSON.error);
+            }
+
+            let text = "A multiple choice test";
+            let explainer = "Created by automated test";
+            let ordinal = 1;
+            let variableName = "multiple_choice_var";
+            let isMandatory = true;
+            createMultipleChoiceQuestion(1, text, ordinal, explainer, variableName, isMandatory, testCreateMultipleChoiceOption, failTest);
+        }, 10000);
     });
 });
 
