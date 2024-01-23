@@ -170,8 +170,44 @@ describe("View model accessor methods", () => {
             expect(question).toBeNull();
         });
     });
+
+    describe("Rulesets", () => {
+        test("return a valid ruleset given a valid rule id", () => {
+            let ruleset = findParentRuleset(13);
+            expect(ruleset).toBeDefined();
+            expect(ruleset.id).toBe(23);
+            expect(ruleset.tax_category_id).toBe(1);
+        });
+
+        test("return null given an invalid rule id", () => {
+            let ruleset = findParentRuleset(42);
+            expect(ruleset).toBeNull();
+        });
+    });
+
+    describe("Rules", () => {
+
+    });
+
+    describe("Rule tiers", () => {
+
+    });
 });
 
 describe("Ordinal traversal and management", () => {
+    describe("Question ordinals", () => {
 
+    });
+
+    describe("Ruleset ordinals", () => {
+
+    });
+
+    describe("Rule ordinals", () => {
+
+    });
+
+    describe("Rule tier ordinals", () => {
+
+    });
 });
