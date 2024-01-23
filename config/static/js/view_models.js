@@ -54,7 +54,7 @@ function setDialogState(mode, entityType, entity) {
 }
 
 function setParentState(mode, entityType, entity) {
-    app.dialogState = {
+    app.parentState = {
         mode: mode,
         entityType: entityType,
         entity: entity
@@ -414,5 +414,38 @@ function resequenceRuleTierOrdinals(deletedTier) {
 }
 
 module.exports = {
-    app
+    app,
+    clearDialogState,
+    setDialogState,
+    setParentState,
+    clearParentState,
+    moveAppStateToParentState,
+    moveParentStateToAppState,
+    setParentRuleset,
+    getForm,
+    getFormId,
+    getTaxCategoryById,
+    getQuestions,
+    getNextQuestionOrdinal,
+    findQuestionById,
+    getTieredRateRulesForJurisdiction,
+    findRuleById,
+    findParentRuleset,
+    findPrimaryRuleTierById,
+    findPreviousQuestion,
+    findNextQuestion,
+    resequenceQuestionOrdinals,
+    getNextRulesetOrdinal,
+    findPreviousRuleset,
+    findNextRuleset,
+    resequenceRulesetOrdinals,
+    getRulesByTypeForJurisdiction,
+    getNextRuleOrdinal,
+    findPreviousRule,
+    findNextRule,
+    resequenceRuleOrdinals,
+    getNextRuleTierOrdinal,
+    findPreviousRuleTier,
+    findNextRuleTier,
+    resequenceRuleTierOrdinals
 };
