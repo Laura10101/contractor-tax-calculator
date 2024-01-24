@@ -301,11 +301,65 @@ describe("Ordinal traversal and management", () => {
         });
 
         describe("Find previous", () => {
+            test("should return the correct question given a valid question", () => {
+                // Retrieve and check the question
+                let question = findQuestionById(4);
+                expect(question).toBeDefined();
+                expect(question.id).toBe(4);
+                expect(question.ordinal).toBe(2);
 
+                // Retrieve and check the next question by ordinal
+                let previousQuestion = findPreviousQuestion(question);
+                expect(previousQuestion).toBeDefined();
+                expect(previousQuestion.id).toBe(3);
+                expect(previousQuestion.ordinal).toBe(1);
+            });
+
+            test("should return null given null input", () => {
+                let previousQuestion = findPreviousQuestion(null);
+                expect(previousQuestion).toBeNull();
+            });
+
+            test("should return null given undefined input", () => {
+                let previousQuestion = findPreviousQuestion(myUndefinedVariable);
+                expect(previousQuestion).toBeNull();
+            });
+
+            test("should return null given an invalid object", () => {
+                let previousQuestion = findPreviousQuestion({});
+                expect(previousQuestion).toBeNull();
+            });
         });
 
         describe("Find next", () => {
+            test("should return the correct question given a valid question", () => {
+                // Retrieve and check the question
+                let question = findQuestionById(4);
+                expect(question).toBeDefined();
+                expect(question.id).toBe(4);
+                expect(question.ordinal).toBe(2);
 
+                // Retrieve and check the next question by ordinal
+                let nextQuestion = findNextQuestion(question);
+                expect(nextQuestion).toBeDefined();
+                expect(nextQuestion.id).toBe(7);
+                expect(nextQuestion.ordinal).toBe(3);
+            });
+
+            test("should return null given null input", () => {
+                let nextQuestion = findNextQuestion(null);
+                expect(nextQuestion).toBeNull();
+            });
+
+            test("should return null given undefined input", () => {
+                let nextQuestion = findNextQuestion(myUndefinedVariable);
+                expect(nextQuestion).toBeNull();
+            });
+
+            test("should return null given an invalid object", () => {
+                let nextQuestion = findNextQuestion({});
+                expect(nextQuestion).toBeNull();
+            });
         });
 
         describe("Resequence ordinals", () => {
@@ -323,11 +377,64 @@ describe("Ordinal traversal and management", () => {
         });
 
         describe("Find previous", () => {
+            test("should return the correct ruleset given a valid ruleset", () => {
+                // Retrieve and check the question
+                let ruleset = findParentRuleset(19);
+                expect(ruleset).toBeDefined();
+                expect(ruleset.id).toBe(26);
+                expect(ruleset.ordinal).toBe(3);
 
+                // Retrieve and check the next question by ordinal
+                let previousRuleset = findPreviousRuleset(ruleset);
+                expect(previousRuleset).toBeDefined();
+                expect(previousRuleset.id).toBe(24);
+                expect(previousRuleset.ordinal).toBe(2);
+            });
+
+            test("should return null given null input", () => {
+                let previousRuleset = findPreviousRuleset(null);
+                expect(previousRuleset).toBeNull();
+            });
+
+            test("should return null given undefined input", () => {
+                let previousRuleset = findPreviousRuleset(myUndefinedVariable);
+                expect(previousRuleset).toBeNull();
+            });
+
+            test("should return null given an invalid object", () => {
+                let previousRuleset = findPreviousRuleset({});
+                expect(previousRuleset).toBeNull();
+            });
         });
 
         describe("Find next", () => {
+            test("should return the correct ruleset given a valid ruleset", () => {
+                // Retrieve and check the question
+                let ruleset = findParentRuleset(19);
+                expect(ruleset).toBeDefined();
+                expect(ruleset.id).toBe(26);
+                expect(ruleset.ordinal).toBe(3);
+                // Retrieve and check the next question by
+                let nextRuleset = findNextRuleset(ruleset);
+                expect(nextRuleset).toBeDefined();
+                expect(nextRuleset.id).toBe(27);
+                expect(nextRuleset.ordinal).toBe(4);
+            });
 
+            test("should return null given null input", () => {
+                let nextRuleset = findNextRuleset(null);
+                expect(nextRuleset).toBeNull();
+            });
+
+            test("should return null given undefined input", () => {
+                let nextRuleset = findNextRuleset(myUndefinedVariable);
+                expect(nextRuleset).toBeNull();
+            });
+
+            test("should return null given an invalid object", () => {
+                let nextRuleset = findNextRuleset({});
+                expect(nextRuleset).toBeNull();
+            });
         });
 
         describe("Resequence ordinals", () => {
@@ -352,11 +459,113 @@ describe("Ordinal traversal and management", () => {
         });
 
         describe("Find previous", () => {
+            test("should return the correct rule given a valid rule", () => {
+                // Retrieve and check the rule
+                let rule = findRuleById(44);
+                expect(rule).toBeDefined();
+                expect(rule.id).toBe(44);
+                expect(rule.ordinal).toBe(2);
 
+                // Get parent ruleset
+                let ruleset = findParentRuleset(rule.id);
+                expect(ruleset).toBeDefined();
+                expect(ruleset.id).toBe(27);
+                expect(ruleset.ordinal).toBe(4);
+
+                // Retrieve and check the next rule by ordinal
+                let previousRule = findPreviousRule(ruleset, rule);
+                expect(previousRule).toBeDefined();
+                expect(previousRule.id).toBe(41);
+                expect(previousRule.ordinal).toBe(1);
+            });
+
+            test("should return null given null input", () => {
+                // Get parent ruleset
+                let ruleset = findParentRuleset(44);
+                expect(ruleset).toBeDefined();
+                expect(ruleset.id).toBe(27);
+                expect(ruleset.ordinal).toBe(4);
+
+                let previousRule = findPreviousRule(ruleset, null);
+                expect(previousRule).toBeNull();
+            });
+
+            test("should return null given undefined input", () => {
+                // Get parent ruleset
+                let ruleset = findParentRuleset(44);
+                expect(ruleset).toBeDefined();
+                expect(ruleset.id).toBe(27);
+                expect(ruleset.ordinal).toBe(4);
+
+                let previousRule = findPreviousRule(ruleset, myUndefinedVariable);
+                expect(previousRule).toBeNull();
+            });
+
+            test("should return null given an invalid object", () => {
+                // Get parent ruleset
+                let ruleset = findParentRuleset(44);
+                expect(ruleset).toBeDefined();
+                expect(ruleset.id).toBe(27);
+                expect(ruleset.ordinal).toBe(4);
+
+                let previousRule = findPreviousRule(ruleset, {});
+                expect(previousRule).toBeNull();
+            });
         });
 
         describe("Find next", () => {
+            test("should return the correct rule given a valid rule", () => {
+                // Retrieve and check the rule
+                let rule = findRuleById(44);
+                expect(rule).toBeDefined();
+                expect(rule.id).toBe(44);
+                expect(rule.ordinal).toBe(2);
 
+                // Get parent ruleset
+                let ruleset = findParentRuleset(rule.id);
+                expect(ruleset).toBeDefined();
+                expect(ruleset.id).toBe(27);
+                expect(ruleset.ordinal).toBe(4);
+
+                // Retrieve and check the next rule by ordinal
+                let nextRule = findNextRule(ruleset, rule);
+                expect(nextRule).toBeDefined();
+                expect(nextRule.id).toBe(45);
+                expect(nextRule.ordinal).toBe(3);
+            });
+
+            test("should return null given null input", () => {
+                // Get parent ruleset
+                let ruleset = findParentRuleset(44);
+                expect(ruleset).toBeDefined();
+                expect(ruleset.id).toBe(27);
+                expect(ruleset.ordinal).toBe(4);
+
+                let nextRule = findNextRule(ruleset, null);
+                expect(nextRule).toBeNull();
+            });
+
+            test("should return null given undefined input", () => {
+                // Get parent ruleset
+                let ruleset = findParentRuleset(44);
+                expect(ruleset).toBeDefined();
+                expect(ruleset.id).toBe(27);
+                expect(ruleset.ordinal).toBe(4);
+
+                let nextRule = findNextRule(ruleset, myUndefinedVariable);
+                expect(nextRule).toBeNull();
+            });
+
+            test("should return null given an invalid object", () => {
+                // Get parent ruleset
+                let ruleset = findParentRuleset(44);
+                expect(ruleset).toBeDefined();
+                expect(ruleset.id).toBe(27);
+                expect(ruleset.ordinal).toBe(4);
+
+                let nextRule = findNextRule(ruleset, {});
+                expect(nextRule).toBeNull();
+            });
         });
 
         describe("Resequence ordinals", () => {
@@ -382,11 +591,121 @@ describe("Ordinal traversal and management", () => {
         });
 
         describe("Find previous", () => {
+            test("should return the correct rule tier given a valid rule tier", () => {
+                // Get the rule
+                let rule = findRuleById(44);
+                expect(rule).toBeDefined();
+                expect(rule.id).toBe(44);
+                expect(rule.ordinal).toBe(2);
+                expect(rule.tiers).toBeDefined();
 
+                // Retrieve and check the rule tier
+                let ruleTier = rule.tiers[2];
+                expect(ruleTier).toBeDefined();
+                expect(ruleTier.id).toBe(5);
+                expect(ruleTier.ordinal).toBe(3);
+
+                // Retrieve and check the next rule tier by ordinal
+                let previousRuleTier = findPreviousRuleTier(rule, ruleTier);
+                expect(previousRuleTier).toBeDefined();
+                expect(previousRuleTier.id).toBe(4);
+                expect(previousRuleTier.ordinal).toBe(2);
+            });
+
+            test("should return null given null input", () => {
+                // Get the rule
+                let rule = findRuleById(44);
+                expect(rule).toBeDefined();
+                expect(rule.id).toBe(44);
+                expect(rule.ordinal).toBe(2);
+                expect(rule.tiers).toBeDefined();
+
+                let previousRuleTier = findPreviousRuleTier(rule, null);
+                expect(previousRuleTier).toBeNull();
+            });
+
+            test("should return null given undefined input", () => {
+                // Get the rule
+                let rule = findRuleById(44);
+                expect(rule).toBeDefined();
+                expect(rule.id).toBe(44);
+                expect(rule.ordinal).toBe(2);
+                expect(rule.tiers).toBeDefined();
+
+                let previousRuleTier = findPreviousRuleTier(rule, myUndefinedVariable);
+                expect(previousRuleTier).toBeNull();
+            });
+
+            test("should return null given an invalid object", () => {
+                // Get the rule
+                let rule = findRuleById(44);
+                expect(rule).toBeDefined();
+                expect(rule.id).toBe(44);
+                expect(rule.ordinal).toBe(2);
+                expect(rule.tiers).toBeDefined();
+
+                let previousRuleTier = findPreviousRuleTier(rule, {});
+                expect(previousRuleTier).toBeNull();
+            });
         });
 
         describe("Find next", () => {
+            test("should return the correct rule tier given a valid rule tier", () => {
+                // Get the rule
+                let rule = findRuleById(44);
+                expect(rule).toBeDefined();
+                expect(rule.id).toBe(44);
+                expect(rule.ordinal).toBe(2);
+                expect(rule.tiers).toBeDefined();
 
+                // Retrieve and check the rule tier
+                let ruleTier = rule.tiers[2];
+                expect(ruleTier).toBeDefined();
+                expect(ruleTier.id).toBe(5);
+                expect(ruleTier.ordinal).toBe(3);
+
+                // Retrieve and check the next rule tier by ordinal
+                let nextRuleTier = findNextRuleTier(rule, ruleTier);
+                expect(nextRuleTier).toBeDefined();
+                expect(nextRuleTier.id).toBe(6);
+                expect(nextRuleTier.ordinal).toBe(4);
+            });
+
+            test("should return null given null input", () => {
+                // Get the rule
+                let rule = findRuleById(44);
+                expect(rule).toBeDefined();
+                expect(rule.id).toBe(44);
+                expect(rule.ordinal).toBe(2);
+                expect(rule.tiers).toBeDefined();
+
+                let nextRuleTier = findNextRuleTier(rule, null);
+                expect(nextRuleTier).toBeNull();
+            });
+
+            test("should return null given undefined input", () => {
+                // Get the rule
+                let rule = findRuleById(44);
+                expect(rule).toBeDefined();
+                expect(rule.id).toBe(44);
+                expect(rule.ordinal).toBe(2);
+                expect(rule.tiers).toBeDefined();
+
+                let nextRuleTier = findNextRuleTier(rule, myUndefinedVariable);
+                expect(nextRuleTier).toBeNull();
+            });
+
+            test("should return null given an invalid object", () => {
+                // Get the rule
+                let rule = findRuleById(44);
+                expect(rule).toBeDefined();
+                expect(rule.id).toBe(44);
+                expect(rule.ordinal).toBe(2);
+                expect(rule.tiers).toBeDefined();
+
+                let nextRuleTier = findNextRuleTier(rule, {});
+                expect(nextRuleTier).toBeNull();
+            });
         });
 
         describe("Resequence ordinals", () => {
