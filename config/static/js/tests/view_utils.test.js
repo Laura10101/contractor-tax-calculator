@@ -1,4 +1,34 @@
-const { dialogStates } = require("../view_consts");
+const $ = require("jquery");
+require("bootstrap");
+
+const { 
+    dialogStates,
+    statusDialog,
+    confirmationDialog,
+    jurisdictionsSelect,
+    questionTypeDialog,
+    booleanQuestionDialog,
+    numericQuestionDialog,
+    multipleChoiceQuestionDialog,
+    multipleChoiceOptionDialog,
+    questionDisplayContainer,
+    booleanQuestionDisplay,
+    numericQuestionDisplay,
+    multipleChoiceQuestionDisplay,
+    rulesetDialog,
+    ruleTypeDialog,
+    flatRateRuleDialog,
+    tieredRateRuleDialog,
+    secondaryTieredRateRuleDialog,
+    ruleTierDialog,
+    secondaryRuleTierDialog,
+    rulesetsDisplayContainer,
+    rulesetDisplay,
+    flatRateRuleDisplay,
+    tieredRateRuleDisplay,
+    secondaryTieredRateRuleDisplay
+ } = require("../view_consts");
+
 const { buildAppState } = require("./mocks/view_models.mocks.js");
 
 const {
@@ -49,7 +79,25 @@ const {
     updateRulesetsDisplay
  } = require("../view_utils");
 
- beforeEach(() => {
+
+// Helper functions
+function isShown(dialogId) {
+    // From Stackoverflow: https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes
+    return $("#" + dialogId).data('bs.modal')?._isShown;
+}
+
+function getDialogTitle(dialogConstants) {
+    let container = document.getElementById(dialogConstants.label.id);
+    return container.innerHTML;
+}
+
+function getDialogText(dialogConstants) {
+    let container = document.getElementById(dialogConstants.message.id);
+    return container.innerHTML;
+}
+
+// Prepare state for tests
+beforeEach(() => {
     // Set up DOM state
     // Used the following resource to load from a relative path:
     // https://ultimatecourses.com/blog/relative-paths-with-node-readfilesync
@@ -71,8 +119,12 @@ const {
 describe("Dialog utilities", () => {
     describe("Helper functions", () => {
         describe("Show dialog", () => {
-            test("should load", () => {
-                expect(true).toBe(true);
+            test("should correctly display then hide status dialog", () => {
+                let dialogId = statusDialog.dialog.id;
+                showDialog(dialogId);
+                expect(isShown(dialogId)).toBe(true);
+                hideDialog(dialogId);
+                expect(isShown(dialogId)).toBe(false);
             });
         });
 

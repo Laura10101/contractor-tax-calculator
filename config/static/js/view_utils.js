@@ -1,3 +1,5 @@
+const $ = require("jquery");
+require("bootstrap");
 /*
  * General Helper Functions
  */
