@@ -32,7 +32,7 @@ const {
 const { buildAppState } = require("./mocks/view_models.mocks.js");
 
 const {
-    app
+    app, findQuestionById
  } = require("../view_models");
 
 const {
@@ -186,31 +186,146 @@ describe("Dialog utilities", () => {
                     let dialogConsts = booleanQuestionDialog;
                     displayCreateBooleanQuestionDialog();
                     expect(isShown(dialogConsts.dialog.id)).toBe(true);
+                    
+                    let text = document.getElementById(dialogConsts.questionText.input.id).value;
+                    let explainer = document.getElementById(dialogConsts.explainer.input.id).value;
+                    let variableName = document.getElementById(dialogConsts.variableName.input.id).value;
+                    let isMandatory = document.getElementById(dialogConsts.isMandatory.input.id).checked;
+
+                    expect(text).toBe("");
+                    expect(explainer).toBe("");
+                    expect(variableName).toBe("");
+                    expect(isMandatory).toBe(false);
                 });
             });
 
             describe("Edit", () => {
+                test("should correctly display the edit boolean question dialog for the given question", () => {
+                    let question = findQuestionById(3);
+                    expect(question).toBeDefined();
+                    expect(question.id).toBe(3);
 
+                    let dialogConsts = booleanQuestionDialog;
+                    displayEditBooleanQuestionDialog(question);
+                    expect(isShown(dialogConsts.dialog.id)).toBe(true);
+                    
+                    let text = document.getElementById(dialogConsts.questionText.input.id).value;
+                    let explainer = document.getElementById(dialogConsts.explainer.input.id).value;
+                    let variableName = document.getElementById(dialogConsts.variableName.input.id).value;
+                    let isMandatory = document.getElementById(dialogConsts.isMandatory.input.id).checked;
+
+                    expect(text).toBe(question.text);
+                    expect(explainer).toBe(question.explainer);
+                    expect(variableName).toBe(question.variable_name);
+                    expect(isMandatory).toBe(question.is_mandatory);
+                });
             });
         });
 
         describe("Numeric question dialog", () => {
             describe("Create", () => {
+                test("should correctly display the create numeric question dialog", () => {
+                    let dialogConsts = numericQuestionDialog;
+                    displayCreateNumericQuestionDialog();
+                    expect(isShown(dialogConsts.dialog.id)).toBe(true);
+                    
+                    let text = document.getElementById(dialogConsts.questionText.input.id).value;
+                    let explainer = document.getElementById(dialogConsts.explainer.input.id).value;
+                    let variableName = document.getElementById(dialogConsts.variableName.input.id).value;
+                    let isMandatory = document.getElementById(dialogConsts.isMandatory.input.id).checked;
+                    let isInteger = document.getElementById(dialogConsts.isInteger.input.id).checked;
+                    let minValue = document.getElementById(dialogConsts.minimumValue.input.id).value;
+                    let maxValue = document.getElementById(dialogConsts.maximumValue.input.id).value;
 
+                    expect(text).toBe("");
+                    expect(explainer).toBe("");
+                    expect(variableName).toBe("");
+                    expect(isMandatory).toBe(false);
+                    expect(isInteger).toBe(false);
+                    expect(minValue).toBe("");
+                    expect(maxValue).toBe("");
+                });
             });
 
             describe("Edit", () => {
+                test("should correctly display the edit numeric question dialog for the given question", () => {
+                    let question = findQuestionById(4);
+                    expect(question).toBeDefined();
+                    expect(question.id).toBe(4);
 
+                    let dialogConsts = numericQuestionDialog;
+                    displayEditNumericQuestionDialog(question);
+                    expect(isShown(dialogConsts.dialog.id)).toBe(true);
+                    
+                    let text = document.getElementById(dialogConsts.questionText.input.id).value;
+                    let explainer = document.getElementById(dialogConsts.explainer.input.id).value;
+                    let variableName = document.getElementById(dialogConsts.variableName.input.id).value;
+                    let isMandatory = document.getElementById(dialogConsts.isMandatory.input.id).checked;
+                    let isInteger = document.getElementById(dialogConsts.isInteger.input.id).checked;
+                    let minValue = document.getElementById(dialogConsts.minimumValue.input.id).value;
+                    let maxValue = document.getElementById(dialogConsts.maximumValue.input.id).value;
+
+                    expect(text).toBe(question.text);
+                    expect(explainer).toBe(question.explainer);
+                    expect(variableName).toBe(question.variable_name);
+                    expect(isMandatory).toBe(question.is_mandatory);
+                    expect(isInteger).toBe(question.is_integer);
+                    expect(parseInt(minValue)).toBe(question.min_value);
+                    expect(parseInt(maxValue)).toBe(question.max_value);
+                });
             });
         });
 
         describe("Multiple choice question dialog", () => {
             describe("Create", () => {
+                test("should correctly display the create multiple choice question dialog", () => {
+                    let dialogConsts = multipleChoiceQuestionDialog;
+                    displayCreateMultipleChoiceQuestionDialog();
+                    expect(isShown(dialogConsts.dialog.id)).toBe(true);
+                    
+                    let text = document.getElementById(dialogConsts.questionText.input.id).value;
+                    let explainer = document.getElementById(dialogConsts.explainer.input.id).value;
+                    let variableName = document.getElementById(dialogConsts.variableName.input.id).value;
+                    let isMandatory = document.getElementById(dialogConsts.isMandatory.input.id).checked;
+                    let allowMultiselect = document.getElementById(dialogConsts.allowMultiselect.input.id).checked;
 
+                    expect(text).toBe("");
+                    expect(explainer).toBe("");
+                    expect(variableName).toBe("");
+                    expect(isMandatory).toBe(false);
+                    expect(allowMultiselect).toBe(false);
+
+                    let optionTable = document.getElementById(dialogConsts.options.table.id);
+                    expect(optionTable).toBeDefined();
+                    expect(optionTable.children.length).toBe(1);
+                });
             });
 
             describe("Edit", () => {
+                test("should correctly display the edit multiple choice question dialog for the given question", () => {
+                    let question = findQuestionById(7);
+                    expect(question).toBeDefined();
+                    expect(question.id).toBe(7);
 
+                    let dialogConsts = multipleChoiceQuestionDialog;
+                    displayEditMultipleChoiceQuestionDialog(question);
+                    expect(isShown(dialogConsts.dialog.id)).toBe(true);
+                    
+                    let text = document.getElementById(dialogConsts.questionText.input.id).value;
+                    let explainer = document.getElementById(dialogConsts.explainer.input.id).value;
+                    let variableName = document.getElementById(dialogConsts.variableName.input.id).value;
+                    let isMandatory = document.getElementById(dialogConsts.isMandatory.input.id).checked;
+                    let allowMultiselect = document.getElementById(dialogConsts.allowMultiselect.input.id).checked;
+
+                    expect(text).toBe(question.text);
+                    expect(explainer).toBe(question.explainer);
+                    expect(variableName).toBe(question.variable_name);
+                    expect(isMandatory).toBe(question.is_mandatory);
+
+                    let optionTable = document.getElementById(dialogConsts.options.table.id);
+                    expect(optionTable).toBeDefined();
+                    expect(optionTable.children.length).toBe(question.options.length + 1);
+                });
             });
         });
     });
