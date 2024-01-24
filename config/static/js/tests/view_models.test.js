@@ -291,18 +291,106 @@ describe("View model accessor methods", () => {
 
 describe("Ordinal traversal and management", () => {
     describe("Question ordinals", () => {
+        describe("Get next ordinal", () => {
+            test("should return the correct ordinal given the mock app state", () => {
+                let nextOrdinal = getNextQuestionOrdinal();
+                expect(nextOrdinal).toBeDefined();
+                expect(nextOrdinal).toBe(4);
+            });
+            
+        });
 
+        describe("Find previous", () => {
+
+        });
+
+        describe("Find next", () => {
+
+        });
+
+        describe("Resequence ordinals", () => {
+
+        });
     });
 
     describe("Ruleset ordinals", () => {
+        describe("Get next ordinal", () => {
+            test("should return the correct ordinal given the mock app state", () => {
+                let nextOrdinal = getNextRulesetOrdinal();
+                expect(nextOrdinal).toBeDefined();
+                expect(nextOrdinal).toBe(5);
+            });
+        });
 
+        describe("Find previous", () => {
+
+        });
+
+        describe("Find next", () => {
+
+        });
+
+        describe("Resequence ordinals", () => {
+
+        });
     });
 
     describe("Rule ordinals", () => {
+        describe("Get next ordinal", () => {
+            test("should return the correct ordinal given the mock app state", () => {
+                // Set up the parent ruleset
+                let parentRuleset = findParentRuleset(41);
+                expect(parentRuleset).toBeDefined();
+                expect(parentRuleset.id).toBe(27);
+                setParentRuleset(parentRuleset);
 
+                // Check that we retrieve the right next ordinal
+                let nextOrdinal = getNextRuleOrdinal();
+                expect(nextOrdinal).toBeDefined();
+                expect(nextOrdinal).toBe(4);
+            });
+        });
+
+        describe("Find previous", () => {
+
+        });
+
+        describe("Find next", () => {
+
+        });
+
+        describe("Resequence ordinals", () => {
+
+        });
     });
 
     describe("Rule tier ordinals", () => {
+        describe("Get next ordinal", () => {
+            test("should return the correct ordinal given the mock app state", () => {
+                // Get the rule
+                let rule = findRuleById(44);
+                expect(rule).toBeDefined();
+                expect(rule.id).toBe(44);
+                expect(rule.tiers).toBeDefined();
+                expect(rule.tiers.length).toBe(4);
 
+                // Check we get the right ordinal
+                let nextOrdinal = getNextRuleTierOrdinal(rule);
+                expect(nextOrdinal).toBeDefined();
+                expect(nextOrdinal).toBe(5);
+            });
+        });
+
+        describe("Find previous", () => {
+
+        });
+
+        describe("Find next", () => {
+
+        });
+
+        describe("Resequence ordinals", () => {
+
+        });
     });
 });
