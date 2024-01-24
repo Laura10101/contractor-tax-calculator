@@ -321,7 +321,7 @@ describe("Ordinal traversal and management", () => {
             });
 
             test("should return null given undefined input", () => {
-                let previousQuestion = findPreviousQuestion(myUndefinedVariable);
+                let previousQuestion = findPreviousQuestion(undefined);
                 expect(previousQuestion).toBeNull();
             });
 
@@ -352,7 +352,7 @@ describe("Ordinal traversal and management", () => {
             });
 
             test("should return null given undefined input", () => {
-                let nextQuestion = findNextQuestion(myUndefinedVariable);
+                let nextQuestion = findNextQuestion(undefined);
                 expect(nextQuestion).toBeNull();
             });
 
@@ -397,7 +397,7 @@ describe("Ordinal traversal and management", () => {
             });
 
             test("should return null given undefined input", () => {
-                let previousRuleset = findPreviousRuleset(myUndefinedVariable);
+                let previousRuleset = findPreviousRuleset(undefined);
                 expect(previousRuleset).toBeNull();
             });
 
@@ -427,7 +427,7 @@ describe("Ordinal traversal and management", () => {
             });
 
             test("should return null given undefined input", () => {
-                let nextRuleset = findNextRuleset(myUndefinedVariable);
+                let nextRuleset = findNextRuleset(undefined);
                 expect(nextRuleset).toBeNull();
             });
 
@@ -497,7 +497,7 @@ describe("Ordinal traversal and management", () => {
                 expect(ruleset.id).toBe(27);
                 expect(ruleset.ordinal).toBe(4);
 
-                let previousRule = findPreviousRule(ruleset, myUndefinedVariable);
+                let previousRule = findPreviousRule(ruleset, undefined);
                 expect(previousRule).toBeNull();
             });
 
@@ -552,7 +552,7 @@ describe("Ordinal traversal and management", () => {
                 expect(ruleset.id).toBe(27);
                 expect(ruleset.ordinal).toBe(4);
 
-                let nextRule = findNextRule(ruleset, myUndefinedVariable);
+                let nextRule = findNextRule(ruleset, undefined);
                 expect(nextRule).toBeNull();
             });
 
@@ -632,7 +632,7 @@ describe("Ordinal traversal and management", () => {
                 expect(rule.ordinal).toBe(2);
                 expect(rule.tiers).toBeDefined();
 
-                let previousRuleTier = findPreviousRuleTier(rule, myUndefinedVariable);
+                let previousRuleTier = findPreviousRuleTier(rule, undefined);
                 expect(previousRuleTier).toBeNull();
             });
 
@@ -691,7 +691,7 @@ describe("Ordinal traversal and management", () => {
                 expect(rule.ordinal).toBe(2);
                 expect(rule.tiers).toBeDefined();
 
-                let nextRuleTier = findNextRuleTier(rule, myUndefinedVariable);
+                let nextRuleTier = findNextRuleTier(rule, undefined);
                 expect(nextRuleTier).toBeNull();
             });
 
