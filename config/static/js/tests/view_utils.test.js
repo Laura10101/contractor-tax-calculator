@@ -118,7 +118,7 @@ beforeEach(() => {
 
 describe("Dialog utilities", () => {
     describe("Helper functions", () => {
-        describe("Show dialog", () => {
+        describe("Show and hide dialog", () => {
             test("should correctly display then hide status dialog", () => {
                 let dialogId = statusDialog.dialog.id;
                 showDialog(dialogId);
@@ -127,31 +127,66 @@ describe("Dialog utilities", () => {
                 expect(isShown(dialogId)).toBe(false);
             });
         });
-
-        describe("Hide dialog", () => {
-
-        });
-
     });
 
     describe("Status dialogs", () => {
         describe("Error dialog", () => {
+            test("should correctly display an error dialog with the correct title and message", () => {
+                let dialogConsts = statusDialog;
+                let dialogId = dialogConsts.dialog.id;
+                let title = "An Error Occurred";
+                let message = "A test error";
+                error(message);
+                expect(isShown(dialogId)).toBe(true);
+                let dialogLabel = document.getElementById(dialogConsts.label.id).innerHTML;
+                expect(dialogLabel).toBe(title);
 
+                let dialogMessage = document.getElementById(dialogConsts.message.id).innerHTML;
+                expect(dialogMessage).toBe(message);
+            });
         });
 
         describe("Success dialog", () => {
+            test("should correctly display a success dialog with the correct title and message", () => {
+                let dialogConsts = statusDialog;
+                let dialogId = dialogConsts.dialog.id;
+                let title = "Success";
+                let message = "A test success message";
+                success(message);
+                expect(isShown(dialogId)).toBe(true);
+                let dialogLabel = document.getElementById(dialogConsts.label.id).innerHTML;
+                expect(dialogLabel).toBe(title);
 
+                let dialogMessage = document.getElementById(dialogConsts.message.id).innerHTML;
+                expect(dialogMessage).toBe(message);
+            });
         });
 
         describe("Confirmation dialog", () => {
+            test("should correctly display a confirmation dialog with the correct title and message", () => {
+                let dialogConsts = confirmationDialog;
+                let dialogId = dialogConsts.dialog.id;
+                let title = "Are you sure?";
+                let message = "A test confirmation message";
+                confirm(message, function() {});
+                expect(isShown(dialogId)).toBe(true);
+                let dialogLabel = document.getElementById(dialogConsts.label.id).innerHTML;
+                expect(dialogLabel).toBe(title);
 
+                let dialogMessage = document.getElementById(dialogConsts.message.id).innerHTML;
+                expect(dialogMessage).toBe(message);
+            });
         });
     });
 
     describe("Question dialogs", () => {
         describe("Boolean question dialog", () => {
             describe("Create", () => {
-
+                test("should correctly display the create boolean question dialog", () => {
+                    let dialogConsts = booleanQuestionDialog;
+                    displayCreateBooleanQuestionDialog();
+                    expect(isShown(dialogConsts.dialog.id)).toBe(true);
+                });
             });
 
             describe("Edit", () => {
