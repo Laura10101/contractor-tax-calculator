@@ -100,15 +100,15 @@ describe("App state management", () => {
     });
 });
 
-describe("View model accessor methods", () => {
-    beforeEach(() => {
-        appState = buildAppState();
-        app.jurisdictions = appState.jurisdictions;
-        app.taxCategories = appState.taxCategories;
-        app.jurisdictionForm = appState.jurisdictionForm;
-        app.jurisdictionRules = appState.jurisdictionRules;
-    });
+beforeEach(() => {
+    appState = buildAppState();
+    app.jurisdictions = appState.jurisdictions;
+    app.taxCategories = appState.taxCategories;
+    app.jurisdictionForm = appState.jurisdictionForm;
+    app.jurisdictionRules = appState.jurisdictionRules;
+});
 
+describe("View model accessor methods", () => {
     describe("Forms", () => {
         test("should return the correct form from view model", () => {
             let form = getForm();
@@ -363,7 +363,25 @@ describe("Ordinal traversal and management", () => {
         });
 
         describe("Resequence ordinals", () => {
+            test("should ensure that ordinals are sequential, starting with 1, after middle question is deleted", () => {
+                let i = 1;
 
+                // Get the question we are going to delete
+                let deletedQuestion = app.jurisdictionForm.forms["1"].questions[i];
+
+                // Now delete the question from the list
+                expect(app.jurisdictionForm.forms["1"].questions.length).toBe(3);
+                app.jurisdictionForm.forms["1"].questions.splice(i, 1);
+                expect(app.jurisdictionForm.forms["1"].questions.length).toBe(2);
+
+                // Now resequence the ordinals
+                let questions = resequenceQuestionOrdinals(deletedQuestion);
+                expect(questions[0].id).toBe(3);
+                expect(questions[0].ordinal).toBe(1);
+
+                expect(questions[1].id).toBe(7);
+                expect(questions[1].ordinal).toBe(2);
+            });
         });
     });
 
@@ -438,7 +456,28 @@ describe("Ordinal traversal and management", () => {
         });
 
         describe("Resequence ordinals", () => {
+            test("should ensure that ordinals are sequential, starting with 1, after middle ruleset is deleted", () => {
+                let i = 2;
 
+                // Get the ruleset we are going to delete
+                let deletedRuleset = app.jurisdictionRules[i];
+
+                // Now delete the ruleset from the list
+                expect(app.jurisdictionRules.length).toBe(4);
+                app.jurisdictionRules.splice(i, 1);
+                expect(app.jurisdictionRules.length).toBe(3);
+
+                // Now resequence the ordinals
+                let rulesets = resequenceRulesetOrdinals(deletedRuleset);
+                expect(rulesets[0].id).toBe(23);
+                expect(rulesets[0].ordinal).toBe(1);
+
+                expect(rulesets[1].id).toBe(24);
+                expect(rulesets[1].ordinal).toBe(2);
+
+                expect(rulesets[2].id).toBe(27);
+                expect(rulesets[2].ordinal).toBe(3);
+            });
         });
     });
 
@@ -569,7 +608,29 @@ describe("Ordinal traversal and management", () => {
         });
 
         describe("Resequence ordinals", () => {
+            test("should ensure that ordinals are sequential, starting with 1, after middle rule is deleted", () => {
+                let rulesetI = 3;
+                let ruleI = 1;
 
+                // Get the ruleset we are going to delete
+                let deletedRule = app.jurisdictionRules[rulesetI].rules[ruleI];
+
+                expect(deletedRule.id).toBe(44);
+                expect(deletedRule.ordinal).toBe(2);
+
+                // Now delete the ruleset from the list
+                expect(app.jurisdictionRules[rulesetI].rules.length).toBe(3);
+                app.jurisdictionRules[rulesetI].rules.splice(ruleI, 1);
+                expect(app.jurisdictionRules[rulesetI].rules.length).toBe(2);
+
+                // Now resequence the ordinals
+                let rules = resequenceRuleOrdinals(deletedRule);
+                expect(rules[0].id).toBe(41);
+                expect(rules[0].ordinal).toBe(1);
+
+                expect(rules[1].id).toBe(45);
+                expect(rules[1].ordinal).toBe(2);
+            });
         });
     });
 
@@ -709,7 +770,33 @@ describe("Ordinal traversal and management", () => {
         });
 
         describe("Resequence ordinals", () => {
+            test("should ensure that ordinals are sequential, starting with 1, after middle rule is deleted", () => {
+                let rulesetI = 3;
+                let ruleI = 1;
+                let tierI = 2;
 
+                // Get the rule tier we are going to delete
+                let deletedTier = app.jurisdictionRules[rulesetI].rules[ruleI].tiers[tierI];
+
+                expect(deletedTier.id).toBe(5);
+                expect(deletedTier.ordinal).toBe(3);
+
+                // Now delete the rule tier from the list
+                expect(app.jurisdictionRules[rulesetI].rules[ruleI].tiers.length).toBe(4);
+                app.jurisdictionRules[rulesetI].rules[ruleI].tiers.splice(tierI, 1);
+                expect(app.jurisdictionRules[rulesetI].rules[ruleI].tiers.length).toBe(3);
+
+                // Now resequence the ordinals
+                let tiers = resequenceRuleTierOrdinals(deletedTier);
+                expect(tiers[0].id).toBe(3);
+                expect(tiers[0].ordinal).toBe(1);
+
+                expect(tiers[1].id).toBe(4);
+                expect(tiers[1].ordinal).toBe(2);
+
+                expect(tiers[1].id).toBe(6);
+                expect(tiers[1].ordinal).toBe(3);
+            });
         });
     });
 });
