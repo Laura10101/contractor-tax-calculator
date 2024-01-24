@@ -51,7 +51,8 @@ const {
 
  beforeEach(() => {
     // Set up DOM state
-    // Used the following resource to load 
+    // Used the following resource to load from a relative path:
+    // https://ultimatecourses.com/blog/relative-paths-with-node-readfilesync
     let fs = require("fs");
     let path = require("path");
     let fileContents = fs.readFileSync(path.resolve(__dirname, "../../../templates/config/config.html"), "utf-8");

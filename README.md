@@ -279,3 +279,4 @@ Alternatively, if using Gitpod, you can click below to create your own workspace
 - [W3Schools - Remove file if it exists](https://www.w3schools.com/python/python_file_remove.asp)
 - [Django - running Django in standalone mode](https://docs.djangoproject.com/en/5.0/topics/settings/)
 - [Deep clone technique](https://developer.mozilla.org/en-US/docs/Glossary/Deep_copy)
+- [Load relative file paths using Node.js](https://ultimatecourses.com/blog/relative-paths-with-node-readfilesync)
