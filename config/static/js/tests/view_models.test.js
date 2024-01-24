@@ -612,6 +612,7 @@ describe("Ordinal traversal and management", () => {
                 let rulesetI = 3;
                 let ruleI = 1;
 
+                setParentRuleset(app.jurisdictionRules[rulesetI]);
                 // Get the ruleset we are going to delete
                 let deletedRule = app.jurisdictionRules[rulesetI].rules[ruleI];
 
