@@ -775,6 +775,7 @@ describe("Ordinal traversal and management", () => {
                 let ruleI = 1;
                 let tierI = 2;
 
+                setParentState(dialogStates.modes.edit, dialogStates.entityTypes.tieredRateRule, app.jurisdictionRules[rulesetI].rules[ruleI]);
                 // Get the rule tier we are going to delete
                 let deletedTier = app.jurisdictionRules[rulesetI].rules[ruleI].tiers[tierI];
 
@@ -794,8 +795,8 @@ describe("Ordinal traversal and management", () => {
                 expect(tiers[1].id).toBe(4);
                 expect(tiers[1].ordinal).toBe(2);
 
-                expect(tiers[1].id).toBe(6);
-                expect(tiers[1].ordinal).toBe(3);
+                expect(tiers[2].id).toBe(6);
+                expect(tiers[2].ordinal).toBe(3);
             });
         });
     });
