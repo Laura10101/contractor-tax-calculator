@@ -178,6 +178,10 @@ function findPrimaryRuleTierById(tierId) {
  * Ordinal Traversal
  */
 function findPreviousQuestion(question) {
+    if (question == null || question.ordinal == null) {
+        return null;
+    }
+    
     let questions = getQuestions();
     let previousQuestion = null;
     questions.forEach(candidateQuestion => {
@@ -197,6 +201,10 @@ function findPreviousQuestion(question) {
 }
 
 function findNextQuestion(question) {
+    if (question == null || question.ordinal == null) {
+        return null;
+    }
+
     let questions = getQuestions();
     let nextQuestion = null;
     questions.forEach(candidateQuestion => {
@@ -232,6 +240,10 @@ function getNextRulesetOrdinal() {
 }
 
 function findPreviousRuleset(ruleset) {
+    if (ruleset == null || ruleset.ordinal == null) {
+        return null;
+    }
+
     let rulesets = app.jurisdictionRules;
     let previousRuleset = null;
     rulesets.forEach(candidateRuleset => {
@@ -251,6 +263,10 @@ function findPreviousRuleset(ruleset) {
 }
 
 function findNextRuleset(ruleset) {
+    if (ruleset == null || ruleset.ordinal == null) {
+        return null;
+    }
+
     let rulesets = app.jurisdictionRules;
     let nextRuleset = null;
     rulesets.forEach(candidateRuleset => {
@@ -302,6 +318,10 @@ function getNextRuleOrdinal() {
 }
 
 function findPreviousRule(ruleset, rule) {
+    if (ruleset == null || rule == null || ruleset.rules == null || rule.ordinal == null) {
+        return null;
+    }
+
     let rules = ruleset.rules;
     let previousRule = null;
     rules.forEach(candidateRule => {
@@ -321,6 +341,10 @@ function findPreviousRule(ruleset, rule) {
 }
 
 function findNextRule(ruleset, rule) {
+    if (ruleset == null || rule == null || ruleset.rules == null || rule.ordinal == null) {
+        return null;
+    }
+
     let rules = ruleset.rules;
     let nextRule = null;
     rules.forEach(candidateRule => {
@@ -364,6 +388,9 @@ function getNextRuleTierOrdinal(rule) {
 }
 
 function findPreviousRuleTier(rule, tier) {
+    if (rule == null || tier == null || rule.tiers == null || tier.ordinal == null) {
+        return null;
+    }
     let tiers = rule.tiers;
     let previousTier = null;
     tiers.forEach(candidateTier => {
@@ -383,6 +410,10 @@ function findPreviousRuleTier(rule, tier) {
 }
 
 function findNextRuleTier(rule, tier) {
+    if (rule == null || tier == null || rule.tiers == null || tier.ordinal == null) {
+        return null;
+    }
+
     let tiers = rule.tiers;
     let nextTier = null;
     tiers.forEach(candidateTier => {
