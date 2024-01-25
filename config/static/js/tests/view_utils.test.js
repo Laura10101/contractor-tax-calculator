@@ -32,7 +32,7 @@ const {
 const { buildAppState } = require("./mocks/view_models.mocks.js");
 
 const {
-    app, findQuestionById
+    app, findQuestionById, findRuleById, getRulesByTypeForJurisdiction
  } = require("../view_models");
 
 const {
@@ -367,31 +367,152 @@ describe("Dialog utilities", () => {
     describe("Rule dialogs", () => {
         describe("Flat rate rule dialog", () => {
             describe("Create", () => {
+                test("should correctly display the create flat rate rule dialog", () => {
+                    let dialogConsts = flatRateRuleDialog;
+                    displayCreateFlatRateRuleDialog();
+                    expect(isShown(dialogConsts.dialog.id)).toBe(true);
+                    
+                    let name = document.getElementById(dialogConsts.name.input.id).value;
+                    let explainer = document.getElementById(dialogConsts.explainer.input.id).value;
+                    let variableName = document.getElementById(dialogConsts.variableName.input.id).value;
+                    let taxRate = document.getElementById(dialogConsts.taxRate.input.id).value;
 
+                    expect(name).toBe("");
+                    expect(explainer).toBe("");
+                    expect(variableName).toBe("");
+                    expect(taxRate).toBe("");
+                });
             });
 
             describe("Edit", () => {
+                test("should correctly display the edit flat rate rule dialog", () => {
+                    let rule = findRuleById(19);
+                    expect(rule).toBeDefined();
+                    expect(rule.id).toBe(19);
+                    expect(rule.type).toBe("flat_rate");
 
+                    let dialogConsts = flatRateRuleDialog;
+                    displayEditFlatRateRuleDialog(rule);
+                    expect(isShown(dialogConsts.dialog.id)).toBe(true);
+                    
+                    let name = document.getElementById(dialogConsts.name.input.id).value;
+                    let explainer = document.getElementById(dialogConsts.explainer.input.id).value;
+                    let variableName = document.getElementById(dialogConsts.variableName.input.id).value;
+                    let taxRate = document.getElementById(dialogConsts.taxRate.input.id).value;
+
+                    expect(name).toBe(rule.name);
+                    expect(explainer).toBe(rule.explainer);
+                    expect(variableName).toBe(rule.variable_name);
+                    expect(parseInt(taxRate)).toBe(rule.tax_rate);
+                });
             });
         });
 
         describe("Tiered rate rule dialog", () => {
             describe("Create", () => {
+                test("should correctly display the create tiered rate rule dialog", () => {
+                    let dialogConsts = tieredRateRuleDialog;
+                    displayCreateTieredRateRuleDialog();
+                    expect(isShown(dialogConsts.dialog.id)).toBe(true);
+                    
+                    let name = document.getElementById(dialogConsts.name.input.id).value;
+                    let explainer = document.getElementById(dialogConsts.explainer.input.id).value;
+                    let variableName = document.getElementById(dialogConsts.variableName.input.id).value;
 
+                    expect(name).toBe("");
+                    expect(explainer).toBe("");
+                    expect(variableName).toBe("");
+
+                    let tiersTable = document.getElementById(dialogConsts.tiers.table.id);
+                    expect(tiersTable).toBeDefined();
+                    expect(tiersTable.children.length).toBe(1);
+                });
             });
 
             describe("Edit", () => {
+                test("should correctly display the create tiered rate rule dialog", () => {
+                    let rule = findRuleById(44);
+                    expect(rule).toBeDefined();
+                    expect(rule.id).toBe(44);
+                    expect(rule.type).toBe("tiered_rate");
 
+                    let dialogConsts = tieredRateRuleDialog;
+                    displayEditTieredRateRuleDialog(rule);
+                    expect(isShown(dialogConsts.dialog.id)).toBe(true);
+                    
+                    let name = document.getElementById(dialogConsts.name.input.id).value;
+                    let explainer = document.getElementById(dialogConsts.explainer.input.id).value;
+                    let variableName = document.getElementById(dialogConsts.variableName.input.id).value;
+
+                    expect(name).toBe(rule.name);
+                    expect(explainer).toBe(rule.explainer);
+                    expect(variableName).toBe(rule.variable_name);
+
+                    let tiersTable = document.getElementById(dialogConsts.tiers.table.id);
+                    expect(tiersTable).toBeDefined();
+                    expect(tiersTable.children.length).toBe(rule.tiers.length + 1);
+                });
             });
         });
 
         describe("Secondary tiered rate rule dialog", () => {
             describe("Create", () => {
+                test("should correctly display the create secondary tiered rate rule dialog", () => {
+                    let primaryRules = getRulesByTypeForJurisdiction("tiered_rate");
+                    let dialogConsts = secondaryTieredRateRuleDialog;
 
+                    displayCreateSecondaryTieredRateRuleDialog(primaryRules);
+                    expect(isShown(dialogConsts.dialog.id)).toBe(true);
+                    
+                    let name = document.getElementById(dialogConsts.name.input.id).value;
+                    let explainer = document.getElementById(dialogConsts.explainer.input.id).value;
+                    let variableName = document.getElementById(dialogConsts.variableName.input.id).value;
+                    let primaryRuleSelect = document.getElementById(dialogConsts.primaryRule.input.id);
+
+                    expect(name).toBe("");
+                    expect(explainer).toBe("");
+                    expect(variableName).toBe("");
+                    expect(primaryRuleSelect.children.length).toBe(primaryRules.length);
+                    for (var i = 0; i < primaryRuleSelect.children.length; i++) {
+                        expect(parseInt(primaryRuleSelect.children[i].value)).toBe(primaryRules[i].id);
+                    }
+
+                    let tiersTable = document.getElementById(dialogConsts.tiers.table.id);
+                    expect(tiersTable).toBeDefined();
+                    expect(tiersTable.children.length).toBe(1);
+                });
             });
 
             describe("Edit", () => {
+                test("should correctly display the create secondary tiered rate rule dialog", () => {
+                    let rule = findRuleById(45);
+                    expect(rule).toBeDefined();
+                    expect(rule.id).toBe(45);
+                    expect(rule.type).toBe("secondary_tiered_rate");
 
+                    let primaryRules = getRulesByTypeForJurisdiction("tiered_rate");
+                    let dialogConsts = secondaryTieredRateRuleDialog;
+
+                    displayEditSecondaryTieredRateRuleDialog(rule, primaryRules);
+                    expect(isShown(dialogConsts.dialog.id)).toBe(true);
+                    
+                    let name = document.getElementById(dialogConsts.name.input.id).value;
+                    let explainer = document.getElementById(dialogConsts.explainer.input.id).value;
+                    let variableName = document.getElementById(dialogConsts.variableName.input.id).value;
+                    let primaryRuleSelect = document.getElementById(dialogConsts.primaryRule.input.id);
+
+                    expect(name).toBe(rule.name);
+                    expect(explainer).toBe(rule.explainer);
+                    expect(variableName).toBe(rule.variable_name);
+                    expect(primaryRuleSelect.children.length).toBe(primaryRules.length);
+                    for (var i = 0; i < primaryRuleSelect.children.length; i++) {
+                        expect(parseInt(primaryRuleSelect.children[i].value)).toBe(primaryRules[i].id);
+                    }
+
+                    let tiersTable = document.getElementById(dialogConsts.tiers.table.id);
+                    expect(tiersTable).toBeDefined();
+                    expect(tiersTable.children.length).toBe(rule.tiers.length + 1);
+                });
             });
         });
     });
