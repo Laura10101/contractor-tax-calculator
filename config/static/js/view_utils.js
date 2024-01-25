@@ -69,7 +69,8 @@ const {
  * General Helper Functions
  */
 
-function showMessage(message) {
+function showMessage(message, title="An Error Occurred") {
+    document.getElementById(statusDialog.label.id).innerHTML = title;
     document.getElementById(statusDialog.message.id).innerHTML = message;
     showDialog(statusDialog.dialog.id);
 }
@@ -79,7 +80,7 @@ function error(message) {
 }
 
 function success(message) {
-    showMessage(message);
+    showMessage(message, "Success");
 }
 
 function confirm(message, onConfirm) {
