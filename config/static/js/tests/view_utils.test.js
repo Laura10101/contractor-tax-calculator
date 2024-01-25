@@ -32,7 +32,7 @@ const {
 const { buildAppState } = require("./mocks/view_models.mocks.js");
 
 const {
-    app, findQuestionById, findRuleById, getRulesByTypeForJurisdiction
+    app, findQuestionById, findRuleById, getRulesByTypeForJurisdiction, getQuestions, findParentRuleset, getTaxCategoryById
  } = require("../view_models");
 
 const {
@@ -696,52 +696,182 @@ describe("Select utilities", () => {
 
 describe("Display utilities", () => {
     describe("Questions", () => {
-        describe("List", () => {
-
-        });
-
         describe("Boolean question", () => {
+            test("should correctly display the given boolean question", () => {
+                let question = findQuestionById(3);
+                displayBooleanQuestion(question);
 
+                let questionCard = document.getElementById(booleanQuestionDisplay.card.id + "-" + question.id);
+                let textDisplay = questionCard.querySelector("#" + booleanQuestionDisplay.questionText.id + "-" + question.id);
+                let variableNameDisplay = questionCard.querySelector("#" + booleanQuestionDisplay.variableName.id + "-" + question.id);
+                let explainerDisplay = questionCard.querySelector("#" + booleanQuestionDisplay.explainer.id + "-" + question.id);
+                let isMandatoryDisplay = questionCard.querySelector("#" + booleanQuestionDisplay.isMandatory.id + "-" + question.id);
+
+                expect(textDisplay.innerHTML).toBe(question.text);
+                expect(variableNameDisplay.innerHTML).toBe(question.variable_name);
+                expect(explainerDisplay.innerHTML).toBe(question.explainer);
+                expect(isMandatoryDisplay.innerHTML).toBe(question.is_mandatory ? "Mandatory": "Optional");
+            });
         });
 
         describe("Numeric question", () => {
+            test("should correctly display the given numeric question", () => {
+                let question = findQuestionById(4);
+                displayNumericQuestion(question);
 
+                let questionCard = document.getElementById(numericQuestionDisplay.card.id + "-" + question.id);
+                let textDisplay = questionCard.querySelector("#" + numericQuestionDisplay.questionText.id + "-" + question.id);
+                let variableNameDisplay = questionCard.querySelector("#" + numericQuestionDisplay.variableName.id + "-" + question.id);
+                let explainerDisplay = questionCard.querySelector("#" + numericQuestionDisplay.explainer.id + "-" + question.id);
+                let isMandatoryDisplay = questionCard.querySelector("#" + numericQuestionDisplay.isMandatory.id + "-" + question.id);
+
+                expect(textDisplay.innerHTML).toBe(question.text);
+                expect(variableNameDisplay.innerHTML).toBe(question.variable_name);
+                expect(explainerDisplay.innerHTML).toBe(question.explainer);
+                expect(isMandatoryDisplay.innerHTML).toBe(question.is_mandatory ? "Mandatory": "Optional");
+            });
         });
 
         describe("Multiple choice question", () => {
+            test("should correctly display the given numeric question", () => {
+                let question = findQuestionById(7);
+                displayMultipleChoiceQuestion(question);
 
+                let questionCard = document.getElementById(multipleChoiceQuestionDisplay.card.id + "-" + question.id);
+                let textDisplay = questionCard.querySelector("#" + multipleChoiceQuestionDisplay.questionText.id + "-" + question.id);
+                let variableNameDisplay = questionCard.querySelector("#" + multipleChoiceQuestionDisplay.variableName.id + "-" + question.id);
+                let explainerDisplay = questionCard.querySelector("#" + multipleChoiceQuestionDisplay.explainer.id + "-" + question.id);
+                let isMandatoryDisplay = questionCard.querySelector("#" + multipleChoiceQuestionDisplay.isMandatory.id + "-" + question.id);
+
+                expect(textDisplay.innerHTML).toBe(question.text);
+                expect(variableNameDisplay.innerHTML).toBe(question.variable_name);
+                expect(explainerDisplay.innerHTML).toBe(question.explainer);
+                expect(isMandatoryDisplay.innerHTML).toBe(question.is_mandatory ? "Mandatory": "Optional");
+            });
         });
-    });
 
-    describe("Multiple choice options", () => {
+        describe("List", () => {
+            test("should display all questions for the selected jurisdiction", () => {
+                let questions = getQuestions();
+                updateQuestionDisplay(questions);
 
+                let questionDisplay = document.getElementById(questionDisplayContainer.id);
+                expect(questionDisplay.children.length).toBe(questions.length + 3);
+            });
+        });
     });
 
     describe("Rulesets", () => {
-        describe("List", () => {
+        describe("Ruleset", () => {
+            test("should correctly display the ruleset and associated rules", () => {
+                let ruleset = findParentRuleset(13);
+                expect(ruleset).toBeDefined();
+                expect(ruleset.id).toBe(23);
 
+                displayRuleset(ruleset);
+
+                let rulesetCard = document.getElementById(rulesetDisplay.card.id + "-" + ruleset.id);
+                expect(rulesetCard).toBeDefined();
+
+                let rulesetNameDisplay = display.querySelector("#" + rulesetDisplay.name.id + "-" + ruleset.id);
+                let taxCategoryDisplay = display.querySelector("#" + rulesetDisplay.taxCategpry.id + "-" + ruleset.id);
+                let rulesDisplay = display.querySelector("#" + rulesetDisplay.rules.id + "-" + ruleset.id);
+
+                expect(rulesetNameDisplay.innerHTML).toBe(ruleset.name);
+                expect(taxCategoryDisplay.innerHTML).toBe(getTaxCategoryById(ruleset.tax_category_id).name);
+                expect(rulesDisplay.children.length).toBe(ruleset.rules.length + 3);
+            });
         });
 
-        describe("Ruleset", () => {
+        describe("List", () => {
+            test("should display the correct number of rulesets", () => {
+                let rulesets = app.jurisdictionRules;
+                updateRulesetsDisplay(rulesets);
 
+                let rulesetContainer = document.getElementById(rulesetsDisplayContainer.id);
+                expect(rulesetContainer.children.length).toBe(rulesets.length + 1);
+            });
         });
     });
 
     describe("Rules", () => {
-        describe("List", () => {
-
-        });
-
         describe("Flat rate rule", () => {
+            test("should correctly display the given flat rate rule", () => {
+                let rule = findRuleById(41);
+                expect(rule).toBeDefined();
+                expect(rule.id).toBe(41);
+                expect(rule.type).toBe("flat_rate");
 
+                let ruleset = findParentRuleset(41);
+                expect(ruleset).toBeDefined();
+
+                let rulesDisplay = document.getElementById(rulesetDisplay.rules.id);
+                
+                displayFlatRateRule(rulesDisplay, ruleset, rule);
+
+                let ruleDisplay = rulesDisplay.querySelector("#" + flatRateRuleDisplay.card.id + "-" + rule.id);
+                let ruleNameDisplay = ruleDisplay.querySelector("#" + flatRateRuleDisplay.name.id + "-" + rule.id);
+                let variableNameDisplay = ruleDisplay.querySelector("#" + flatRateRuleDisplay.variableName.id + "-" + rule.id);
+                let explainerDisplay = ruleDisplay.querySelector("#" + flatRateRuleDisplay.explainer.id + "-" + rule.id);
+                let taxRateDisplay = ruleDisplay.querySelector("#" + flatRateRuleDisplay.taxRate.id + "-" + rule.id);
+
+                expect(ruleNameDisplay.innerHTML).toBe(rule.name);
+                expect(variableNameDisplay.innerHTML).toBe(rule.variable_name);
+                expect(explainerDisplay.innerHTML).toBe(rule.explainer);
+                expect(taxRateDisplay.innerHTML).toBe("" + rule.tax_rate);
+            });
         });
 
         describe("Tiered rate rule", () => {
+            test("should correctly display the given tiered rate rule", () => {
+                let rule = findRuleById(44);
+                expect(rule).toBeDefined();
+                expect(rule.id).toBe(44);
+                expect(rule.type).toBe("tiered_rate");
 
+                let ruleset = findParentRuleset(44);
+                expect(ruleset).toBeDefined();
+
+                let rulesDisplay = document.getElementById(rulesetDisplay.rules.id);
+                
+                displayTieredRateRule(rulesDisplay, ruleset, rule);
+
+                let ruleDisplay = rulesDisplay.querySelector("#" + tieredRateRuleDisplay.card.id + "-" + rule.id);
+                let ruleNameDisplay = ruleDisplay.querySelector("#" + tieredRateRuleDisplay.name.id + "-" + rule.id);
+                let variableNameDisplay = ruleDisplay.querySelector("#" + tieredRateRuleDisplay.variableName.id + "-" + rule.id);
+                let explainerDisplay = ruleDisplay.querySelector("#" + tieredRateRuleDisplay.explainer.id + "-" + rule.id);
+
+                expect(ruleNameDisplay.innerHTML).toBe(rule.name);
+                expect(variableNameDisplay.innerHTML).toBe(rule.variable_name);
+                expect(explainerDisplay.innerHTML).toBe(rule.explainer);
+            });
         });
 
         describe("Secondary tiered rate rule", () => {
+            test("should correctly display the given secondary tiered rate rule", () => {
+                let rule = findRuleById(45);
+                expect(rule).toBeDefined();
+                expect(rule.id).toBe(45);
+                expect(rule.type).toBe("secondary_tiered_rate");
 
+                let ruleset = findParentRuleset(44);
+                expect(ruleset).toBeDefined();
+
+                let rulesDisplay = document.getElementById(rulesetDisplay.rules.id);
+                
+                displaySecondaryTieredRateRule(rulesDisplay, ruleset, rule);
+
+                let ruleDisplay = rulesDisplay.querySelector("#" + secondaryTieredRateRuleDisplay.card.id + "-" + rule.id);
+                let ruleNameDisplay = ruleDisplay.querySelector("#" + secondaryTieredRateRuleDisplay.name.id + "-" + rule.id);
+                let variableNameDisplay = ruleDisplay.querySelector("#" + secondaryTieredRateRuleDisplay.variableName.id + "-" + rule.id);
+                let explainerDisplay = ruleDisplay.querySelector("#" + secondaryTieredRateRuleDisplay.explainer.id + "-" + rule.id);
+                let primaryRuleDisplay = ruleDisplay.querySelector("#" + secondaryTieredRateRuleDisplay.primaryRule.id + "-" + rule.id);
+
+                expect(ruleNameDisplay.innerHTML).toBe(rule.name);
+                expect(variableNameDisplay.innerHTML).toBe(rule.variable_name);
+                expect(explainerDisplay.innerHTML).toBe(rule.explainer);
+                expect(primaryRuleDisplay.innerHTML).toBe(rule.primary_rule.name);
+            });
         });
     });
 
