@@ -626,31 +626,70 @@ describe("Dialog utilities", () => {
 describe("Select utilities", () => {
     describe("Jurisdictions select", () => {
         describe("Initialisation", () => {
+            test("should correctly initialise the jurisdictions select box", () => {
+                let select = document.getElementById(jurisdictionsSelect.id);
+                expect(select).toBeDefined();
+                expect(select.children).toBeDefined();
 
-        });
-
-        describe("Selection handler", () => {
-
+                initJurisdictionsSelect(app.jurisdictions, function () {});
+                
+                expect(select.children.length).toBe(app.jurisdictions.length);
+                for (var i = 0; i < app.jurisdictions.length; i++) {
+                    let selectNode = select.children[i];
+                    let jurisdiction = app.jurisdictions[i];
+                    expect(parseInt(selectNode.value)).toBe(jurisdiction.id);
+                    expect(selectNode.text).toBe(jurisdiction.name);
+                }
+            });
         });
     });
 
     describe("Primary rule select", () => {
         describe("Initialisation", () => {
+            test("should correctly initialise the primary rule select box", () => {
+                let select = document.getElementById(secondaryTieredRateRuleDialog.primaryRule.input.id);
+                expect(select).toBeDefined();
+                expect(select.children).toBeDefined();
 
-        });
+                let rules = getRulesByTypeForJurisdiction("tiered_rate");
+                expect(rules).toBeDefined();
+                expect(rules.length).toBe(2);
 
-        describe("Selection handler", () => {
-
+                initPrimaryRulesSelect(rules);
+                
+                expect(select.children.length).toBe(rules.length);
+                for (var i = 0; i < rules.length; i++) {
+                    let selectNode = select.children[i];
+                    let rule = rules[i];
+                    expect(parseInt(selectNode.value)).toBe(rule.id);
+                    expect(selectNode.text).toBe(rule.name);
+                }
+            });
         });
     });
 
     describe("Primary rule tiers select", () => {
         describe("Initialisation", () => {
+            test("should correctly initialise the primary rule select box", () => {
+                let select = document.getElementById(secondaryRuleTierDialog.primaryTier.input.id);
+                expect(select).toBeDefined();
+                expect(select.children).toBeDefined();
 
-        });
+                let rule = findRuleById(44);
+                expect(rule).toBeDefined();
+                expect(rule.id).toBe(44);
+                expect(rule.tiers.length).toBe(4);
 
-        describe("Selection handler", () => {
-
+                initPrimaryRuleTiersSelect(rule.tiers);
+                
+                expect(select.children.length).toBe(rule.tiers.length);
+                for (var i = 0; i < rule.tiers.length; i++) {
+                    let selectNode = select.children[i];
+                    let tier = rule.tiers[i];
+                    expect(parseInt(selectNode.value)).toBe(tier.id);
+                    expect(selectNode.text).toBe(tier.min_value + " - " + tier.max_value + " (" + tier.tier_rate + ")");
+                }
+            });
         });
     });
 });
