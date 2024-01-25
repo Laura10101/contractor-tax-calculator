@@ -332,11 +332,17 @@ describe("Dialog utilities", () => {
 
     describe("Multiple choice option dialog", () => {
         describe("Create", () => {
+            test("should correctly display the create multiple choice option dialog", () => {
+                let dialogConsts = multipleChoiceOptionDialog;
+                displayCreateMultipleChoiceOptionDialog();
+                expect(isShown(dialogConsts.dialog.id)).toBe(true);
+                
+                let name = document.getElementById(dialogConsts.name.input.id).value;
+                let explainer = document.getElementById(dialogConsts.explainer.input.id).value;
 
-        });
-
-        describe("Edit", () => {
-
+                expect(name).toBe("");
+                expect(explainer).toBe("");
+            });
         });
     });
 
