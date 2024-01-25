@@ -517,13 +517,108 @@ describe("Dialog utilities", () => {
         });
     });
 
-    describe("Rule tier dialogs", () => {
+    describe("Primary rule tier dialogs", () => {
         describe("Create", () => {
+            test("should correctly display the create rule tier dialog", () => {
+                let dialogConsts = ruleTierDialog;
 
+                displayCreateRuleTierDialog();
+                expect(isShown(dialogConsts.dialog.id)).toBe(true);
+
+                let minValue = document.getElementById(dialogConsts.minimumValue.input.id).value;
+                let maxValue = document.getElementById(dialogConsts.maximumValue.input.id).value;
+                let taxRate = document.getElementById(dialogConsts.taxRate.input.id).value;
+
+                expect(minValue).toBe("");
+                expect(maxValue).toBe("");
+                expect(taxRate).toBe("");
+            });
         });
 
         describe("Edit", () => {
+            test("should correctly display the edit rule tier dialog for the selected rule tier", () => {
+                let rule = findRuleById(44);
+                expect(rule).toBeDefined();
+                expect(rule.id).toBe(44);
+                expect(rule.type).toBe("tiered_rate");
 
+                let tier = rule.tiers[0];
+
+                let dialogConsts = ruleTierDialog;
+
+                displayEditRuleTierDialog(tier);
+                expect(isShown(dialogConsts.dialog.id)).toBe(true);
+
+                let minValue = document.getElementById(dialogConsts.minimumValue.input.id).value;
+                let maxValue = document.getElementById(dialogConsts.maximumValue.input.id).value;
+                let taxRate = document.getElementById(dialogConsts.taxRate.input.id).value;
+
+                expect(parseInt(minValue)).toBe(tier.min_value);
+                expect(parseInt(maxValue)).toBe(tier.max_value);
+                expect(parseInt(taxRate)).toBe(tier.tier_rate);
+            });
+        });
+    });
+
+    describe("Secondary rule tier dialogs", () => {
+        describe("Create", () => {
+            test("should correctly display the create secondary rule tier dialog", () => {
+                let rule = findRuleById(44);
+                expect(rule).toBeDefined();
+                expect(rule.id).toBe(44);
+                expect(rule.type).toBe("tiered_rate");
+                expect(rule.tiers.length).toBe(4);
+
+                let dialogConsts = secondaryRuleTierDialog;
+
+                displayCreateSecondaryRuleTierDialog(rule.tiers);
+                expect(isShown(dialogConsts.dialog.id)).toBe(true);
+
+                let taxRate = document.getElementById(dialogConsts.taxRate.input.id).value;
+                expect(taxRate).toBe("");
+
+                let primaryTierSelect = document.getElementById(dialogConsts.primaryTier.input.id);
+                expect(primaryTierSelect).toBeDefined();
+                expect(primaryTierSelect.children).toBeDefined();
+                expect(primaryTierSelect.children.length).toBe(rule.tiers.length);
+                for (var i = 0; i < primaryTierSelect.children.length; i++) {
+                    expect(parseInt(primaryTierSelect.children[i].value)).toBe(rule.tiers[i].id)
+                }
+            });
+        });
+
+        describe("Edit", () => {
+            test("should correctly display the create secondary rule tier dialog", () => {
+                let rule = findRuleById(44);
+                expect(rule).toBeDefined();
+                expect(rule.id).toBe(44);
+                expect(rule.type).toBe("tiered_rate");
+                expect(rule.tiers.length).toBe(4);
+
+                let secondaryRule = findRuleById(45);
+                expect(secondaryRule).toBeDefined();
+                expect(secondaryRule.id).toBe(45);
+                expect(secondaryRule.type).toBe("secondary_tiered_rate");
+                expect(secondaryRule.tiers.length).toBe(1);
+
+                let tier = secondaryRule.tiers[0];
+
+                let dialogConsts = secondaryRuleTierDialog;
+
+                displayEditSecondaryRuleTierDialog(tier, rule.tiers);
+                expect(isShown(dialogConsts.dialog.id)).toBe(true);
+
+                let taxRate = document.getElementById(dialogConsts.taxRate.input.id).value;
+                expect(parseInt(taxRate)).toBe(tier.tier_rate);
+
+                let primaryTierSelect = document.getElementById(dialogConsts.primaryTier.input.id);
+                expect(primaryTierSelect).toBeDefined();
+                expect(primaryTierSelect.children).toBeDefined();
+                expect(primaryTierSelect.children.length).toBe(rule.tiers.length);
+                for (var i = 0; i < primaryTierSelect.children.length; i++) {
+                    expect(parseInt(primaryTierSelect.children[i].value)).toBe(rule.tiers[i].id)
+                }
+            });
         });
     });
 });
