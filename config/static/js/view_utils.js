@@ -28,6 +28,43 @@ const {
     tieredRateRuleDisplay,
     secondaryTieredRateRuleDisplay
 } = require("./view_consts.js");
+
+const {
+    app,
+    clearDialogState,
+    setDialogState,
+    setParentState,
+    clearParentState,
+    moveAppStateToParentState,
+    moveParentStateToAppState,
+    setParentRuleset,
+    getForm,
+    getFormId,
+    getTaxCategoryById,
+    getQuestions,
+    getNextQuestionOrdinal,
+    findQuestionById,
+    getTieredRateRulesForJurisdiction,
+    findRuleById,
+    findParentRuleset,
+    findPrimaryRuleTierById,
+    findPreviousQuestion,
+    findNextQuestion,
+    resequenceQuestionOrdinals,
+    getNextRulesetOrdinal,
+    findPreviousRuleset,
+    findNextRuleset,
+    resequenceRulesetOrdinals,
+    getRulesByTypeForJurisdiction,
+    getNextRuleOrdinal,
+    findPreviousRule,
+    findNextRule,
+    resequenceRuleOrdinals,
+    getNextRuleTierOrdinal,
+    findPreviousRuleTier,
+    findNextRuleTier,
+    resequenceRuleTierOrdinals
+} = require("./view_models.js");
 /*
  * General Helper Functions
  */

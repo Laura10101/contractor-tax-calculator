@@ -348,11 +348,19 @@ describe("Dialog utilities", () => {
 
     describe("Ruleset dialog", () => {
         describe("Create", () => {
-
-        });
-
-        describe("Edit", () => {
-
+            test("should correctly display the create ruleset dialog", () => {
+                let dialogConsts = rulesetDialog;
+                displayCreateRulesetDialog()
+                expect(isShown(dialogConsts.dialog.id)).toBe(true);
+                
+                let taxCategories = document.getElementById(dialogConsts.taxCategory.input.id);
+                expect(taxCategories.selectedIndex).toBe(0);
+                expect(taxCategories.children.length).toBe(app.taxCategories.length);
+                
+                for (var i = 0; i < taxCategories.children.length; i++) {
+                    expect(parseInt(taxCategories.children[i].value)).toBe(app.taxCategories[i].tax_category_id);
+                }
+            });
         });
     });
 
