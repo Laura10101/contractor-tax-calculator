@@ -86,16 +86,6 @@ function isShown(dialogId) {
     return $("#" + dialogId).data('bs.modal')?._isShown;
 }
 
-function getDialogTitle(dialogConstants) {
-    let container = document.getElementById(dialogConstants.label.id);
-    return container.innerHTML;
-}
-
-function getDialogText(dialogConstants) {
-    let container = document.getElementById(dialogConstants.message.id);
-    return container.innerHTML;
-}
-
 // Prepare state for tests
 beforeEach(() => {
     // Set up DOM state

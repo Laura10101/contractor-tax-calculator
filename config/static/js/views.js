@@ -3,6 +3,89 @@
  * Provides view functions to render views and react to view actions
  */
 
+const {
+    queryToString,
+    toUrl,
+    getJurisdictions,
+    getTaxCategories,
+    getFormForJurisdiction,
+    createBooleanQuestion,
+    updateBooleanQuestion,
+    createNumericQuestion,
+    updateNumericQuestion,
+    createMultipleChoiceQuestion,
+    updateMultipleChoiceQuestion,
+    updateQuestion,
+    removeQuestion,
+    postMultipleChoiceOption,
+    removeMultipleChoiceOption,
+    getRulesetsForJurisdiction,
+    postRuleset,
+    patchRuleset,
+    removeRuleset,
+    createFlatRateRule,
+    updateFlatRateRule,
+    createTieredRateRule,
+    updateTieredRateRule,
+    createSecondaryTieredRateRule,
+    updateSecondaryTieredRateRule,
+    removeRule,
+    postRuleTier,
+    updateRuleTier,
+    removeRuleTier,
+    postSecondaryRuleTier,
+    updateSecondaryRuleTier,
+    removeSecondaryRuleTier
+} = require("./service_clients.js");
+
+const {
+    app, findQuestionById, findRuleById, getRulesByTypeForJurisdiction, getQuestions, findParentRuleset, getTaxCategoryById, findPrimaryRuleTierById
+} = require("./view_models.js");
+
+const {
+    showDialog,
+    hideDialog,
+    error,
+    success,
+    confirm,
+    removeAllChildNodes,
+    updateRuleTierTable,
+    resetContainer,
+    initJurisdictionsSelect,
+    getSelectedJurisdictionId,
+    displayCreateBooleanQuestionDialog,
+    displayEditBooleanQuestionDialog,
+    displayCreateNumericQuestionDialog,
+    displayEditNumericQuestionDialog,
+    updateMultipleChoiceQuestionDialogOptionsDisplay,
+    displayCreateMultipleChoiceQuestionDialog,
+    displayEditMultipleChoiceQuestionDialog,
+    displayCreateMultipleChoiceOptionDialog,
+    displayBooleanQuestion,
+    displayNumericQuestion,
+    displayMultipleChoiceQuestion,
+    updateQuestionDisplay,
+    displayCreateRulesetDialog,
+    ruleTypeChosen,
+    displayCreateFlatRateRuleDialog,
+    displayEditFlatRateRuleDialog,
+    displayCreateTieredRateRuleDialog,
+    displayEditTieredRateRuleDialog,
+    initPrimaryRulesSelect,
+    displayCreateSecondaryTieredRateRuleDialog,
+    displayEditSecondaryTieredRateRuleDialog,
+    displayCreateRuleTierDialog,
+    displayEditRuleTierDialog,
+    initPrimaryRuleTiersSelect,
+    displayCreateSecondaryRuleTierDialog,
+    displayEditSecondaryRuleTierDialog,
+    displayFlatRateRule,
+    displayTieredRateRule,
+    displaySecondaryTieredRateRule,
+    displayRuleset,
+    updateRulesetsDisplay
+} = require("./view_utils.js");
+
 function doNothing() {}
 /*
  * Forms Views
@@ -1058,7 +1141,8 @@ if (module == undefined) {
         saveRuleset,
         createRuleset,
         deleteRulesetSucceeded,
-        confirmDeleteRulesetdeleteRuleset,
+        confirmDeleteRuleset,
+        deleteRuleset,
         swapRulesetOrdinals,
         moveRulesetUp,
         moveRulesetDown,
