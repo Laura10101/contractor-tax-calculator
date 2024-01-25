@@ -32,7 +32,7 @@ const {
 const { buildAppState } = require("./mocks/view_models.mocks.js");
 
 const {
-    app, findQuestionById, findRuleById, getRulesByTypeForJurisdiction, getQuestions, findParentRuleset, getTaxCategoryById
+    app, findQuestionById, findRuleById, getRulesByTypeForJurisdiction, getQuestions, findParentRuleset, getTaxCategoryById, findPrimaryRuleTierById
  } = require("../view_models");
 
 const {
@@ -854,7 +854,7 @@ describe("Display utilities", () => {
                 expect(rule.id).toBe(45);
                 expect(rule.type).toBe("secondary_tiered_rate");
 
-                let ruleset = findParentRuleset(44);
+                let ruleset = findParentRuleset(45);
                 expect(ruleset).toBeDefined();
 
                 let rulesDisplay = document.getElementById(rulesetDisplay.rules.id);
@@ -877,11 +877,46 @@ describe("Display utilities", () => {
 
     describe("Rule tiers", () => {
         describe("Primary", () => {
+            test("should correctly display all tiers for the given primary rule", () => {
+                let rule = findRuleById(44);
+                expect(rule).toBeDefined();
+                expect(rule.id).toBe(44);
+                expect(rule.type).toBe("tiered_rate");
 
+                updateRuleTierTable(true, rule.tiers);
+
+                let table = document.getElementById(tieredRateRuleDialog.tiers.table.id);
+                expect(table.children.length).toBe(rule.tiers.length + 1);
+
+                rule.tiers.forEach(tier => {
+                    let tierRow = document.getElementById(tieredRateRuleDialog.tiers.tierRow.id + "-" + tier.id);
+                    expect(parseInt(tierRow.children[0].innerHTML)).toBe(tier.min_value);
+                    expect(parseInt(tierRow.children[1].innerHTML)).toBe(tier.max_value);
+                    expect(parseInt(tierRow.children[2].innerHTML)).toBe(tier.tier_rate);
+                });
+            });
         });
 
         describe("Secondary", () => {
+            test("should correctly display all tiers for the given secondary rule", () => {
+                let rule = findRuleById(45);
+                expect(rule).toBeDefined();
+                expect(rule.id).toBe(45);
+                expect(rule.type).toBe("secondary_tiered_rate");
 
+                updateRuleTierTable(false, rule.tiers);
+
+                let table = document.getElementById(secondaryTieredRateRuleDialog.tiers.table.id);
+                expect(table.children.length).toBe(rule.tiers.length + 1);
+
+                rule.tiers.forEach(tier => {
+                    let primaryTier = findPrimaryRuleTierById(tier.primary_tier_id);
+                    let tierRow = document.getElementById(secondaryTieredRateRuleDialog.tiers.tierRow.id + "-" + tier.id);
+                    expect(parseInt(tierRow.children[0].innerHTML)).toBe(primaryTier.min_value);
+                    expect(parseInt(tierRow.children[1].innerHTML)).toBe(primaryTier.max_value);
+                    expect(parseInt(tierRow.children[2].innerHTML)).toBe(tier.tier_rate);
+                });
+            });
         });
     });
 });

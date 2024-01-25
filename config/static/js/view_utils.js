@@ -675,7 +675,7 @@ function displayEditSecondaryRuleTierDialog(tier, primaryTiers) {
 function displayFlatRateRule(rulesetRulesDisplay, ruleset, rule) {
     ruleDisplay = document.getElementById(flatRateRuleDisplay.card.id).cloneNode(true);
     ruleDisplay.classList.remove("hidden");
-    ruleDisplay.id += "-" + ruleDisplay.id;
+    ruleDisplay.id += "-" + rule.id;
     
     ruleNameDisplay = ruleDisplay.querySelector("#" + flatRateRuleDisplay.name.id);
     ruleNameDisplay.id += "-" + rule.id;
@@ -708,7 +708,7 @@ function displayFlatRateRule(rulesetRulesDisplay, ruleset, rule) {
 function displayTieredRateRule(rulesetRulesDisplay, ruleset, rule) {
     ruleDisplay = document.getElementById(tieredRateRuleDisplay.card.id).cloneNode(true);
     ruleDisplay.classList.remove("hidden");
-    ruleDisplay.id += "-" + ruleDisplay.id;
+    ruleDisplay.id += "-" + rule.id;
     
     ruleNameDisplay = ruleDisplay.querySelector("#" + tieredRateRuleDisplay.name.id);
     ruleNameDisplay.id += "-" + rule.id;
@@ -737,7 +737,7 @@ function displayTieredRateRule(rulesetRulesDisplay, ruleset, rule) {
 function displaySecondaryTieredRateRule(rulesetRulesDisplay, ruleset, rule) {
     ruleDisplay = document.getElementById(secondaryTieredRateRuleDisplay.card.id).cloneNode(true);
     ruleDisplay.classList.remove("hidden");
-    ruleDisplay.id += "-" + ruleDisplay.id;
+    ruleDisplay.id += "-" + rule.id;
     
     ruleNameDisplay = ruleDisplay.querySelector("#" + secondaryTieredRateRuleDisplay.name.id);
     ruleNameDisplay.id += "-" + rule.id;
@@ -754,9 +754,9 @@ function displaySecondaryTieredRateRule(rulesetRulesDisplay, ruleset, rule) {
     ruleExplainerDisplay.id += "-" + rule.id;
     ruleExplainerDisplay.innerHTML = rule.explainer;
 
-    ruleExplainerDisplay = ruleDisplay.querySelector("#" + secondaryTieredRateRuleDisplay.primaryRule.id);
-    ruleExplainerDisplay.id += "-" + rule.id;
-    ruleExplainerDisplay.innerHTML = rule.primary_rule.name;
+    primaryRuleDisplay = ruleDisplay.querySelector("#" + secondaryTieredRateRuleDisplay.primaryRule.id);
+    primaryRuleDisplay.id += "-" + rule.id;
+    primaryRuleDisplay.innerHTML = rule.primary_rule.name;
 
     // Set event handlers on buttons
     ruleDisplay.querySelector(".edit-button").onclick = function() { editRule(ruleset, rule); }
