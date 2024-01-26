@@ -29,6 +29,41 @@ const {
     secondaryTieredRateRuleDisplay
  } = require("../view_consts");
 
+ const {
+    queryToString,
+    toUrl,
+    getJurisdictions,
+    getTaxCategories,
+    getFormForJurisdiction,
+    createBooleanQuestion,
+    updateBooleanQuestion,
+    createNumericQuestion,
+    updateNumericQuestion,
+    createMultipleChoiceQuestion,
+    updateMultipleChoiceQuestion,
+    updateQuestion,
+    removeQuestion,
+    postMultipleChoiceOption,
+    removeMultipleChoiceOption,
+    getRulesetsForJurisdiction,
+    postRuleset,
+    patchRuleset,
+    removeRuleset,
+    createFlatRateRule,
+    updateFlatRateRule,
+    createTieredRateRule,
+    updateTieredRateRule,
+    createSecondaryTieredRateRule,
+    updateSecondaryTieredRateRule,
+    removeRule,
+    postRuleTier,
+    updateRuleTier,
+    removeRuleTier,
+    postSecondaryRuleTier,
+    updateSecondaryRuleTier,
+    removeSecondaryRuleTier
+} = require("../service_clients");
+
 const { buildAppState } = require("./mocks/view_models.mocks.js");
 
 const {
@@ -119,6 +154,12 @@ function isShown(dialogId) {
     // From Stackoverflow: https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes
     return $("#" + dialogId).data('bs.modal')?._isShown;
 }
+
+beforeAll(() => {
+    app.apiHost.protocol = "https:";
+    app.apiHost.hostname = "8000-laura10101-contractorta-g5o2od5xoex.ws-eu107.gitpod.io";
+    jest.useRealTimers();
+});
 
 // Prepare state for tests
 beforeEach(() => {
@@ -415,9 +456,6 @@ describe("Status views", () => {
         });
     });
 
-    describe("Success views", () => {
-    });
-
     describe("Confirmation views", () => {
         describe("Questions", () => {
             test("should display an appropriate confirmation dialog and correctly set the app state", () => {
@@ -563,27 +601,215 @@ describe("Status views", () => {
 });
 
 describe("Jurisdiction views", () => {
+    describe("Loading jurisdictions", () => {
+        test("should correctly populate the jurisdictions select box and the app state", () => {
+            data = {
+                jurisdictions: app.jurisdictions
+            };
 
+            app.jurisdictions = null;
+
+            loadJurisdictionSelect(data);
+
+            expect(app.jurisdictions).toEqual(data.jurisdictions);
+
+            let select = document.getElementById(jurisdictionsSelect.id);
+            expect(select).toBeDefined();
+            expect(select.options.length).toBe(app.jurisdictions.length);
+
+            for (var i = 0; i < data.jurisdictions.length; i++) {
+                expect(parseInt(select.options[i].value)).toBe(data.jurisdictions[i].id);
+                expect(select.options[i].text).toBe(data.jurisdictions[i].name);
+            }
+        });
+    });
 });
 
 describe("Tax category views", () => {
+    describe("Loading tax categories", () => {
+        test("should correctly populate the app state", () => {
+            let taxCategories = app.taxCategories;
+            app.taxCategories = null;
 
+            loadTaxCategorySelect(taxCategories);
+
+            expect(app.taxCategories).toEqual(taxCategories);
+        });
+    });
 });
 
 describe("Question views", () => {
+    describe("Displaying questions", () => {
+        test("should correctly populate the questions list and the app state", () => {
+            let form = app.jurisdictionForm;
+            app.jurisdictionForm = null;
 
+            displayQuestions(form);
+
+            expect(app.jurisdictionForm).toEqual(form);
+
+            let questionDisplay = document.getElementById(questionDisplayContainer.id);
+            expect(questionDisplay).toBeDefined();
+            expect(questionDisplay.children.length).toBe(getQuestions().length + 3);
+        });
+    });
 });
 
 describe("Multilple choice option views", () => {
+    describe("Displaying multiple choice options", () => {
+        test("should correctly populate the options display when the question is held in the app state", () => {
+            let question = findQuestionById(7);
+            expect(question).toBeDefined();
+            expect(question.id).toBe(7);
+            expect(question.options).toBeDefined();
 
+            setDialogState(dialogStates.modes.edit, dialogStates.entityTypes.multipleChoiceQuestion, question);
+            
+            let form = app.jurisdictionForm;
+            app.jurisdictionForm = null;
+
+            displayMultipleChoiceOptions(form);
+
+            expect(app.jurisdictionForm).toBe(form);
+
+            expect(app.dialogState.entity).toBe(question);
+            
+            let optionsTable = document.getElementById(multipleChoiceQuestionDialog.options.table.id);
+            expect(optionsTable).toBeDefined();
+            expect(optionsTable.children.length).toBe(question.options.length + 1);
+        });
+
+        test("should correctly populate the options display when the question is held in the parent state", () => {
+            let question = findQuestionById(7);
+            expect(question).toBeDefined();
+            expect(question.id).toBe(7);
+            expect(question.options).toBeDefined();
+
+            setParentState(dialogStates.modes.edit, dialogStates.entityTypes.multipleChoiceQuestion, question);
+            
+            let form = app.jurisdictionForm;
+            app.jurisdictionForm = null;
+
+            displayMultipleChoiceOptions(form);
+
+            expect(app.jurisdictionForm).toEqual(form);
+
+            expect(app.dialogState.entity).toEqual(question);
+            
+            let optionsTable = document.getElementById(multipleChoiceQuestionDialog.options.table.id);
+            expect(optionsTable).toBeDefined();
+            expect(optionsTable.children.length).toBe(question.options.length + 1);
+        });
+    });
 });
 
 describe("Ruleset views", () => {
+    describe("Displaying rulesets", () => {
+        test("should correctly populate the rulesets display and set the app state", () => {
+            let rulesets = app.jurisdictionRules;
+            app.jurisdictionRules = null;
 
+            let rulesetsDisplay = document.getElementById(rulesetsDisplayContainer.id);
+            expect(rulesetsDisplay.children.length).toBe(1);
+
+            displayRulesets(rulesets);
+
+            expect(app.jurisdictionRules).toEqual(rulesets);
+            expect(rulesetsDisplay).toBeDefined();
+            expect(rulesetsDisplay.children.length).toBe(rulesets.length + 1);
+
+            for (var i = 0; i < rulesets.length; i++) {
+                let ruleset = rulesets[i];
+                let rulesetCard = rulesetsDisplay.children[i + 1];
+                expect(rulesetCard).toBeDefined();
+
+                let rule = ruleset.rules[i];
+                let rulesDisplay = rulesetCard.querySelector("#" + rulesetDisplay.rules.id + "-" + ruleset.id);
+                expect(rulesDisplay).toBeDefined();
+                expect(rulesDisplay.children.length).toBe(ruleset.rules.length + 3);
+            }
+        });
+    });
 });
 
 describe("Rule views views", () => {
+    describe("Displaying rule tiers", () => {
+        describe("Primary rule tiers", () => {
+            test("should correctly populate the rule tiers display and set the app state when the rule is in the app state", () => {
+                let rule = findRuleById(44);
+                let rulesets = app.jurisdictionRules;
+                app.jurisdictionRules = null;
 
+                expect(rule).toBeDefined();
+                setDialogState(dialogStates.modes.edit, dialogStates.entityTypes.tieredRateRule, rule);
+    
+                displayRuleTiersLoadedSucceeded(rulesets);
+
+                expect(app.jurisdictionRules).toEqual(rulesets);
+                expect(app.dialogState.entity).toEqual(rule);
+
+                let display = document.getElementById(tieredRateRuleDialog.tiers.table.id);
+                expect(display).toBeDefined();
+                expect(display.children.length).toBe(rule.tiers.length + 1);
+            });
+
+            test("should correctly populate the rule tiers display and set the app state when the rule is in the parent state", () => {
+                let rule = findRuleById(44);
+                let rulesets = app.jurisdictionRules;
+                app.jurisdictionRules = null;
+
+                expect(rule).toBeDefined();
+                setParentState(dialogStates.modes.edit, dialogStates.entityTypes.tieredRateRule, rule);
+    
+                displayRuleTiersLoadedSucceeded(rulesets);
+
+                expect(app.jurisdictionRules).toEqual(rulesets);
+                expect(app.dialogState.entity).toEqual(rule);
+
+                let display = document.getElementById(tieredRateRuleDialog.tiers.table.id);
+                expect(display).toBeDefined();
+                expect(display.children.length).toBe(rule.tiers.length + 1);
+            });
+        });
+
+        describe("Secondary rule tiers", () => {
+            test("should correctly populate the secondary rule tiers display and set the app state when the rule is in the app state", () => {
+                let rule = findRuleById(45);
+                let rulesets = app.jurisdictionRules;
+                app.jurisdictionRules = null;
+
+                expect(rule).toBeDefined();
+                setDialogState(dialogStates.modes.edit, dialogStates.entityTypes.secondaryTieredRateRule, rule);
+    
+                displayRuleTiersLoadedSucceeded(rulesets);
+
+                expect(app.jurisdictionRules).toEqual(rulesets);
+                expect(app.dialogState.entity).toEqual(rule);
+
+                let display = document.getElementById(secondaryTieredRateRuleDialog.tiers.table.id);
+                expect(display).toBeDefined();
+                expect(display.children.length).toBe(rule.tiers.length + 1);
+            });
+
+            test("should correctly populate the secondary rule tiers display and set the app state when the rule is in the parent state", () => {
+                let rule = findRuleById(45);
+                let rulesets = app.jurisdictionRules;
+                app.jurisdictionRules = null;
+
+                expect(rule).toBeDefined();
+                setParentState(dialogStates.modes.edit, dialogStates.entityTypes.secondaryTieredRateRule, rule);
+    
+                displayRuleTiersLoadedSucceeded(rulesets);
+
+                expect(app.jurisdictionRules).toEqual(rulesets);
+                expect(app.dialogState.entity).toEqual(rule);
+
+                let display = document.getElementById(secondaryTieredRateRuleDialog.tiers.table.id);
+                expect(display).toBeDefined();
+                expect(display.children.length).toBe(rule.tiers.length + 1);
+            });
+        });
+    });
 });
 
 describe("Rule tier views views", () => {
