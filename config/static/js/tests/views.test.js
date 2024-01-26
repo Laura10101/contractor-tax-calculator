@@ -255,7 +255,7 @@ describe("Status views", () => {
             });
     
             describe("Failure to delete multiple choice option", () => {
-                test("should display an appropriate error", () => {
+                test("should display an appropriate error, move the app state to the dialog state and reshow the edit question dialog", () => {
                     let question = findQuestionById(7);
                     expect(question).toBeDefined();
                     expect(question.id).toBe(7);
@@ -391,7 +391,7 @@ describe("Status views", () => {
             });
 
             describe("Failure to delete rule tier", () => {
-                test("should display an appropriate error", () => {
+                test("should display an appropriate error and move app state to dialog state", () => {
                     let rule = findRuleById(44);
                     expect(rule).toBeDefined();
                     expect(rule.id).toBe(44);
@@ -411,6 +411,152 @@ describe("Status views", () => {
                     expect(app.dialogState.entity).toEqual(rule);
                     expect(app.parentState.entity).toBeNull();
                 });
+            });
+        });
+    });
+
+    describe("Success views", () => {
+    });
+
+    describe("Confirmation views", () => {
+        describe("Questions", () => {
+            test("should display an appropriate confirmation dialog and correctly set the app state", () => {
+                let question = findQuestionById(3);
+                expect(question).toBeDefined();
+                expect(question.id).toBe(3);
+
+                let dialogId = confirmationDialog.dialog.id;
+                deleteQuestion(question);
+                expect(isShown(dialogId)).toBe(true);
+
+                let title = document.getElementById(confirmationDialog.label.id).innerHTML;
+                let message = document.getElementById(confirmationDialog.message.id).innerHTML;
+
+                expect(title).toBe("Are you sure?");
+                expect(message).toBe("Please confirm you wish for the following question to be deleted: " + question.text + ".");
+
+                expect(app.dialogState.mode).toBe(dialogStates.modes.delete);
+                expect(app.dialogState.entityType).toBe(dialogStates.entityTypes.question);
+                expect(app.dialogState.entity).toEqual(question);
+            });
+        });
+
+        describe("Multiple choice options", () => {
+            test("should display an appropriate confirmation dialog and correctly set the app and parent states", () => {
+                let question = findQuestionById(7);
+                expect(question).toBeDefined();
+                expect(question.id).toBe(7);
+
+                setDialogState(dialogStates.modes.edit, dialogStates.entityTypes.multipleChoiceQuestion, question);
+
+                option = {
+                    "id": 798,
+                    "text": "A made up option mock",
+                    "explainer": "A completely fictional option"
+                };
+
+                let dialogId = confirmationDialog.dialog.id;
+                deleteMultipleChoiceOption(option);
+                expect(isShown(dialogId)).toBe(true);
+                expect(isShown(multipleChoiceQuestionDialog.dialog.id)).toBe(false);
+
+                let title = document.getElementById(confirmationDialog.label.id).innerHTML;
+                let message = document.getElementById(confirmationDialog.message.id).innerHTML;
+
+                expect(title).toBe("Are you sure?");
+                expect(message).toBe("Please confirm you wish for the following option to be deleted: " + option.text + ".");
+
+                expect(app.dialogState.mode).toBe(dialogStates.modes.delete);
+                expect(app.dialogState.entityType).toBe(dialogStates.entityTypes.multipleChoiceOption);
+                expect(app.dialogState.entity).toEqual(option);
+
+                expect(app.parentState.mode).toBe(dialogStates.modes.edit);
+                expect(app.parentState.entityType).toBe(dialogStates.entityTypes.multipleChoiceQuestion);
+                expect(app.parentState.entity).toEqual(question);
+            });
+        });
+
+        describe("Rulesets", () => {
+            test("should display an appropriate confirmation dialog and correctly set the app state", () => {
+                let ruleset = findParentRuleset(44);
+                expect(ruleset).toBeDefined();
+                expect(ruleset.id).toBe(27);
+
+                let dialogId = confirmationDialog.dialog.id;
+                deleteRuleset(ruleset);
+                expect(isShown(dialogId)).toBe(true);
+
+                let title = document.getElementById(confirmationDialog.label.id).innerHTML;
+                let message = document.getElementById(confirmationDialog.message.id).innerHTML;
+
+                expect(title).toBe("Are you sure?");
+                expect(message).toBe("Please confirm you wish for the following ruleset to be deleted: " + ruleset.name + ".");
+
+                expect(app.dialogState.mode).toBe(dialogStates.modes.delete);
+                expect(app.dialogState.entityType).toBe(dialogStates.entityTypes.ruleset);
+                expect(app.dialogState.entity).toEqual(ruleset);
+            });
+        });
+
+        describe("Rules", () => {
+            test("should display an appropriate confirmation dialog and correctly set the app state", () => {
+                let rule = findRuleById(44);
+                expect(rule).toBeDefined();
+                expect(rule.id).toBe(44);
+
+                let ruleset = findParentRuleset(44);
+                expect(ruleset).toBeDefined();
+                expect(ruleset.id).toBe(27);
+
+                let dialogId = confirmationDialog.dialog.id;
+                deleteRule(ruleset, rule);
+
+                expect(isShown(dialogId)).toBe(true);
+
+                let title = document.getElementById(confirmationDialog.label.id).innerHTML;
+                let message = document.getElementById(confirmationDialog.message.id).innerHTML;
+
+                expect(title).toBe("Are you sure?");
+                expect(message).toBe("Please confirm you wish for the following rule to be deleted: " + rule.name + ".");
+
+                expect(app.dialogState.mode).toBe(dialogStates.modes.delete);
+                expect(app.dialogState.entityType).toBe(dialogStates.entityTypes.rule);
+                expect(app.dialogState.entity).toEqual(rule);
+
+                expect(app.parentRuleset).toEqual(ruleset);
+            });
+        });
+
+        describe("Rule tiers", () => {
+            test("should display an appropriate confirmation dialog and correctly set the app state", () => {
+                let rule = findRuleById(44);
+                expect(rule).toBeDefined();
+                expect(rule.id).toBe(44);
+
+                let tier = rule.tiers[0];
+                expect(tier).toBeDefined();
+                expect(tier.id).toBe(3);
+
+                setDialogState(dialogStates.modes.edit, dialogStates.entityTypes.tieredRateRule, rule);
+
+                let dialogId = confirmationDialog.dialog.id;
+                deleteRuleTier(true, tier);
+
+                expect(isShown(dialogId)).toBe(true);
+
+                let title = document.getElementById(confirmationDialog.label.id).innerHTML;
+                let message = document.getElementById(confirmationDialog.message.id).innerHTML;
+
+                expect(title).toBe("Are you sure?");
+                expect(message).toBe("Please confirm you wish for the selected rule tier to be deleted.");
+
+                expect(app.dialogState.mode).toBe(dialogStates.modes.delete);
+                expect(app.dialogState.entityType).toBe(dialogStates.entityTypes.ruleTier);
+                expect(app.dialogState.entity).toEqual(tier);
+
+                expect(app.parentState.mode).toBe(dialogStates.modes.edit);
+                expect(app.parentState.entityType).toBe(dialogStates.entityTypes.tieredRateRule);
+                expect(app.parentState.entity).toEqual(rule);
             });
         });
     });

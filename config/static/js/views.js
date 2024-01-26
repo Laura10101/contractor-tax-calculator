@@ -72,7 +72,10 @@ const {
     findParentRuleset,
     moveAppStateToParentState,
     moveParentStateToAppState,
-    clearParentState
+    clearParentState,
+    setDialogState,
+    setParentState,
+    setParentRuleset
 } = require("./view_models.js");
 
 const {
