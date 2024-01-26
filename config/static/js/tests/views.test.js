@@ -1003,4 +1003,106 @@ describe("Rule tier views views", () => {
             });
         });
     });
+
+    describe("Creating primary rule tiers", () => {
+        test("should display the create rule tier dialog and correctly set app state", () => {
+            let rule = findRuleById(44);
+            expect(rule).toBeDefined();
+            expect(rule.id).toBe(44);
+
+            setDialogState(dialogStates.modes.edit, dialogStates.entityTypes.tieredRateRule, rule);
+            createRuleTier(true);
+            
+            // Check app state
+            expect(app.dialogState.mode).toBe(dialogStates.modes.create);
+            expect(app.dialogState.entityType).toBe(dialogStates.entityTypes.ruleTier);
+            expect(app.dialogState.entity).toBe(null);
+
+            // Check parent state
+            expect(app.parentState.mode).toBe(dialogStates.modes.edit);
+            expect(app.parentState.entityType).toBe(dialogStates.entityTypes.tieredRateRule);
+            expect(app.parentState.entity).toBe(rule);
+
+            // Check the dialog
+            expect(isShown(ruleTierDialog.dialog.id)).toBe(true);
+        });
+    });
+
+    describe("Creating secondary rule tiers", () => {
+        test("should display the create secondary rule tier dialog and correctly set app state", () => {
+            let rule = findRuleById(45);
+            expect(rule).toBeDefined();
+            expect(rule.id).toBe(45);
+
+            setDialogState(dialogStates.modes.edit, dialogStates.entityTypes.secondaryTieredRateRule, rule);
+            createRuleTier(false);
+            
+            // Check app state
+            expect(app.dialogState.mode).toBe(dialogStates.modes.create);
+            expect(app.dialogState.entityType).toBe(dialogStates.entityTypes.secondaryRuleTier);
+            expect(app.dialogState.entity).toBe(null);
+
+            // Check parent state
+            expect(app.parentState.mode).toBe(dialogStates.modes.edit);
+            expect(app.parentState.entityType).toBe(dialogStates.entityTypes.secondaryTieredRateRule);
+            expect(app.parentState.entity).toBe(rule);
+
+            // Check the dialog
+            expect(isShown(secondaryRuleTierDialog.dialog.id)).toBe(true);
+        });
+    });
+
+    describe("Editing primary rule tiers", () => {
+        test("should display the edit rule tier dialog and correctly set app state", () => {
+            let rule = findRuleById(44);
+            expect(rule).toBeDefined();
+            expect(rule.id).toBe(44);
+
+            let tier = rule.tiers[0];
+            expect(tier).toBeDefined();
+
+            setDialogState(dialogStates.modes.edit, dialogStates.entityTypes.tieredRateRule, rule);
+            editRuleTier(true, tier);
+            
+            // Check app state
+            expect(app.dialogState.mode).toBe(dialogStates.modes.edit);
+            expect(app.dialogState.entityType).toBe(dialogStates.entityTypes.ruleTier);
+            expect(app.dialogState.entity).toBe(tier);
+
+            // Check parent state
+            expect(app.parentState.mode).toBe(dialogStates.modes.edit);
+            expect(app.parentState.entityType).toBe(dialogStates.entityTypes.tieredRateRule);
+            expect(app.parentState.entity).toBe(rule);
+
+            // Check the dialog
+            expect(isShown(ruleTierDialog.dialog.id)).toBe(true);
+        });
+    });
+
+    describe("Editing secondary rule tiers", () => {
+        test("should display the edit secondary rule tier dialog and correctly set app state", () => {
+            let rule = findRuleById(45);
+            expect(rule).toBeDefined();
+            expect(rule.id).toBe(45);
+
+            let tier = rule.tiers[0];
+            expect(tier).toBeDefined();
+
+            setDialogState(dialogStates.modes.edit, dialogStates.entityTypes.secondaryTieredRateRule, rule);
+            editRuleTier(false, tier);
+            
+            // Check app state
+            expect(app.dialogState.mode).toBe(dialogStates.modes.edit);
+            expect(app.dialogState.entityType).toBe(dialogStates.entityTypes.secondaryRuleTier);
+            expect(app.dialogState.entity).toBe(tier);
+
+            // Check parent state
+            expect(app.parentState.mode).toBe(dialogStates.modes.edit);
+            expect(app.parentState.entityType).toBe(dialogStates.entityTypes.secondaryTieredRateRule);
+            expect(app.parentState.entity).toBe(rule);
+
+            // Check the dialog
+            expect(isShown(secondaryRuleTierDialog.dialog.id)).toBe(true);
+        });
+    });
 });
