@@ -667,11 +667,21 @@ describe("Question views", () => {
             });
 
             test("should display the correct dialog when numeric question is selected", () => {
-
+                let questionTypeSelect = document.getElementById(questionTypeDialog.questionType.input.id);
+                showDialog(questionTypeDialog.dialog.id);
+                questionTypeSelect.value = "numeric";
+                questionTypeSelected();
+                expect(isShown(numericQuestionDialog.dialog.id)).toBe(true);
+                expect(isShown(questionTypeDialog.dialog.id)).toBe(false);
             });
 
             test("should display the correct dialog when multiple choice question is selected", () => {
-
+                let questionTypeSelect = document.getElementById(questionTypeDialog.questionType.input.id);
+                showDialog(questionTypeDialog.dialog.id);
+                questionTypeSelect.value = "multiple_choice";
+                questionTypeSelected();
+                expect(isShown(multipleChoiceQuestionDialog.dialog.id)).toBe(true);
+                expect(isShown(questionTypeDialog.dialog.id)).toBe(false);
             });
         });
     });
