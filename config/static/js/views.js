@@ -332,14 +332,14 @@ function saveQuestion() {
     }
 }
 
-function deleteQuestionSucceeded(request, status, message) {
+function deleteQuestionSucceeded(request, status, message, ordinalUpdater=updateQuestion, displayRefresher=refreshQuestionsDisplay) {
     success("The selected question was successfully deleted.");
     questions = resequenceQuestionOrdinals(app.dialogState.entity);
     questions.forEach(question => {
-        updateQuestion(question, doNothing, saveQuestionFailed);
+        ordinalUpdater(question, doNothing, saveQuestionFailed);
     })
     clearDialogState();
-    refreshQuestionsDisplay();
+    displayRefresher();
 }
 
 function deleteQuestionFailed(request, status, message) {
@@ -510,12 +510,12 @@ function createRuleset() {
     displayCreateRulesetDialog();
 }
 
-function deleteRulesetSucceeded() {
+function deleteRulesetSucceeded(ordinalUpdater=patchRuleset, displayRefresher=refreshRulesetsDisplay) {
     success("The selected ruleset was successfully deleted.");
     rulesets = resequenceRulesetOrdinals(app.dialogState.entity);
     rulesets.forEach(ruleset => {
         if (ruleset.id != app.dialogState.entity.id) {
-            patchRuleset(
+            ordinalUpdater(
                 ruleset.id,
                 ruleset.ordinal,
                 doNothing,
@@ -523,7 +523,7 @@ function deleteRulesetSucceeded() {
         }
     });
     clearDialogState();
-    refreshRulesetsDisplay();
+    displayRefresher();
 }
 
 function deleteRulesetFailed() {
@@ -730,14 +730,16 @@ function saveRule() {
     }
 }
 
-function deleteRuleSucceeded() {
+function deleteRuleSucceeded(flatRateRuleUpdater=updateFlatRateRule, tieredRateRuleUpdater=updateTieredRateRule,
+    secondaryTieredRateRuleUpdater=updateSecondaryTieredRateRule, displayRefresher=refreshRulesetsDisplay) {
+
     success("The selected rule was successfully deleted.");
     rules = resequenceRuleOrdinals(app.dialogState.entity);
     rules.forEach(rule => {
         if (rule.id != app.dialogState.entity.id) {
             switch(rule.type) {
                 case "flat_rate":
-                        updateFlatRateRule(
+                        flatRateRuleUpdater(
                             app.parentRuleset.id,
                             rule.id,
                             rule.name,
@@ -750,7 +752,7 @@ function deleteRuleSucceeded() {
                         );
                     break;
                 case "tiered_rate":
-                        updateTieredRateRule(
+                        tieredRateRuleUpdater(
                             app.parentRuleset.id,
                             rule.id,
                             rule.name,
@@ -763,7 +765,7 @@ function deleteRuleSucceeded() {
                     break;
                 case "secondary_tiered_rate":
                         if (rule.primary_rule.id != app.dialogState.entity.id) {
-                            updateSecondaryTieredRateRule(
+                            secondaryTieredRateRuleUpdater(
                                 app.parentRuleset.id,
                                 rule.id,
                                 rule.name,
@@ -780,7 +782,7 @@ function deleteRuleSucceeded() {
         }
     });
     clearDialogState();
-    refreshRulesetsDisplay();
+    displayRefresher();
 }
 
 function deleteRuleFailed() {
@@ -1053,7 +1055,7 @@ function moveRuleTierDown(isPrimary, tier) {
     swapRuleTierOrdinals(isPrimary, tier, findNextRuleTier);
 }
 
-function deleteRuleTierSucceeded() {
+function deleteRuleTierSucceeded(primaryTierUpdater=updateRuleTier, secondaryTierUpdater=updateSecondaryRuleTier, displayRefresher=refreshRuleTiersDisplay) {
     success("The selected rule tier was successfully deleted.");
     rule = app.parentState.entity;
     ruleset = findParentRuleset(rule.id);
@@ -1063,7 +1065,7 @@ function deleteRuleTierSucceeded() {
         if (tier.id != app.dialogState.entity.id) {
             switch(app.dialogState.entityType) {
                 case dialogStates.entityTypes.ruleTier:
-                        updateRuleTier(
+                        primaryTierUpdater(
                             ruleset.id,
                             rule.id,
                             tier.id,
@@ -1076,7 +1078,7 @@ function deleteRuleTierSucceeded() {
                         );
                     break;
                 case dialogStates.entityTypes.secondaryRuleTier:
-                        updateSecondaryRuleTier(
+                        secondaryTierUpdater(
                             ruleset.id,
                             rule.id,
                             tier.id,
@@ -1091,7 +1093,7 @@ function deleteRuleTierSucceeded() {
         }
     });
     moveParentStateToAppState();
-    refreshRuleTiersDisplay();
+    displayRefresher();
 }
 
 function deleteRuleTierFailed(request, status, message) {
