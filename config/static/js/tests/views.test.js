@@ -148,7 +148,7 @@ const {
     init
 } = require("../views");
 const { hasUncaughtExceptionCaptureCallback } = require("process");
-const { showDialog, hideDialog, ruleTypeChosen } = require("../view_utils.js");
+const { showDialog, hideDialog, ruleTypeChosen, initJurisdictionsSelect } = require("../view_utils.js");
 
 // Helper functions
 function isShown(dialogId) {
@@ -651,6 +651,23 @@ describe("Tax category views", () => {
 });
 
 describe("Question views", () => {
+    describe("Refreshing questions data", () => {
+        test("should generate the correct request given the currently selected jurisdiction", done => {
+            let selectedId = app.jurisdictions[0].id;
+            initJurisdictionsSelect(app.jurisdictions, function() {});
+            document.getElementById(jurisdictionsSelect.id).value = selectedId;
+
+            function checkRequest(jurisdictionId, onSuccess, onFailure) {
+                expect(parseInt(jurisdictionId)).toBe(selectedId);
+                expect(onSuccess).toEqual(displayQuestions);
+                expect(onFailure).toEqual(displayQuestionsLoadError);
+                done();
+            }
+
+            refreshQuestionsDisplay(checkRequest);
+        });
+    });
+
     describe("Displaying questions", () => {
         test("should correctly populate the questions list and the app state", () => {
             let form = app.jurisdictionForm;
@@ -730,6 +747,23 @@ describe("Question views", () => {
 });
 
 describe("Multilple choice option views", () => {
+    describe("Refreshing multiple choice options data", () => {
+        test("should generate the correct request given the currently selected jurisdiction", done => {
+            let selectedId = app.jurisdictions[0].id;
+            initJurisdictionsSelect(app.jurisdictions, function() {});
+            document.getElementById(jurisdictionsSelect.id).value = selectedId;
+
+            function checkRequest(jurisdictionId, onSuccess, onFailure) {
+                expect(parseInt(jurisdictionId)).toBe(selectedId);
+                expect(onSuccess).toEqual(displayMultipleChoiceOptions);
+                expect(onFailure).toEqual(displayMultipleChoiceOptionsError);
+                done();
+            }
+
+            refreshMultipleChoiceOptionsDisplay(checkRequest);
+        });
+    });
+
     describe("Displaying multiple choice options", () => {
         test("should correctly populate the options display when the question is held in the app state", () => {
             let question = findQuestionById(7);
@@ -792,6 +826,23 @@ describe("Multilple choice option views", () => {
 });
 
 describe("Ruleset views", () => {
+    describe("Refreshing rulesets data", () => {
+        test("should generate the correct request given the currently selected jurisdiction", done => {
+            let selectedId = app.jurisdictions[0].id;
+            initJurisdictionsSelect(app.jurisdictions, function() {});
+            document.getElementById(jurisdictionsSelect.id).value = selectedId;
+
+            function checkRequest(jurisdictionId, onSuccess, onFailure) {
+                expect(parseInt(jurisdictionId)).toBe(selectedId);
+                expect(onSuccess).toEqual(displayRulesets);
+                expect(onFailure).toEqual(displayRulesetsLoadError);
+                done();
+            }
+
+            refreshRulesetsDisplay(checkRequest);
+        });
+    });
+
     describe("Displaying rulesets", () => {
         test("should correctly populate the rulesets display and set the app state", () => {
             let rulesets = app.jurisdictionRules;
@@ -926,6 +977,23 @@ describe("Rule views views", () => {
 });
 
 describe("Rule tier views views", () => {
+    describe("Refreshing rule tier data", () => {
+        test("should generate the correct request given the currently selected jurisdiction", done => {
+            let selectedId = app.jurisdictions[0].id;
+            initJurisdictionsSelect(app.jurisdictions, function() {});
+            document.getElementById(jurisdictionsSelect.id).value = selectedId;
+
+            function checkRequest(jurisdictionId, onSuccess, onFailure) {
+                expect(parseInt(jurisdictionId)).toBe(selectedId);
+                expect(onSuccess).toEqual(displayRuleTiersLoadedSucceeded);
+                expect(onFailure).toEqual(displayRuleTiersLoadedError);
+                done();
+            }
+
+            refreshRuleTiersDisplay(checkRequest);
+        });
+    });
+
     describe("Displaying rule tiers", () => {
         describe("Primary rule tiers", () => {
             test("should correctly populate the rule tiers display and set the app state when the rule is in the app state", () => {
