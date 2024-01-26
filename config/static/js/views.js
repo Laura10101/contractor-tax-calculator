@@ -351,11 +351,11 @@ function deleteQuestionFailed(request, status, message) {
     error("An error occurred while attempting to delete question.");
 }
 
-function confirmDeleteQuestion() {
+function confirmDeleteQuestion(remover=removeQuestion) {
     hideDialog(confirmationDialog.dialog.id);
     formId = getFormId();
     question = app.dialogState.entity;
-    removeQuestion(formId, question.id, deleteQuestionSucceeded, deleteQuestionFailed);
+    remover(formId, question.id, deleteQuestionSucceeded, deleteQuestionFailed);
 }
 
 function deleteQuestion(question) {
@@ -456,12 +456,12 @@ function deleteMultipleChoiceOptionFailed(request, status, message) {
     showDialog(multipleChoiceQuestionDialog.dialog.id);
 }
 
-function confirmDeleteMultipleChoiceOption() {
+function confirmDeleteMultipleChoiceOption(remover=removeMultipleChoiceOption) {
     hideDialog(confirmationDialog.dialog.id);
     formId = getFormId();
     question = app.parentState.entity;
     option = app.dialogState.entity;
-    removeMultipleChoiceOption(formId, question.id, option.id, deleteMultipleChoiceOptionSucceeded, deleteMultipleChoiceOptionFailed);
+    remover(formId, question.id, option.id, deleteMultipleChoiceOptionSucceeded, deleteMultipleChoiceOptionFailed);
 }
 
 function deleteMultipleChoiceOption(option) {
@@ -535,9 +535,9 @@ function deleteRulesetFailed() {
     error("An error occurred while attempting to delete ruleset.");
 }
 
-function confirmDeleteRuleset() {
+function confirmDeleteRuleset(remover=removeRuleset) {
     hideDialog(confirmationDialog.dialog.id);
-    removeRuleset(app.dialogState.entity.id, deleteRulesetSucceeded, deleteRulesetFailed);
+    remover(app.dialogState.entity.id, deleteRulesetSucceeded, deleteRulesetFailed);
 }
 
 function deleteRuleset(ruleset) {
@@ -794,7 +794,7 @@ function deleteRuleFailed() {
     error("An error occurred while attempting to delete rule.");
 }
 
-function confirmDeleteRule() {
+function confirmDeleteRule(remover=removeRule) {
     hideDialog(confirmationDialog.dialog.id);
     removeRule(app.parentRuleset.id, app.dialogState.entity.id, deleteRuleSucceeded, deleteRuleFailed);
 }
@@ -1106,7 +1106,7 @@ function deleteRuleTierFailed(request, status, message) {
     moveParentStateToAppState();
 }
 
-function confirmDeleteRuleTier() {
+function confirmDeleteRuleTier(primaryRemover=removeRuleTier, secondaryRemover=removeSecondaryRuleTier) {
     hideDialog(confirmationDialog.dialog.id);
 
     tier = app.dialogState.entity;
