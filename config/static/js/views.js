@@ -390,7 +390,12 @@ function moveQuestionDown(question) {
 function displayMultipleChoiceOptions(data) {
     app.jurisdictionForm = data;
 
-    moveParentStateToAppState();
+    if (app.parentState.entity != null) {
+        if (app.parentState.entityType == dialogStates.entityTypes.multipleChoiceQuestion) {
+            moveParentStateToAppState();
+        }
+    }
+
     question = findQuestionById(app.dialogState.entity.id);
     options = question.options;
     updateMultipleChoiceQuestionDialogOptionsDisplay(options);    
