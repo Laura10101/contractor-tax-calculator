@@ -180,6 +180,17 @@ beforeEach(() => {
     app.taxCategories = appState.taxCategories;
     app.jurisdictionForm = appState.jurisdictionForm;
     app.jurisdictionRules = appState.jurisdictionRules;
+    app.dialogState = {
+        mode: null,
+        entityType: null,
+        entity: null
+    };
+    app.parentState = {
+        mode: null,
+        entityType: null,
+        entity: null
+    };
+    app.parentRuleset = null;
 });
 
 
@@ -762,6 +773,20 @@ describe("Multilple choice option views", () => {
             let optionsTable = document.getElementById(multipleChoiceQuestionDialog.options.table.id);
             expect(optionsTable).toBeDefined();
             expect(optionsTable.children.length).toBe(question.options.length + 1);
+        });
+    });
+
+    describe("Creating multiple choice options", () => {
+        test("should display the correct dialog and move the app state to the parent state", () => {
+            let question = findQuestionById(7);
+            setDialogState(dialogStates.modes.edit, dialogStates.entityTypes.multipleChoiceQuestion, question);
+            
+            createMultipleChoiceOption();
+            
+            expect(app.parentState.mode).toBe(dialogStates.modes.edit);
+            expect(app.parentState.entityType).toBe(dialogStates.entityTypes.multipleChoiceQuestion);
+            expect(app.parentState.entity).toEqual(question);
+            expect(isShown(multipleChoiceOptionDialog.dialog.id)).toBe(true);
         });
     });
 });
