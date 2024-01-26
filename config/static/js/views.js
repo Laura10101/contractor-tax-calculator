@@ -72,6 +72,7 @@ const {
     findParentRuleset,
     moveAppStateToParentState,
     moveParentStateToAppState,
+    clearDialogState,
     clearParentState,
     setDialogState,
     setParentState,
