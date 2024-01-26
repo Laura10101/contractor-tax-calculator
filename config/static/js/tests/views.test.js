@@ -861,7 +861,7 @@ describe("Multilple choice option views", () => {
     });
 
     describe("Successful deletion", () => {
-        test("should reshow the multiple choice question dialog and refresh the questions display", done => {
+        test("should reshow the multiple choice question dialog and refresh the multiple choice options display", done => {
             function checkFinalAppState() {
                 expect(isShown(multipleChoiceQuestionDialog.dialog.id)).toBe(true);
                 done();
@@ -927,7 +927,7 @@ describe("Ruleset views", () => {
     });
 
     describe("Successful deletion", () => {
-        test("should show a success message, resequence ordinals, clear the app state, and refresh the questions display", done => {
+        test("should show a success message, resequence ordinals, clear the app state, and refresh the rulesets display", done => {
             let nextOrdinal = 1;
 
             function checkOrdinalUpdate(id, ordinal, success, failure) {
@@ -1048,7 +1048,7 @@ describe("Rule views views", () => {
 
     describe("Successful deletion", () => {
         describe("of a flat rate rule", () => {
-            test("should show a success message, resequence ordinals, clear the app state, and refresh the questions display", done => {
+            test("should show a success message, resequence ordinals, clear the app state, and refresh the rules display", done => {
                 let nextOrdinal = 1;
     
                 function checkFlatRateOrdinalUpdate(rulesetId, ruleId, name, explainer, varName, ordinal, taxRate, success, failure) {
@@ -1096,7 +1096,7 @@ describe("Rule views views", () => {
         });
 
         describe("of a tiered rate rule", () => {
-            test("should show a success message, resequence ordinals, clear the app state, and refresh the questions display", done => {
+            test("should show a success message, resequence ordinals, clear the app state, and refresh the rules display", done => {
                 let nextOrdinal = 1;
     
                 function checkFlatRateOrdinalUpdate(rulesetId, ruleId, name, explainer, varName, ordinal, taxRate, success, failure) {
@@ -1144,7 +1144,7 @@ describe("Rule views views", () => {
         });
 
         describe("of a secondary tiered rate rule", () => {
-            test("should show a success message, resequence ordinals, clear the app state, and refresh the questions display", done => {
+            test("should show a success message, resequence ordinals, clear the app state, and refresh the rules display", done => {
                 let nextOrdinal = 1;
     
                 function checkFlatRateOrdinalUpdate(rulesetId, ruleId, name, explainer, varName, ordinal, taxRate, success, failure) {
