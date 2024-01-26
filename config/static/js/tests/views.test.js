@@ -148,7 +148,7 @@ const {
     init
 } = require("../views");
 const { hasUncaughtExceptionCaptureCallback } = require("process");
-const { showDialog, hideDialog } = require("../view_utils.js");
+const { showDialog, hideDialog, ruleTypeChosen } = require("../view_utils.js");
 
 // Helper functions
 function isShown(dialogId) {
@@ -818,9 +818,114 @@ describe("Ruleset views", () => {
             }
         });
     });
+
+    describe("Creating rulesets", () => {
+        test("should display the create ruleset dialog and set the app state appropriately", () => {
+            createRuleset();
+            expect(isShown(rulesetDialog.dialog.id)).toBe(true);
+            expect(app.dialogState.mode).toBe(dialogStates.modes.create);
+            expect(app.dialogState.entityType).toBe(dialogStates.entityTypes.ruleset);
+            expect(app.dialogState.entity).toBe(null);
+        });
+    });
+
+    describe("Editing rulesets", () => {
+
+    });
 });
 
 describe("Rule views views", () => {
+    describe("Creating rules", () => {
+        describe("Choosing to add rule", () => {
+            test("should display choose rule type dialog and set parent ruleset", () => {
+                let ruleset = findParentRuleset(44);
+                expect(ruleset).toBeDefined();
+                addRule(ruleset);
+
+                expect(app.parentRuleset).toEqual(ruleset);
+                expect(isShown(ruleTypeDialog.dialog.id)).toBe(true);
+            });
+        });
+
+        describe("Choosing a rule type", () => {
+            test("should display the flat rate rule dialog when flat rate rule chosen", () => {
+                showDialog(ruleTypeDialog.dialog.id);
+                let select = document.getElementById(ruleTypeDialog.ruleType.input.id);
+                select.value = "flat_rate";
+                ruleTypeSelected();
+                expect(app.dialogState.mode).toBe(dialogStates.modes.create);
+                expect(app.dialogState.entityType).toBe(dialogStates.entityTypes.flatRateRule);
+                expect(app.dialogState.entity).toBe(null);
+                expect(isShown(flatRateRuleDialog.dialog.id)).toBe(true);
+                expect(isShown(ruleTypeDialog.dialog.id)).toBe(false);
+            });
+
+            test("should display the tiered rate rule dialog when tiered rate rule chosen", () => {
+                showDialog(ruleTypeDialog.dialog.id);
+                let select = document.getElementById(ruleTypeDialog.ruleType.input.id);
+                select.value = "tiered_rate";
+                ruleTypeSelected();
+                expect(app.dialogState.mode).toBe(dialogStates.modes.create);
+                expect(app.dialogState.entityType).toBe(dialogStates.entityTypes.tieredRateRule);
+                expect(app.dialogState.entity).toBe(null);
+                expect(isShown(tieredRateRuleDialog.dialog.id)).toBe(true);
+                expect(isShown(ruleTypeDialog.dialog.id)).toBe(false);
+            });
+
+            test("should display the secondary tiered rate rule dialog when secondary tiered rate rule chosen", () => {
+                showDialog(ruleTypeDialog.dialog.id);
+                let select = document.getElementById(ruleTypeDialog.ruleType.input.id);
+                select.value = "secondary_tiered_rate";
+                ruleTypeSelected();
+                expect(app.dialogState.mode).toBe(dialogStates.modes.create);
+                expect(app.dialogState.entityType).toBe(dialogStates.entityTypes.secondaryTieredRateRule);
+                expect(app.dialogState.entity).toBe(null);
+                expect(isShown(secondaryTieredRateRuleDialog.dialog.id)).toBe(true);
+                expect(isShown(ruleTypeDialog.dialog.id)).toBe(false);
+            });
+        });
+    });
+
+    describe("Editing rules", () => {
+        test("should display the flat rate rule dialog when flat rate rule given", () => {
+            let rule = findRuleById(41);
+            let ruleset = findParentRuleset(41);
+            expect(ruleset).toBeDefined();
+            editRule(ruleset, rule);
+            expect(app.parentRuleset).toEqual(ruleset);
+            expect(app.dialogState.mode).toBe(dialogStates.modes.edit);
+            expect(app.dialogState.entityType).toBe(dialogStates.entityTypes.flatRateRule);
+            expect(app.dialogState.entity).toEqual(rule);
+            expect(isShown(flatRateRuleDialog.dialog.id)).toBe(true);
+        });
+
+        test("should display the tiered rate rule dialog when tiered rate rule given", () => {
+            let rule = findRuleById(44);
+            let ruleset = findParentRuleset(44);
+            expect(ruleset).toBeDefined();
+            editRule(ruleset, rule);
+            expect(app.parentRuleset).toEqual(ruleset);
+            expect(app.dialogState.mode).toBe(dialogStates.modes.edit);
+            expect(app.dialogState.entityType).toBe(dialogStates.entityTypes.tieredRateRule);
+            expect(app.dialogState.entity).toEqual(rule);
+            expect(isShown(tieredRateRuleDialog.dialog.id)).toBe(true);
+        });
+
+        test("should display the secondary tiered rate rule dialog when secondary tiered rate rule given", () => {
+            let rule = findRuleById(45);
+            let ruleset = findParentRuleset(45);
+            expect(ruleset).toBeDefined();
+            editRule(ruleset, rule);
+            expect(app.parentRuleset).toEqual(ruleset);
+            expect(app.dialogState.mode).toBe(dialogStates.modes.edit);
+            expect(app.dialogState.entityType).toBe(dialogStates.entityTypes.secondaryTieredRateRule);
+            expect(app.dialogState.entity).toEqual(rule);
+            expect(isShown(secondaryTieredRateRuleDialog.dialog.id)).toBe(true);
+        });
+    });
+});
+
+describe("Rule tier views views", () => {
     describe("Displaying rule tiers", () => {
         describe("Primary rule tiers", () => {
             test("should correctly populate the rule tiers display and set the app state when the rule is in the app state", () => {
@@ -898,8 +1003,4 @@ describe("Rule views views", () => {
             });
         });
     });
-});
-
-describe("Rule tier views views", () => {
-
 });

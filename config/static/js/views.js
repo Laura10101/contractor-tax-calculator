@@ -75,7 +75,8 @@ const {
     clearParentState,
     setDialogState,
     setParentState,
-    setParentRuleset
+    setParentRuleset,
+    getTieredRateRulesForJurisdiction
 } = require("./view_models.js");
 
 const {
