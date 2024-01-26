@@ -868,7 +868,7 @@ function moveRuleDown(ruleset, rule) {
 function displayRuleTiersLoadedSucceeded(data) {
     app.jurisdictionRules = data;
 
-    if (parentState.entity != null) {
+    if (app.parentState.entity != null) {
         moveParentStateToAppState();
     }
     rule = findRuleById(app.dialogState.entity.id);
