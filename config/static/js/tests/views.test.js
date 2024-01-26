@@ -685,6 +685,37 @@ describe("Question views", () => {
             });
         });
     });
+
+    describe("Editing questions", () => {
+        describe("Displaying edit dialog", () => {
+            test("should display the correct dialog for a boolean question", () => {
+                let question = findQuestionById(3);
+                editQuestion(question);
+                expect(app.dialogState.mode).toBe(dialogStates.modes.edit);
+                expect(app.dialogState.entityType).toBe(dialogStates.entityTypes.booleanQuestion);
+                expect(app.dialogState.entity).toEqual(question);
+                expect(isShown(booleanQuestionDialog.dialog.id)).toBe(true);
+            });
+
+            test("should display the correct dialog for a numeric question", () => {
+                let question = findQuestionById(4);
+                editQuestion(question);
+                expect(app.dialogState.mode).toBe(dialogStates.modes.edit);
+                expect(app.dialogState.entityType).toBe(dialogStates.entityTypes.numericQuestion);
+                expect(app.dialogState.entity).toEqual(question);
+                expect(isShown(numericQuestionDialog.dialog.id)).toBe(true);
+            });
+
+            test("should display the correct dialog for a multiple choice question", () => {
+                let question = findQuestionById(7);
+                editQuestion(question);
+                expect(app.dialogState.mode).toBe(dialogStates.modes.edit);
+                expect(app.dialogState.entityType).toBe(dialogStates.entityTypes.multipleChoiceQuestion);
+                expect(app.dialogState.entity).toEqual(question);
+                expect(isShown(multipleChoiceQuestionDialog.dialog.id)).toBe(true);
+            });
+        });
+    });
 });
 
 describe("Multilple choice option views", () => {
