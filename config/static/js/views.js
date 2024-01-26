@@ -361,7 +361,7 @@ function displayMultipleChoiceOptions(data) {
 }
 
 function displayMultipleChoiceOptionsError(request, status, message) {
-    error("An error occurred while refreshing multiple choice options for rule " + app.dialogState.entity.name);
+    error("An error occurred while refreshing multiple choice options for question " + app.dialogState.entity.name);
 }
 
 function refreshMultipleChoiceOptionsDisplay() {
