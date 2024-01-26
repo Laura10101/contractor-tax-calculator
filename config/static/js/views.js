@@ -339,7 +339,7 @@ function deleteQuestionSucceeded(request, status, message) {
 }
 
 function deleteQuestionFailed(request, status, message) {
-    error("An error occurred while attempting to save question.");
+    error("An error occurred while attempting to delete question.");
 }
 
 function confirmDeleteQuestion() {
