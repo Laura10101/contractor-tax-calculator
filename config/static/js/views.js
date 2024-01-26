@@ -408,7 +408,7 @@ function displayMultipleChoiceOptionsError(request, status, message) {
 
 function refreshMultipleChoiceOptionsDisplay(refresher=getFormForJurisdiction) {
     jurisdictionId = getSelectedJurisdictionId();
-    refresher(jurisdictionId, displayMultipleChoiceOptions, )
+    refresher(jurisdictionId, displayMultipleChoiceOptions, displayMultipleChoiceOptionsError);
 }
 
 function saveMultipleChoiceOptionSucceeded() {
