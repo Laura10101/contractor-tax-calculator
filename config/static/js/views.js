@@ -169,9 +169,9 @@ function displayTaxCategoryLoadError() {
 /*
  * Question Views
  */
-function refreshQuestionsDisplay() {
+function refreshQuestionsDisplay(refresher=getFormForJurisdiction) {
     jurisdictionId = getSelectedJurisdictionId();
-    getFormForJurisdiction(jurisdictionId, displayQuestions, displayQuestionsLoadError);
+    refresher(jurisdictionId, displayQuestions, displayQuestionsLoadError);
 }
 
 function questionTypeSelected() {
@@ -406,9 +406,9 @@ function displayMultipleChoiceOptionsError(request, status, message) {
     error("An error occurred while refreshing multiple choice options for question " + app.dialogState.entity.name);
 }
 
-function refreshMultipleChoiceOptionsDisplay() {
+function refreshMultipleChoiceOptionsDisplay(refresher=getFormForJurisdiction) {
     jurisdictionId = getSelectedJurisdictionId();
-    getFormForJurisdiction(jurisdictionId, displayMultipleChoiceOptions, )
+    refresher(jurisdictionId, displayMultipleChoiceOptions, )
 }
 
 function saveMultipleChoiceOptionSucceeded() {
@@ -478,9 +478,9 @@ function displayRulesetsLoadError() {
     error("An error occurred while loading rulesets for selected jurisdiction.");
 }
 
-function refreshRulesetsDisplay() {
+function refreshRulesetsDisplay(refresher=getRulesetsForJurisdiction) {
     jurisdictionId = getSelectedJurisdictionId();
-    getRulesetsForJurisdiction(jurisdictionId, displayRulesets, displayRulesetsLoadError);
+    refresher(jurisdictionId, displayRulesets, displayRulesetsLoadError);
 }
 
 function saveRulesetSucceeded() {
@@ -893,9 +893,9 @@ function displayRuleTiersLoadedError(request, status, message) {
     error("An error occurred while refreshing rule tiers for rule " + app.parentState.entity.name);
 }
 
-function refreshRuleTiersDisplay() {
+function refreshRuleTiersDisplay(refresher=getRulesetsForJurisdiction) {
     jurisdictionId = getSelectedJurisdictionId();
-    getRulesetsForJurisdiction(jurisdictionId, displayRuleTiersLoadedSucceeded, displayRuleTiersLoadedError);
+    refresher(jurisdictionId, displayRuleTiersLoadedSucceeded, displayRuleTiersLoadedError);
 }
 
 function saveRuleTierSucceeded() {
