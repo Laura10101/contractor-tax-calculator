@@ -67,6 +67,7 @@ const {
 
 const {
     app,
+    getFormId,
     findQuestionById,
     findRuleById,
     findParentRuleset,
@@ -796,7 +797,7 @@ function deleteRuleFailed() {
 
 function confirmDeleteRule(remover=removeRule) {
     hideDialog(confirmationDialog.dialog.id);
-    removeRule(app.parentRuleset.id, app.dialogState.entity.id, deleteRuleSucceeded, deleteRuleFailed);
+    remover(app.parentRuleset.id, app.dialogState.entity.id, deleteRuleSucceeded, deleteRuleFailed);
 }
 
 function deleteRule(ruleset, rule) {
@@ -1115,10 +1116,10 @@ function confirmDeleteRuleTier(primaryRemover=removeRuleTier, secondaryRemover=r
 
     switch(app.dialogState.entityType) {
         case dialogStates.entityTypes.ruleTier:
-                removeRuleTier(ruleset.id, rule.id, tier.id, deleteRuleTierSucceeded, deleteRuleTierFailed);
+                primaryRemover(ruleset.id, rule.id, tier.id, deleteRuleTierSucceeded, deleteRuleTierFailed);
             break;
         case dialogStates.entityTypes.secondaryRuleTier:
-                removeSecondaryRuleTier(ruleset.id, rule.id, tier.id, deleteRuleTierSucceeded, deleteRuleTierFailed);
+                secondaryRemover(ruleset.id, rule.id, tier.id, deleteRuleTierSucceeded, deleteRuleTierFailed);
             break;
     }
 }
