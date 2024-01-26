@@ -781,6 +781,7 @@ describe("Question views", () => {
                     expect(app.dialogState.entityType).toBe(null);
                     expect(app.dialogState.entity).toBe(null);
                     expect(isShown(statusDialog.dialog.id)).toBe(true);
+                    done();
                 }
 
                 let question = findQuestionById(4);

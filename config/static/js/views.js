@@ -342,7 +342,9 @@ function deleteQuestionSucceeded(request, status, message, ordinalUpdater=update
     success("The selected question was successfully deleted.");
     questions = resequenceQuestionOrdinals(app.dialogState.entity);
     questions.forEach(question => {
-        ordinalUpdater(question, doNothing, saveQuestionFailed);
+        if (question.id != app.dialogState.entity.id) {
+            ordinalUpdater(question, doNothing, saveQuestionFailed);
+        }
     })
     clearDialogState();
     displayRefresher();
