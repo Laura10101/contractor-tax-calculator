@@ -76,7 +76,11 @@ const {
     setDialogState,
     setParentState,
     setParentRuleset,
-    getTieredRateRulesForJurisdiction
+    getTieredRateRulesForJurisdiction,
+    resequenceQuestionOrdinals,
+    resequenceRuleOrdinals,
+    resequenceRulesetOrdinals,
+    resequenceRuleTierOrdinals
 } = require("./view_models.js");
 
 const {
@@ -439,9 +443,9 @@ function createMultipleChoiceOption() {
     displayCreateMultipleChoiceOptionDialog();
 }
 
-function deleteMultipleChoiceOptionSucceeded(request, status, message) {
+function deleteMultipleChoiceOptionSucceeded(request, status, message, displayRefresher=refreshMultipleChoiceOptionsDisplay) {
     showDialog(multipleChoiceQuestionDialog.dialog.id);
-    refreshMultipleChoiceOptionsDisplay();
+    displayRefresher();
 }
 
 function deleteMultipleChoiceOptionFailed(request, status, message) {
@@ -1141,6 +1145,7 @@ if (module == undefined) {
     window.onload = init();
 } else {
     module.exports = {
+        doNothing,
         displayQuestionsLoadError,
         displayJurisdictionLoadError,
         displayTaxCategoryLoadError,
