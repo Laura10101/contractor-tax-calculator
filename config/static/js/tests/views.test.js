@@ -148,6 +148,7 @@ const {
     init
 } = require("../views");
 const { hasUncaughtExceptionCaptureCallback } = require("process");
+const { showDialog, hideDialog } = require("../view_utils.js");
 
 // Helper functions
 function isShown(dialogId) {
@@ -651,6 +652,27 @@ describe("Question views", () => {
             let questionDisplay = document.getElementById(questionDisplayContainer.id);
             expect(questionDisplay).toBeDefined();
             expect(questionDisplay.children.length).toBe(getQuestions().length + 3);
+        });
+    });
+
+    describe("Creating questions", () => {
+        describe("Choosing question type", () => {
+            test("should display the correct dialog when boolean question is selected", () => {
+                let questionTypeSelect = document.getElementById(questionTypeDialog.questionType.input.id);
+                showDialog(questionTypeDialog.dialog.id);
+                questionTypeSelect.value = "boolean";
+                questionTypeSelected();
+                expect(isShown(booleanQuestionDialog.dialog.id)).toBe(true);
+                expect(isShown(questionTypeDialog.dialog.id)).toBe(false);
+            });
+
+            test("should display the correct dialog when numeric question is selected", () => {
+
+            });
+
+            test("should display the correct dialog when multiple choice question is selected", () => {
+
+            });
         });
     });
 });
