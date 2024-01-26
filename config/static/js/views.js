@@ -2,6 +2,33 @@
  * views.js
  * Provides view functions to render views and react to view actions
  */
+const { 
+    dialogStates,
+    statusDialog,
+    confirmationDialog,
+    jurisdictionsSelect,
+    questionTypeDialog,
+    booleanQuestionDialog,
+    numericQuestionDialog,
+    multipleChoiceQuestionDialog,
+    multipleChoiceOptionDialog,
+    questionDisplayContainer,
+    booleanQuestionDisplay,
+    numericQuestionDisplay,
+    multipleChoiceQuestionDisplay,
+    rulesetDialog,
+    ruleTypeDialog,
+    flatRateRuleDialog,
+    tieredRateRuleDialog,
+    secondaryTieredRateRuleDialog,
+    ruleTierDialog,
+    secondaryRuleTierDialog,
+    rulesetsDisplayContainer,
+    rulesetDisplay,
+    flatRateRuleDisplay,
+    tieredRateRuleDisplay,
+    secondaryTieredRateRuleDisplay
+ } = require("./view_consts.js");
 
 const {
     queryToString,
@@ -39,7 +66,13 @@ const {
 } = require("./service_clients.js");
 
 const {
-    app, findQuestionById, findRuleById, getRulesByTypeForJurisdiction, getQuestions, findParentRuleset, getTaxCategoryById, findPrimaryRuleTierById
+    app,
+    findQuestionById,
+    findRuleById,
+    findParentRuleset,
+    moveAppStateToParentState,
+    moveParentStateToAppState,
+    clearParentState
 } = require("./view_models.js");
 
 const {

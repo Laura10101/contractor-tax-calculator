@@ -191,11 +191,31 @@ describe("Status views", () => {
             });
     
             describe("Failure to save question", () => {
-    
+                test("should display an appropriate error", () => {
+                    let dialogId = statusDialog.dialog.id;
+                    saveQuestionFailed();
+                    expect(isShown(dialogId)).toBe(true);
+
+                    let title = document.getElementById(statusDialog.label.id).innerHTML;
+                    let message = document.getElementById(statusDialog.message.id).innerHTML;
+
+                    expect(title).toBe("An Error Occurred");
+                    expect(message).toBe("An error occurred while attempting to save question.");
+                });
             });
     
             describe("Failure to delete question", () => {
-    
+                test("should display an appropriate error", () => {
+                    let dialogId = statusDialog.dialog.id;
+                    deleteQuestionFailed();
+                    expect(isShown(dialogId)).toBe(true);
+
+                    let title = document.getElementById(statusDialog.label.id).innerHTML;
+                    let message = document.getElementById(statusDialog.message.id).innerHTML;
+
+                    expect(title).toBe("An Error Occurred");
+                    expect(message).toBe("An error occurred while attempting to delete question.");
+                });
             });
         });
 
@@ -221,11 +241,43 @@ describe("Status views", () => {
             });
     
             describe("Failure to save multiple choice option", () => {
-    
+                test("should display an appropriate error", () => {
+                    let dialogId = statusDialog.dialog.id;
+                    saveMultipleChoiceOptionFailed();
+                    expect(isShown(dialogId)).toBe(true);
+
+                    let title = document.getElementById(statusDialog.label.id).innerHTML;
+                    let message = document.getElementById(statusDialog.message.id).innerHTML;
+
+                    expect(title).toBe("An Error Occurred");
+                    expect(message).toBe("An error occurred while attempting to save multiple choice option.");
+                });
             });
     
             describe("Failure to delete multiple choice option", () => {
-    
+                test("should display an appropriate error", () => {
+                    let question = findQuestionById(7);
+                    expect(question).toBeDefined();
+                    expect(question.id).toBe(7);
+
+                    setParentState(dialogStates.modes.edit, dialogStates.entityTypes.multipleChoiceQuestion, question);
+                    expect(app.parentState.entity).toEqual(question);
+
+                    let dialogId = statusDialog.dialog.id;
+                    deleteMultipleChoiceOptionFailed();
+                    expect(isShown(dialogId)).toBe(true);
+
+                    let title = document.getElementById(statusDialog.label.id).innerHTML;
+                    let message = document.getElementById(statusDialog.message.id).innerHTML;
+
+                    expect(title).toBe("An Error Occurred");
+                    expect(message).toBe("An error occurred while attempting to delete option.");
+
+                    expect(app.dialogState.entity).toEqual(question);
+                    expect(app.parentState.entity).toBeNull();
+
+                    expect(isShown(multipleChoiceQuestionDialog.dialog.id)).toBe(true);
+                });
             });
         });
 
@@ -245,21 +297,61 @@ describe("Status views", () => {
             });
 
             describe("Failure to save ruleset", () => {
+                test("should display an appropriate error", () => {
+                    let dialogId = statusDialog.dialog.id;
+                    saveRulesetFailed();
+                    expect(isShown(dialogId)).toBe(true);
 
+                    let title = document.getElementById(statusDialog.label.id).innerHTML;
+                    let message = document.getElementById(statusDialog.message.id).innerHTML;
+
+                    expect(title).toBe("An Error Occurred");
+                    expect(message).toBe("An error occurred while attempting to save ruleset.");
+                });
             });
 
             describe("Failure to delete ruleset", () => {
+                test("should display an appropriate error", () => {
+                    let dialogId = statusDialog.dialog.id;
+                    deleteRulesetFailed();
+                    expect(isShown(dialogId)).toBe(true);
 
+                    let title = document.getElementById(statusDialog.label.id).innerHTML;
+                    let message = document.getElementById(statusDialog.message.id).innerHTML;
+
+                    expect(title).toBe("An Error Occurred");
+                    expect(message).toBe("An error occurred while attempting to delete ruleset.");
+                });
             });
         });
 
         describe("Rules", () => {          
             describe("Failure to save rule", () => {
+                test("should display an appropriate error", () => {
+                    let dialogId = statusDialog.dialog.id;
+                    saveRuleFailed();
+                    expect(isShown(dialogId)).toBe(true);
 
+                    let title = document.getElementById(statusDialog.label.id).innerHTML;
+                    let message = document.getElementById(statusDialog.message.id).innerHTML;
+
+                    expect(title).toBe("An Error Occurred");
+                    expect(message).toBe("An error occurred while attempting to save rule.");
+                });
             });
 
             describe("Failure to delete rule", () => {
+                test("should display an appropriate error", () => {
+                    let dialogId = statusDialog.dialog.id;
+                    deleteRuleFailed();
+                    expect(isShown(dialogId)).toBe(true);
 
+                    let title = document.getElementById(statusDialog.label.id).innerHTML;
+                    let message = document.getElementById(statusDialog.message.id).innerHTML;
+
+                    expect(title).toBe("An Error Occurred");
+                    expect(message).toBe("An error occurred while attempting to delete rule.");
+                });
             });
         });
 
@@ -284,12 +376,41 @@ describe("Status views", () => {
                 });
             });
 
-            describe("Failure to save rule tiers", () => {
+            describe("Failure to save rule tier", () => {
+                test("should display an appropriate error", () => {
+                    let dialogId = statusDialog.dialog.id;
+                    saveRuleTierFailed();
+                    expect(isShown(dialogId)).toBe(true);
 
+                    let title = document.getElementById(statusDialog.label.id).innerHTML;
+                    let message = document.getElementById(statusDialog.message.id).innerHTML;
+
+                    expect(title).toBe("An Error Occurred");
+                    expect(message).toBe("An error occurred while attempting to save rule tier.");
+                });
             });
 
-            describe("Failure to delete rule tiers", () => {
+            describe("Failure to delete rule tier", () => {
+                test("should display an appropriate error", () => {
+                    let rule = findRuleById(44);
+                    expect(rule).toBeDefined();
+                    expect(rule.id).toBe(44);
 
+                    setParentState(dialogStates.modes.edit, dialogStates.entityTypes.tieredRateRule, rule);
+
+                    let dialogId = statusDialog.dialog.id;
+                    deleteRuleTierFailed();
+                    expect(isShown(dialogId)).toBe(true);
+
+                    let title = document.getElementById(statusDialog.label.id).innerHTML;
+                    let message = document.getElementById(statusDialog.message.id).innerHTML;
+
+                    expect(title).toBe("An Error Occurred");
+                    expect(message).toBe("An error occurred while attempting to delete rule tier.");
+
+                    expect(app.dialogState.entity).toEqual(rule);
+                    expect(app.parentState.entity).toBeNull();
+                });
             });
         });
     });
