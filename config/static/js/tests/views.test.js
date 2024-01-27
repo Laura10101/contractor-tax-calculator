@@ -2466,6 +2466,49 @@ describe("Rule tier views views", () => {
             // Check the dialog
             expect(isShown(ruleTierDialog.dialog.id)).toBe(true);
         });
+
+        test("should hide the create rule tier dialog and generate an appropriate request for a primary rule tier", done => {
+            let ruleId = 44;
+            let rule = findRuleById(ruleId);
+            expect(rule).toBeDefined();
+
+            let minValue = 0;
+            let maxValue = 100;
+            let taxRate = 20;
+
+            initRuleTierDialog("create", minValue, maxValue, taxRate);
+            setDialogState(dialogStates.modes.create, dialogStates.entityTypes.ruleTier, null);
+            setParentState(dialogStates.modes.create, dialogStates.entityTypes.tieredRateRule, rule);
+
+            showDialog(ruleTierDialog.dialog.id);
+
+            function ruleTierCreator(_rulesetId, _ruleId, _minValue, _maxValue, _ordinal, _tierRate, success, failure) {
+                expect(_rulesetId).toBe(findParentRuleset(rule.id).id);
+                expect(_ruleId).toBe(rule.id);
+                expect(_ordinal).toBe(getNextRuleTierOrdinal(rule));
+                expect(parseInt(_minValue)).toBe(minValue);
+                expect(parseInt(_maxValue)).toBe(maxValue);
+                expect(parseInt(_tierRate)).toBe(taxRate);
+                expect(success).toBe(saveRuleTierSucceeded);
+                expect(failure).toBe(saveRuleTierFailed);
+                expect(isShown(ruleTierDialog.dialog.id)).toBe(false);
+                done();
+            }
+
+            function secondaryRuleTierCreator(_rulesetId, _ruleId, _primaryTierId, _ordinal, _taxRate, success, failure) {
+                expect(true).toBe(false);
+            }
+
+            function ruleTierUpdater(_rulesetId, _ruleId, _tierId, _minValue, _maxValue, _ordinal, _taxRate, success, failure) {
+                expect(true).toBe(false);
+            }
+
+            function secondaryRuleTierUpdater(_rulesetId, _ruleId, _tierId, _primaryTierId, _ordinal, _taxRate, success, failure) {
+                expect(true).toBe(false);
+            }
+
+            saveRuleTier(ruleTierCreator, secondaryRuleTierCreator, ruleTierUpdater, secondaryRuleTierUpdater);
+        });
     });
 
     describe("Creating secondary rule tiers", () => {
@@ -2489,6 +2532,51 @@ describe("Rule tier views views", () => {
 
             // Check the dialog
             expect(isShown(secondaryRuleTierDialog.dialog.id)).toBe(true);
+        });
+
+        test("should hide the create secondary rule tier dialog and generate an appropriate request for a secondary rule tier", done => {
+            let ruleId = 45;
+            let rule = findRuleById(ruleId);
+            expect(rule).toBeDefined();
+
+            setParentState(dialogStates.modes.edit, dialogStates.entityTypes.secondaryTieredRateRule, rule);
+            setDialogState(dialogStates.modes.create, dialogStates.entityTypes.secondaryRuleTier, null);
+
+            let primaryRuleId = 44;
+            let primaryRule = findRuleById(ruleId);
+            expect(primaryRule).toBeDefined();
+
+            let taxRate = 20;
+
+            initSecondaryRuleTierDialog("create", primaryRule.tiers, taxRate);
+            setDialogState(dialogStates.modes.create, dialogStates.entityTypes.secondaryRuleTier, null);
+
+            showDialog(secondaryRuleTierDialog.dialog.id);
+
+            function ruleTierCreator(_rulesetId, _ruleId, _minValue, _maxValue, _ordinal, _tierRate, success, failure) {
+                expect(true).toBe(false);
+            }
+
+            function secondaryRuleTierCreator(_rulesetId, _ruleId, _primaryTierId, _ordinal, _taxRate, success, failure) {
+                expect(_rulesetId).toBe(findParentRuleset(rule.id).id);
+                expect(_ruleId).toBe(rule.id);
+                expect(_ordinal).toBe(getNextRuleTierOrdinal(rule));
+                expect(parseInt(_taxRate)).toBe(taxRate);
+                expect(success).toBe(saveRuleTierSucceeded);
+                expect(failure).toBe(saveRuleTierFailed);
+                expect(isShown(secondaryRuleTierDialog.dialog.id)).toBe(false);
+                done();
+            }
+
+            function ruleTierUpdater(_rulesetId, _ruleId, _tierId, _minValue, _maxValue, _ordinal, _taxRate, success, failure) {
+                expect(true).toBe(false);
+            }
+
+            function secondaryRuleTierUpdater(_rulesetId, _ruleId, _tierId, _primaryTierId, _ordinal, _taxRate, success, failure) {
+                expect(true).toBe(false);
+            }
+
+            saveRuleTier(ruleTierCreator, secondaryRuleTierCreator, ruleTierUpdater, secondaryRuleTierUpdater);
         });
     });
 
@@ -2517,6 +2605,49 @@ describe("Rule tier views views", () => {
             // Check the dialog
             expect(isShown(ruleTierDialog.dialog.id)).toBe(true);
         });
+
+        test("should hide the edit rule tier dialog and generate an appropriate request for a primary rule tier", done => {
+            let ruleId = 44;
+            let rule = findRuleById(ruleId);
+            expect(rule).toBeDefined();
+
+            let tier = rule.tiers[0];
+            expect(tier).toBeDefined();
+
+            initRuleTierDialog("edit", tier.min_value, tier.max_value, tier.tier_rate);
+            setDialogState(dialogStates.modes.edit, dialogStates.entityTypes.ruleTier, tier);
+            setParentState(dialogStates.modes.create, dialogStates.entityTypes.tieredRateRule, rule);
+
+            showDialog(ruleTierDialog.dialog.id);
+
+            function ruleTierCreator(_rulesetId, _ruleId, _minValue, _maxValue, _ordinal, _tierRate, success, failure) {
+                expect(true).toBe(false);
+            }
+
+            function secondaryRuleTierCreator(_rulesetId, _ruleId, _primaryTierId, _ordinal, _taxRate, success, failure) {
+                expect(true).toBe(false);
+            }
+
+            function ruleTierUpdater(_rulesetId, _ruleId, _tierId, _minValue, _maxValue, _ordinal, _taxRate, success, failure) {
+                expect(_rulesetId).toBe(findParentRuleset(rule.id).id);
+                expect(_ruleId).toBe(rule.id);
+                expect(_tierId).toBe(tier.id);
+                expect(_ordinal).toBe(tier.ordinal);
+                expect(parseInt(_minValue)).toBe(tier.min_value);
+                expect(parseInt(_maxValue)).toBe(tier.max_value);
+                expect(parseInt(_taxRate)).toBe(tier.tier_rate);
+                expect(success).toBe(saveRuleTierSucceeded);
+                expect(failure).toBe(saveRuleTierFailed);
+                expect(isShown(ruleTierDialog.dialog.id)).toBe(false);
+                done();
+            }
+
+            function secondaryRuleTierUpdater(_rulesetId, _ruleId, _tierId, _primaryTierId, _ordinal, _taxRate, success, failure) {
+                expect(true).toBe(false);
+            }
+
+            saveRuleTier(ruleTierCreator, secondaryRuleTierCreator, ruleTierUpdater, secondaryRuleTierUpdater);
+        });
     });
 
     describe("Editing secondary rule tiers", () => {
@@ -2543,6 +2674,52 @@ describe("Rule tier views views", () => {
 
             // Check the dialog
             expect(isShown(secondaryRuleTierDialog.dialog.id)).toBe(true);
+        });
+
+        test("should hide the edit secondary rule tier dialog and generate an appropriate request for a secondary rule tier", done => {
+            let ruleId = 45;
+            let rule = findRuleById(ruleId);
+            expect(rule).toBeDefined();
+
+            setParentState(dialogStates.modes.edit, dialogStates.entityTypes.secondaryTieredRateRule, rule);
+            setDialogState(dialogStates.modes.create, dialogStates.entityTypes.secondaryRuleTier, null);
+
+            let primaryRuleId = 44;
+            let primaryRule = findRuleById(ruleId);
+            expect(primaryRule).toBeDefined();
+
+            let tier = rule.tiers[0];
+
+            initSecondaryRuleTierDialog("edit", primaryRule.tiers, tier.tier_rate);
+            setDialogState(dialogStates.modes.edit, dialogStates.entityTypes.secondaryRuleTier, tier);
+
+            showDialog(secondaryRuleTierDialog.dialog.id);
+
+            function ruleTierCreator(_rulesetId, _ruleId, _minValue, _maxValue, _ordinal, _tierRate, success, failure) {
+                expect(true).toBe(false);
+            }
+
+            function secondaryRuleTierCreator(_rulesetId, _ruleId, _primaryTierId, _ordinal, _taxRate, success, failure) {
+                expect(true).toBe(false);
+            }
+
+            function ruleTierUpdater(_rulesetId, _ruleId, _tierId, _minValue, _maxValue, _ordinal, _taxRate, success, failure) {
+                expect(true).toBe(false);
+            }
+
+            function secondaryRuleTierUpdater(_rulesetId, _ruleId, _tierId, _primaryTierId, _ordinal, _taxRate, success, failure) {
+                expect(_rulesetId).toBe(findParentRuleset(rule.id).id);
+                expect(_ruleId).toBe(rule.id);
+                expect(_tierId).toBe(tier.id);
+                expect(_ordinal).toBe(tier.ordinal);
+                expect(parseInt(_taxRate)).toBe(tier.tier_rate);
+                expect(success).toBe(saveRuleTierSucceeded);
+                expect(failure).toBe(saveRuleTierFailed);
+                expect(isShown(secondaryRuleTierDialog.dialog.id)).toBe(false);
+                done();
+            }
+
+            saveRuleTier(ruleTierCreator, secondaryRuleTierCreator, ruleTierUpdater, secondaryRuleTierUpdater);
         });
     });
 
