@@ -853,7 +853,6 @@ describe("Question views", () => {
                     if (updatedEntity.id == 4) {
                         expect(updatedEntity.ordinal).toBe(3);
                         selectedEntityChecked = true;
-                        console.log("checked");
                     } else if (updatedEntity.id == 7) {
                         expect(updatedEntity.ordinal).toBe(2);
                         nextEntityChecked = true;
@@ -1757,6 +1756,125 @@ describe("Rule tier views views", () => {
     
                     deleteRuleTierSucceeded(checkOrdinalUpdate, checkOrdinalUpdate, checkFinalAppState);
                 });
+            });
+        });
+    });
+
+    describe("Reordering rule tiers", () => {
+        describe("Moving the top rule tier up", () => {
+            test("should do nothing", done => {
+                let entity = findRuleById(44);
+                expect(entity).toBeDefined();
+                expect(entity.id).toBe(44);
+
+                setDialogState(dialogStates.entityTypes.edit, dialogStates.entityTypes.tieredRateRule, entity);
+
+                let child = entity.tiers[0];
+                expect(child).toBeDefined();
+                expect(child.id).toBe(3);
+
+                let parent = findParentRuleset(44);
+                expect(parent).toBeDefined();
+
+                let updaterInvoked = false;
+
+                function recordInvocation(swapPrimary, updatedEntity) {
+                    updaterInvoked = true;
+                }
+
+                moveRuleTierUp(true, child, recordInvocation, done);
+                expect(updaterInvoked).toBe(false);
+                done();
+            });
+        });
+
+        describe("Moving a rule tier up", () => {
+            test("should swap the ordinal of the selected tier and the previous tier and then refresh the tier display", done => {
+                let entity = findRuleById(44);
+                expect(entity).toBeDefined();
+                expect(entity.id).toBe(44);
+
+                setDialogState(dialogStates.entityTypes.edit, dialogStates.entityTypes.tieredRateRule, entity);
+
+                let child = entity.tiers[2];
+                expect(child).toBeDefined();
+                expect(child.id).toBe(5);
+
+                let parent = findParentRuleset(44);
+                expect(parent).toBeDefined();
+
+                let selectedEntityChecked = false;
+                let previousEntityChecked = false
+
+                function checkOrdinal(swapPrimary, updatedEntity) {
+                    if (updatedEntity.id == 5) {
+                        expect(updatedEntity.ordinal).toBe(2);
+                        selectedEntityChecked = true;
+                    } else if (updatedEntity.id == 4) {
+                        expect(updatedEntity.ordinal).toBe(3);
+                        previousEntityChecked = true;
+                    }
+                }
+
+                moveRuleTierUp(true, child, checkOrdinal, done);
+                expect(selectedEntityChecked && previousEntityChecked).toBe(true);
+            });
+        });
+
+        describe("Moving a rule tier down", () => {
+            test("should swap the ordinal of the selected tier and the next tier and then refresh the tiers display", done => {
+                let entity = findRuleById(44);
+                expect(entity).toBeDefined();
+                expect(entity.id).toBe(44);
+
+                setDialogState(dialogStates.entityTypes.edit, dialogStates.entityTypes.tieredRateRule, entity);
+
+                let child = entity.tiers[2];
+                expect(child).toBeDefined();
+                expect(child.id).toBe(5);
+
+                let parent = findParentRuleset(44);
+                expect(parent).toBeDefined();
+
+                let selectedEntityChecked = false;
+                let nextEntityChecked = false
+
+                function checkOrdinal(swapPrimary, updatedEntity) {
+                    if (updatedEntity.id == 5) {
+                        expect(updatedEntity.ordinal).toBe(4);
+                        selectedEntityChecked = true;
+                    } else if (updatedEntity.id == 6) {
+                        expect(updatedEntity.ordinal).toBe(3);
+                        nextEntityChecked = true;
+                    }
+                }
+
+                moveRuleTierDown(true, child, checkOrdinal, done);
+                expect(selectedEntityChecked && nextEntityChecked).toBe(true);
+            });
+        });
+
+        describe("Moving the bottom rule tier down", () => {
+            test("should do nothing", done => {
+                let entity = findRuleById(44);
+                expect(entity).toBeDefined();
+                expect(entity.id).toBe(44);
+
+                setDialogState(dialogStates.entityTypes.edit, dialogStates.entityTypes.tieredRateRule, entity);
+
+                let child = entity.tiers[3];
+                expect(child).toBeDefined();
+                expect(child.id).toBe(6);
+
+                let updaterInvoked = false;
+
+                function recordInvocation(swapPrimary, updatedEntity) {
+                    updaterInvoked = true;
+                }
+
+                moveRuleTierDown(true, child, recordInvocation, done);
+                expect(updaterInvoked).toBe(false);
+                done();
             });
         });
     });
