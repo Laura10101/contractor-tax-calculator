@@ -1394,11 +1394,10 @@ describe("Multilple choice option views", () => {
         });
 
         test("should hide the create option dialog and generate an appropriate request for an option", done => {
-
             let name = "Test option";
             let explainer = "A test";
 
-            initMultipleChoiceOptionDialog(name, explainer, "yey");
+            initMultipleChoiceOptionDialog(name, explainer);
             setDialogState(dialogStates.modes.create, dialogStates.entityTypes.multipleChoiceOption, null);
 
             let question = findQuestionById(7);
@@ -1722,43 +1721,358 @@ describe("Rule views views", () => {
                 expect(isShown(ruleTypeDialog.dialog.id)).toBe(false);
             });
         });
+
+        describe("Saving changes", () => {
+            test("should hide the create rule dialog and generate an appropriate request for a flat rate rule", done => {
+                let ruleset = findParentRuleset(44);
+                expect(ruleset).toBeDefined();
+                setParentRuleset(ruleset);
+
+                let name = "A test question";
+                let explainer = "A test explainer";
+                let variableName = "test_var";
+                let taxRate = 20;
+
+                initFlatRateRuleDialog("create", name, explainer, variableName, taxRate);
+                setDialogState(dialogStates.modes.create, dialogStates.entityTypes.flatRateRule, null);
+
+                showDialog(flatRateRuleDialog.dialog.id);
+
+                function flatRateRuleCreator(_rulesetId, _name, _explainer, _variableName, _ordinal, _taxRate, success, failure) {
+                    expect(_rulesetId).toBe(ruleset.id);
+                    expect(_name).toBe(name);
+                    expect(_explainer).toBe(explainer);
+                    expect(_variableName).toBe(variableName);
+                    expect(_ordinal).toBe(getNextRuleOrdinal());
+                    expect(parseInt(_taxRate)).toBe(taxRate);
+                    expect(success).toBe(saveRuleSucceeded);
+                    expect(failure).toBe(saveRuleFailed);
+                    expect(isShown(flatRateRuleDialog.dialog.id)).toBe(false);
+                    done();
+                }
+
+                function tieredRateRuleCreator(_rulesetId, _name, _explainer, _variableName, _ordinal, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                function secondaryTieredRateRuleCreator(_rulesetId, _name, _explainer, _variableName, _ordinal, _primaryRuleId, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                function flatRateRuleUpdater(_rulesetId, _ruleId, _name, _explainer, _variableName, _ordinal, _taxRate, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                function tieredRateRuleUpdater(_rulesetId, _ruleId, _name, _explainer, _variableName, _ordinal, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                function secondaryTieredRateRuleUpdater(_rulesetId, _ruleId, _name, _explainer, _variableName, _ordinal, _primaryRuleId, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                saveRule(flatRateRuleCreator, tieredRateRuleCreator, secondaryTieredRateRuleCreator, flatRateRuleUpdater, tieredRateRuleUpdater,
+                    secondaryTieredRateRuleUpdater);
+            });
+
+            test("should hide the create rule dialog and generate an appropriate request for a tiered rate rule", done => {
+                let ruleset = findParentRuleset(44);
+                expect(ruleset).toBeDefined();
+                setParentRuleset(ruleset);
+
+                let name = "A test question";
+                let explainer = "A test explainer";
+                let variableName = "test_var";
+
+                initTieredRateRuleDialog("create", name, explainer, variableName, []);
+                setDialogState(dialogStates.modes.create, dialogStates.entityTypes.tieredRateRule, null);
+
+                showDialog(tieredRateRuleDialog.dialog.id);
+
+                function flatRateRuleCreator(_rulesetId, _name, _explainer, _variableName, _ordinal, _taxRate, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                function tieredRateRuleCreator(_rulesetId, _name, _explainer, _variableName, _ordinal, success, failure) {
+                    expect(_rulesetId).toBe(ruleset.id);
+                    expect(_name).toBe(name);
+                    expect(_explainer).toBe(explainer);
+                    expect(_variableName).toBe(variableName);
+                    expect(_ordinal).toBe(getNextRuleOrdinal());
+                    expect(success).toBe(saveRuleSucceeded);
+                    expect(failure).toBe(saveRuleFailed);
+                    expect(isShown(tieredRateRuleDialog.dialog.id)).toBe(false);
+                    done();
+                }
+
+                function secondaryTieredRateRuleCreator(_rulesetId, _name, _explainer, _variableName, _ordinal, _primaryRuleId, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                function flatRateRuleUpdater(_rulesetId, _ruleId, _name, _explainer, _variableName, _ordinal, _taxRate, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                function tieredRateRuleUpdater(_rulesetId, _ruleId, _name, _explainer, _variableName, _ordinal, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                function secondaryTieredRateRuleUpdater(_rulesetId, _ruleId, _name, _explainer, _variableName, _ordinal, _primaryRuleId, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                saveRule(flatRateRuleCreator, tieredRateRuleCreator, secondaryTieredRateRuleCreator, flatRateRuleUpdater, tieredRateRuleUpdater,
+                    secondaryTieredRateRuleUpdater);
+            });
+
+            test("should hide the create rule dialog and generate an appropriate request for a secondary tiered rate rule", done => {
+                let ruleset = findParentRuleset(44);
+                expect(ruleset).toBeDefined();
+                setParentRuleset(ruleset);
+
+                let name = "A test question";
+                let explainer = "A test explainer";
+                let variableName = "test_var";
+
+                initSecondaryTieredRateRuleDialog("create", name, explainer, variableName, getRulesByTypeForJurisdiction("tiered_rate"), []);
+                setDialogState(dialogStates.modes.create, dialogStates.entityTypes.secondaryTieredRateRule, null);
+
+                showDialog(secondaryTieredRateRuleDialog.dialog.id);
+
+                function flatRateRuleCreator(_rulesetId, _name, _explainer, _variableName, _ordinal, _taxRate, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                function tieredRateRuleCreator(_rulesetId, _name, _explainer, _variableName, _ordinal, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                function secondaryTieredRateRuleCreator(_rulesetId, _name, _explainer, _variableName, _ordinal, _primaryRuleId, success, failure) {
+                    expect(_rulesetId).toBe(ruleset.id);
+                    expect(_name).toBe(name);
+                    expect(_explainer).toBe(explainer);
+                    expect(_variableName).toBe(variableName);
+                    expect(_ordinal).toBe(getNextRuleOrdinal());
+                    expect(success).toBe(saveRuleSucceeded);
+                    expect(failure).toBe(saveRuleFailed);
+                    expect(isShown(secondaryTieredRateRuleDialog.dialog.id)).toBe(false);
+                    done();
+                }
+
+                function flatRateRuleUpdater(_rulesetId, _ruleId, _name, _explainer, _variableName, _ordinal, _taxRate, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                function tieredRateRuleUpdater(_rulesetId, _ruleId, _name, _explainer, _variableName, _ordinal, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                function secondaryTieredRateRuleUpdater(_rulesetId, _ruleId, _name, _explainer, _variableName, _ordinal, _primaryRuleId, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                saveRule(flatRateRuleCreator, tieredRateRuleCreator, secondaryTieredRateRuleCreator, flatRateRuleUpdater, tieredRateRuleUpdater,
+                    secondaryTieredRateRuleUpdater);
+            });
+        });
     });
 
     describe("Editing rules", () => {
-        test("should display the flat rate rule dialog when flat rate rule given", () => {
-            let rule = findRuleById(41);
-            let ruleset = findParentRuleset(41);
-            expect(ruleset).toBeDefined();
-            editRule(ruleset, rule);
-            expect(app.parentRuleset).toEqual(ruleset);
-            expect(app.dialogState.mode).toBe(dialogStates.modes.edit);
-            expect(app.dialogState.entityType).toBe(dialogStates.entityTypes.flatRateRule);
-            expect(app.dialogState.entity).toEqual(rule);
-            expect(isShown(flatRateRuleDialog.dialog.id)).toBe(true);
+        describe("Choosing to edit a rule", () => {
+            test("should display the flat rate rule dialog when flat rate rule given", () => {
+                let rule = findRuleById(41);
+                let ruleset = findParentRuleset(41);
+                expect(ruleset).toBeDefined();
+                editRule(ruleset, rule);
+                expect(app.parentRuleset).toEqual(ruleset);
+                expect(app.dialogState.mode).toBe(dialogStates.modes.edit);
+                expect(app.dialogState.entityType).toBe(dialogStates.entityTypes.flatRateRule);
+                expect(app.dialogState.entity).toEqual(rule);
+                expect(isShown(flatRateRuleDialog.dialog.id)).toBe(true);
+            });
+    
+            test("should display the tiered rate rule dialog when tiered rate rule given", () => {
+                let rule = findRuleById(44);
+                let ruleset = findParentRuleset(44);
+                expect(ruleset).toBeDefined();
+                editRule(ruleset, rule);
+                expect(app.parentRuleset).toEqual(ruleset);
+                expect(app.dialogState.mode).toBe(dialogStates.modes.edit);
+                expect(app.dialogState.entityType).toBe(dialogStates.entityTypes.tieredRateRule);
+                expect(app.dialogState.entity).toEqual(rule);
+                expect(isShown(tieredRateRuleDialog.dialog.id)).toBe(true);
+            });
+    
+            test("should display the secondary tiered rate rule dialog when secondary tiered rate rule given", () => {
+                let rule = findRuleById(45);
+                let ruleset = findParentRuleset(45);
+                expect(ruleset).toBeDefined();
+                editRule(ruleset, rule);
+                expect(app.parentRuleset).toEqual(ruleset);
+                expect(app.dialogState.mode).toBe(dialogStates.modes.edit);
+                expect(app.dialogState.entityType).toBe(dialogStates.entityTypes.secondaryTieredRateRule);
+                expect(app.dialogState.entity).toEqual(rule);
+                expect(isShown(secondaryTieredRateRuleDialog.dialog.id)).toBe(true);
+            });
         });
 
-        test("should display the tiered rate rule dialog when tiered rate rule given", () => {
-            let rule = findRuleById(44);
-            let ruleset = findParentRuleset(44);
-            expect(ruleset).toBeDefined();
-            editRule(ruleset, rule);
-            expect(app.parentRuleset).toEqual(ruleset);
-            expect(app.dialogState.mode).toBe(dialogStates.modes.edit);
-            expect(app.dialogState.entityType).toBe(dialogStates.entityTypes.tieredRateRule);
-            expect(app.dialogState.entity).toEqual(rule);
-            expect(isShown(tieredRateRuleDialog.dialog.id)).toBe(true);
-        });
+        describe("Saving changes", () => {
+            test("should hide the edit rule dialog and generate an appropriate request for a flat rate rule", done => {
+                let ruleId = 41;
 
-        test("should display the secondary tiered rate rule dialog when secondary tiered rate rule given", () => {
-            let rule = findRuleById(45);
-            let ruleset = findParentRuleset(45);
-            expect(ruleset).toBeDefined();
-            editRule(ruleset, rule);
-            expect(app.parentRuleset).toEqual(ruleset);
-            expect(app.dialogState.mode).toBe(dialogStates.modes.edit);
-            expect(app.dialogState.entityType).toBe(dialogStates.entityTypes.secondaryTieredRateRule);
-            expect(app.dialogState.entity).toEqual(rule);
-            expect(isShown(secondaryTieredRateRuleDialog.dialog.id)).toBe(true);
+                let ruleset = findParentRuleset(ruleId);
+                expect(ruleset).toBeDefined();
+                setParentRuleset(ruleset);
+
+                let rule = findRuleById(ruleId);
+                expect(rule).toBeDefined();
+
+                initFlatRateRuleDialog("edit", rule.name, rule.explainer, rule.variable_name, rule.tax_rate);
+                setDialogState(dialogStates.modes.edit, dialogStates.entityTypes.flatRateRule, rule);
+
+                showDialog(flatRateRuleDialog.dialog.id);
+
+                function flatRateRuleCreator(_rulesetId, _name, _explainer, _variableName, _ordinal, _taxRate, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                function tieredRateRuleCreator(_rulesetId, _name, _explainer, _variableName, _ordinal, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                function secondaryTieredRateRuleCreator(_rulesetId, _name, _explainer, _variableName, _ordinal, _primaryRuleId, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                function flatRateRuleUpdater(_rulesetId, _ruleId, _name, _explainer, _variableName, _ordinal, _taxRate, success, failure) {
+                    expect(_rulesetId).toBe(ruleset.id);
+                    expect(_ruleId).toBe(rule.id);
+                    expect(_name).toBe(rule.name);
+                    expect(_explainer).toBe(rule.explainer);
+                    expect(_variableName).toBe(rule.variable_name);
+                    expect(_ordinal).toBe(rule.ordinal);
+                    expect(parseInt(_taxRate)).toBe(rule.tax_rate);
+                    expect(success).toBe(saveRuleSucceeded);
+                    expect(failure).toBe(saveRuleFailed);
+                    expect(isShown(flatRateRuleDialog.dialog.id)).toBe(false);
+                    done();
+                }
+
+                function tieredRateRuleUpdater(_rulesetId, _ruleId, _name, _explainer, _variableName, _ordinal, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                function secondaryTieredRateRuleUpdater(_rulesetId, _ruleId, _name, _explainer, _variableName, _ordinal, _primaryRuleId, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                saveRule(flatRateRuleCreator, tieredRateRuleCreator, secondaryTieredRateRuleCreator, flatRateRuleUpdater, tieredRateRuleUpdater,
+                    secondaryTieredRateRuleUpdater);
+            });
+
+            test("should hide the edit rule dialog and generate an appropriate request for a tiered rate rule", done => {
+                let ruleId = 44;
+
+                let ruleset = findParentRuleset(ruleId);
+                expect(ruleset).toBeDefined();
+                setParentRuleset(ruleset);
+
+                let rule = findRuleById(ruleId);
+                expect(rule).toBeDefined();
+
+                initTieredRateRuleDialog("edit", rule.name, rule.explainer, rule.variable_name, rule.tiers);
+                setDialogState(dialogStates.modes.edit, dialogStates.entityTypes.tieredRateRule, rule);
+
+                showDialog(tieredRateRuleDialog.dialog.id);
+
+                function flatRateRuleCreator(_rulesetId, _name, _explainer, _variableName, _ordinal, _taxRate, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                function tieredRateRuleCreator(_rulesetId, _name, _explainer, _variableName, _ordinal, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                function secondaryTieredRateRuleCreator(_rulesetId, _name, _explainer, _variableName, _ordinal, _primaryRuleId, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                function flatRateRuleUpdater(_rulesetId, _ruleId, _name, _explainer, _variableName, _ordinal, _taxRate, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                function tieredRateRuleUpdater(_rulesetId, _ruleId, _name, _explainer, _variableName, _ordinal, success, failure) {
+                    expect(_rulesetId).toBe(ruleset.id);
+                    expect(_ruleId).toBe(rule.id);
+                    expect(_name).toBe(rule.name);
+                    expect(_explainer).toBe(rule.explainer);
+                    expect(_variableName).toBe(rule.variable_name);
+                    expect(_ordinal).toBe(rule.ordinal);
+                    expect(success).toBe(saveRuleSucceeded);
+                    expect(failure).toBe(saveRuleFailed);
+                    expect(isShown(tieredRateRuleDialog.dialog.id)).toBe(false);
+                    done();
+                }
+
+                function secondaryTieredRateRuleUpdater(_rulesetId, _ruleId, _name, _explainer, _variableName, _ordinal, _primaryRuleId, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                saveRule(flatRateRuleCreator, tieredRateRuleCreator, secondaryTieredRateRuleCreator, flatRateRuleUpdater, tieredRateRuleUpdater,
+                    secondaryTieredRateRuleUpdater);
+            });
+
+            test("should hide the edit rule dialog and generate an appropriate request for a secondary tiered rate rule", done => {
+                let ruleId = 45;
+
+                let ruleset = findParentRuleset(ruleId);
+                expect(ruleset).toBeDefined();
+                setParentRuleset(ruleset);
+
+                let rule = findRuleById(ruleId);
+                expect(rule).toBeDefined();
+
+                initSecondaryTieredRateRuleDialog("edit", rule.name, rule.explainer, rule.variable_name, getRulesByTypeForJurisdiction("tiered_rate"), rule.tiers);
+                setDialogState(dialogStates.modes.edit, dialogStates.entityTypes.secondaryTieredRateRule, rule);
+
+                showDialog(secondaryTieredRateRuleDialog.dialog.id);
+
+                function flatRateRuleCreator(_rulesetId, _name, _explainer, _variableName, _ordinal, _taxRate, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                function tieredRateRuleCreator(_rulesetId, _name, _explainer, _variableName, _ordinal, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                function secondaryTieredRateRuleCreator(_rulesetId, _name, _explainer, _variableName, _ordinal, _primaryRuleId, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                function flatRateRuleUpdater(_rulesetId, _ruleId, _name, _explainer, _variableName, _ordinal, _taxRate, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                function tieredRateRuleUpdater(_rulesetId, _ruleId, _name, _explainer, _variableName, _ordinal, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                function secondaryTieredRateRuleUpdater(_rulesetId, _ruleId, _name, _explainer, _variableName, _ordinal, _primaryRuleId, success, failure) {
+                    expect(_rulesetId).toBe(ruleset.id);
+                    expect(_ruleId).toBe(rule.id);
+                    expect(_name).toBe(rule.name);
+                    expect(_explainer).toBe(rule.explainer);
+                    expect(_variableName).toBe(rule.variable_name);
+                    expect(_ordinal).toBe(rule.ordinal);
+                    expect(success).toBe(saveRuleSucceeded);
+                    expect(failure).toBe(saveRuleFailed);
+                    expect(isShown(secondaryTieredRateRuleDialog.dialog.id)).toBe(false);
+                    done();
+                }
+
+                saveRule(flatRateRuleCreator, tieredRateRuleCreator, secondaryTieredRateRuleCreator, flatRateRuleUpdater, tieredRateRuleUpdater,
+                    secondaryTieredRateRuleUpdater);
+            });
         });
     });
 
