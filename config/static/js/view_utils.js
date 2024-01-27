@@ -1,70 +1,42 @@
-const $ = require("jquery");
-require("bootstrap");
-const {
-    dialogStates,
-    endpoints,
-    statusDialog,
-    confirmationDialog,
-    jurisdictionsSelect,
-    questionTypeDialog,
-    booleanQuestionDialog,
-    numericQuestionDialog,
-    multipleChoiceQuestionDialog,
-    multipleChoiceOptionDialog,
-    questionDisplayContainer,
-    booleanQuestionDisplay,
-    numericQuestionDisplay,
-    multipleChoiceQuestionDisplay,
-    rulesetDialog,
-    ruleTypeDialog,
-    flatRateRuleDialog,
-    tieredRateRuleDialog,
-    secondaryTieredRateRuleDialog,
-    ruleTierDialog,
-    secondaryRuleTierDialog,
-    rulesetsDisplayContainer,
-    rulesetDisplay,
-    flatRateRuleDisplay,
-    tieredRateRuleDisplay,
-    secondaryTieredRateRuleDisplay
-} = require("./view_consts.js");
+/* jshint esversion: 8 */
+if (typeof require !== "undefined") {
+    const viewConsts = require("./view_consts.js");
+    const viewModels = require("./view_models.js");
+    require("bootstrap");
+    $ = require("jquery");
+    // View Constants
+    dialogStates = viewConsts.dialogStates;
+    endpoints = viewConsts.endpoints;
+    statusDialog = viewConsts.statusDialog;
+    confirmationDialog = viewConsts.confirmationDialog;
+    jurisdictionsSelect = viewConsts.jurisdictionsSelect;
+    questionTypeDialog = viewConsts.questionTypeDialog;
+    booleanQuestionDialog = viewConsts.booleanQuestionDialog;
+    numericQuestionDialog = viewConsts.numericQuestionDialog;
+    multipleChoiceQuestionDialog = viewConsts.multipleChoiceQuestionDialog;
+    multipleChoiceOptionDialog = viewConsts.multipleChoiceOptionDialog;
+    questionDisplayContainer = viewConsts.questionDisplayContainer;
+    booleanQuestionDisplay = viewConsts.booleanQuestionDisplay;
+    numericQuestionDisplay = viewConsts.numericQuestionDisplay;
+    multipleChoiceQuestionDisplay = viewConsts.multipleChoiceQuestionDisplay;
+    rulesetDialog = viewConsts.rulesetDialog;
+    ruleTypeDialog = viewConsts.ruleTypeDialog;
+    flatRateRuleDialog = viewConsts.flatRateRuleDialog;
+    tieredRateRuleDialog = viewConsts.tieredRateRuleDialog;
+    secondaryTieredRateRuleDialog = viewConsts.secondaryTieredRateRuleDialog;
+    ruleTierDialog = viewConsts.ruleTierDialog;
+    secondaryRuleTierDialog = viewConsts.secondaryRuleTierDialog;
+    rulesetsDisplayContainer = viewConsts.rulesetsDisplayContainer;
+    rulesetDisplay = viewConsts.rulesetDisplay;
+    flatRateRuleDisplay = viewConsts.flatRateRuleDisplay;
+    tieredRateRuleDisplay = viewConsts.tieredRateRuleDisplay;
+    secondaryTieredRateRuleDisplay = viewConsts.secondaryTieredRateRuleDisplay;
 
-const {
-    app,
-    clearDialogState,
-    setDialogState,
-    setParentState,
-    clearParentState,
-    moveAppStateToParentState,
-    moveParentStateToAppState,
-    setParentRuleset,
-    getForm,
-    getFormId,
-    getTaxCategoryById,
-    getQuestions,
-    getNextQuestionOrdinal,
-    findQuestionById,
-    getTieredRateRulesForJurisdiction,
-    findRuleById,
-    findParentRuleset,
-    findPrimaryRuleTierById,
-    findPreviousQuestion,
-    findNextQuestion,
-    resequenceQuestionOrdinals,
-    getNextRulesetOrdinal,
-    findPreviousRuleset,
-    findNextRuleset,
-    resequenceRulesetOrdinals,
-    getRulesByTypeForJurisdiction,
-    getNextRuleOrdinal,
-    findPreviousRule,
-    findNextRule,
-    resequenceRuleOrdinals,
-    getNextRuleTierOrdinal,
-    findPreviousRuleTier,
-    findNextRuleTier,
-    resequenceRuleTierOrdinals
-} = require("./view_models.js");
+    // View models
+    app = viewModels.app;
+    getTaxCategoryById = viewModels.getTaxCategoryById;
+    findPrimaryRuleTierById = viewModels.findPrimaryRuleTierById;
+}
 /*
  * General Helper Functions
  */
@@ -816,7 +788,7 @@ function updateRulesetsDisplay(rulesets) {
     });
 }
 
-module.exports = {
+if (typeof module !== "undefined") module.exports = {
     showDialog,
     hideDialog,
     error,

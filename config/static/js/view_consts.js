@@ -1,3 +1,4 @@
+/* jshint esversion: 8 */
 /*
  * view_consts.js
  * Defines constants used to simplify access to key DOM elements and other resources
@@ -768,7 +769,7 @@ const secondaryTieredRateRuleDisplay = {
     }
 };
 
-module.exports = {
+if (typeof module !== "undefined") module.exports = {
     dialogStates,
     endpoints,
     statusDialog,

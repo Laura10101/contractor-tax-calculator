@@ -1,3 +1,4 @@
+/* jshint esversion: 8 */
 /*
  * view_models.js
  * Holds the current state of the config app, providing global access
@@ -444,7 +445,7 @@ function resequenceRuleTierOrdinals(deletedTier) {
     return tiers;
 }
 
-module.exports = {
+if (typeof module !== "undefined") module.exports = {
     app,
     clearDialogState,
     setDialogState,

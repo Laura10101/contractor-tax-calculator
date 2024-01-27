@@ -1,3 +1,4 @@
+/* jshint esversion: 8 */
 const { app } = require("../view_models");
 const {
     queryToString,
@@ -68,10 +69,6 @@ describe("Jurisdiction service client", () => {
             // Approach to testing asynchronous code adapted from Jest documentation
             // https://jestjs.io/docs/asynchronous
             function checkAjaxResponse(data, textStatus, request) {
-                console.log(data);
-                console.log(textStatus);
-                console.log(request);
-                console.log(request.status);
                 expect(request).toBeDefined();
                 expect(request.status).toBe(200);
                 expect(data).toBeDefined();
@@ -94,10 +91,6 @@ describe("Tax category service client", () => {
             // Approach to testing asynchronous code adapted from Jest documentation
             // https://jestjs.io/docs/asynchronous
             function checkAjaxResponse(data, textStatus, request) {
-                console.log(data);
-                console.log(textStatus);
-                console.log(request);
-                console.log(request.status);
                 expect(request).toBeDefined();
                 expect(request.status).toBe(200);
                 expect(data).toBeDefined();
@@ -119,10 +112,6 @@ describe("Form service client", () => {
             // Approach to testing asynchronous code adapted from Jest documentation
             // https://jestjs.io/docs/asynchronous
             function checkAjaxResponse(data, textStatus, request) {
-                console.log(data);
-                console.log(textStatus);
-                console.log(request);
-                console.log(request.status);
                 expect(request).toBeDefined();
                 expect(request.status).toBe(200);
                 expect(data).toBeDefined();
@@ -153,10 +142,6 @@ describe("Question service clients", () => {
                 // Approach to testing asynchronous code adapted from Jest documentation
                 // https://jestjs.io/docs/asynchronous
                 function checkAjaxResponse(data, textStatus, request) {
-                    console.log(data);
-                    console.log(textStatus);
-                    console.log(request);
-                    console.log(request.status);
                     expect(request).toBeDefined();
                     expect(request.status).toBe(200);
                     expect(data).toBeDefined();
@@ -177,11 +162,6 @@ describe("Question service clients", () => {
                 // Approach to testing asynchronous code adapted from Jest documentation
                 // https://jestjs.io/docs/asynchronous
                 function checkAjaxResponse(data, textStatus, request) {
-                    console.log("Boolean question - invalid test");
-                    console.log(data);
-                    console.log(textStatus);
-                    console.log(request);
-                    console.log(data.status);
                     expect(request).toBeDefined();
                     expect(data.status).toBe(400);
                     expect(data).toBeDefined();
@@ -203,11 +183,6 @@ describe("Question service clients", () => {
                 // Approach to testing asynchronous code adapted from Jest documentation
                 // https://jestjs.io/docs/asynchronous
                 function checkAjaxResponse(data, textStatus, request) {
-                    console.log("Checking boolean question update results");
-                    console.log(data);
-                    console.log(textStatus);
-                    console.log(request);
-                    console.log(request.status);
                     expect(request).toBeDefined();
                     expect(request.status).toBe(200);
                     expect(data).toBeDefined();
@@ -216,11 +191,6 @@ describe("Question service clients", () => {
                 }
 
                 function testUpdateBooleanQuestion(data, textStatus, request) {
-                    console.log("Updating boolean question");
-                    console.log(data);
-                    console.log(textStatus);
-                    console.log(request);
-                    console.log(request.status);
                     expect(request).toBeDefined();
                     expect(request.status).toBe(200);
                     expect(data).toBeDefined();
@@ -236,7 +206,6 @@ describe("Question service clients", () => {
                 }
 
                 function failTest(data, textStatus, request) {
-                    console.log(data.responseJSON);
                     done(data.responseJSON.error);
                 }
     
@@ -252,11 +221,6 @@ describe("Question service clients", () => {
                 // Approach to testing asynchronous code adapted from Jest documentation
                 // https://jestjs.io/docs/asynchronous
                 function checkAjaxResponse(data, textStatus, request) {
-                    console.log("Checking boolean question update results");
-                    console.log(data);
-                    console.log(textStatus);
-                    console.log(request);
-                    console.log(data.status);
                     expect(request).toBeDefined();
                     expect(data.status).toBe(400);
                     expect(data).toBeDefined();
@@ -265,11 +229,6 @@ describe("Question service clients", () => {
                 }
     
                 function testUpdateBooleanQuestion(data, textStatus, request) {
-                    console.log("Updating boolean question");
-                    console.log(data);
-                    console.log(textStatus);
-                    console.log(request);
-                    console.log(request.status);
                     expect(request).toBeDefined();
                     expect(request.status).toBe(200);
                     expect(data).toBeDefined();
@@ -285,7 +244,6 @@ describe("Question service clients", () => {
                 }
     
                 function failTest(data, textStatus, request) {
-                    console.log(data.responseJSON);
                     done(data.responseJSON.error);
                 }
     
@@ -304,12 +262,7 @@ describe("Question service clients", () => {
             test("should correctly update numeric question, returning 200 and a valid id", done => {
                 // Approach to testing asynchronous code adapted from Jest documentation
                 // https://jestjs.io/docs/asynchronous
-                function checkAjaxResponse(data, textStatus, request) {
-                    console.log("Checking create numeric question results");
-                    console.log(data);
-                    console.log(textStatus);
-                    console.log(request);
-                    console.log(request.status);                    
+                function checkAjaxResponse(data, textStatus, request) {             
                     expect(request).toBeDefined();
                     expect(request.status).toBe(200);
                     expect(data).toBeDefined();
@@ -333,11 +286,6 @@ describe("Question service clients", () => {
                 // Approach to testing asynchronous code adapted from Jest documentation
                 // https://jestjs.io/docs/asynchronous
                 function checkAjaxResponse(data, textStatus, request) {
-                    console.log("Checking create numeric question results");
-                    console.log(data);
-                    console.log(textStatus);
-                    console.log(request);
-                    console.log(request.status);
                     expect(data).toBeDefined();
                     expect(data.status).toBe(400);
                     expect(data).toBeDefined();
@@ -362,11 +310,6 @@ describe("Question service clients", () => {
                 // Approach to testing asynchronous code adapted from Jest documentation
                 // https://jestjs.io/docs/asynchronous
                 function checkAjaxResponse(data, textStatus, request) {
-                    console.log("Checking numeric question update results");
-                    console.log(data);
-                    console.log(textStatus);
-                    console.log(request);
-                    console.log(request.status);
                     expect(request).toBeDefined();
                     expect(request.status).toBe(200);
                     expect(data).toBeDefined();
@@ -375,11 +318,6 @@ describe("Question service clients", () => {
                 }
 
                 function testUpdateNumericQuestion(data, textStatus, request) {
-                    console.log("Updating numeric question");
-                    console.log(data);
-                    console.log(textStatus);
-                    console.log(request);
-                    console.log(request.status);
                     expect(request).toBeDefined();
                     expect(request.status).toBe(200);
                     expect(data).toBeDefined();
@@ -398,7 +336,6 @@ describe("Question service clients", () => {
                 }
 
                 function failTest(data, textStatus, request) {
-                    console.log(data.responseJSON);
                     done(data.responseJSON.error);
                 }
     
@@ -417,11 +354,6 @@ describe("Question service clients", () => {
                 // Approach to testing asynchronous code adapted from Jest documentation
                 // https://jestjs.io/docs/asynchronous
                 function checkAjaxResponse(data, textStatus, request) {
-                    console.log("Checking numeric question update results");
-                    console.log(data);
-                    console.log(textStatus);
-                    console.log(request);
-                    console.log(request.status);
                     expect(data.status).toBe(400);
                     expect(data).toBeDefined();
                     expect(data.responseJSON).toBeDefined();
@@ -429,11 +361,6 @@ describe("Question service clients", () => {
                 }
 
                 function testUpdateNumericQuestion(data, textStatus, request) {
-                    console.log("Updating numeric question");
-                    console.log(data);
-                    console.log(textStatus);
-                    console.log(request);
-                    console.log(request.status);
                     expect(request).toBeDefined();
                     expect(request.status).toBe(200);
                     expect(data).toBeDefined();
@@ -452,7 +379,6 @@ describe("Question service clients", () => {
                 }
 
                 function failTest(data, textStatus, request) {
-                    console.log(data.responseJSON);
                     done(data.responseJSON.error);
                 }
     
@@ -475,10 +401,6 @@ describe("Question service clients", () => {
                 // Approach to testing asynchronous code adapted from Jest documentation
                 // https://jestjs.io/docs/asynchronous
                 function checkAjaxResponse(data, textStatus, request) {
-                    console.log(data);
-                    console.log(textStatus);
-                    console.log(request);
-                    console.log(request.status);
                     expect(request).toBeDefined();
                     expect(request.status).toBe(200);
                     expect(data).toBeDefined();
@@ -499,11 +421,6 @@ describe("Question service clients", () => {
                 // Approach to testing asynchronous code adapted from Jest documentation
                 // https://jestjs.io/docs/asynchronous
                 function checkAjaxResponse(data, textStatus, request) {
-                    console.log("Multiple choice question - invalid test");
-                    console.log(data);
-                    console.log(textStatus);
-                    console.log(request);
-                    console.log(data.status);
                     expect(request).toBeDefined();
                     expect(data.status).toBe(400);
                     expect(data).toBeDefined();
@@ -525,11 +442,6 @@ describe("Question service clients", () => {
                 // Approach to testing asynchronous code adapted from Jest documentation
                 // https://jestjs.io/docs/asynchronous
                 function checkAjaxResponse(data, textStatus, request) {
-                    console.log("Checking multiple choice update results");
-                    console.log(data);
-                    console.log(textStatus);
-                    console.log(request);
-                    console.log(request.status);
                     expect(request).toBeDefined();
                     expect(request.status).toBe(200);
                     expect(data).toBeDefined();
@@ -538,11 +450,6 @@ describe("Question service clients", () => {
                 }
 
                 function testUpdateMultipleChoiceQuestion(data, textStatus, request) {
-                    console.log("Updating multiple choice question");
-                    console.log(data);
-                    console.log(textStatus);
-                    console.log(request);
-                    console.log(request.status);
                     expect(request).toBeDefined();
                     expect(request.status).toBe(200);
                     expect(data).toBeDefined();
@@ -557,7 +464,6 @@ describe("Question service clients", () => {
                 }
 
                 function failTest(data, textStatus, request) {
-                    console.log(data.responseJSON);
                     done(data.responseJSON.error);
                 }
     
@@ -573,11 +479,6 @@ describe("Question service clients", () => {
                 // Approach to testing asynchronous code adapted from Jest documentation
                 // https://jestjs.io/docs/asynchronous
                 function checkAjaxResponse(data, textStatus, request) {
-                    console.log("Checking multiple choice question update results");
-                    console.log(data);
-                    console.log(textStatus);
-                    console.log(request);
-                    console.log(data.status);
                     expect(request).toBeDefined();
                     expect(data.status).toBe(400);
                     expect(data).toBeDefined();
@@ -586,11 +487,6 @@ describe("Question service clients", () => {
                 }
     
                 function testUpdateMultipleChoiceQuestion(data, textStatus, request) {
-                    console.log("Updating multiple choice question");
-                    console.log(data);
-                    console.log(textStatus);
-                    console.log(request);
-                    console.log(request.status);
                     expect(request).toBeDefined();
                     expect(request.status).toBe(200);
                     expect(data).toBeDefined();
@@ -606,7 +502,6 @@ describe("Question service clients", () => {
                 }
     
                 function failTest(data, textStatus, request) {
-                    console.log(data.responseJSON);
                     done(data.responseJSON.error);
                 }
     
@@ -625,22 +520,12 @@ describe("Question service clients", () => {
             // Approach to testing asynchronous code adapted from Jest documentation
             // https://jestjs.io/docs/asynchronous
             function checkAjaxResponse(data, textStatus, request) {
-                console.log("Checking question deletion results");
-                console.log(data);
-                console.log(textStatus);
-                console.log(request);
-                console.log(request.status);
                 expect(request).toBeDefined();
                 expect(request.status).toBe(200);
                 done();
             }
 
             function testRemoveMultipleChoiceQuestion(data, textStatus, request) {
-                console.log("Updating multiple choice question");
-                console.log(data);
-                console.log(textStatus);
-                console.log(request);
-                console.log(request.status);
                 expect(request).toBeDefined();
                 expect(request.status).toBe(200);
                 expect(data).toBeDefined();
@@ -650,7 +535,6 @@ describe("Question service clients", () => {
             }
 
             function failTest(data, textStatus, request) {
-                console.log(data.responseJSON);
                 done(data.responseJSON.error);
             }
 
@@ -670,10 +554,6 @@ describe("Multiple choice options", () => {
             // Approach to testing asynchronous code adapted from Jest documentation
             // https://jestjs.io/docs/asynchronous
             function checkAjaxResponse(data, textStatus, request) {
-                console.log(data);
-                console.log(textStatus);
-                console.log(request);
-                console.log(request.status);
                 expect(request).toBeDefined();
                 expect(request.status).toBe(200);
                 expect(data).toBeDefined();
@@ -683,11 +563,6 @@ describe("Multiple choice options", () => {
             }
             
             function testCreateMultipleChoiceOption(data, textStatus, request) {
-                console.log("Creating multiple choice option");
-                console.log(data);
-                console.log(textStatus);
-                console.log(request);
-                console.log(request.status);
                 expect(request).toBeDefined();
                 expect(request.status).toBe(200);
                 expect(data).toBeDefined();
@@ -700,7 +575,6 @@ describe("Multiple choice options", () => {
             }
 
             function failTest(data, textStatus, request) {
-                console.log(data.responseJSON);
                 done(data.responseJSON.error);
             }
 
@@ -716,10 +590,6 @@ describe("Multiple choice options", () => {
             // Approach to testing asynchronous code adapted from Jest documentation
             // https://jestjs.io/docs/asynchronous
             function checkAjaxResponse(data, textStatus, request) {
-                console.log(data);
-                console.log(textStatus);
-                console.log(request);
-                console.log(request.status);
                 expect(request).toBeDefined();
                 expect(data.status).toBe(400);
                 expect(data).toBeDefined();
@@ -728,11 +598,6 @@ describe("Multiple choice options", () => {
             }
             
             function testCreateMultipleChoiceOption(data, textStatus, request) {
-                console.log("Creating multiple choice option");
-                console.log(data);
-                console.log(textStatus);
-                console.log(request);
-                console.log(request.status);
                 expect(request).toBeDefined();
                 expect(request.status).toBe(200);
                 expect(data).toBeDefined();
@@ -745,7 +610,6 @@ describe("Multiple choice options", () => {
             }
 
             function failTest(data, textStatus, request) {
-                console.log(data.responseJSON);
                 done(data.responseJSON.error);
             }
 
@@ -764,10 +628,6 @@ describe("Multiple choice options", () => {
             // Approach to testing asynchronous code adapted from Jest documentation
             // https://jestjs.io/docs/asynchronous
             function checkAjaxResponse(data, textStatus, request) {
-                console.log(data);
-                console.log(textStatus);
-                console.log(request);
-                console.log(request.status);
                 expect(request).toBeDefined();
                 expect(request.status).toBe(200);
                 
@@ -775,11 +635,6 @@ describe("Multiple choice options", () => {
             }
 
             function testRemoveMultipleChoiceOption(data, textStatus, request) {
-                console.log("Creating multiple choice option");
-                console.log(data);
-                console.log(textStatus);
-                console.log(request);
-                console.log(request.status);
                 expect(request).toBeDefined();
                 expect(request.status).toBe(200);
                 expect(data).toBeDefined();
@@ -788,17 +643,11 @@ describe("Multiple choice options", () => {
             }
             
             function testCreateMultipleChoiceOption(data, textStatus, request) {
-                console.log("Creating multiple choice option");
-                console.log(data);
-                console.log(textStatus);
-                console.log(request);
-                console.log(request.status);
                 expect(request).toBeDefined();
                 expect(request.status).toBe(200);
                 expect(data).toBeDefined();
                 expect(data.id).toBeDefined();
                 questionId = data.id;
-                console.log("questionID set to " + questionId);
 
                 let text = "A test option";
                 let explainer = "A wonderful test";
@@ -807,7 +656,6 @@ describe("Multiple choice options", () => {
             }
 
             function failTest(data, textStatus, request) {
-                console.log(data.responseJSON);
                 done(data.responseJSON.error);
             }
 
@@ -827,10 +675,6 @@ describe("Ruleset service client", () => {
             // Approach to testing asynchronous code adapted from Jest documentation
             // https://jestjs.io/docs/asynchronous
             function checkAjaxResponse(data, textStatus, request) {
-                console.log(data);
-                console.log(textStatus);
-                console.log(request);
-                console.log(request.status);
                 expect(request).toBeDefined();
                 expect(request.status).toBe(200);
                 expect(data).toBeDefined();
@@ -846,10 +690,6 @@ describe("Ruleset service client", () => {
             // Approach to testing asynchronous code adapted from Jest documentation
             // https://jestjs.io/docs/asynchronous
             function checkAjaxResponse(data, textStatus, request) {
-                console.log(data);
-                console.log(textStatus);
-                console.log(request);
-                console.log(request.status);
                 expect(data).toBeDefined();
                 expect(data.status).toBe(400);
 
@@ -865,10 +705,6 @@ describe("Ruleset service client", () => {
             // Approach to testing asynchronous code adapted from Jest documentation
             // https://jestjs.io/docs/asynchronous
             function checkAjaxResponse(data, textStatus, request) {
-                console.log(data);
-                console.log(textStatus);
-                console.log(request);
-                console.log(request.status);
                 expect(request).toBeDefined();
                 expect(request.status).toBe(200);
 
@@ -876,11 +712,6 @@ describe("Ruleset service client", () => {
             }
 
             function testUpdateRuleset(data, textStatus, request) {
-                console.log("Updating ruleset");
-                console.log(data);
-                console.log(textStatus);
-                console.log(request);
-                console.log(request.status);
                 expect(request).toBeDefined();
                 expect(request.status).toBe(200);
                 expect(data).toBeDefined();
@@ -892,7 +723,6 @@ describe("Ruleset service client", () => {
             }
 
             function failTest(data, textStatus, request) {
-                console.log(data.responseJSON);
                 done(data.responseJSON.error);
             }
 
@@ -903,10 +733,6 @@ describe("Ruleset service client", () => {
             // Approach to testing asynchronous code adapted from Jest documentation
             // https://jestjs.io/docs/asynchronous
             function checkAjaxResponse(data, textStatus, request) {
-                console.log(data);
-                console.log(textStatus);
-                console.log(request);
-                console.log(request.status);
                 expect(request).toBeDefined();
                 expect(data.status).toBe(400);
 
@@ -914,11 +740,6 @@ describe("Ruleset service client", () => {
             }
 
             function testUpdateRuleset(data, textStatus, request) {
-                console.log("Updating ruleset");
-                console.log(data);
-                console.log(textStatus);
-                console.log(request);
-                console.log(request.status);
                 expect(request).toBeDefined();
                 expect(request.status).toBe(200);
                 expect(data).toBeDefined();
@@ -930,7 +751,6 @@ describe("Ruleset service client", () => {
             }
 
             function failTest(data, textStatus, request) {
-                console.log(data.responseJSON);
                 done(data.responseJSON.error);
             }
 
@@ -943,10 +763,6 @@ describe("Ruleset service client", () => {
             // Approach to testing asynchronous code adapted from Jest documentation
             // https://jestjs.io/docs/asynchronous
             function checkAjaxResponse(data, textStatus, request) {
-                console.log(data);
-                console.log(textStatus);
-                console.log(request);
-                console.log(request.status);
                 expect(request).toBeDefined();
                 expect(request.status).toBe(200);
 
@@ -954,11 +770,6 @@ describe("Ruleset service client", () => {
             }
 
             function testRemoveRuleset(data, textStatus, request) {
-                console.log("Removing ruleset");
-                console.log(data);
-                console.log(textStatus);
-                console.log(request);
-                console.log(request.status);
                 expect(request).toBeDefined();
                 expect(request.status).toBe(200);
                 expect(data).toBeDefined();
@@ -969,7 +780,6 @@ describe("Ruleset service client", () => {
             }
 
             function failTest(data, textStatus, request) {
-                console.log(data.responseJSON);
                 done(data.responseJSON.error);
             }
 
@@ -983,11 +793,6 @@ describe("Rule service clients", () => {
         // Approach to testing asynchronous code adapted from Jest documentation
         // https://jestjs.io/docs/asynchronous
         function checkAjaxResponse(data, textStatus, request) {
-            console.log("Ruleset created for use in rule tests")
-            console.log(data);
-            console.log(textStatus);
-            console.log(request);
-            console.log(request.status);
             rulesetId = data.ruleset_id;
 
             done();
@@ -1002,10 +807,6 @@ describe("Rule service clients", () => {
                 // Approach to testing asynchronous code adapted from Jest documentation
                 // https://jestjs.io/docs/asynchronous
                 function checkAjaxResponse(data, textStatus, request) {
-                    console.log(data);
-                    console.log(textStatus);
-                    console.log(request);
-                    console.log(request.status);
                     expect(request).toBeDefined();
                     expect(request.status).toBe(200);
                     expect(data).toBeDefined();
@@ -1026,10 +827,6 @@ describe("Rule service clients", () => {
                 // Approach to testing asynchronous code adapted from Jest documentation
                 // https://jestjs.io/docs/asynchronous
                 function checkAjaxResponse(data, textStatus, request) {
-                    console.log(data);
-                    console.log(textStatus);
-                    console.log(request);
-                    console.log(request.status);
                     expect(data).toBeDefined();
                     expect(data.status).toBe(400);
 
@@ -1050,10 +847,6 @@ describe("Rule service clients", () => {
                 // Approach to testing asynchronous code adapted from Jest documentation
                 // https://jestjs.io/docs/asynchronous
                 function checkAjaxResponse(data, textStatus, request) {
-                    console.log(data);
-                    console.log(textStatus);
-                    console.log(request);
-                    console.log(request.status);
                     expect(request).toBeDefined();
                     expect(request.status).toBe(200);
                     expect(data).toBeDefined();
@@ -1062,10 +855,6 @@ describe("Rule service clients", () => {
                 }
 
                 function testUpdateFlatRateRule(data, textStatus, request) {
-                    console.log(data);
-                    console.log(textStatus);
-                    console.log(request);
-                    console.log(request.status);
                     expect(request).toBeDefined();
                     expect(request.status).toBe(200);
                     expect(data).toBeDefined();
@@ -1083,7 +872,6 @@ describe("Rule service clients", () => {
                 }
 
                 function failTest(data, textStatus, request) {
-                    console.log(data.responseJSON);
                     done(data.responseJSON.error);
                 }
     
@@ -1099,10 +887,6 @@ describe("Rule service clients", () => {
                 // Approach to testing asynchronous code adapted from Jest documentation
                 // https://jestjs.io/docs/asynchronous
                 function checkAjaxResponse(data, textStatus, request) {
-                    console.log(data);
-                    console.log(textStatus);
-                    console.log(request);
-                    console.log(request.status);
                     expect(data).toBeDefined();
                     expect(data.status).toBe(400);
 
@@ -1110,10 +894,6 @@ describe("Rule service clients", () => {
                 }
 
                 function testUpdateFlatRateRule(data, textStatus, request) {
-                    console.log(data);
-                    console.log(textStatus);
-                    console.log(request);
-                    console.log(request.status);
                     expect(request).toBeDefined();
                     expect(request.status).toBe(200);
                     expect(data).toBeDefined();
@@ -1131,7 +911,6 @@ describe("Rule service clients", () => {
                 }
 
                 function failTest(data, textStatus, request) {
-                    console.log(data.responseJSON);
                     done(data.responseJSON.error);
                 }
     
@@ -1151,10 +930,6 @@ describe("Rule service clients", () => {
                 // Approach to testing asynchronous code adapted from Jest documentation
                 // https://jestjs.io/docs/asynchronous
                 function checkAjaxResponse(data, textStatus, request) {
-                    console.log(data);
-                    console.log(textStatus);
-                    console.log(request);
-                    console.log(request.status);
                     expect(request).toBeDefined();
                     expect(request.status).toBe(200);
                     expect(data).toBeDefined();
@@ -1174,10 +949,6 @@ describe("Rule service clients", () => {
                 // Approach to testing asynchronous code adapted from Jest documentation
                 // https://jestjs.io/docs/asynchronous
                 function checkAjaxResponse(data, textStatus, request) {
-                    console.log(data);
-                    console.log(textStatus);
-                    console.log(request);
-                    console.log(request.status);
                     expect(data).toBeDefined();
                     expect(data.status).toBe(400);
 
@@ -1198,10 +969,6 @@ describe("Rule service clients", () => {
                 // Approach to testing asynchronous code adapted from Jest documentation
                 // https://jestjs.io/docs/asynchronous
                 function checkAjaxResponse(data, textStatus, request) {
-                    console.log(data);
-                    console.log(textStatus);
-                    console.log(request);
-                    console.log(request.status);
                     expect(request).toBeDefined();
                     expect(request.status).toBe(200);
                     expect(data).toBeDefined();
@@ -1210,10 +977,6 @@ describe("Rule service clients", () => {
                 }
 
                 function testUpdateTieredRateRule(data, textStatus, request) {
-                    console.log(data);
-                    console.log(textStatus);
-                    console.log(request);
-                    console.log(request.status);
                     expect(request).toBeDefined();
                     expect(request.status).toBe(200);
                     expect(data).toBeDefined();
@@ -1230,7 +993,6 @@ describe("Rule service clients", () => {
                 }
 
                 function failTest(data, textStatus, request) {
-                    console.log(data.responseJSON);
                     done(data.responseJSON.error);
                 }
     
@@ -1245,10 +1007,6 @@ describe("Rule service clients", () => {
                 // Approach to testing asynchronous code adapted from Jest documentation
                 // https://jestjs.io/docs/asynchronous
                 function checkAjaxResponse(data, textStatus, request) {
-                    console.log(data);
-                    console.log(textStatus);
-                    console.log(request);
-                    console.log(request.status);
                     expect(data).toBeDefined();
                     expect(data.status).toBe(400);
 
@@ -1256,10 +1014,6 @@ describe("Rule service clients", () => {
                 }
 
                 function testUpdateTieredRateRule(data, textStatus, request) {
-                    console.log(data);
-                    console.log(textStatus);
-                    console.log(request);
-                    console.log(request.status);
                     expect(request).toBeDefined();
                     expect(request.status).toBe(200);
                     expect(data).toBeDefined();
@@ -1276,7 +1030,6 @@ describe("Rule service clients", () => {
                 }
 
                 function failTest(data, textStatus, request) {
-                    console.log(data.responseJSON);
                     done(data.responseJSON.error);
                 }
     
@@ -1295,10 +1048,6 @@ describe("Rule service clients", () => {
                 // Approach to testing asynchronous code adapted from Jest documentation
                 // https://jestjs.io/docs/asynchronous
                 function checkAjaxResponse(data, textStatus, request) {
-                    console.log(data);
-                    console.log(textStatus);
-                    console.log(request);
-                    console.log(request.status);
                     expect(request).toBeDefined();
                     expect(request.status).toBe(200);
                     expect(data).toBeDefined();
@@ -1318,10 +1067,6 @@ describe("Rule service clients", () => {
                 // Approach to testing asynchronous code adapted from Jest documentation
                 // https://jestjs.io/docs/asynchronous
                 function checkAjaxResponse(data, textStatus, request) {
-                    console.log(data);
-                    console.log(textStatus);
-                    console.log(request);
-                    console.log(request.status);
                     expect(data).toBeDefined();
                     expect(data.status).toBe(400);
 
@@ -1341,10 +1086,6 @@ describe("Rule service clients", () => {
                 // Approach to testing asynchronous code adapted from Jest documentation
                 // https://jestjs.io/docs/asynchronous
                 function checkAjaxResponse(data, textStatus, request) {
-                    console.log(data);
-                    console.log(textStatus);
-                    console.log(request);
-                    console.log(request.status);
                     expect(request).toBeDefined();
                     expect(request.status).toBe(200);
                     expect(data).toBeDefined();
@@ -1353,10 +1094,6 @@ describe("Rule service clients", () => {
                 }
 
                 function testUpdateSecondaryTieredRateRule(data, textStatus, request) {
-                    console.log(data);
-                    console.log(textStatus);
-                    console.log(request);
-                    console.log(request.status);
                     expect(request).toBeDefined();
                     expect(request.status).toBe(200);
                     expect(data).toBeDefined();
@@ -1373,7 +1110,6 @@ describe("Rule service clients", () => {
                 }
 
                 function failTest(data, textStatus, request) {
-                    console.log(data.responseJSON);
                     done(data.responseJSON.error);
                 }
     
@@ -1388,10 +1124,6 @@ describe("Rule service clients", () => {
                 // Approach to testing asynchronous code adapted from Jest documentation
                 // https://jestjs.io/docs/asynchronous
                 function checkAjaxResponse(data, textStatus, request) {
-                    console.log(data);
-                    console.log(textStatus);
-                    console.log(request);
-                    console.log(request.status);
                     expect(data).toBeDefined();
                     expect(data.status).toBe(400);
 
@@ -1399,11 +1131,6 @@ describe("Rule service clients", () => {
                 }
 
                 function testUpdateSecondaryTieredRateRule(data, textStatus, request) {
-                    console.log(data);
-                    console.log(textStatus);
-                    console.log(request);
-                    console.log(request.status);
-
                     expect(request).toBeDefined();
                     expect(request.status).toBe(200);
                     expect(data).toBeDefined();
@@ -1419,7 +1146,6 @@ describe("Rule service clients", () => {
                 }
 
                 function failTest(data, textStatus, request) {
-                    console.log(data.responseJSON);
                     done(data.responseJSON.error);
                 }
     
@@ -1437,10 +1163,6 @@ describe("Rule service clients", () => {
             // Approach to testing asynchronous code adapted from Jest documentation
             // https://jestjs.io/docs/asynchronous
             function checkAjaxResponse(data, textStatus, request) {
-                console.log(data);
-                console.log(textStatus);
-                console.log(request);
-                console.log(request.status);
                 expect(request).toBeDefined();
                 expect(request.status).toBe(200);
                 expect(data).toBeDefined();
@@ -1449,10 +1171,6 @@ describe("Rule service clients", () => {
             }
 
             function testRemoveFlatRateRule(data, textStatus, request) {
-                console.log(data);
-                console.log(textStatus);
-                console.log(request);
-                console.log(request.status);
                 expect(request).toBeDefined();
                 expect(request.status).toBe(200);
                 expect(data).toBeDefined();
@@ -1465,7 +1183,6 @@ describe("Rule service clients", () => {
             }
 
             function failTest(data, textStatus, request) {
-                console.log(data.responseJSON);
                 done(data.responseJSON.error);
             }
 
@@ -1485,10 +1202,6 @@ describe("Rule tier service clients", () => {
                 // Approach to testing asynchronous code adapted from Jest documentation
                 // https://jestjs.io/docs/asynchronous
                 function checkAjaxResponse(data, textStatus, request) {
-                    console.log(data);
-                    console.log(textStatus);
-                    console.log(request);
-                    console.log(request.status);
                     expect(request).toBeDefined();
                     expect(request.status).toBe(200);
                     expect(data).toBeDefined();
@@ -1508,10 +1221,6 @@ describe("Rule tier service clients", () => {
                 // Approach to testing asynchronous code adapted from Jest documentation
                 // https://jestjs.io/docs/asynchronous
                 function checkAjaxResponse(data, textStatus, request) {
-                    console.log(data);
-                    console.log(textStatus);
-                    console.log(request);
-                    console.log(request.status);
                     expect(data).toBeDefined();
                     expect(data.status).toBe(400);
                     done();
@@ -1530,20 +1239,12 @@ describe("Rule tier service clients", () => {
                 // Approach to testing asynchronous code adapted from Jest documentation
                 // https://jestjs.io/docs/asynchronous
                 function checkAjaxResponse(data, textStatus, request) {
-                    console.log(data);
-                    console.log(textStatus);
-                    console.log(request);
-                    console.log(request.status);
                     expect(request).toBeDefined();
                     expect(request.status).toBe(200);
                     done();
                 }
 
                 function testUpdateRuleTier(data, textStatus, request) {
-                    console.log(data);
-                    console.log(textStatus);
-                    console.log(request);
-                    console.log(request.status);
                     expect(request).toBeDefined();
                     expect(request.status).toBe(200);
                     expect(data).toBeDefined();
@@ -1558,7 +1259,6 @@ describe("Rule tier service clients", () => {
                 }
 
                 function failTest(data, textStatus, request) {
-                    console.log(data.responseJSON);
                     done(data.responseJSON.error);
                 }
                 
@@ -1573,20 +1273,12 @@ describe("Rule tier service clients", () => {
                 // Approach to testing asynchronous code adapted from Jest documentation
                 // https://jestjs.io/docs/asynchronous
                 function checkAjaxResponse(data, textStatus, request) {
-                    console.log(data);
-                    console.log(textStatus);
-                    console.log(request);
-                    console.log(request.status);
                     expect(data).toBeDefined();
                     expect(data.status).toBe(400);
                     done();
                 }
 
                 function testUpdateRuleTier(data, textStatus, request) {
-                    console.log(data);
-                    console.log(textStatus);
-                    console.log(request);
-                    console.log(request.status);
                     expect(request).toBeDefined();
                     expect(request.status).toBe(200);
                     expect(data).toBeDefined();
@@ -1601,7 +1293,6 @@ describe("Rule tier service clients", () => {
                 }
 
                 function failTest(data, textStatus, request) {
-                    console.log(data.responseJSON);
                     done(data.responseJSON.error);
                 }
                 
@@ -1618,10 +1309,6 @@ describe("Rule tier service clients", () => {
                 // Approach to testing asynchronous code adapted from Jest documentation
                 // https://jestjs.io/docs/asynchronous
                 function checkAjaxResponse(data, textStatus, request) {
-                    console.log(data);
-                    console.log(textStatus);
-                    console.log(request);
-                    console.log(request.status);
                     expect(request).toBeDefined();
                     expect(request.status).toBe(200);
                     expect(data).toBeDefined();
@@ -1630,10 +1317,6 @@ describe("Rule tier service clients", () => {
                 }
     
                 function testRemoveRuleTier(data, textStatus, request) {
-                    console.log(data);
-                    console.log(textStatus);
-                    console.log(request);
-                    console.log(request.status);
                     expect(request).toBeDefined();
                     expect(request.status).toBe(200);
                     expect(data).toBeDefined();
@@ -1645,7 +1328,6 @@ describe("Rule tier service clients", () => {
                 }
     
                 function failTest(data, textStatus, request) {
-                    console.log(data.responseJSON);
                     done(data.responseJSON.error);
                 }
     
@@ -1664,10 +1346,6 @@ describe("Rule tier service clients", () => {
                 // Approach to testing asynchronous code adapted from Jest documentation
                 // https://jestjs.io/docs/asynchronous
                 function checkAjaxResponse(data, textStatus, request) {
-                    console.log(data);
-                    console.log(textStatus);
-                    console.log(request);
-                    console.log(request.status);
                     expect(request).toBeDefined();
                     expect(request.status).toBe(200);
                     expect(data).toBeDefined();
@@ -1684,10 +1362,6 @@ describe("Rule tier service clients", () => {
                 // Approach to testing asynchronous code adapted from Jest documentation
                 // https://jestjs.io/docs/asynchronous
                 function checkAjaxResponse(data, textStatus, request) {
-                    console.log(data);
-                    console.log(textStatus);
-                    console.log(request);
-                    console.log(request.status);
                     expect(data).toBeDefined();
                     expect(data.status).toBe(400);
                     done();
@@ -1704,20 +1378,12 @@ describe("Rule tier service clients", () => {
                 // Approach to testing asynchronous code adapted from Jest documentation
                 // https://jestjs.io/docs/asynchronous
                 function checkAjaxResponse(data, textStatus, request) {
-                    console.log(data);
-                    console.log(textStatus);
-                    console.log(request);
-                    console.log(request.status);
                     expect(request).toBeDefined();
                     expect(request.status).toBe(200);
                     done();
                 }
 
                 function testUpdateSecondaryRuleTier(data, textStatus, request) {
-                    console.log(data);
-                    console.log(textStatus);
-                    console.log(request);
-                    console.log(request.status);
                     expect(request).toBeDefined();
                     expect(request.status).toBe(200);
                     expect(data).toBeDefined();
@@ -1730,7 +1396,6 @@ describe("Rule tier service clients", () => {
                 }
 
                 function failTest(data, textStatus, request) {
-                    console.log(data.responseJSON);
                     done(data.responseJSON.error);
                 }
                 
@@ -1743,20 +1408,12 @@ describe("Rule tier service clients", () => {
                 // Approach to testing asynchronous code adapted from Jest documentation
                 // https://jestjs.io/docs/asynchronous
                 function checkAjaxResponse(data, textStatus, request) {
-                    console.log(data);
-                    console.log(textStatus);
-                    console.log(request);
-                    console.log(request.status);
                     expect(data).toBeDefined();
                     expect(data.status).toBe(400);
                     done();
                 }
 
                 function testUpdateSecondaryRuleTier(data, textStatus, request) {
-                    console.log(data);
-                    console.log(textStatus);
-                    console.log(request);
-                    console.log(request.status);
                     expect(request).toBeDefined();
                     expect(request.status).toBe(200);
                     expect(data).toBeDefined();
@@ -1769,7 +1426,6 @@ describe("Rule tier service clients", () => {
                 }
 
                 function failTest(data, textStatus, request) {
-                    console.log(data.responseJSON);
                     done(data.responseJSON.error);
                 }
                 
@@ -1784,10 +1440,6 @@ describe("Rule tier service clients", () => {
                 // Approach to testing asynchronous code adapted from Jest documentation
                 // https://jestjs.io/docs/asynchronous
                 function checkAjaxResponse(data, textStatus, request) {
-                    console.log(data);
-                    console.log(textStatus);
-                    console.log(request);
-                    console.log(request.status);
                     expect(request).toBeDefined();
                     expect(request.status).toBe(200);
                     expect(data).toBeDefined();
@@ -1796,10 +1448,6 @@ describe("Rule tier service clients", () => {
                 }
     
                 function testRemoveRuleTier(data, textStatus, request) {
-                    console.log(data);
-                    console.log(textStatus);
-                    console.log(request);
-                    console.log(request.status);
                     expect(request).toBeDefined();
                     expect(request.status).toBe(200);
                     expect(data).toBeDefined();
@@ -1811,7 +1459,6 @@ describe("Rule tier service clients", () => {
                 }
     
                 function failTest(data, textStatus, request) {
-                    console.log(data.responseJSON);
                     done(data.responseJSON.error);
                 }
     

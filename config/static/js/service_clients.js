@@ -1,11 +1,14 @@
-const { endpoints } = require("./view_consts.js");
-const { app } = require("./view_models.js");
-const $ = require("jquery");
-
 /*
  * service_clients.js
  * Provides wrapper functions for easy access to required API endpoints
  */
+if (typeof require !== "undefined") {
+    $ = require("jquery");
+    const viewConsts = require("./view_consts.js");
+    const viewModels = require("./view_models.js");
+    endpoints = viewConsts.endpoints;
+    app = viewModels.app;
+}
 
 /*
  * Helper functions for HTTP requests
@@ -431,7 +434,7 @@ function removeSecondaryRuleTier(rulesetId, ruleId, tierId, onSuccess, onFailure
     remove(endpoints.rules.secondaryTiers(rulesetId, ruleId), tierId, onSuccess, onFailure);
 }
 
-module.exports = {
+if (typeof module != "undefined") module.exports = {
     queryToString,
     toUrl,
     getJurisdictions,

@@ -1,145 +1,124 @@
+/* jshint esversion: 8 */
 /*
  * views.js
  * Provides view functions to render views and react to view actions
  */
-const { 
-    dialogStates,
-    statusDialog,
-    confirmationDialog,
-    jurisdictionsSelect,
-    questionTypeDialog,
-    booleanQuestionDialog,
-    numericQuestionDialog,
-    multipleChoiceQuestionDialog,
-    multipleChoiceOptionDialog,
-    questionDisplayContainer,
-    booleanQuestionDisplay,
-    numericQuestionDisplay,
-    multipleChoiceQuestionDisplay,
-    rulesetDialog,
-    ruleTypeDialog,
-    flatRateRuleDialog,
-    tieredRateRuleDialog,
-    secondaryTieredRateRuleDialog,
-    ruleTierDialog,
-    secondaryRuleTierDialog,
-    rulesetsDisplayContainer,
-    rulesetDisplay,
-    flatRateRuleDisplay,
-    tieredRateRuleDisplay,
-    secondaryTieredRateRuleDisplay
- } = require("./view_consts.js");
+if (typeof require !== "undefined") {
+    const viewConsts = require("./view_consts.js");
+    const serviceClients = require("./service_clients.js");
+    const viewModels = require("./view_models.js");
+    const viewUtils = require("./view_utils.js")
 
-const {
-    queryToString,
-    toUrl,
-    getJurisdictions,
-    getTaxCategories,
-    getFormForJurisdiction,
-    createBooleanQuestion,
-    updateBooleanQuestion,
-    createNumericQuestion,
-    updateNumericQuestion,
-    createMultipleChoiceQuestion,
-    updateMultipleChoiceQuestion,
-    updateQuestion,
-    removeQuestion,
-    postMultipleChoiceOption,
-    removeMultipleChoiceOption,
-    getRulesetsForJurisdiction,
-    postRuleset,
-    patchRuleset,
-    removeRuleset,
-    createFlatRateRule,
-    updateFlatRateRule,
-    createTieredRateRule,
-    updateTieredRateRule,
-    createSecondaryTieredRateRule,
-    updateSecondaryTieredRateRule,
-    removeRule,
-    postRuleTier,
-    updateRuleTier,
-    removeRuleTier,
-    postSecondaryRuleTier,
-    updateSecondaryRuleTier,
-    removeSecondaryRuleTier
-} = require("./service_clients.js");
+    // View consts
+    dialogStates = viewConsts.dialogStates;
+    confirmationDialog = viewConsts.confirmationDialog;
+    questionTypeDialog = viewConsts.questionTypeDialog;
+    booleanQuestionDialog = viewConsts.booleanQuestionDialog;
+    numericQuestionDialog = viewConsts.numericQuestionDialog;
+    multipleChoiceQuestionDialog = viewConsts.multipleChoiceQuestionDialog;
+    multipleChoiceOptionDialog = viewConsts.multipleChoiceOptionDialog;
+    rulesetDialog = viewConsts.rulesetDialog;
+    ruleTypeDialog = viewConsts.ruleTypeDialog;
+    flatRateRuleDialog = viewConsts.flatRateRuleDialog;
+    tieredRateRuleDialog = viewConsts.tieredRateRuleDialog;
+    secondaryTieredRateRuleDialog = viewConsts.secondaryTieredRateRuleDialog;
+    ruleTierDialog = viewConsts.ruleTierDialog;
+    secondaryRuleTierDialog = viewConsts.secondaryRuleTierDialog;
 
-const {
-    app,
-    getFormId,
-    findQuestionById,
-    findRuleById,
-    findParentRuleset,
-    moveAppStateToParentState,
-    moveParentStateToAppState,
-    clearDialogState,
-    clearParentState,
-    setDialogState,
-    setParentState,
-    setParentRuleset,
-    getTieredRateRulesForJurisdiction,
-    resequenceQuestionOrdinals,
-    resequenceRuleOrdinals,
-    resequenceRulesetOrdinals,
-    resequenceRuleTierOrdinals,
-    findNextQuestion,
-    findPreviousQuestion,
-    findNextRuleset,
-    findPreviousRuleset,
-    findNextRule,
-    findPreviousRule,
-    findNextRuleTier,
-    findPreviousRuleTier,
-    getNextQuestionOrdinal,
-    getNextRulesetOrdinal,
-    getNextRuleOrdinal,
-    getNextRuleTierOrdinal
-} = require("./view_models.js");
+    // Service clients
+    getJurisdictions = serviceClients.getJurisdictions;
+    getTaxCategories = serviceClients.getTaxCategories;
+    getFormForJurisdiction = serviceClients.getFormForJurisdiction;
+    createBooleanQuestion = serviceClients.createBooleanQuestion;
+    updateBooleanQuestion = serviceClients.updateBooleanQuestion;
+    createNumericQuestion = serviceClients.createNumericQuestion;
+    updateNumericQuestion = serviceClients.updateNumericQuestion;
+    createMultipleChoiceQuestion = serviceClients.createMultipleChoiceQuestion;
+    updateMultipleChoiceQuestion = serviceClients.updateMultipleChoiceQuestion;
+    updateQuestion = serviceClients.updateQuestion;
+    removeQuestion = serviceClients.removeQuestion;
+    postMultipleChoiceOption = serviceClients.postMultipleChoiceOption;
+    removeMultipleChoiceOption = serviceClients.removeMultipleChoiceOption;
+    getRulesetsForJurisdiction = serviceClients.getRulesetsForJurisdiction;
+    postRuleset = serviceClients.postRuleset;
+    patchRuleset = serviceClients.patchRuleset;
+    removeRuleset = serviceClients.removeRuleset;
+    createFlatRateRule = serviceClients.createFlatRateRule;
+    updateFlatRateRule = serviceClients.updateFlatRateRule;
+    createTieredRateRule = serviceClients.createTieredRateRule;
+    updateTieredRateRule = serviceClients.updateTieredRateRule;
+    createSecondaryTieredRateRule = serviceClients.createSecondaryTieredRateRule;
+    updateSecondaryTieredRateRule = serviceClients.updateSecondaryTieredRateRule;
+    removeRule = serviceClients.removeRule;
+    postRuleTier = serviceClients.postRuleTier;
+    updateRuleTier = serviceClients.updateRuleTier;
+    removeRuleTier = serviceClients.removeRuleTier;
+    postSecondaryRuleTier = serviceClients.postSecondaryRuleTier;
+    updateSecondaryRuleTier = serviceClients.updateSecondaryRuleTier;
+    removeSecondaryRuleTier = serviceClients.removeSecondaryRuleTier;
 
-const {
-    showDialog,
-    hideDialog,
-    error,
-    success,
-    confirm,
-    removeAllChildNodes,
-    updateRuleTierTable,
-    resetContainer,
-    initJurisdictionsSelect,
-    getSelectedJurisdictionId,
-    displayCreateBooleanQuestionDialog,
-    displayEditBooleanQuestionDialog,
-    displayCreateNumericQuestionDialog,
-    displayEditNumericQuestionDialog,
-    updateMultipleChoiceQuestionDialogOptionsDisplay,
-    displayCreateMultipleChoiceQuestionDialog,
-    displayEditMultipleChoiceQuestionDialog,
-    displayCreateMultipleChoiceOptionDialog,
-    displayBooleanQuestion,
-    displayNumericQuestion,
-    displayMultipleChoiceQuestion,
-    updateQuestionDisplay,
-    displayCreateRulesetDialog,
-    ruleTypeChosen,
-    displayCreateFlatRateRuleDialog,
-    displayEditFlatRateRuleDialog,
-    displayCreateTieredRateRuleDialog,
-    displayEditTieredRateRuleDialog,
-    initPrimaryRulesSelect,
-    displayCreateSecondaryTieredRateRuleDialog,
-    displayEditSecondaryTieredRateRuleDialog,
-    displayCreateRuleTierDialog,
-    displayEditRuleTierDialog,
-    initPrimaryRuleTiersSelect,
-    displayCreateSecondaryRuleTierDialog,
-    displayEditSecondaryRuleTierDialog,
-    displayFlatRateRule,
-    displayTieredRateRule,
-    displaySecondaryTieredRateRule,
-    displayRuleset,
-    updateRulesetsDisplay
-} = require("./view_utils.js");
+    // View models
+    app = viewModels.app;
+    getFormId = viewModels.getFormId;
+    findQuestionById = viewModels.findQuestionById;
+    findRuleById = viewModels.findRuleById;
+    findParentRuleset = viewModels.findParentRuleset;
+    moveAppStateToParentState = viewModels.moveAppStateToParentState;
+    moveParentStateToAppState = viewModels.moveParentStateToAppState;
+    clearDialogState = viewModels.clearDialogState;
+    clearParentState = viewModels.clearParentState;
+    setDialogState = viewModels.setDialogState;
+    setParentState = viewModels.setParentState;
+    setParentRuleset = viewModels.setParentRuleset;
+    getTieredRateRulesForJurisdiction = viewModels.getTieredRateRulesForJurisdiction;
+    resequenceQuestionOrdinals = viewModels.resequenceQuestionOrdinals;
+    resequenceRuleOrdinals = viewModels.resequenceRuleOrdinals;
+    resequenceRulesetOrdinals = viewModels.resequenceRulesetOrdinals;
+    resequenceRuleTierOrdinals = viewModels.resequenceRuleTierOrdinals;
+    findNextQuestion = viewModels.findNextQuestion;
+    findPreviousQuestion = viewModels.findPreviousQuestion;
+    findNextRuleset = viewModels.findNextRuleset;
+    findPreviousRuleset = viewModels.findPreviousRuleset;
+    findNextRule = viewModels.findNextRule;
+    findPreviousRule = viewModels.findPreviousRule;
+    findNextRuleTier = viewModels.findNextRuleTier;
+    findPreviousRuleTier = viewModels.findPreviousRuleTier;
+    getNextQuestionOrdinal = viewModels.getNextQuestionOrdinal;
+    getNextRulesetOrdinal = viewModels.getNextRulesetOrdinal;
+    getNextRuleOrdinal = viewModels.getNextRuleOrdinal;
+    getNextRuleTierOrdinal = viewModels.getNextRuleTierOrdinal;
+
+    // View utils
+    showDialog = viewUtils.showDialog;
+    hideDialog = viewUtils.hideDialog;
+    error = viewUtils.error;
+    success = viewUtils.success;
+    confirm = viewUtils.confirm;
+    updateRuleTierTable = viewUtils.updateRuleTierTable;
+    initJurisdictionsSelect = viewUtils.initJurisdictionsSelect;
+    getSelectedJurisdictionId = viewUtils.getSelectedJurisdictionId;
+    displayCreateBooleanQuestionDialog = viewUtils.displayCreateBooleanQuestionDialog;
+    displayEditBooleanQuestionDialog = viewUtils.displayEditBooleanQuestionDialog;
+    displayCreateNumericQuestionDialog = viewUtils.displayCreateNumericQuestionDialog;
+    displayEditNumericQuestionDialog = viewUtils.displayEditNumericQuestionDialog;
+    updateMultipleChoiceQuestionDialogOptionsDisplay = viewUtils.updateMultipleChoiceQuestionDialogOptionsDisplay;
+    displayCreateMultipleChoiceQuestionDialog = viewUtils.displayCreateMultipleChoiceQuestionDialog;
+    displayEditMultipleChoiceQuestionDialog = viewUtils.displayEditMultipleChoiceQuestionDialog;
+    displayCreateMultipleChoiceOptionDialog = viewUtils.displayCreateMultipleChoiceOptionDialog;
+    updateQuestionDisplay = viewUtils.updateQuestionDisplay;
+    displayCreateRulesetDialog = viewUtils.displayCreateRulesetDialog;
+    displayCreateFlatRateRuleDialog = viewUtils.displayCreateFlatRateRuleDialog;
+    displayEditFlatRateRuleDialog = viewUtils.displayEditFlatRateRuleDialog;
+    displayCreateTieredRateRuleDialog = viewUtils.displayCreateTieredRateRuleDialog;
+    displayEditTieredRateRuleDialog = viewUtils.displayEditTieredRateRuleDialog;
+    displayCreateSecondaryTieredRateRuleDialog = viewUtils.displayCreateSecondaryTieredRateRuleDialog;
+    displayEditSecondaryTieredRateRuleDialog = viewUtils.displayEditSecondaryTieredRateRuleDialog;
+    displayCreateRuleTierDialog = viewUtils.displayCreateRuleTierDialog;
+    displayEditRuleTierDialog = viewUtils.displayEditRuleTierDialog;
+    displayCreateSecondaryRuleTierDialog = viewUtils.displayCreateSecondaryRuleTierDialog;
+    displayEditSecondaryRuleTierDialog = viewUtils.displayEditSecondaryRuleTierDialog;
+    updateRulesetsDisplay = viewUtils.updateRulesetsDisplay;
+}
 
 function doNothing() {}
 /*
@@ -1164,9 +1143,7 @@ function init() {
     getTaxCategories(loadTaxCategorySelect, displayTaxCategoryLoadError);
 }
 
-if (module == undefined) {
-    window.onload = init();
-} else {
+if (typeof module !== "undefined") {
     module.exports = {
         doNothing,
         displayQuestionsLoadError,
@@ -1245,5 +1222,7 @@ if (module == undefined) {
         deleteRuleTier,
         init
     };
+} else {
+    window.onload = init();
 }
 
