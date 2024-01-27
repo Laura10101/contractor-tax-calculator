@@ -366,7 +366,7 @@ function deleteQuestion(question) {
     confirm("Please confirm you wish for the following question to be deleted: " + question.text + ".", confirmDeleteQuestion);
 }
 
-function swapQuestionOrdinals(question, findNewPosition) {
+function swapQuestionOrdinals(question, findNewPosition, updater, refresher) {
     // Find the question that needs to be swapped
     let questionToSwap = findNewPosition(question);
 
@@ -377,20 +377,20 @@ function swapQuestionOrdinals(question, findNewPosition) {
         questionToSwap.ordinal = originalOrdinal;
 
         // Save the questions
-        updateQuestion(question, doNothing, saveQuestionFailed);
-        updateQuestion(questionToSwap, doNothing, saveQuestionFailed);
+        updater(question, doNothing, saveQuestionFailed);
+        updater(questionToSwap, doNothing, saveQuestionFailed);
 
         // Refresh the question display
-        refreshQuestionsDisplay();
+        refresher();
     }
 }
 
-function moveQuestionUp(question) {
-    swapQuestionOrdinals(question, findPreviousQuestion);
+function moveQuestionUp(question, updater=updateQuestion, refresher=refreshQuestionsDisplay) {
+    swapQuestionOrdinals(question, findPreviousQuestion, updater, refresher);
 }
 
-function moveQuestionDown(question) {
-    swapQuestionOrdinals(question, findNextQuestion);
+function moveQuestionDown(question, updater=updateQuestion, refresher=refreshQuestionsDisplay) {
+    swapQuestionOrdinals(question, findNextQuestion, updater, refresher);
 }
 
 /*
@@ -548,7 +548,7 @@ function deleteRuleset(ruleset) {
     confirm("Please confirm you wish for the following ruleset to be deleted: " + ruleset.name + ".", confirmDeleteRuleset);
 }
 
-function swapRulesetOrdinals(ruleset, findNewPosition) {
+function swapRulesetOrdinals(ruleset, findNewPosition, updater, refresher) {
     // Find the question that needs to be swapped
     let rulesetToSwap = findNewPosition(ruleset);
 
@@ -559,20 +559,20 @@ function swapRulesetOrdinals(ruleset, findNewPosition) {
         rulesetToSwap.ordinal = originalOrdinal;
 
         // Save the questions
-        patchRuleset(ruleset.id, ruleset.ordinal, doNothing, saveRulesetFailed);
-        patchRuleset(rulesetToSwap.id, rulesetToSwap.ordinal, doNothing, saveRulesetFailed);
+        updater(ruleset.id, ruleset.ordinal, doNothing, saveRulesetFailed);
+        updater(rulesetToSwap.id, rulesetToSwap.ordinal, doNothing, saveRulesetFailed);
 
         // Refresh the question display
-        refreshRulesetsDisplay();
+        refresher();
     }
 }
 
-function moveRulesetUp(ruleset) {
-    swapRulesetOrdinals(ruleset, findPreviousRuleset);
+function moveRulesetUp(ruleset, updater=patchRuleset, refresher=refreshRulesetsDisplay) {
+    swapRulesetOrdinals(ruleset, findPreviousRuleset, updater, refresher);
 }
 
-function moveRulesetDown(ruleset) {
-    swapRulesetOrdinals(ruleset, findNextRuleset);
+function moveRulesetDown(ruleset, updater=patchRuleset, refresher=refreshRulesetsDisplay) {
+    swapRulesetOrdinals(ruleset, findNextRuleset, updater, refresher);
 }
 
 /*
@@ -851,7 +851,7 @@ function updateRuleOrdinal(ruleset, rule) {
     }
 }
 
-function swapRuleOrdinals(ruleset, rule, findNewPosition) {
+function swapRuleOrdinals(ruleset, rule, findNewPosition, updater, refresher) {
     // Find the rule that needs to be swapped
     let ruleToSwap = findNewPosition(ruleset, rule);
 
@@ -862,20 +862,20 @@ function swapRuleOrdinals(ruleset, rule, findNewPosition) {
         ruleToSwap.ordinal = originalOrdinal;
 
         // Save the ordinals
-        updateRuleOrdinal(ruleset, rule);
-        updateRuleOrdinal(ruleset, ruleToSwap);
+        updater(ruleset, rule);
+        updater(ruleset, ruleToSwap);
 
         // Refresh the ruleset display
-        refreshRulesetsDisplay();
+        refresher();
     }
 }
 
-function moveRuleUp(ruleset, rule) {
-    swapRuleOrdinals(ruleset, rule, findPreviousRule);
+function moveRuleUp(ruleset, rule, updater=updateRuleOrdinal, refresher=refreshRulesetsDisplay) {
+    swapRuleOrdinals(ruleset, rule, findPreviousRule, updater, refresher);
 }
 
-function moveRuleDown(ruleset, rule) {
-    swapRuleOrdinals(ruleset, rule, findNextRule);
+function moveRuleDown(ruleset, rule, updater=updateRuleOrdinal, refresher=refreshRulesetsDisplay) {
+    swapRuleOrdinals(ruleset, rule, findNextRule, updater, refresher);
 }
 
 /*
@@ -1037,7 +1037,7 @@ function saveRuleTierOrdinal(isPrimary, tier) {
     }
 }
 
-function swapRuleTierOrdinals(swapPrimary, tier, findNewPosition) {
+function swapRuleTierOrdinals(swapPrimary, tier, findNewPosition, updater, refresher) {
     // Find the tier that needs to be swapped
     let tierToSwap = findNewPosition(app.dialogState.entity, tier);
 
@@ -1048,19 +1048,19 @@ function swapRuleTierOrdinals(swapPrimary, tier, findNewPosition) {
         tierToSwap.ordinal = originalOrdinal;
 
         // Save the questions
-        saveRuleTierOrdinal(swapPrimary, tier);
-        saveRuleTierOrdinal(swapPrimary, tierToSwap);
+        updater(swapPrimary, tier);
+        updater(swapPrimary, tierToSwap);
     }
 
-    refreshRuleTiersDisplay();
+    refresher();
 }
 
-function moveRuleTierUp(isPrimary, tier) {
-    swapRuleTierOrdinals(isPrimary, tier, findPreviousRuleTier);
+function moveRuleTierUp(isPrimary, tier, updater=saveRuleTierOrdinal, refresher=refreshRuleTiersDisplay) {
+    swapRuleTierOrdinals(isPrimary, tier, findPreviousRuleTier, updater, refresher);
 }
 
-function moveRuleTierDown(isPrimary, tier) {
-    swapRuleTierOrdinals(isPrimary, tier, findNextRuleTier);
+function moveRuleTierDown(isPrimary, tier, updater=saveRuleTierOrdinal, refresher=refreshRuleTiersDisplay) {
+    swapRuleTierOrdinals(isPrimary, tier, findNextRuleTier, updater, refresher);
 }
 
 function deleteRuleTierSucceeded(primaryTierUpdater=updateRuleTier, secondaryTierUpdater=updateSecondaryRuleTier, displayRefresher=refreshRuleTiersDisplay) {
