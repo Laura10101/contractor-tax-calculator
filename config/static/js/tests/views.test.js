@@ -796,19 +796,19 @@ describe("Question views", () => {
     describe("Reordering questions", () => {
         describe("Moving the top question up", () => {
             test("should do nothing", done => {
-                let question = findQuestionById(3);
-                expect(question).toBeDefined();
-                expect(question.id).toBe(3);
+                let entity = findQuestionById(3);
+                expect(entity).toBeDefined();
+                expect(entity.id).toBe(3);
 
                 let updaterInvoked = false;
 
-                function recordInvocation(question, success, failure) {
+                function recordInvocation(updatedEntity, success, failure) {
                     updaterInvoked = true;
                     expect(success).toEqual(doNothing);
                     expect(failure).toEqual(saveQuestionFailed);
                 }
 
-                moveQuestionUp(question, recordInvocation, done);
+                moveQuestionUp(entity, recordInvocation, done);
                 expect(updaterInvoked).toBe(false);
                 done();
             });
@@ -816,72 +816,72 @@ describe("Question views", () => {
 
         describe("Moving a question up", () => {
             test("should swap the ordinal of the selected question and the previous question and then refresh the questions display", done => {
-                let question = findQuestionById(4);
-                expect(question).toBeDefined();
-                expect(question.id).toBe(4);
+                let entity = findQuestionById(4);
+                expect(entity).toBeDefined();
+                expect(entity.id).toBe(4);
 
-                let selectedQuestionChecked = false;
-                let previousQuestionChecked = false
+                let selectedEntityChecked = false;
+                let previousEntityChecked = false
 
-                function checkOrdinal(question, success, failure) {
-                    if (question.id == 4) {
-                        expect(question.ordinal).toBe(1);
-                        selectedQuestionChecked = true;
-                    } else if (question.id == 3) {
-                        expect(question.ordinal).toBe(2);
-                        previousQuestionChecked = true;
+                function checkOrdinal(updatedEntity, success, failure) {
+                    if (updatedEntity.id == 4) {
+                        expect(updatedEntity.ordinal).toBe(1);
+                        selectedEntityChecked = true;
+                    } else if (updatedEntity.id == 3) {
+                        expect(updatedEntity.ordinal).toBe(2);
+                        previousEntityChecked = true;
                     }
                     expect(success).toEqual(doNothing);
                     expect(failure).toEqual(saveQuestionFailed);
                 }
 
-                moveQuestionUp(question, checkOrdinal, done);
-                expect(selectedQuestionChecked && previousQuestionChecked).toBe(true);
+                moveQuestionUp(entity, checkOrdinal, done);
+                expect(selectedEntityChecked && previousEntityChecked).toBe(true);
             });
         });
 
         describe("Moving a question down", () => {
             test("should swap the ordinal of the selected question and the next question and then refresh the questions display", done => {
-                let question = findQuestionById(4);
-                expect(question).toBeDefined();
-                expect(question.id).toBe(4);
+                let entity = findQuestionById(4);
+                expect(entity).toBeDefined();
+                expect(entity.id).toBe(4);
 
-                let selectedQuestionChecked = false;
-                let nextQuestionChecked = false
+                let selectedEntityChecked = false;
+                let nextEntityChecked = false
 
-                function checkOrdinal(question, success, failure) {
-                    if (question.id == 4) {
-                        expect(question.ordinal).toBe(3);
-                        selectedQuestionChecked = true;
+                function checkOrdinal(updatedEntity, success, failure) {
+                    if (updatedEntity.id == 4) {
+                        expect(updatedEntity.ordinal).toBe(3);
+                        selectedEntityChecked = true;
                         console.log("checked");
-                    } else if (question.id == 7) {
-                        expect(question.ordinal).toBe(2);
-                        nextQuestionChecked = true;
+                    } else if (updatedEntity.id == 7) {
+                        expect(updatedEntity.ordinal).toBe(2);
+                        nextEntityChecked = true;
                     }
                     expect(success).toEqual(doNothing);
                     expect(failure).toEqual(saveQuestionFailed);
                 }
 
-                moveQuestionDown(question, checkOrdinal, done);
-                expect(selectedQuestionChecked && nextQuestionChecked).toBe(true);
+                moveQuestionDown(entity, checkOrdinal, done);
+                expect(selectedEntityChecked && nextEntityChecked).toBe(true);
             });
         });
 
         describe("Moving the bottom question down", () => {
             test("should do nothing", done => {
-                let question = findQuestionById(7);
-                expect(question).toBeDefined();
-                expect(question.id).toBe(7);
+                let entity = findQuestionById(7);
+                expect(entity).toBeDefined();
+                expect(entity.id).toBe(7);
 
                 let updaterInvoked = false;
 
-                function recordInvocation(question, success, failure) {
+                function recordInvocation(updatedEntity, success, failure) {
                     updaterInvoked = true;
                     expect(success).toEqual(doNothing);
                     expect(failure).toEqual(saveQuestionFailed);
                 }
 
-                moveQuestionDown(question, recordInvocation, done);
+                moveQuestionDown(entity, recordInvocation, done);
                 expect(updaterInvoked).toBe(false);
                 done();
             });
@@ -1363,6 +1363,104 @@ describe("Rule views views", () => {
                     setDialogState(dialogStates.modes.delete, dialogStates.entityTypes.flatRateRule, rule);
                     deleteRuleSucceeded(checkFlatRateOrdinalUpdate, checkTieredRateOrdinalUpdate, checkSecondaryTieredRateOrdinalUpdate, checkFinalAppState);
                 });
+            });
+        });
+    });
+
+    describe("Reordering rules", () => {
+        describe("Moving the top rule up", () => {
+            test("should do nothing", done => {
+                let entity = findRuleById(41);
+                expect(entity).toBeDefined();
+                expect(entity.id).toBe(41);
+
+                let parent = findParentRuleset(41);
+                expect(parent).toBeDefined();
+
+                let updaterInvoked = false;
+
+                function recordInvocation(ruleset, updatedEntity) {
+                    updaterInvoked = true;
+                }
+
+                moveRuleUp(parent, entity, recordInvocation, done);
+                expect(updaterInvoked).toBe(false);
+                done();
+            });
+        });
+
+        describe("Moving a rule up", () => {
+            test("should swap the ordinal of the selected rule and the previous rule and then refresh the rule display", done => {
+                let entity = findRuleById(44);
+                expect(entity).toBeDefined();
+                expect(entity.id).toBe(44);
+
+                let parent = findParentRuleset(44);
+                expect(parent).toBeDefined();
+
+                let selectedEntityChecked = false;
+                let previousEntityChecked = false
+
+                function checkOrdinal(ruleset, updatedEntity) {
+                    if (updatedEntity.id == 44) {
+                        expect(updatedEntity.ordinal).toBe(1);
+                        selectedEntityChecked = true;
+                    } else if (updatedEntity.id == 41) {
+                        expect(updatedEntity.ordinal).toBe(2);
+                        previousEntityChecked = true;
+                    }
+                }
+
+                moveRuleUp(parent, entity, checkOrdinal, done);
+                expect(selectedEntityChecked && previousEntityChecked).toBe(true);
+            });
+        });
+
+        describe("Moving a rule down", () => {
+            test("should swap the ordinal of the selected rule and the next rule and then refresh the rules display", done => {
+                let entity = findRuleById(44);
+                expect(entity).toBeDefined();
+                expect(entity.id).toBe(44);
+
+                let parent = findParentRuleset(44);
+                expect(parent).toBeDefined();
+
+                let selectedEntityChecked = false;
+                let nextEntityChecked = false
+
+                function checkOrdinal(ruleset, updatedEntity) {
+                    if (updatedEntity.id == 44) {
+                        expect(updatedEntity.ordinal).toBe(3);
+                        selectedEntityChecked = true;
+                    } else if (updatedEntity.id == 45) {
+                        expect(updatedEntity.ordinal).toBe(2);
+                        nextEntityChecked = true;
+                    }
+                }
+
+                moveRuleDown(parent, entity, checkOrdinal, done);
+                expect(selectedEntityChecked && nextEntityChecked).toBe(true);
+            });
+        });
+
+        describe("Moving the bottom rule down", () => {
+            test("should do nothing", done => {
+                let entity = findRuleById(45);
+                expect(entity).toBeDefined();
+                expect(entity.id).toBe(45);
+
+                let parent = findParentRuleset(45);
+                expect(parent).toBeDefined();
+
+                let updaterInvoked = false;
+
+                function recordInvocation(ruleset, updatedEntity) {
+                    updaterInvoked = true;
+                }
+
+                moveRuleDown(parent, entity, recordInvocation, done);
+                expect(updaterInvoked).toBe(false);
+                done();
             });
         });
     });
