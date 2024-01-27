@@ -212,7 +212,7 @@ function editQuestion(question) {
     }
 }
 
-function saveQuestionSucceeded(refresher=refreshQuestionsDisplay) {
+function saveQuestionSucceeded(data, textStatus, request, refresher=refreshQuestionsDisplay) {
     success("The question was successfully saved.");
     clearDialogState();
     refresher();
@@ -347,7 +347,7 @@ function deleteQuestionFailed(request, status, message) {
     error("An error occurred while attempting to delete question.");
 }
 
-function confirmDeleteQuestion(remover=removeQuestion) {
+function confirmDeleteQuestion(event, remover=removeQuestion) {
     hideDialog(confirmationDialog.dialog.id);
     formId = getFormId();
     question = app.dialogState.entity;
@@ -412,7 +412,7 @@ function refreshMultipleChoiceOptionsDisplay(refresher=getFormForJurisdiction) {
     refresher(jurisdictionId, displayMultipleChoiceOptions, displayMultipleChoiceOptionsError);
 }
 
-function saveMultipleChoiceOptionSucceeded(refresher=refreshMultipleChoiceOptionsDisplay) {
+function saveMultipleChoiceOptionSucceeded(data, textStatus, request, refresher=refreshMultipleChoiceOptionsDisplay) {
     success("The option was successfully saved.");
     moveParentStateToAppState();
     refresher();
@@ -453,7 +453,7 @@ function deleteMultipleChoiceOptionFailed(request, status, message) {
     showDialog(multipleChoiceQuestionDialog.dialog.id);
 }
 
-function confirmDeleteMultipleChoiceOption(remover=removeMultipleChoiceOption) {
+function confirmDeleteMultipleChoiceOption(event, remover=removeMultipleChoiceOption) {
     hideDialog(confirmationDialog.dialog.id);
     formId = getFormId();
     question = app.parentState.entity;
@@ -485,7 +485,7 @@ function refreshRulesetsDisplay(refresher=getRulesetsForJurisdiction) {
     refresher(jurisdictionId, displayRulesets, displayRulesetsLoadError);
 }
 
-function saveRulesetSucceeded(refresher=refreshRulesetsDisplay) {
+function saveRulesetSucceeded(data, textStatus, request, refresher=refreshRulesetsDisplay) {
     success("The ruleset was successfully saved.");
     clearDialogState();
     refresher();
@@ -512,7 +512,7 @@ function createRuleset() {
     displayCreateRulesetDialog();
 }
 
-function deleteRulesetSucceeded(ordinalUpdater=patchRuleset, displayRefresher=refreshRulesetsDisplay) {
+function deleteRulesetSucceeded(data, textStatus, request, ordinalUpdater=patchRuleset, displayRefresher=refreshRulesetsDisplay) {
     success("The selected ruleset was successfully deleted.");
     rulesets = resequenceRulesetOrdinals(app.dialogState.entity);
     rulesets.forEach(ruleset => {
@@ -532,7 +532,7 @@ function deleteRulesetFailed() {
     error("An error occurred while attempting to delete ruleset.");
 }
 
-function confirmDeleteRuleset(remover=removeRuleset) {
+function confirmDeleteRuleset(event, remover=removeRuleset) {
     hideDialog(confirmationDialog.dialog.id);
     remover(app.dialogState.entity.id, deleteRulesetSucceeded, deleteRulesetFailed);
 }
@@ -621,7 +621,7 @@ function ruleTypeSelected() {
     }
 }
 
-function saveRuleSucceeded(refresher=refreshRulesetsDisplay) {
+function saveRuleSucceeded(data, textStatus, request, refresher=refreshRulesetsDisplay) {
     success("The rule was successfully saved.");
     clearDialogState();
     refresher();
@@ -734,7 +734,7 @@ function saveRule(flatRateRuleCreator=createFlatRateRule, tieredRateRuleCreator=
     }
 }
 
-function deleteRuleSucceeded(flatRateRuleUpdater=updateFlatRateRule, tieredRateRuleUpdater=updateTieredRateRule,
+function deleteRuleSucceeded(data, textStatus, request, flatRateRuleUpdater=updateFlatRateRule, tieredRateRuleUpdater=updateTieredRateRule,
     secondaryTieredRateRuleUpdater=updateSecondaryTieredRateRule, displayRefresher=refreshRulesetsDisplay) {
 
     success("The selected rule was successfully deleted.");
@@ -793,7 +793,7 @@ function deleteRuleFailed() {
     error("An error occurred while attempting to delete rule.");
 }
 
-function confirmDeleteRule(remover=removeRule) {
+function confirmDeleteRule(event, remover=removeRule) {
     hideDialog(confirmationDialog.dialog.id);
     remover(app.parentRuleset.id, app.dialogState.entity.id, deleteRuleSucceeded, deleteRuleFailed);
 }
@@ -877,7 +877,7 @@ function moveRuleDown(ruleset, rule, updater=updateRuleOrdinal, refresher=refres
 /*
  * Rule Tier Views
  */
-function displayRuleTiersLoadedSucceeded(data) {
+function displayRuleTiersLoadedSucceeded(data, textStatus, request) {
     app.jurisdictionRules = data;
 
     if (app.parentState.entity != null) {
@@ -904,7 +904,7 @@ function refreshRuleTiersDisplay(refresher=getRulesetsForJurisdiction) {
     refresher(jurisdictionId, displayRuleTiersLoadedSucceeded, displayRuleTiersLoadedError);
 }
 
-function saveRuleTierSucceeded(refresher=refreshRuleTiersDisplay) {
+function saveRuleTierSucceeded(data, textStatus, request, refresher=refreshRuleTiersDisplay) {
     success("The tier was successfully saved.");
     moveParentStateToAppState();
     refresher();
@@ -1061,7 +1061,8 @@ function moveRuleTierDown(isPrimary, tier, updater=saveRuleTierOrdinal, refreshe
     swapRuleTierOrdinals(isPrimary, tier, findNextRuleTier, updater, refresher);
 }
 
-function deleteRuleTierSucceeded(primaryTierUpdater=updateRuleTier, secondaryTierUpdater=updateSecondaryRuleTier, displayRefresher=refreshRuleTiersDisplay) {
+function deleteRuleTierSucceeded(data, textStatus, request, primaryTierUpdater=updateRuleTier,
+    secondaryTierUpdater=updateSecondaryRuleTier, displayRefresher=refreshRuleTiersDisplay) {
     success("The selected rule tier was successfully deleted.");
     rule = app.parentState.entity;
     ruleset = findParentRuleset(rule.id);
@@ -1107,7 +1108,7 @@ function deleteRuleTierFailed(request, status, message) {
     moveParentStateToAppState();
 }
 
-function confirmDeleteRuleTier(primaryRemover=removeRuleTier, secondaryRemover=removeSecondaryRuleTier) {
+function confirmDeleteRuleTier(event, primaryRemover=removeRuleTier, secondaryRemover=removeSecondaryRuleTier) {
     hideDialog(confirmationDialog.dialog.id);
 
     tier = app.dialogState.entity;
