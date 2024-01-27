@@ -1101,6 +1101,100 @@ describe("Ruleset views", () => {
             });
         });
     });
+
+    describe("Reordering rulesets", () => {
+        describe("Moving the top ruleset up", () => {
+            test("should do nothing", done => {
+                let entity = findParentRuleset(13);
+                expect(entity).toBeDefined();
+                expect(entity.id).toBe(23);
+
+                let updaterInvoked = false;
+
+                function recordInvocation(updatedEntity, success, failure) {
+                    updaterInvoked = true;
+                    expect(success).toEqual(doNothing);
+                    expect(failure).toEqual(saveRulesetFailed);
+                }
+
+                moveRulesetUp(entity, recordInvocation, done);
+                expect(updaterInvoked).toBe(false);
+                done();
+            });
+        });
+
+        describe("Moving a ruleset up", () => {
+            test("should swap the ordinal of the selected ruleset and the previous ruleset and then refresh the ruleset display", done => {
+                let entity = findParentRuleset(15);
+                expect(entity).toBeDefined();
+                expect(entity.id).toBe(24);
+
+                let selectedEntityChecked = false;
+                let previousEntityChecked = false
+
+                function checkOrdinal(rulesetId, rulesetOrdinal, success, failure) {
+                    if (rulesetId == 24) {
+                        expect(rulesetOrdinal).toBe(1);
+                        selectedEntityChecked = true;
+                    } else if (rulesetId == 23) {
+                        expect(rulesetOrdinal).toBe(2);
+                        previousEntityChecked = true;
+                    }
+                    expect(success).toEqual(doNothing);
+                    expect(failure).toEqual(saveRulesetFailed);
+                }
+
+                moveRulesetUp(entity, checkOrdinal, done);
+                expect(selectedEntityChecked && previousEntityChecked).toBe(true);
+            });
+        });
+
+        describe("Moving a ruleset down", () => {
+            test("should swap the ordinal of the selected ruleset and the next ruleset and then refresh the ruleset display", done => {
+                let entity = findParentRuleset(15);
+                expect(entity).toBeDefined();
+                expect(entity.id).toBe(24);
+
+                let selectedEntityChecked = false;
+                let nextEntityChecked = false
+
+                function checkOrdinal(rulesetId, rulesetOrdinal, success, failure) {
+                    if (rulesetId == 24) {
+                        expect(rulesetOrdinal).toBe(3);
+                        selectedEntityChecked = true;
+                    } else if (rulesetId == 26) {
+                        expect(rulesetOrdinal).toBe(2);
+                        nextEntityChecked = true;
+                    }
+                    expect(success).toEqual(doNothing);
+                    expect(failure).toEqual(saveRulesetFailed);
+                }
+
+                moveRulesetDown(entity, checkOrdinal, done);
+                expect(selectedEntityChecked && nextEntityChecked).toBe(true);
+            });
+        });
+
+        describe("Moving the bottom ruleset down", () => {
+            test("should do nothing", done => {
+                let entity = findParentRuleset(41);
+                expect(entity).toBeDefined();
+                expect(entity.id).toBe(27);
+
+                let updaterInvoked = false;
+
+                function recordInvocation(updatedEntity, success, failure) {
+                    updaterInvoked = true;
+                    expect(success).toEqual(doNothing);
+                    expect(failure).toEqual(saveRulesetFailed);
+                }
+
+                moveRulesetDown(entity, recordInvocation, done);
+                expect(updaterInvoked).toBe(false);
+                done();
+            });
+        });
+    });
 });
 
 describe("Rule views views", () => {

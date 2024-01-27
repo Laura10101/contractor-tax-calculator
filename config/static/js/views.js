@@ -1048,21 +1048,15 @@ function saveRuleTierOrdinal(isPrimary, tier) {
 function swapRuleTierOrdinals(swapPrimary, tier, findNewPosition, updater, refresher) {
     // Find the tier that needs to be swapped
     let tierToSwap = findNewPosition(app.dialogState.entity, tier);
-    console.log(findNewPosition);
-    console.log(tier);
-    console.log(tierToSwap);
 
     if (tierToSwap != null) {
         // Swap the ordinals
-        console.log("swapping ordinals");
         let originalOrdinal = tier.ordinal;
         tier.ordinal = tierToSwap.ordinal;
         tierToSwap.ordinal = originalOrdinal;
 
         // Save the questions
-        console.log("updating tier: " + tier);
         updater(swapPrimary, tier);
-        console.log("updating tier: " + tierToSwap);
         updater(swapPrimary, tierToSwap);
 
         refresher();
