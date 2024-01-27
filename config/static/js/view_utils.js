@@ -328,7 +328,7 @@ function displayEditMultipleChoiceQuestionDialog(question) {
  * Multiple Choice Option Helper Functions
  */
 function initMultipleChoiceOptionDialog(name, explainer) {
-    document.getElementById(multipleChoiceOptionDialog.name.input.id).innerText = name;
+    document.getElementById(multipleChoiceOptionDialog.name.input.id).value = name;
     document.getElementById(multipleChoiceOptionDialog.explainer.input.id).value = explainer;
 }
 
