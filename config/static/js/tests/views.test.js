@@ -67,8 +67,36 @@ const {
 const { buildAppState } = require("./mocks/view_models.mocks.js");
 
 const {
-    app, findQuestionById, findRuleById, getRulesByTypeForJurisdiction, getQuestions, findParentRuleset, getTaxCategoryById, findPrimaryRuleTierById, setDialogState, setParentRuleset, setParentState
+    app,
+    findQuestionById,
+    findRuleById,
+    getRulesByTypeForJurisdiction,
+    getQuestions,
+    findParentRuleset,
+    getTaxCategoryById,
+    findPrimaryRuleTierById,
+    setDialogState,
+    setParentRuleset,
+    setParentState,
+    getFormId,
+    getNextQuestionOrdinal,
+    getNextRulesetOrdinal,
+    getNextRuleOrdinal,
+    getNextRuleTierOrdinal
  } = require("../view_models");
+
+ const {
+    initBooleanQuestionDialog,
+    initNumericQuestionDialog,
+    initMultipleChoiceQuestionDialog,
+    initMultipleChoiceOptionDialog,
+    initRulesetDialog,
+    initFlatRateRuleDialog,
+    initTieredRateRuleDialog,
+    initSecondaryTieredRateRuleDialog,
+    initRuleTierDialog,
+    initSecondaryRuleTierDialog
+ } = require("../view_utils");
 
 const {
     doNothing,
@@ -832,6 +860,148 @@ describe("Question views", () => {
                 expect(isShown(questionTypeDialog.dialog.id)).toBe(false);
             });
         });
+
+        describe("Saving changes", () => {
+            test("should hide the create question dialog and generate an appropriate request for a boolean question", done => {
+                let text = "A test question";
+                let explainer = "A test explainer";
+                let variableName = "test_var";
+                let isMandatory = true;
+
+                initBooleanQuestionDialog("Test Create", text, explainer, variableName, isMandatory);
+                setDialogState(dialogStates.modes.create, dialogStates.entityTypes.booleanQuestion, null);
+
+                function booleanQuestionCreator(_formId, _text, _ordinal, _explainer, _variableName, _isMandatory, success, failure) {
+                    expect(_formId).toBe(getFormId());
+                    expect(_text).toBe(text);
+                    expect(_ordinal).toBe(getNextQuestionOrdinal());
+                    expect(_explainer).toBe(explainer);
+                    expect(_variableName).toBe(variableName);
+                    expect(success).toEqual(saveQuestionSucceeded);
+                    expect(failure).toEqual(saveQuestionFailed);
+                    done();
+                }
+
+                function numericQuestionCreator(_formId, _text, _ordinal, _explainer, _variableName, _isMandatory, _isInteger, _minValue, _maxValue, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                function multipleChoiceQuestionCreator(_formId, _text, _ordinal, _explainer, _variableName, _isMandatory, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                function booleanQuestionUpdater(_formId, _questionId, _text, _ordinal, _explainer, _variableName, _isMandatory, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                function numericQuestionUpdater(_formId, _questionId, _text, _ordinal, _explainer, _variableName, _isMandatory, _isInteger,
+                    _minValue, _maxValue, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                function multipleChoiceQuestionUpdater(_formId, _questionId, _text, _ordinal, _explainer, _variableName, _isMandatory, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                saveQuestion(booleanQuestionCreator, numericQuestionCreator, multipleChoiceQuestionCreator, booleanQuestionUpdater,
+                    numericQuestionUpdater, multipleChoiceQuestionUpdater);
+            });
+
+            test("should hide the create question dialog and generate an appropriate request for a numeric question", done => {
+                let text = "A test question";
+                let explainer = "A test explainer";
+                let variableName = "test_var";
+                let isMandatory = true;
+                let isInteger = true;
+                let minValue = 10;
+                let maxValue = 90;
+
+                initNumericQuestionDialog("Test Create", text, explainer, variableName, isMandatory, isInteger, minValue, maxValue);
+                setDialogState(dialogStates.modes.create, dialogStates.entityTypes.numericQuestion, null);
+
+                function booleanQuestionCreator(_formId, _text, _ordinal, _explainer, _variableName, _isMandatory, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                function numericQuestionCreator(_formId, _text, _ordinal, _explainer, _variableName, _isMandatory, _isInteger, _minValue, _maxValue, success, failure) {
+                    expect(_formId).toBe(getFormId());
+                    expect(_text).toBe(text);
+                    expect(_ordinal).toBe(getNextQuestionOrdinal());
+                    expect(_explainer).toBe(explainer);
+                    expect(_variableName).toBe(variableName);
+                    expect(_isInteger).toBe(isInteger);
+                    expect(parseInt(_minValue)).toBe(minValue);
+                    expect(parseInt(_maxValue)).toBe(maxValue);
+                    expect(success).toEqual(saveQuestionSucceeded);
+                    expect(failure).toEqual(saveQuestionFailed);
+                    done();
+                }
+
+                function multipleChoiceQuestionCreator(_formId, _text, _ordinal, _explainer, _variableName, _isMandatory, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                function booleanQuestionUpdater(_formId, _questionId, _text, _ordinal, _explainer, _variableName, _isMandatory, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                function numericQuestionUpdater(_formId, _questionId, _text, _ordinal, _explainer, _variableName, _isMandatory, _isInteger,
+                    _minValue, _maxValue, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                function multipleChoiceQuestionUpdater(_formId, _questionId, _text, _ordinal, _explainer, _variableName, _isMandatory, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                saveQuestion(booleanQuestionCreator, numericQuestionCreator, multipleChoiceQuestionCreator, booleanQuestionUpdater,
+                    numericQuestionUpdater, multipleChoiceQuestionUpdater);
+            });
+
+            test("should hide the create question dialog and generate an appropriate request for a multiple choice question", done => {
+                let text = "A test question";
+                let explainer = "A test explainer";
+                let variableName = "test_var";
+                let isMandatory = true;
+                let options = [];
+
+                initMultipleChoiceQuestionDialog("Test Create", text, explainer, variableName, isMandatory, false, options);
+                setDialogState(dialogStates.modes.create, dialogStates.entityTypes.multipleChoiceQuestion, null);
+
+                function booleanQuestionCreator(_formId, _text, _ordinal, _explainer, _variableName, _isMandatory, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                function numericQuestionCreator(_formId, _text, _ordinal, _explainer, _variableName, _isMandatory, _isInteger, _minValue, _maxValue, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                function multipleChoiceQuestionCreator(_formId, _text, _ordinal, _explainer, _variableName, _isMandatory, success, failure) {
+                    expect(_formId).toBe(getFormId());
+                    expect(_text).toBe(text);
+                    expect(_ordinal).toBe(getNextQuestionOrdinal());
+                    expect(_explainer).toBe(explainer);
+                    expect(_variableName).toBe(variableName);
+                    done();
+                }
+
+                function booleanQuestionUpdater(_formId, _questionId, _text, _ordinal, _explainer, _variableName, _isMandatory, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                function numericQuestionUpdater(_formId, _questionId, _text, _ordinal, _explainer, _variableName, _isMandatory, _isInteger,
+                    _minValue, _maxValue, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                function multipleChoiceQuestionUpdater(_formId, _questionId, _text, _ordinal, _explainer, _variableName, _isMandatory, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                saveQuestion(booleanQuestionCreator, numericQuestionCreator, multipleChoiceQuestionCreator, booleanQuestionUpdater,
+                    numericQuestionUpdater, multipleChoiceQuestionUpdater);
+            });
+        });
     });
 
     describe("Editing questions", () => {
@@ -861,6 +1031,144 @@ describe("Question views", () => {
                 expect(app.dialogState.entityType).toBe(dialogStates.entityTypes.multipleChoiceQuestion);
                 expect(app.dialogState.entity).toEqual(question);
                 expect(isShown(multipleChoiceQuestionDialog.dialog.id)).toBe(true);
+            });
+        });
+
+        describe("Saving changes", () => {
+            test("should hide the create question dialog and generate an appropriate request for a boolean question", done => {
+                let question = findQuestionById(3);
+
+                initBooleanQuestionDialog("Edit", question.text, question.explainer, question.variable_name, question.is_mandatory);
+                setDialogState(dialogStates.modes.edit, dialogStates.entityTypes.booleanQuestion, question);
+
+                function booleanQuestionCreator(_formId, _text, _ordinal, _explainer, _variableName, _isMandatory, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                function numericQuestionCreator(_formId, _text, _ordinal, _explainer, _variableName, _isMandatory, _isInteger, _minValue, _maxValue, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                function multipleChoiceQuestionCreator(_formId, _text, _ordinal, _explainer, _variableName, _isMandatory, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                function booleanQuestionUpdater(_formId, _questionId, _text, _ordinal, _explainer, _isMandatory, success, failure) {
+                    expect(_questionId).toBe(question.id);
+                    expect(_formId).toBe(getFormId());
+                    expect(_text).toBe(question.text);
+                    expect(_ordinal).toBe(question.ordinal);
+                    expect(_explainer).toBe(question.explainer);
+                    expect(_isMandatory).toBe(question.is_mandatory);
+                    expect(success).toEqual(saveQuestionSucceeded);
+                    expect(failure).toEqual(saveQuestionFailed);
+                    done();
+                }
+
+                function numericQuestionUpdater(_formId, _questionId, _text, _ordinal, _explainer, _variableName, _isMandatory, _isInteger,
+                    _minValue, _maxValue, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                function multipleChoiceQuestionUpdater(_formId, _questionId, _text, _ordinal, _explainer, _variableName, _isMandatory, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                saveQuestion(booleanQuestionCreator, numericQuestionCreator, multipleChoiceQuestionCreator, booleanQuestionUpdater,
+                    numericQuestionUpdater, multipleChoiceQuestionUpdater);
+            });
+
+            test("should hide the create question dialog and generate an appropriate request for a numeric question", done => {
+                let question = findQuestionById(4);
+
+                initNumericQuestionDialog("Edit", question.text, question.explainer, question.variable_name, question.is_mandatory, question.is_integer,
+                    question.min_value, question.max_value);
+
+                setDialogState(dialogStates.modes.edit, dialogStates.entityTypes.numericQuestion, question);
+
+                function booleanQuestionCreator(_formId, _text, _ordinal, _explainer, _variableName, _isMandatory, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                function numericQuestionCreator(_formId, _text, _ordinal, _explainer, _variableName, _isMandatory, _isInteger, _minValue, _maxValue, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                function multipleChoiceQuestionCreator(_formId, _text, _ordinal, _explainer, _variableName, _isMandatory, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                function booleanQuestionUpdater(_formId, _questionId, _text, _ordinal, _explainer, _isMandatory, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                function numericQuestionUpdater(_formId, _questionId, _text, _ordinal, _explainer, _isMandatory, _isInteger,
+                    _minValue, _maxValue, success, failure) {
+                        expect(_questionId).toBe(question.id);
+                        expect(_formId).toBe(getFormId());
+                        expect(_text).toBe(question.text);
+                        expect(_ordinal).toBe(question.ordinal);
+                        expect(_explainer).toBe(question.explainer);
+                        expect(_isMandatory).toBe(question.is_mandatory);
+                        expect(_isInteger).toBe(question.is_integer);
+                        expect(parseInt(_minValue)).toBe(question.min_value);
+                        expect(parseInt(_maxValue)).toBe(question.max_value);
+                        expect(success).toEqual(saveQuestionSucceeded);
+                        expect(failure).toEqual(saveQuestionFailed);
+                        done();
+                }
+
+                function multipleChoiceQuestionUpdater(_formId, _questionId, _text, _ordinal, _explainer, _variableName, _isMandatory, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                saveQuestion(booleanQuestionCreator, numericQuestionCreator, multipleChoiceQuestionCreator, booleanQuestionUpdater,
+                    numericQuestionUpdater, multipleChoiceQuestionUpdater);
+            });
+
+            test("should hide the create question dialog and generate an appropriate request for a multiple choice question", done => {
+                let question = findQuestionById(7);
+
+                initMultipleChoiceQuestionDialog("Edit", question.text, question.explainer, question.variable_name, question.is_mandatory,
+                    question.allow_multiselect, question.options);
+
+                setDialogState(dialogStates.modes.edit, dialogStates.entityTypes.multipleChoiceQuestion, question);
+
+                function booleanQuestionCreator(_formId, _text, _ordinal, _explainer, _variableName, _isMandatory, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                function numericQuestionCreator(_formId, _text, _ordinal, _explainer, _variableName, _isMandatory, _isInteger, _minValue, _maxValue, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                function multipleChoiceQuestionCreator(_formId, _text, _ordinal, _explainer, _variableName, _isMandatory, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                function booleanQuestionUpdater(_formId, _questionId, _text, _ordinal, _explainer, _isMandatory, success, failure) {
+                    expect(true).toBe(false);
+                }
+
+                function numericQuestionUpdater(_formId, _questionId, _text, _ordinal, _explainer, _isMandatory, _isInteger,
+                    _minValue, _maxValue, success, failure) {
+                    exoect(true).toBe(false);
+                }
+
+                function multipleChoiceQuestionUpdater(_formId, _questionId, _text, _ordinal, _explainer, _isMandatory, success, failure) {
+                    expect(_questionId).toBe(question.id);
+                    expect(_formId).toBe(getFormId());
+                    expect(_text).toBe(question.text);
+                    expect(_ordinal).toBe(question.ordinal);
+                    expect(_explainer).toBe(question.explainer);
+                    expect(_isMandatory).toBe(question.is_mandatory);
+                    expect(success).toEqual(saveQuestionSucceeded);
+                    expect(failure).toEqual(saveQuestionFailed);
+                    done();
+                }
+
+                saveQuestion(booleanQuestionCreator, numericQuestionCreator, multipleChoiceQuestionCreator, booleanQuestionUpdater,
+                    numericQuestionUpdater, multipleChoiceQuestionUpdater);
             });
         });
     });

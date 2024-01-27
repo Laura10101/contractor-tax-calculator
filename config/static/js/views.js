@@ -90,7 +90,11 @@ const {
     findNextRule,
     findPreviousRule,
     findNextRuleTier,
-    findPreviousRuleTier
+    findPreviousRuleTier,
+    getNextQuestionOrdinal,
+    getNextRulesetOrdinal,
+    getNextRuleOrdinal,
+    getNextRuleTierOrdinal
 } = require("./view_models.js");
 
 const {

@@ -857,5 +857,15 @@ module.exports = {
     displayTieredRateRule,
     displaySecondaryTieredRateRule,
     displayRuleset,
-    updateRulesetsDisplay
+    updateRulesetsDisplay,
+    initBooleanQuestionDialog,
+    initNumericQuestionDialog,
+    initMultipleChoiceQuestionDialog,
+    initMultipleChoiceOptionDialog,
+    initRulesetDialog,
+    initFlatRateRuleDialog,
+    initTieredRateRuleDialog,
+    initSecondaryTieredRateRuleDialog,
+    initRuleTierDialog,
+    initSecondaryRuleTierDialog
 };
