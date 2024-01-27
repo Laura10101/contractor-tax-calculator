@@ -239,15 +239,17 @@ function saveQuestionFailed(request, status, message) {
     error("An error occurred while attempting to save question.");
 }
 
-function saveQuestion() {
-    formId = app.jurisdictionForm.forms[Object.keys(app.jurisdictionForm.forms)[0]].id;
+function saveQuestion(booleanQuestionCreator=createBooleanQuestion, numericQuestionCreator=createNumericQuestion,
+    multipleChoiceQuestionCreator=createMultipleChoiceQuestion, booleanQuestionUpdater=updateBooleanQuestion, numericQuestionUpdater=updateNumericQuestion,
+    multipleChoiceQuestionUpdater=updateMultipleChoiceQuestion) {
+    formId = getFormId();
 
     if (app.dialogState.mode == dialogStates.modes.create) {
         switch (app.dialogState.entityType) {
             // Create boolean question
             case dialogStates.entityTypes.booleanQuestion:
                     hideDialog(booleanQuestionDialog.dialog.id);
-                    createBooleanQuestion(
+                    booleanQuestionCreator(
                         formId,
                         document.getElementById(booleanQuestionDialog.questionText.input.id).value,
                         getNextQuestionOrdinal(),
@@ -261,7 +263,7 @@ function saveQuestion() {
             // Create numeric question
             case dialogStates.entityTypes.numericQuestion:
                     hideDialog(numericQuestionDialog.dialog.id);
-                    createNumericQuestion(
+                    numericQuestionCreator(
                         formId,
                         document.getElementById(numericQuestionDialog.questionText.input.id).value,
                         getNextQuestionOrdinal(),
@@ -278,7 +280,7 @@ function saveQuestion() {
             // Create multiple choice questions
             case dialogStates.entityTypes.multipleChoiceQuestion:
                     hideDialog(multipleChoiceQuestionDialog.dialog.id);
-                    createMultipleChoiceQuestion(
+                    multipleChoiceQuestionCreator(
                         formId,
                         document.getElementById(multipleChoiceQuestionDialog.questionText.input.id).value,
                         getNextQuestionOrdinal(),
@@ -298,7 +300,7 @@ function saveQuestion() {
             // Edit boolean question
             case dialogStates.entityTypes.booleanQuestion:
                     hideDialog(booleanQuestionDialog.dialog.id);
-                    updateBooleanQuestion(
+                    booleanQuestionUpdater(
                         formId,
                         question.id,
                         document.getElementById(booleanQuestionDialog.questionText.input.id).value,
@@ -312,7 +314,7 @@ function saveQuestion() {
             // Edit numeric question
             case dialogStates.entityTypes.numericQuestion:
                     hideDialog(numericQuestionDialog.dialog.id);
-                    updateNumericQuestion(
+                    numericQuestionUpdater(
                         formId,
                         question.id,
                         document.getElementById(numericQuestionDialog.questionText.input.id).value,
@@ -329,7 +331,7 @@ function saveQuestion() {
             // Edit multiple choice question
             case dialogStates.entityTypes.multipleChoiceQuestion:
                     hideDialog(multipleChoiceQuestionDialog.dialog.id);
-                    updateMultipleChoiceQuestion(
+                    multipleChoiceQuestionUpdater(
                         formId,
                         question.id,
                         document.getElementById(multipleChoiceQuestionDialog.questionText.input.id).value,
@@ -429,6 +431,7 @@ function refreshMultipleChoiceOptionsDisplay(refresher=getFormForJurisdiction) {
 
 function saveMultipleChoiceOptionSucceeded(refresher=refreshMultipleChoiceOptionsDisplay) {
     success("The option was successfully saved.");
+    moveParentStateToAppState();
     refresher();
 }
 
@@ -436,7 +439,7 @@ function saveMultipleChoiceOptionFailed(request, status, message) {
     error("An error occurred while attempting to save multiple choice option.");
 }
 
-function saveMultipleChoiceOption() {
+function saveMultipleChoiceOption(creator=postMultipleChoiceOption) {
     hideDialog(multipleChoiceOptionDialog.dialog.id);
 
     formId = getFormId();
@@ -445,7 +448,7 @@ function saveMultipleChoiceOption() {
     explainer = document.getElementById(multipleChoiceOptionDialog.explainer.input.id).value;
 
     if (app.dialogState.mode == dialogStates.modes.create) {
-        postMultipleChoiceOption(formId, questionId, name, explainer, saveMultipleChoiceOptionSucceeded, saveMultipleChoiceOptionFailed);
+        creator(formId, questionId, name, explainer, saveMultipleChoiceOptionSucceeded, saveMultipleChoiceOptionFailed);
     }
 }
 
@@ -509,7 +512,7 @@ function saveRulesetFailed(request, status, message) {
     error("An error occurred while attempting to save ruleset.");
 }
 
-function saveRuleset() {
+function saveRuleset(creator=postRuleset) {
     hideDialog(rulesetDialog.dialog.id);
 
     jurisdictionId = getSelectedJurisdictionId();
@@ -517,7 +520,7 @@ function saveRuleset() {
     ordinal = getNextRulesetOrdinal();
 
     if (app.dialogState.mode == dialogStates.modes.create) {
-        postRuleset(jurisdictionId, taxCategoryId, ordinal, saveRulesetSucceeded, saveRulesetFailed);
+        creator(jurisdictionId, taxCategoryId, ordinal, saveRulesetSucceeded, saveRulesetFailed);
     }
 }
 
@@ -645,7 +648,9 @@ function saveRuleFailed(request, status, message) {
     error("An error occurred while attempting to save rule.");
 }
 
-function saveRule() {
+function saveRule(flatRateRuleCreator=createFlatRateRule, tieredRateRuleCreator=createTieredRateRule,
+    secondaryTieredRateRuleCreator=createSecondaryTieredRateRule, flatRateRuleUpdater=updateFlatRateRule, tieredRateRuleUpdater=updateTieredRateRule,
+    secondaryTieredRateRuleUpdater=updateSecondaryTieredRateRule) {
     rulesetId = app.parentRuleset.id;
 
     if (app.dialogState.mode == dialogStates.modes.create) {
@@ -653,7 +658,7 @@ function saveRule() {
             // Create flat rate rule
             case dialogStates.entityTypes.flatRateRule:
                     hideDialog(flatRateRuleDialog.dialog.id);
-                    createFlatRateRule(
+                    flatRateRuleCreator(
                         rulesetId,
                         document.getElementById(flatRateRuleDialog.name.input.id).value,
                         document.getElementById(flatRateRuleDialog.explainer.input.id).value,
@@ -667,7 +672,7 @@ function saveRule() {
             // Create tiered rate rule
             case dialogStates.entityTypes.tieredRateRule:
                     hideDialog(tieredRateRuleDialog.dialog.id);
-                    createTieredRateRule(
+                    tieredRateRuleCreator(
                         rulesetId,
                         document.getElementById(tieredRateRuleDialog.name.input.id).value,
                         document.getElementById(tieredRateRuleDialog.explainer.input.id).value,
@@ -680,7 +685,7 @@ function saveRule() {
             // Create secondary tiered rate rule
             case dialogStates.entityTypes.secondaryTieredRateRule:
                     hideDialog(secondaryTieredRateRuleDialog.dialog.id);
-                    createSecondaryTieredRateRule(
+                    secondaryTieredRateRuleCreator(
                         rulesetId,
                         document.getElementById(secondaryTieredRateRuleDialog.name.input.id).value,
                         document.getElementById(secondaryTieredRateRuleDialog.explainer.input.id).value,
@@ -699,7 +704,7 @@ function saveRule() {
             // Edit flat rate rule
             case dialogStates.entityTypes.flatRateRule:
                     hideDialog(flatRateRuleDialog.dialog.id);
-                    updateFlatRateRule(
+                    flatRateRuleUpdater(
                         rulesetId,
                         rule.id,
                         document.getElementById(flatRateRuleDialog.name.input.id).value,
@@ -714,7 +719,7 @@ function saveRule() {
             // Edit tiered rate rule
             case dialogStates.entityTypes.tieredRateRule:
                     hideDialog(tieredRateRuleDialog.dialog.id);
-                    updateTieredRateRule(
+                    tieredRateRuleUpdater(
                         rulesetId,
                         rule.id,
                         document.getElementById(tieredRateRuleDialog.name.input.id).value,
@@ -728,7 +733,7 @@ function saveRule() {
             // Edit secondary tiered rate rule
             case dialogStates.entityTypes.secondaryTieredRateRule:
                     hideDialog(secondaryTieredRateRuleDialog.dialog.id);
-                    updateSecondaryTieredRateRule(
+                    secondaryTieredRateRuleUpdater(
                         rulesetId,
                         rule.id,
                         document.getElementById(secondaryTieredRateRuleDialog.name.input.id).value,
@@ -918,6 +923,7 @@ function refreshRuleTiersDisplay(refresher=getRulesetsForJurisdiction) {
 
 function saveRuleTierSucceeded(refresher=refreshRuleTiersDisplay) {
     success("The tier was successfully saved.");
+    moveParentStateToAppState();
     refresher();
 }
 
@@ -925,7 +931,8 @@ function saveRuleTierFailed(request, status, message) {
     error("An error occurred while attempting to save rule tier.");
 }
 
-function saveRuleTier() {
+function saveRuleTier(ruleTierCreator=postRuleTier, secondaryRuleTierCreator=postSecondaryRuleTier, ruleTierUpdater=updateRuleTier,
+    secondaryRuleTierUpdater=updateSecondaryRuleTier) {
     rule = app.parentState.entity;
     ruleset = findParentRuleset(rule.id);
 
@@ -934,7 +941,7 @@ function saveRuleTier() {
         switch (app.dialogState.entityType) {
             case dialogStates.entityTypes.ruleTier:
                     hideDialog(ruleTierDialog.dialog.id);
-                    postRuleTier(
+                    ruleTierCreator(
                         ruleset.id,
                         rule.id,
                         document.getElementById(ruleTierDialog.minimumValue.input.id).value,
@@ -947,7 +954,7 @@ function saveRuleTier() {
                 break;
             case dialogStates.entityTypes.secondaryRuleTier:
                     hideDialog(secondaryRuleTierDialog.dialog.id);
-                    postSecondaryRuleTier(
+                    secondaryRuleTierCreator(
                         ruleset.id,
                         rule.id,
                         document.getElementById(secondaryRuleTierDialog.primaryTier.input.id).value,
@@ -963,7 +970,7 @@ function saveRuleTier() {
         switch (app.dialogState.entityType) {
             case dialogStates.entityTypes.ruleTier:
                     hideDialog(ruleTierDialog.dialog.id);
-                    updateRuleTier(
+                    ruleTierUpdater(
                         ruleset.id,
                         rule.id,
                         tier.id,
@@ -977,7 +984,7 @@ function saveRuleTier() {
                 break;
             case dialogStates.entityTypes.secondaryRuleTier:
                     hideDialog(secondaryRuleTierDialog.dialog.id);
-                    updateSecondaryRuleTier(
+                    secondaryRuleTierUpdater(
                         ruleset.id,
                         rule.id,
                         tier.id,
