@@ -768,7 +768,6 @@ describe("Question views", () => {
                 let nextOrdinal = 1;
 
                 function checkOrdinalUpdate(question, success, failure) {
-                    console.log("Expected ordinal=" + nextOrdinal + ", actual=" + question.ordinal);
                     expect(question.ordinal).toBe(nextOrdinal);
                     nextOrdinal += 1;
 
@@ -790,6 +789,101 @@ describe("Question views", () => {
 
                 setDialogState(dialogStates.modes.delete, dialogStates.entityTypes.numericQuestion, question);
                 deleteQuestionSucceeded(null, null, null, checkOrdinalUpdate, checkFinalAppState);
+            });
+        });
+    });
+
+    describe("Reordering questions", () => {
+        describe("Moving the top question up", () => {
+            test("should do nothing", done => {
+                let question = findQuestionById(3);
+                expect(question).toBeDefined();
+                expect(question.id).toBe(3);
+
+                let updaterInvoked = false;
+
+                function recordInvocation(question, success, failure) {
+                    updaterInvoked = true;
+                    expect(success).toEqual(doNothing);
+                    expect(failure).toEqual(saveQuestionFailed);
+                }
+
+                moveQuestionUp(question, recordInvocation, done);
+                expect(updaterInvoked).toBe(false);
+                done();
+            });
+        });
+
+        describe("Moving a question up", () => {
+            test("should swap the ordinal of the selected question and the previous question and then refresh the questions display", done => {
+                let question = findQuestionById(4);
+                expect(question).toBeDefined();
+                expect(question.id).toBe(4);
+
+                let selectedQuestionChecked = false;
+                let previousQuestionChecked = false
+
+                function checkOrdinal(question, success, failure) {
+                    if (question.id == 4) {
+                        expect(question.ordinal).toBe(1);
+                        selectedQuestionChecked = true;
+                    } else if (question.id == 3) {
+                        expect(question.ordinal).toBe(2);
+                        previousQuestionChecked = true;
+                    }
+                    expect(success).toEqual(doNothing);
+                    expect(failure).toEqual(saveQuestionFailed);
+                }
+
+                moveQuestionUp(question, checkOrdinal, done);
+                expect(selectedQuestionChecked && previousQuestionChecked).toBe(true);
+            });
+        });
+
+        describe("Moving a question down", () => {
+            test("should swap the ordinal of the selected question and the next question and then refresh the questions display", done => {
+                let question = findQuestionById(4);
+                expect(question).toBeDefined();
+                expect(question.id).toBe(4);
+
+                let selectedQuestionChecked = false;
+                let nextQuestionChecked = false
+
+                function checkOrdinal(question, success, failure) {
+                    if (question.id == 4) {
+                        expect(question.ordinal).toBe(3);
+                        selectedQuestionChecked = true;
+                        console.log("checked");
+                    } else if (question.id == 7) {
+                        expect(question.ordinal).toBe(2);
+                        nextQuestionChecked = true;
+                    }
+                    expect(success).toEqual(doNothing);
+                    expect(failure).toEqual(saveQuestionFailed);
+                }
+
+                moveQuestionDown(question, checkOrdinal, done);
+                expect(selectedQuestionChecked && nextQuestionChecked).toBe(true);
+            });
+        });
+
+        describe("Moving the bottom question down", () => {
+            test("should do nothing", done => {
+                let question = findQuestionById(7);
+                expect(question).toBeDefined();
+                expect(question.id).toBe(7);
+
+                let updaterInvoked = false;
+
+                function recordInvocation(question, success, failure) {
+                    updaterInvoked = true;
+                    expect(success).toEqual(doNothing);
+                    expect(failure).toEqual(saveQuestionFailed);
+                }
+
+                moveQuestionDown(question, recordInvocation, done);
+                expect(updaterInvoked).toBe(false);
+                done();
             });
         });
     });
@@ -1516,7 +1610,6 @@ describe("Rule tier views views", () => {
                     }
         
                     function checkFinalAppState() {
-                        console.log(app.dialogState);
                         expect(app.dialogState.mode).toBe(dialogStates.modes.edit);
                         expect(app.dialogState.entityType).toBe(dialogStates.entityTypes.tieredRateRule);
                         expect(app.dialogState.entity).toEqual(rule);
@@ -1549,7 +1642,6 @@ describe("Rule tier views views", () => {
                     }
         
                     function checkFinalAppState() {
-                        console.log(app.dialogState);
                         expect(app.dialogState.mode).toBe(dialogStates.modes.edit);
                         expect(app.dialogState.entityType).toBe(dialogStates.entityTypes.secondaryTieredRateRule);
                         expect(app.dialogState.entity).toEqual(rule);

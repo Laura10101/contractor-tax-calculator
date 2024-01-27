@@ -82,7 +82,15 @@ const {
     resequenceQuestionOrdinals,
     resequenceRuleOrdinals,
     resequenceRulesetOrdinals,
-    resequenceRuleTierOrdinals
+    resequenceRuleTierOrdinals,
+    findNextQuestion,
+    findPreviousQuestion,
+    findNextRuleset,
+    findPreviousRuleset,
+    findNextRule,
+    findPreviousRule,
+    findNextRuleTier,
+    findPreviousRuleTier
 } = require("./view_models.js");
 
 const {
