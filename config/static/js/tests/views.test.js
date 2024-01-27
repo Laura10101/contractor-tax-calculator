@@ -95,7 +95,8 @@ const {
     initTieredRateRuleDialog,
     initSecondaryTieredRateRuleDialog,
     initRuleTierDialog,
-    initSecondaryRuleTierDialog
+    initSecondaryRuleTierDialog,
+    getSelectedJurisdictionId
  } = require("../view_utils");
 
 const {
@@ -1391,6 +1392,33 @@ describe("Multilple choice option views", () => {
             expect(app.parentState.entity).toEqual(question);
             expect(isShown(multipleChoiceOptionDialog.dialog.id)).toBe(true);
         });
+
+        test("should hide the create option dialog and generate an appropriate request for an option", done => {
+
+            let name = "Test option";
+            let explainer = "A test";
+
+            initMultipleChoiceOptionDialog(name, explainer, "yey");
+            setDialogState(dialogStates.modes.create, dialogStates.entityTypes.multipleChoiceOption, null);
+
+            let question = findQuestionById(7);
+            setParentState(dialogStates.modes.edit, dialogStates.entityTypes.multipleChoiceQuestion, question);
+
+            showDialog(multipleChoiceOptionDialog.dialog.id);
+
+            function creator(_formId, _questionId, _name, _explainer, success, failure) {
+                expect(_formId).toBe(getFormId());
+                expect(_questionId).toBe(question.id);
+                expect(_name).toBe(name);
+                expect(_explainer).toBe(explainer);
+                expect(success).toEqual(saveMultipleChoiceOptionSucceeded);
+                expect(failure).toEqual(saveMultipleChoiceOptionFailed);
+                expect(isShown(multipleChoiceOptionDialog.dialog.id)).toBe(true);
+                done();
+            }
+
+            saveMultipleChoiceOption(creator);
+        });
     });
 
     describe("Deleting multiple choice options", () => {
@@ -1479,6 +1507,26 @@ describe("Ruleset views", () => {
             expect(app.dialogState.mode).toBe(dialogStates.modes.create);
             expect(app.dialogState.entityType).toBe(dialogStates.entityTypes.ruleset);
             expect(app.dialogState.entity).toBe(null);
+        });
+
+        test("should hide the create ruleset dialog and generate an appropriate request for a ruleset", done => {
+
+            initRulesetDialog("Create", app.taxCategories);
+            setDialogState(dialogStates.modes.create, dialogStates.entityTypes.ruleset, null);
+
+            showDialog(rulesetDialog.dialog.id);
+
+            function creator(jurisdictionId, taxCategoryId, ordinal, success, failure) {
+                expect(jurisdictionId).toBe(getSelectedJurisdictionId());
+                expect(taxCategoryId).toBe(document.getElementById(rulesetDialog.taxCategory.input.id).value);
+                expect(ordinal).toBe(getNextRulesetOrdinal());
+                expect(success).toEqual(saveRulesetSucceeded);
+                expect(failure).toEqual(saveRulesetFailed);
+                expect(isShown(rulesetDialog.dialog.id)).toBe(true);
+                done();
+            }
+
+            saveRuleset(creator);
         });
     });
 

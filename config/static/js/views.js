@@ -446,10 +446,10 @@ function saveMultipleChoiceOptionFailed(request, status, message) {
 function saveMultipleChoiceOption(creator=postMultipleChoiceOption) {
     hideDialog(multipleChoiceOptionDialog.dialog.id);
 
-    formId = getFormId();
-    questionId = app.parentState.entity.id;
-    name = document.getElementById(multipleChoiceOptionDialog.name.input.id).value;
-    explainer = document.getElementById(multipleChoiceOptionDialog.explainer.input.id).value;
+    let formId = getFormId();
+    let questionId = app.parentState.entity.id;
+    let name = document.getElementById(multipleChoiceOptionDialog.name.input.id).value;
+    let explainer = document.getElementById(multipleChoiceOptionDialog.explainer.input.id).value;
 
     if (app.dialogState.mode == dialogStates.modes.create) {
         creator(formId, questionId, name, explainer, saveMultipleChoiceOptionSucceeded, saveMultipleChoiceOptionFailed);
