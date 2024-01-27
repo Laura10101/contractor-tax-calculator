@@ -229,10 +229,10 @@ function editQuestion(question) {
     }
 }
 
-function saveQuestionSucceeded() {
+function saveQuestionSucceeded(refresher=refreshQuestionsDisplay) {
     success("The question was successfully saved.");
     clearDialogState();
-    refreshQuestionsDisplay();
+    refresher();
 }
 
 function saveQuestionFailed(request, status, message) {
@@ -427,9 +427,9 @@ function refreshMultipleChoiceOptionsDisplay(refresher=getFormForJurisdiction) {
     refresher(jurisdictionId, displayMultipleChoiceOptions, displayMultipleChoiceOptionsError);
 }
 
-function saveMultipleChoiceOptionSucceeded() {
+function saveMultipleChoiceOptionSucceeded(refresher=refreshMultipleChoiceOptionsDisplay) {
     success("The option was successfully saved.");
-    refreshMultipleChoiceOptionsDisplay();
+    refresher();
 }
 
 function saveMultipleChoiceOptionFailed(request, status, message) {
@@ -499,10 +499,10 @@ function refreshRulesetsDisplay(refresher=getRulesetsForJurisdiction) {
     refresher(jurisdictionId, displayRulesets, displayRulesetsLoadError);
 }
 
-function saveRulesetSucceeded() {
+function saveRulesetSucceeded(refresher=refreshRulesetsDisplay) {
     success("The ruleset was successfully saved.");
     clearDialogState();
-    refreshRulesetsDisplay();
+    refresher();
 }
 
 function saveRulesetFailed(request, status, message) {
@@ -635,10 +635,10 @@ function ruleTypeSelected() {
     }
 }
 
-function saveRuleSucceeded() {
+function saveRuleSucceeded(refresher=refreshRulesetsDisplay) {
     success("The rule was successfully saved.");
     clearDialogState();
-    refreshRulesetsDisplay();
+    refresher();
 }
 
 function saveRuleFailed(request, status, message) {
@@ -916,9 +916,9 @@ function refreshRuleTiersDisplay(refresher=getRulesetsForJurisdiction) {
     refresher(jurisdictionId, displayRuleTiersLoadedSucceeded, displayRuleTiersLoadedError);
 }
 
-function saveRuleTierSucceeded() {
+function saveRuleTierSucceeded(refresher=refreshRuleTiersDisplay) {
     success("The tier was successfully saved.");
-    refreshRuleTiersDisplay();
+    refresher();
 }
 
 function saveRuleTierFailed(request, status, message) {
