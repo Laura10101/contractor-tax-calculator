@@ -1064,9 +1064,9 @@ function swapRuleTierOrdinals(swapPrimary, tier, findNewPosition, updater, refre
         updater(swapPrimary, tier);
         console.log("updating tier: " + tierToSwap);
         updater(swapPrimary, tierToSwap);
-    }
 
-    refresher();
+        refresher();
+    }
 }
 
 function moveRuleTierUp(isPrimary, tier, updater=saveRuleTierOrdinal, refresher=refreshRuleTiersDisplay) {
