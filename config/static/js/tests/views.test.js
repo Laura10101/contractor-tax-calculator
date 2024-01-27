@@ -469,6 +469,125 @@ describe("Status views", () => {
         });
     });
 
+    describe("Success views", () => {
+        describe("Successfully saving", () => {
+            describe("Questions", () => {
+                test("should display a success message, clear the app state, and refresh the appropriate display components", done => {
+                    function checkFinalState() {
+                        expect(isShown(statusDialog.dialog.id)).toBe(true);
+
+                        // Check app state
+                        expect(app.dialogState.mode).toBe(null);
+                        expect(app.dialogState.entityType).toBe(null);
+                        expect(app.dialogState.entity).toBe(null);
+
+                        done();
+                    }
+
+                    let entity = findQuestionById(3);
+                    setDialogState(dialogStates.modes.edit, dialogStates.entityTypes.booleanQuestion, entity);
+
+                    saveQuestionSucceeded(checkFinalState);
+                });
+            });
+
+            describe("Multiple choice options", () => {
+                test("should display a success message, move the parent state to the app state, and refresh the appropriate display components", done => {
+                    let entity = findQuestionById(7);
+                    setParentState(dialogStates.modes.edit, dialogStates.entityTypes.multipleChoiceQuestion, entity);
+
+                    function checkFinalState() {
+                        expect(isShown(statusDialog.dialog.id)).toBe(true);
+
+                        // Check app state
+                        expect(app.dialogState.mode).toBe(dialogStates.modes.edit);
+                        expect(app.dialogState.entityType).toBe(dialogStates.entityTypes.multipleChoiceQuestion);
+                        expect(app.dialogState.entity).toEqual(entity);
+
+                        // Check parent state
+                        expect(app.parentState.mode).toBe(null);
+                        expect(app.parentState.entityType).toBe(null);
+                        expect(app.parentState.entity).toEqual(null);
+
+                        done();
+                    }
+
+                    let option = { name: "A mock option" };
+                    setDialogState(dialogStates.modes.create, dialogStates.entityTypes.multipleChoiceOption, option);
+
+                    saveMultipleChoiceOptionSucceeded(checkFinalState);
+                });
+            });
+
+            describe("Rulesets", () => {
+                test("should display a success message, clear the app state, and refresh the appropriate display components", done => {
+                    function checkFinalState() {
+                        expect(isShown(statusDialog.dialog.id)).toBe(true);
+
+                        // Check app state
+                        expect(app.dialogState.mode).toBe(null);
+                        expect(app.dialogState.entityType).toBe(null);
+                        expect(app.dialogState.entity).toBe(null);
+
+                        done();
+                    }
+
+                    let entity = findParentRuleset(41);
+                    setDialogState(dialogStates.modes.edit, dialogStates.entityTypes.ruleset, entity);
+
+                    saveRulesetSucceeded(checkFinalState);
+                });
+            });
+
+            describe("Rules", () => {
+                test("should display a success message, clear the app state, and refresh the appropriate display components", done => {
+                    function checkFinalState() {
+                        expect(isShown(statusDialog.dialog.id)).toBe(true);
+
+                        // Check app state
+                        expect(app.dialogState.mode).toBe(null);
+                        expect(app.dialogState.entityType).toBe(null);
+                        expect(app.dialogState.entity).toBe(null);
+
+                        done();
+                    }
+
+                    setDialogState(dialogStates.modes.edit, dialogStates.entityTypes.booleanQuestion, null);
+
+                    saveRuleSucceeded(checkFinalState);
+                });
+            });
+
+            describe("Rule tiers", () => {
+                test("should display a success message, clear the app state, and refresh the appropriate display components", done => {
+                    let entity = findRuleById(44);
+                    setParentState(dialogStates.modes.edit, dialogStates.entityTypes.tieredRateRule, entity);
+
+                    let tier = entity.tiers[0];
+                    setDialogState(dialogStates.modes.create, dialogStates.entityTypes.ruleTier, tier);
+
+                    function checkFinalState() {
+                        expect(isShown(statusDialog.dialog.id)).toBe(true);
+
+                        // Check app state
+                        expect(app.dialogState.mode).toBe(dialogStates.modes.edit);
+                        expect(app.dialogState.entityType).toBe(dialogStates.entityTypes.tieredRateRule);
+                        expect(app.dialogState.entity).toEqual(entity);
+
+                        // Check parent state
+                        expect(app.parentState.mode).toBe(null);
+                        expect(app.parentState.entityType).toBe(null);
+                        expect(app.parentState.entity).toEqual(null);
+
+                        done();
+                    }
+
+                    saveRuleTierSucceeded(checkFinalState);
+                });
+            });
+        });
+    });
+
     describe("Confirmation views", () => {
         describe("Questions", () => {
             test("should display an appropriate confirmation dialog and correctly set the app state", () => {
