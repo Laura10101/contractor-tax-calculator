@@ -8,14 +8,12 @@ import json
 
 # Helper functions
 # Get details of a subscription option based on its id
-@login_required
 def get_subscription_option(base_url, subscription_option_id):
     url = base_url + '/api/subscriptions/options/'
     response = requests.get(url + str(subscription_option_id))
     print('Subscription option response: ' + response.text)
     return json.loads(response.text)['subscription_option']
 
-@login_required
 def post_payment(base_url, user_id, subscription_option_id, total, currency):
     url = base_url + '/api/payments/'
 
