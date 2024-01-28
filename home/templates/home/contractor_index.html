@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_header %}
+    <div class="container header-container">
+        <div class="row">
+            <div class="col"></h1></div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+  {% if not error %}
+  <div class="px-4 py-5 my-5 text-center">
+      
+      <h1 class="display-5 fw-bold text-body-emphasis">Welcome to the Contractor Tax Calculator!</h1>
+      <div class="col-lg-6 mx-auto">
+        <p class="lead mb-4">
+          IT contractors are highly paid, incredibly busy people who usually have no or little knowledge of tax law, and especially international tax law.
+          Being a demographic who often are able to work remotely, they are often able to benefit from relocating.
+        </p>
+        <p class="lead mb-4">
+          This calculator is of use to any IT contractor considering moving countries. The goal of this calculator is to allow them to see an indicative calculation of#
+          how a move would affect their take home pay, without them having to spend weeks investigating complex legal issues or spending thousands on tax advisers.
+        </p>
+        <p class="lead mb-4">
+          To use the calculator, all you need to do is:
+          <ol>
+              <li>Register for an account (or login if you already have one)</li>
+              <li>Select the jurisdictions to consider</li>
+              <li>Follow the on-screen instructions to enter your financial information</li>
+              <li>View your calculation</li>
+          </ol>
+        </p>
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+          <button type="button" class="btn btn-primary btn-lg px-4 gap-3">Login</button>
+          <button type="button" class="btn btn-outline-secondary btn-lg px-4">Register</button>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+{% endblock %}
+

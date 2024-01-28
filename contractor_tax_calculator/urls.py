@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include, re_path
+from home.views import *
 from jurisdictions_api.views import JurisdictionList
 from forms_api.views import FormDetail, FormsList, FormQuestionList, FormQuestionsDetail
 from rules_api.views import *
@@ -23,16 +24,28 @@ from payments_api.views import *
 
 
 urlpatterns = [
-    path('admin/config/', include('config.urls')),
-    path('admin/', admin.site.urls, name='admin'),
+    # Landing pages for all users, contractors, and admin users
+    path('', index, name='index'),
+    path('contractors/home/', home, name='contractor_home'),
+    path('contractors/', contractor_index, name='contractor_index'),
+    path('admin/', admin_index, name='admin_index'),
+
+    # All Auth
+    path('accounts/', include('allauth.urls')),
+
+    # Admin apps
+    path('admin/manage/config/', include('config.urls')),
+    path('admin/manage/', admin.site.urls, name='admin'),
+
+    # Contractor apps
+    path('contractors/checkout/', include('checkout.urls')),
+    path('contractors/subscription/', include('subscription.urls')),
+    path('contractors/calculations/', include('calculations.urls')),
+
+    # APIs
     path('api/jurisdictions/', include('jurisdictions_api.urls')),
     path('api/subscriptions/', include('subscriptions_api.urls')),
     path('api/payments/', include('payments_api.urls')),
     path('api/forms/', include('forms_api.urls')),
     path('api/rules/', include('rules_api.urls')),
-    path('accounts/', include('allauth.urls')),
-    path('checkout/', include('checkout.urls')),
-    path('', include('home.urls')),
-    path('subscription/', include('subscription.urls')),
-    path('calculations/', include('calculations.urls'))
 ]
