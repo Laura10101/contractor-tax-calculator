@@ -281,3 +281,5 @@ Alternatively, if using Gitpod, you can click below to create your own workspace
 - [Deep clone technique](https://developer.mozilla.org/en-US/docs/Glossary/Deep_copy)
 - [Load relative file paths using Node.js](https://ultimatecourses.com/blog/relative-paths-with-node-readfilesync)
 - [Restricting Django views to logged in users](https://docs.djangoproject.com/en/5.0/topics/auth/default/#the-login-required-decorator)
+- [Stripe address element documentation](https://stripe.com/docs/elements/address-element?platform=web#autocomplete)
+- [Stripe address element example](https://github.com/stripe-samples/link/blob/main/client/html/index.js)

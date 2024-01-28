@@ -15,50 +15,54 @@
 
 {% block content %}
     {% if not error %}
-        <div class="overlay"></div>
-        <div class="container">
-            <div class="row">
-                <div class="col-12 col-lg 6 order-lg-last mb-5">
-                    <p class="text-muted">Subscription Purchase Summary</p>
-                    <div class="row">
-                        <div class="col-7 offset-2">
-                            <p class="mb-1 mt-0 small text-muted">Subscription Months</p>
-                        </div>
-                        <div class="col-3 text-right">
-                            <p class="mb-1 mt-0 small text-muted">{{ subscription_months }}</p>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-7 offset-2">
-                            <p class="mb-1 mt-0 small text-muted">Subtotal</p>
-                        </div>
-                        <div class="col-3 text-right">
-                            <p class="mb-1 mt-0 small text-muted">{{ subscription_price|floatformat:2 }}</p>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-7 offset-2">
-                            <p class="mb-1 mt-0 small text-muted">VAT</p>
-                        </div>
-                        <div class="col-3 text-right">
-                            <p class="mb-1 mt-0 small text-muted">{{ vat|floatformat:2 }}</p>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-7 offset-2">
-                            <p class="mb-1 mt-0 small text-muted">Total</p>
-                        </div>
-                        <div class="col-3 text-right">
-                            <p class="mb-1 mt-0 small text-muted">{{ total|floatformat:2 }}</p>
-                        </div>
+        <!-- Page Title -->
+            <section>
+                <div class="row">
+                    <div class="col text-center">
+                        <h1 class="display-5 fw-bold text-body-emphasis">Checkout</h1>
                     </div>
                 </div>
+            </section>
+        <!-- End Page Title -->
 
+        <div class="row">
+            <!-- Subscription Summary -->
+                <section>
+                    <div class="col-12 col-lg 6 border border-dark">
+                        <table class="table">
+                            <tr>
+                                <th scope="col" colspan="2">
+                                    <p class="h5">Subscription Purchase Summary</p>
+                                </th>
+                            </tr>
+
+                            <tr>
+                                <th scope="row">Subscription Length</th>
+                                <td>{{ subscription_months }} month(s)</td>
+                            </tr>
+
+                            <tr>
+                                <th scope="row">Subtotal</th>
+                                <td>{{ subscription_price|floatformat:2 }}</td>
+                            </tr>
+
+                            <tr>
+                                <th scope="row">VAT</th>
+                                <td>{{ vat|floatformat:2 }}</td>
+                            </tr>
+
+                            <tr>
+                                <th scope="row">Total</th>
+                                <td>{{ total|floatformat:2 }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </section>
+            <!-- End Subscription Summary -->
+
+            <!-- Checkout Form -->
                 <div class="col-12 col-lg-6">
-                    <p class="text-muted">Please fill out the form below to complete your order</p>
+                    <p class="lead text-center">Please fill out the form below to complete your order</p>
                     <form action="{% url 'confirm_checkout' %}" method="POST" id="payment-form">
                         {% csrf_token %}
                         <input
@@ -70,23 +74,9 @@
                         <input type="hidden" value="" name="payment_method_id" id="payment_method_id">
 
                         <fieldset class="rounded px-3 mb-5">
-                            <legend class="fieldset-label small text-black px-2 w-auto">Details</legend>
-                            <p>Name:</p>
-                            <label class="form-check-label" for="full_name"></label>
-                            <input class="form-control" type="text" id="full_name" name="full_name">
-
-                            <p>Email</p>
-                            <label class="form-check-label" for="email"></label>
-                            <input class="form-control" type="email" id="email" name="email" placeholder="name@example.com">
-                        </fieldset>
-
-                        <fieldset class="rounded px-3 mb-5">
-                            <legend class="fieldset-label small text-black px-2 w-auto">Billing</legend>
-                            <p>Phone Number</p>
-                            <label class="form-check-label" for="phone_number"></label>
-                            <input class="form-control" type="text" id="phone_number" name="phone_number">
-                            
-                            <p>Country</p>
+                            <legend class="fieldset-label text-black">Billing</legend>
+                            <div class="mb-3" id="address-element"></div>
+                            <!--<p>Country</p>
                             <label class="form-check-label" for="country"></label>
                             <input class="form-control" type="text" id="country" name="country">
 
@@ -108,17 +98,17 @@
                             
                             <p>County</p>
                             <label class="form-check-label" for="county"></label>
-                            <input class="form-control" type="text" id="county" name="county">
+                            <input class="form-control" type="text" id="county" name="county">-->
                         </fieldset>
 
                         <fieldset class="rounded px-3 mb-5">
-                            <legend class="fieldset-label small text-black px-2 w-auto">Payment</legend>
+                            <legend class="fieldset-label text-black">Payment</legend>
                             <div class="mb-3" id="card-element"></div>
                             <div class="mb-3 text-danger" id="card-errors" role="alert"></div>
                         </fieldset>
 
-                        <div class="submit-button text-right mt-5 mb-2">
-                            <button id="submit-button" class="btn btn-black rounded-0">
+                        <div class="submit-button text-center mt-5 mb-2">
+                            <button id="submit-button" class="btn btn-black rounded-0" disabled=true>
                                 <span class="font-weight-bold">Complete Order</span>
                                 <span class="icon">
                                     <i class="fas fa-lock"></i>
@@ -133,7 +123,7 @@
                         </div>
                     </form>
                 </div>
-            </div>
+            <!-- End Checkout Form -->
         </div>
     {% endif %}
 {% endblock %}
