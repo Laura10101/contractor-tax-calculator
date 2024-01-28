@@ -25,16 +25,17 @@
         </p>
         <p class="lead mb-4">
           To use the calculator, all you need to do is:
-          <ol>
-              <li>Register for an account (or login if you already have one)</li>
-              <li>Select the jurisdictions to consider</li>
-              <li>Follow the on-screen instructions to enter your financial information</li>
-              <li>View your calculation</li>
-          </ol>
+          <ul class="list-group">
+            <li class="list-group-item lead"><i class="fas fa-file-signature"></i> Register</li>
+            <li class="list-group-item lead"><i class="fas fa-user"></i> Login</li>
+            <li class="list-group-item lead"><i class="fas fa-check-double"></i> Select jurisdictions</li>
+            <li class="list-group-item lead"><i class="fas fa-list-ul"></i> Complete the form</li>
+            <li class="list-group-item lead"><i class="fas fa-calculator"></i> View calculations</li>
+          </ul>
         </p>
         <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-          <button type="button" class="btn btn-primary btn-lg px-4 gap-3">Login</button>
-          <button type="button" class="btn btn-outline-secondary btn-lg px-4">Register</button>
+          <button type="button" class="btn btn-primary btn-lg px-4 gap-3" onclick="location.href='{% url 'account_login' %}'">Login</button>
+          <button type="button" class="btn btn-outline-secondary btn-lg px-4" onclick="location.href='{% url 'account_signup' %}'">Register</button>
         </div>
       </div>
     </div>

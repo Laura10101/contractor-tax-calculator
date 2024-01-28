@@ -1,1 +1,66 @@
-Admin Home
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_header %}
+    <div class="container header-container">
+        <div class="row">
+            <div class="col"></h1></div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+  {% if not error %}
+  <div class="px-4 py-5 my-5 text-center">
+      
+      <h1 class="display-5 fw-bold text-body-emphasis">Welcome to the Contractor Tax Calculator!</h1>
+      <div class="col-lg-6 mx-auto">
+        <p class="lead mb-4">
+          Please choose what you would like to manage or setup today:
+        </p>
+        <div class="container">
+            <div class="card-deck mb-3 text-center">
+                <!-- Basic admin card -->
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-header">
+                            <h4 class="my-0 font-weight-normal">
+                                Manage Basic Data
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <p>
+                                As a Tax Calculator administrator, I would like to manage users and their permissions, user subscriptions,
+                                tax categories, and tax jurisdictions.
+                            </p>
+                            <button type="button" class="btn btn-primary btn-lg px-4 gap-3" onclick="location.href='manage/'">
+                                Get Started
+                            </button>
+                        </div>
+                    </div>
+                <!-- Basic admin card -->
+
+                <!-- Admin card -->
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-header">
+                        <h4 class="my-0 font-weight-normal">
+                            Manage Forms and Rules
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <p>
+                            As a Tax Calculator administrator, I would like to manage the forms and rules which drive the tax calculations for each
+                            jurisdiction.
+                        </p>
+                        <button type="button" class="btn btn-primary btn-lg px-4 gap-3" onclick="location.href='{% url 'config' %}'">
+                            Get Started
+                        </button>
+                    </div>
+                </div>
+            <!-- End admin card -->
+            </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+{% endblock %}
+

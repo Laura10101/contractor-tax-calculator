@@ -34,8 +34,8 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
 
     # Admin apps
-    path('admin/manage/config/', include('config.urls')),
-    path('admin/manage/', admin.site.urls, name='admin'),
+    path('admin/manage/config/', include('config.urls'), name='config'),
+    path('admin/manage/', admin.site.urls),
 
     # Contractor apps
     path('contractors/checkout/', include('checkout.urls')),
