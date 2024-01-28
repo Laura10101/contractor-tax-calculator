@@ -516,7 +516,7 @@ describe("Status views", () => {
                     let entity = findQuestionById(3);
                     setDialogState(dialogStates.modes.edit, dialogStates.entityTypes.booleanQuestion, entity);
 
-                    saveQuestionSucceeded(checkFinalState);
+                    saveQuestionSucceeded(null, null, null, checkFinalState);
                 });
             });
 
@@ -544,7 +544,7 @@ describe("Status views", () => {
                     let option = { name: "A mock option" };
                     setDialogState(dialogStates.modes.create, dialogStates.entityTypes.multipleChoiceOption, option);
 
-                    saveMultipleChoiceOptionSucceeded(checkFinalState);
+                    saveMultipleChoiceOptionSucceeded(null, null, null, checkFinalState);
                 });
             });
 
@@ -564,7 +564,7 @@ describe("Status views", () => {
                     let entity = findParentRuleset(41);
                     setDialogState(dialogStates.modes.edit, dialogStates.entityTypes.ruleset, entity);
 
-                    saveRulesetSucceeded(checkFinalState);
+                    saveRulesetSucceeded(null, null, null, checkFinalState);
                 });
             });
 
@@ -583,7 +583,7 @@ describe("Status views", () => {
 
                     setDialogState(dialogStates.modes.edit, dialogStates.entityTypes.booleanQuestion, null);
 
-                    saveRuleSucceeded(checkFinalState);
+                    saveRuleSucceeded(null, null, null, checkFinalState);
                 });
             });
 
@@ -611,7 +611,7 @@ describe("Status views", () => {
                         done();
                     }
 
-                    saveRuleTierSucceeded(checkFinalState);
+                    saveRuleTierSucceeded(null, null, null, checkFinalState);
                 });
             });
         });
@@ -1187,7 +1187,7 @@ describe("Question views", () => {
 
                 setDialogState(dialogStates.modes.delete, dialogStates.entityTypes.booleanQuestion, question);
                 showDialog(confirmationDialog.dialog.id);
-                confirmDeleteQuestion(checkDeleteRequest);
+                confirmDeleteQuestion(null, checkDeleteRequest);
             });
         });
 
@@ -1412,7 +1412,7 @@ describe("Multilple choice option views", () => {
                 expect(_explainer).toBe(explainer);
                 expect(success).toEqual(saveMultipleChoiceOptionSucceeded);
                 expect(failure).toEqual(saveMultipleChoiceOptionFailed);
-                expect(isShown(multipleChoiceOptionDialog.dialog.id)).toBe(true);
+                expect(isShown(multipleChoiceOptionDialog.dialog.id)).toBe(false);
                 done();
             }
 
@@ -1438,7 +1438,7 @@ describe("Multilple choice option views", () => {
                 setDialogState(dialogStates.modes.delete, dialogStates.entityTypes.multipleChoiceOption, option);
                 setParentState(dialogStates.modes.edit, dialogStates.entityTypes.multipleChoiceQuestion, question);
                 showDialog(confirmationDialog.dialog.id);
-                confirmDeleteMultipleChoiceOption(checkDeleteRequest);
+                confirmDeleteMultipleChoiceOption(null, checkDeleteRequest);
             });
         });
 
@@ -1521,7 +1521,7 @@ describe("Ruleset views", () => {
                 expect(ordinal).toBe(getNextRulesetOrdinal());
                 expect(success).toEqual(saveRulesetSucceeded);
                 expect(failure).toEqual(saveRulesetFailed);
-                expect(isShown(rulesetDialog.dialog.id)).toBe(true);
+                expect(isShown(rulesetDialog.dialog.id)).toBe(false);
                 done();
             }
 
@@ -1542,7 +1542,7 @@ describe("Ruleset views", () => {
 
                 setDialogState(dialogStates.modes.delete, dialogStates.entityTypes.ruleset, ruleset);
                 showDialog(confirmationDialog.dialog.id);
-                confirmDeleteRuleset(checkDeleteRequest);
+                confirmDeleteRuleset(null, checkDeleteRequest);
             });
         });
 
@@ -1571,7 +1571,7 @@ describe("Ruleset views", () => {
                 expect(ruleset.id).toBe(27);
     
                 setDialogState(dialogStates.modes.delete, dialogStates.entityTypes.ruleset, ruleset);
-                deleteRulesetSucceeded(checkOrdinalUpdate, checkFinalAppState);
+                deleteRulesetSucceeded(null, null, null, checkOrdinalUpdate, checkFinalAppState);
             });
         });
     });
@@ -2098,7 +2098,7 @@ describe("Rule views views", () => {
                 setDialogState(dialogStates.modes.delete, dialogStates.entityTypes.tieredRateRule, rule);
                 setParentRuleset(ruleset);
                 showDialog(confirmationDialog.dialog.id);
-                confirmDeleteRule(checkDeleteRequest);
+                confirmDeleteRule(null, checkDeleteRequest);
             });
         });
 
@@ -2147,7 +2147,8 @@ describe("Rule views views", () => {
                     setParentRuleset(findParentRuleset(41));
         
                     setDialogState(dialogStates.modes.delete, dialogStates.entityTypes.flatRateRule, rule);
-                    deleteRuleSucceeded(checkFlatRateOrdinalUpdate, checkTieredRateOrdinalUpdate, checkSecondaryTieredRateOrdinalUpdate, checkFinalAppState);
+                    deleteRuleSucceeded(null, null, null, checkFlatRateOrdinalUpdate, checkTieredRateOrdinalUpdate,
+                        checkSecondaryTieredRateOrdinalUpdate, checkFinalAppState);
                 });
             });
     
@@ -2195,7 +2196,8 @@ describe("Rule views views", () => {
                     setParentRuleset(findParentRuleset(44));
         
                     setDialogState(dialogStates.modes.delete, dialogStates.entityTypes.flatRateRule, rule);
-                    deleteRuleSucceeded(checkFlatRateOrdinalUpdate, checkTieredRateOrdinalUpdate, checkSecondaryTieredRateOrdinalUpdate, checkFinalAppState);
+                    deleteRuleSucceeded(null, null, null, checkFlatRateOrdinalUpdate, checkTieredRateOrdinalUpdate,
+                        checkSecondaryTieredRateOrdinalUpdate, checkFinalAppState);
                 });
             });
     
@@ -2243,7 +2245,8 @@ describe("Rule views views", () => {
                     setParentRuleset(findParentRuleset(45));
         
                     setDialogState(dialogStates.modes.delete, dialogStates.entityTypes.flatRateRule, rule);
-                    deleteRuleSucceeded(checkFlatRateOrdinalUpdate, checkTieredRateOrdinalUpdate, checkSecondaryTieredRateOrdinalUpdate, checkFinalAppState);
+                    deleteRuleSucceeded(null, null, null, checkFlatRateOrdinalUpdate, checkTieredRateOrdinalUpdate,
+                        checkSecondaryTieredRateOrdinalUpdate, checkFinalAppState);
                 });
             });
         });
@@ -2782,7 +2785,7 @@ describe("Rule tier views views", () => {
                     setParentState(dialogStates.modes.edit, dialogStates.entityTypes.tieredRateRule, rule);
                     setDialogState(dialogStates.modes.delete, dialogStates.entityTypes.ruleTier, rule.tiers[2]);
     
-                    deleteRuleTierSucceeded(checkOrdinalUpdate, checkOrdinalUpdate, checkFinalAppState);
+                    deleteRuleTierSucceeded(null, null, null, checkOrdinalUpdate, checkOrdinalUpdate, checkFinalAppState);
                 });
             });
     
@@ -2814,7 +2817,7 @@ describe("Rule tier views views", () => {
                     setParentState(dialogStates.modes.edit, dialogStates.entityTypes.secondaryTieredRateRule, rule);
                     setDialogState(dialogStates.modes.delete, dialogStates.entityTypes.secondaryRuleTier, rule.tiers[0]);
     
-                    deleteRuleTierSucceeded(checkOrdinalUpdate, checkOrdinalUpdate, checkFinalAppState);
+                    deleteRuleTierSucceeded(null, null, null, checkOrdinalUpdate, checkOrdinalUpdate, checkFinalAppState);
                 });
             });
         });
