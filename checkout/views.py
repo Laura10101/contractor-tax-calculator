@@ -82,11 +82,6 @@ def confirm_checkout(request):
     print('Confirming payment with local id of ' + str(payment_id))
     url = base_url + '/api/payments/' + str(payment_id) + '/'
     data = {
-        'billing_street_1': request.POST['street_address1'],
-        'town_or_city': request.POST['town_or_city'],
-        'county': request.POST['county'],
-        'country': request.POST['country'],
-        'postcode': request.POST['postcode'],
         'stripe_card_id': request.POST['payment_method_id']
     }
     if 'street_address2' in request.POST:
