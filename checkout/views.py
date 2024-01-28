@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.core.exceptions import SuspiciousOperation
 from django.shortcuts import render, redirect, reverse
@@ -7,12 +8,14 @@ import json
 
 # Helper functions
 # Get details of a subscription option based on its id
+@login_required
 def get_subscription_option(base_url, subscription_option_id):
     url = base_url + '/api/subscriptions/options/'
     response = requests.get(url + str(subscription_option_id))
     print('Subscription option response: ' + response.text)
     return json.loads(response.text)['subscription_option']
 
+@login_required
 def post_payment(base_url, user_id, subscription_option_id, total, currency):
     url = base_url + '/api/payments/'
 
@@ -33,6 +36,7 @@ def post_payment(base_url, user_id, subscription_option_id, total, currency):
     return payment_result['payment_id'], payment_result['client_secret']
 
 # Create your views here.
+@login_required
 def checkout(request):
     stripe_public_key = settings.STRIPE_PUBLIC_KEY
     stripe_secret_key = settings.STRIPE_SECRET_KEY
@@ -67,6 +71,7 @@ def checkout(request):
     }
     return render(request, template, context)
 
+@login_required
 def confirm_checkout(request):
     # Define template
     template = 'checkout/checkout_status.html'
@@ -109,6 +114,7 @@ def confirm_checkout(request):
     return render(request, template, context)
 
 # Create function for views on checkout status page: talk to payment API to get payment status
+@login_required
 def checkout_status(request, id):
     # Define template
     template = 'checkout/checkout_status.html'

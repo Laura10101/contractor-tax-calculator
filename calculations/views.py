@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from subscription.helpers import user_has_subscription
 from django.shortcuts import render, redirect
 from django.urls import reverse
@@ -24,6 +25,7 @@ def length(list):
 
 # Create your views here.
 # Create view for select jurisdictions form 
+@login_required
 def select_jurisdictions(request):
     if not user_has_subscription(request):
         return redirect('subscription')
@@ -39,6 +41,7 @@ def select_jurisdictions(request):
 
 # Create view for displaying financial information form
 # This will use the calculation form template 
+@login_required
 def display_form(request):
     if request.method != 'POST':
         raise SuspiciousOperation("Invalid request. This view is only accessible via the select jurisdictions form.")
@@ -69,6 +72,7 @@ def display_form(request):
 
 # Create view for displaying the results of the user's tax calculation
 # This will use the calculation results template
+@login_required
 def display_calculation(request):
     template = 'calculations/calculation_results.html'
     # If the method is POST, then first create the calculation using the
@@ -88,6 +92,3 @@ def display_calculation(request):
     }
     return render(request, template, context)
 
-
-
-    

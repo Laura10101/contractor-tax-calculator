@@ -1,9 +1,12 @@
-from .helpers import user_has_subscription
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 import requests
 import json
 
+from .helpers import user_has_subscription
+
 # Create your views here.
+@login_required
 def subscription(request):
     if user_has_subscription(request):
         template = 'subscription/subscription_active.html'
