@@ -41,9 +41,26 @@
             </div>
             <div class="row">
                 <div class="col text-center">
-                    <input type="submit" class="btn btn-primary" value="Next">
+                    <input type="submit" id="submit" class="btn btn-primary" value="Next" disabled>
                 </div>
             </div>
         </form>
     {% endif %}
+{% endblock %}
+
+{% block postloadjs %}
+    <script>
+        $('input:checkbox[name="jurisdictions"]').change(
+            function() {
+                if ($('input:checkbox[name="jurisdictions"]:checked').length > 0)
+                {
+                    $('#submit').prop('disabled', false);
+                }
+                else
+                {
+                    $('#submit').prop('disabled', true);
+                }
+            }
+        );
+    </script>
 {% endblock %}
