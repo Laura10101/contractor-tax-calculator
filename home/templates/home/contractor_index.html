@@ -2,43 +2,42 @@
 {% load static %}
 
 {% block page_header %}
-    <div class="container header-container">
-        <div class="row">
-            <div class="col"></h1></div>
-        </div>
-    </div>
+<div class="container header-container">
+<div class="row">
+<div class="col"></h1></div>
+</div>
+</div>
 {% endblock %}
 
 {% block content %}
-  {% if not error %}
-  <div class="px-4 py-5 my-5 text-center">
-      
-      <h1 class="display-5 fw-bold text-body-emphasis">Welcome to the Contractor Tax Calculator!</h1>
-      <div class="col-lg-6 mx-auto">
-        <p class="lead mb-4">
-          IT contractors are highly paid, incredibly busy people who usually have no or little knowledge of tax law, and especially international tax law.
-          Being a demographic who often are able to work remotely, they are often able to benefit from relocating.
-        </p>
-        <p class="lead mb-4">
-          This calculator is of use to any IT contractor considering moving countries. The goal of this calculator is to allow them to see an indicative calculation of#
-          how a move would affect their take home pay, without them having to spend weeks investigating complex legal issues or spending thousands on tax advisers.
-        </p>
-        <p class="lead mb-4">
-          To use the calculator, all you need to do is:
-          <ul class="list-group">
-            <li class="list-group-item lead"><i class="fas fa-file-signature"></i> Register</li>
-            <li class="list-group-item lead"><i class="fas fa-user"></i> Login</li>
-            <li class="list-group-item lead"><i class="fas fa-check-double"></i> Select jurisdictions</li>
-            <li class="list-group-item lead"><i class="fas fa-list-ul"></i> Complete the form</li>
-            <li class="list-group-item lead"><i class="fas fa-calculator"></i> View calculations</li>
-          </ul>
-        </p>
-        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-          <button type="button" class="btn btn-primary btn-lg px-4 gap-3" onclick="location.href='{% url 'account_login' %}'">Login</button>
-          <button type="button" class="btn btn-outline-secondary btn-lg px-4" onclick="location.href='{% url 'account_signup' %}'">Register</button>
-        </div>
-      </div>
+{% if not error %}
+<div class="px-4 py-5 my-5 text-center">
+  <h1 class="display-5 fw-bold text-body-emphasis">Welcome to the Contractor Tax Calculator!</h1>
+  <div class="col-lg-6 mx-auto">
+    <p class="lead mb-4">
+      IT contractors are highly paid, incredibly busy people who usually have no or little knowledge of tax law, and especially international tax law.
+      Being a demographic who often are able to work remotely, they are often able to benefit from relocating.
+    </p>
+    <p class="lead mb-4">
+      This calculator is of use to any IT contractor considering moving countries. The goal of this calculator is to allow them to see an indicative calculation of#
+      how a move would affect their take home pay, without them having to spend weeks investigating complex legal issues or spending thousands on tax advisers.
+    </p>
+    <p class="lead mb-4">To use the calculator, all you need to do is:</p>
+    <ul class="list-group">
+      <li class="list-group-item lead"><i class="fas fa-file-signature"></i> Register</li>
+      <li class="list-group-item lead"><i class="fas fa-user"></i> Login</li>
+      <li class="list-group-item lead"><i class="fas fa-check-double"></i> Select jurisdictions</li>
+      <li class="list-group-item lead"><i class="fas fa-list-ul"></i> Complete the form</li>
+      <li class="list-group-item lead"><i class="fas fa-calculator"></i> View calculations</li>
+    </ul>
+    {% if not request.user.is_authenticated %}
+    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+      <button type="button" class="btn btn-primary btn-lg px-4 gap-3" onclick="location.href='{% url 'account_login' %}'">Login</button>
+      <button type="button" class="btn btn-outline-secondary btn-lg px-4" onclick="location.href='{% url 'account_signup' %}'">Register</button>
     </div>
-  {% endif %}
+    {% endif %}
+  </div>
+</div>
+{% endif %}
 {% endblock %}
 
