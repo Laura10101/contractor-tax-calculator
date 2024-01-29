@@ -20,10 +20,11 @@ def subscription(request):
         print('Response text' + response.text)
         try:
             data = json.loads(response.text)
-            if 'error' in data:
-                return render(request, template, { 'error': data['error'] })
         except:
             return render(request, template, { 'error': 'Failed to load subscription options with response code ' + str(response.status_code)})
+
+        if 'error' in data:
+            return render(request, template, { 'error': data['error'] })
 
         template = 'subscription/subscription.html'
         context = {

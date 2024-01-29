@@ -14,12 +14,12 @@ def get_jurisdictions_by_ids(url, ids=None):
     else:
         try:
             data = json.loads(response.text)
-            if 'error' in data:
-                raise Exception(data['error'])
         except:
             raise Exception('Failed to retrieve some jurisdictions for the provided jurisdiction IDs')
-
-    data = json.loads(response.text)
+        
+        if 'error' in data:
+                raise Exception(data['error'])
+                
     return data['jurisdictions']
 
 # Create helper function to return form data based on a list of jurisdiction IDs 
@@ -32,10 +32,11 @@ def get_forms_by_jurisdiction_ids(url, jurisdiction_ids):
     else:
         try:
             data = json.loads(response.text)
-            if 'error' in data:
-                raise Exception(data['error'])
         except:
             raise Exception('Failed to retrieve some forms for the provided jurisdiction IDs')
+        
+        if 'error' in data:
+                raise Exception(data['error'])
 
 
     # JSON treats keys as strings so need to cast the keys back to ints
@@ -62,12 +63,13 @@ def create_calculation(url, request):
     else:
         try:
             data = json.loads(response.text)
-            if 'error' in data:
-                raise Exception(data['error'])
-            else:
-                return data
         except:
             raise Exception('Failed to create calculation with response code ' + str(response.status_code))
+        
+        if 'error' in data:
+            raise Exception(data['error'])
+        else:
+            return data
     
 
 def get_calculation(url, id):

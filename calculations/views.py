@@ -38,10 +38,11 @@ def select_jurisdictions(request):
 
     try:
         data = json.loads(response.text)
-        if 'error' in data:
-            return render(request, template, { 'error': 'Failed to retrieve jurisdictions with error ' + option_data['error'] })
     except:
         return render(request, template, { 'error': 'Failed to retrieve jurisdictions with response code ' + str(response.status_code) })
+    
+    if 'error' in data:
+        return render(request, template, { 'error': 'Failed to retrieve jurisdictions with error ' + option_data['error'] })
 
     context = {
         'jurisdictions': data['jurisdictions']
@@ -109,7 +110,7 @@ def display_calculation(request):
             return render(request, template, { 'error': str(e)})
     else:
         if not 'id' in request.GET:
-            return render(request, template, { 'error': 'No valid tax calculation ID was found when attempting to access tax calculation details'})
+            return redirect(reverse('contractor_home'))
         else:
             id = int(request.GET['id'])
             try:

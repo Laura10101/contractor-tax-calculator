@@ -31,10 +31,11 @@ def checkout(request):
 
     try:
         option_data = json.loads(response.text)['subscription_option']
-        if 'error' in option_data:
-            return render(request, template, { 'error': 'Failed to retrieve subscription option with error ' + option_data['error'] })
     except:
         return render(request, template, { 'error': 'Failed to retrieve subscription option with response code ' + str(response.status_code) })
+
+    if 'error' in option_data:
+        return render(request, template, { 'error': 'Failed to retrieve subscription option with error ' + option_data['error'] })
     
     # Create data payload for POST request to payment API
     data = {
@@ -50,10 +51,11 @@ def checkout(request):
 
     try:
         option_data = json.loads(response.text)['subscription_option']
-        if 'error' in option_data:
-            return render(request, template, { 'error': 'Failed to retrieve subscription option with error ' + option_data['error'] })
     except:
         return render(request, template, { 'error': 'Failed to retrieve subscription option with response code ' + str(response.status_code) })
+
+    if 'error' in option_data:
+        return render(request, template, { 'error': 'Failed to retrieve subscription option with error ' + option_data['error'] })
 
     payment_result = json.loads(response.text)
     payment_id, client_secret = payment_result['payment_id'], payment_result['client_secret']
@@ -95,10 +97,11 @@ def confirm_checkout(request):
 
     try:
         data = json.loads(response.text)
-        if 'error' in data:
-            return render(request, template, { 'error': 'Failed to confirm payment with error: ' + data['error'] })
     except:
         return render(request, template, { 'error': 'Failed to confirm payment with response code ' + str(response.status_code) })
+
+    if 'error' in data:
+        return render(request, template, { 'error': 'Failed to confirm payment with error: ' + data['error'] })
 
     if data['result'] in ['processing', 'succeeded']:
         # Display success to user
@@ -137,10 +140,11 @@ def checkout_status(request, id):
              '. Please search find your payment on <a href="' + reverse('contractor_home') + '">your dashboard</a>.' })
     try:
         data = json.loads(response.text)
-        if 'error' in data:
-            return render(request, template, { "error": data['error'] })
     except:
         return render(request, template, { "error": 'Failed to load payment with ' + str(id) + '. Received response code ' + str(response.status_code) })
+    
+    if 'error' in data:
+        return render(request, template, { "error": data['error'] })
 
     payment_status = data['status']
     failure_reason = data['failure_reason']
