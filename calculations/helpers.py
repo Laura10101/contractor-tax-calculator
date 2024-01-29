@@ -9,8 +9,15 @@ def get_jurisdictions_by_ids(url, ids=None):
 
     response = requests.get(url)
 
-    if response.status_code != 200:
-        raise Exception('Received status code of ' + str(response.status_code) + ' when retrieving jurisdictions.')
+    if response.status_code == 404:
+        raise Exception('Jurisdictions could not be found for some of the provided jurisdiction IDs')
+    else:
+        try:
+            data = json.loads(response.text)
+            if 'error' in data:
+                raise Exception(data['error'])
+        except:
+            raise Exception('Failed to retrieve some jurisdictions for the provided jurisdiction IDs')
 
     data = json.loads(response.text)
     return data['jurisdictions']
@@ -20,10 +27,16 @@ def get_forms_by_jurisdiction_ids(url, jurisdiction_ids):
     url = url + '?jurisdiction_ids=' + ','.join(str(id) for id in jurisdiction_ids)
     response = requests.get(url)
 
-    if response.status_code != 200:
-        raise Exception('Received status code of ' + str(response.status_code) + ' when retrieving forms.')
+    if response.status_code == 404:
+        raise Exception('Forms could not be found for some of the provided jurisdiction IDs')
+    else:
+        try:
+            data = json.loads(response.text)
+            if 'error' in data:
+                raise Exception(data['error'])
+        except:
+            raise Exception('Failed to retrieve some forms for the provided jurisdiction IDs')
 
-    data = json.loads(response.text)
 
     # JSON treats keys as strings so need to cast the keys back to ints
     deserialised_data = {}
@@ -44,10 +57,17 @@ def create_calculation(url, request):
                 body['variables'][key] = cast(request.POST[key])
 
     response = requests.post(url, json=body)
-    if response.ok:
-        return json.loads(response.text)
+    if response.status_code == 404:
+        raise Exception('Unable to locate rules for some jurisdictions in the provided list of jurisdiction IDs: ' + str(body['jurisdiction_ids']))
     else:
-        raise Exception('Posting calculation failed with status code=' + str(response.status_code) + ' and error = ' + json.loads(response.text)['error'])
+        try:
+            data = json.loads(response.text)
+            if 'error' in data:
+                raise Exception(data['error'])
+            else:
+                return data
+        except:
+            raise Exception('Failed to create calculation with response code ' + str(response.status_code))
     
 
 def get_calculation(url, id):

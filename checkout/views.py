@@ -6,56 +6,57 @@ from django.contrib import messages
 import requests
 import json
 
-# Helper functions
-# Get details of a subscription option based on its id
-def get_subscription_option(base_url, subscription_option_id):
-    url = base_url + '/api/subscriptions/options/'
-    response = requests.get(url + str(subscription_option_id))
-    print('Subscription option response: ' + response.text)
-    return json.loads(response.text)['subscription_option']
-
-def post_payment(base_url, user_id, subscription_option_id, total, currency):
-    url = base_url + '/api/payments/'
-
-    # Create data payload for POST request to payment API
-    data = {
-        'user_id': user_id,
-        'subscription_option_id': subscription_option_id,
-        'total': total,
-        'currency': currency,
-    }
-
-    # POST data to payment API
-    # This will create Stripe payment confirmation and local record 
-    response = requests.post(url, json=data)
-    if not response.ok:
-        raise Exception('An unexpected error occurred when posting payment with HTTP status of: ' + str(response.status_code))
-    payment_result = json.loads(response.text)
-    return payment_result['payment_id'], payment_result['client_secret']
-
 # Create your views here.
 @login_required
 def checkout(request):
+    template = 'checkout/checkout.html'
+
+    if request.method != 'POST':
+        return redirect(reverse('subscription'))
+
     stripe_public_key = settings.STRIPE_PUBLIC_KEY
     stripe_secret_key = settings.STRIPE_SECRET_KEY
 
-    template = 'checkout/checkout.html'
     base_url = request.scheme + '://' + request.get_host()
     
     # Get subscription option id from form
     subscription_option_id = int(request.POST.get('subscription'))
 
     # Get the subscription option from the subscription API
-    option_data = get_subscription_option(base_url, subscription_option_id)
+    url = base_url + '/api/subscriptions/options/'
+    response = requests.get(url + str(subscription_option_id))
 
-    # Extract data from response 
-    payment_id, client_secret = post_payment(
-        base_url,
-        request.user.id,
-        subscription_option_id,
-        option_data['total'],
-        'GBP',
-    )
+    if response.status_code == 404:
+        return render(request, template, { 'error': 'Failed to find subscription option with id ' + str(subscription_option_id) })
+
+    try:
+        option_data = json.loads(response.text)['subscription_option']
+        if 'error' in option_data:
+            return render(request, template, { 'error': 'Failed to retrieve subscription option with error ' + option_data['error'] })
+    except:
+        return render(request, template, { 'error': 'Failed to retrieve subscription option with response code ' + str(response.status_code) })
+    
+    # Create data payload for POST request to payment API
+    data = {
+        'user_id': request.user.id,
+        'subscription_option_id': subscription_option_id,
+        'total': option_data['total'],
+        'currency': 'GBP',
+    }
+
+    # POST data to payment API
+    # This will create Stripe payment confirmation and local record 
+    response = requests.post(url, json=data)
+
+    try:
+        option_data = json.loads(response.text)['subscription_option']
+        if 'error' in option_data:
+            return render(request, template, { 'error': 'Failed to retrieve subscription option with error ' + option_data['error'] })
+    except:
+        return render(request, template, { 'error': 'Failed to retrieve subscription option with response code ' + str(response.status_code) })
+
+    payment_result = json.loads(response.text)
+    payment_id, client_secret = payment_result['payment_id'], payment_result['client_secret']
 
     context = { 
         'stripe_public_key': stripe_public_key,
@@ -76,7 +77,7 @@ def confirm_checkout(request):
     base_url = request.scheme + '://' + request.get_host()
 
     if not request.method == 'POST':
-        raise SuspiciousOperation('Invalid request. This view may only be accessed via the checkout form.')
+        return redirect(reverse('subscription'))
 
     payment_id = request.POST['payment_id']
     print('Confirming payment with local id of ' + str(payment_id))
@@ -88,10 +89,17 @@ def confirm_checkout(request):
         data['billing_street_2'] = request.POST['street_address2'],
     print("Confirming payment at URL: " + url)
     response = requests.patch(url, json=data)
-    if not response:
-        raise Exception('Failed to confirm payment')
-    print('Confirm payment response: ' + str(response))
-    data = json.loads(response.text)
+    
+    if response.status_code == 404:
+        return render(request, template, { 'error': 'Failed to find payment with id ' + str(payment_id) })
+
+    try:
+        data = json.loads(response.text)
+        if 'error' in data:
+            return render(request, template, { 'error': 'Failed to confirm payment with error: ' + data['error'] })
+    except:
+        return render(request, template, { 'error': 'Failed to confirm payment with response code ' + str(response.status_code) })
+
     if data['result'] in ['processing', 'succeeded']:
         # Display success to user
         return redirect('/contractors/checkout/status/' + str(payment_id) + '/')
@@ -115,13 +123,25 @@ def checkout_status(request, id):
     failure_reason = ''
 
     if not request.method == 'GET':
-        raise SuspiciousOperation('Invalid request. This view must be accessed via a GET request.')
+        return redirect(reverse('contractor_home'))
     
     # Get payment status from payments API
     url = base_url + str(id) + '/status/'
     print('Checking payment status at url = ' + url)
     response = requests.get(url)
-    data = json.loads(response.text)
+    print(response.status_code)
+
+    if response.status_code == 404:
+        return render(request, template, {
+             'error': 'No payment could be found for id ' + str(id) + 
+             '. Please search find your payment on <a href="' + reverse('contractor_home') + '">your dashboard</a>.' })
+    try:
+        data = json.loads(response.text)
+        if 'error' in data:
+            return render(request, template, { "error": data['error'] })
+    except:
+        return render(request, template, { "error": 'Failed to load payment with ' + str(id) + '. Received response code ' + str(response.status_code) })
+
     payment_status = data['status']
     failure_reason = data['failure_reason']
     # Build context 

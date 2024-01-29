@@ -18,7 +18,12 @@ def subscription(request):
 
         response = requests.get(url)
         print('Response text' + response.text)
-        data = json.loads(response.text)
+        try:
+            data = json.loads(response.text)
+            if 'error' in data:
+                return render(request, template, { 'error': data['error'] })
+        except:
+            return render(request, template, { 'error': 'Failed to load subscription options with response code ' + str(response.status_code)})
 
         template = 'subscription/subscription.html'
         context = {

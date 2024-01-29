@@ -32,7 +32,16 @@ def select_jurisdictions(request):
     template = 'calculations/select_jurisdictions.html'
     url = request.build_absolute_uri(reverse('jurisdictions'))
     response = requests.get(url)
-    data = json.loads(response.text)
+
+    if response.status_code == 404:
+        return render(request, template, { 'error': 'Failed to retrieve jurisdictions with status code 404' })
+
+    try:
+        data = json.loads(response.text)
+        if 'error' in data:
+            return render(request, template, { 'error': 'Failed to retrieve jurisdictions with error ' + option_data['error'] })
+    except:
+        return render(request, template, { 'error': 'Failed to retrieve jurisdictions with response code ' + str(response.status_code) })
 
     context = {
         'jurisdictions': data['jurisdictions']
@@ -43,24 +52,40 @@ def select_jurisdictions(request):
 # This will use the calculation form template 
 @login_required
 def display_form(request):
-    if request.method != 'POST':
-        raise SuspiciousOperation("Invalid request. This view is only accessible via the select jurisdictions form.")
-
-
     template = 'calculations/calculation_form.html'
-    jurisdictions_url = request.build_absolute_uri(reverse('jurisdictions'))
+
+    if request.method != 'POST':
+        return redirect(reverse('select_jurisdictions'))
+
+    try:
+        jurisdictions_url = request.build_absolute_uri(reverse('jurisdictions'))
+    except Exception as e:
+        return render(request, template, { 'error': str(e)})
+
     forms_url = request.build_absolute_uri(reverse('forms'))
     # Generate jurisdiction id list 
     selected_jurisdictions_ids = request.POST.getlist("jurisdictions")
     # Always include the global jurisdiction as the first in the list
     ids = [1]
-    for jurisdiction_id in selected_jurisdictions_ids:
-        ids.append(int(jurisdiction_id))
+    try:
+        for jurisdiction_id in selected_jurisdictions_ids:
+            ids.append(int(jurisdiction_id))
+    except:
+        return render(request, template, { 'error': 'The provided list of jurisdiction ids ' + str(selected_jurisdictions_ids) + ' contains invalid ids.'})
+
     # Use helper function to get jurisdiction data 
-    jurisdictions = get_jurisdictions_by_ids(jurisdictions_url, ids)
+    try:
+        jurisdictions = get_jurisdictions_by_ids(jurisdictions_url, ids)
+    except Exception as e:
+        return render(request, template, { 'error': str(e)})
+
     print('Jurisdictions data: ' + str(jurisdictions))
     # Use helper function to get forms data
-    forms = get_forms_by_jurisdiction_ids(forms_url, ids)
+    try:
+        forms = get_forms_by_jurisdiction_ids(forms_url, ids)
+    except Exception as e:
+        return render(request, template, { 'error': str(e)})
+
     print('Forms data: ' + str(forms))
     # Context is used to pass data into the template 
     context = {
@@ -78,13 +103,19 @@ def display_calculation(request):
     # If the method is POST, then first create the calculation using the
     # rules API
     if request.method == 'POST':
-        calculation = create_calculation(request.build_absolute_uri(reverse('calculations')), request)
+        try:
+            calculation = create_calculation(request.build_absolute_uri(reverse('calculations')), request)
+        except Exception as e:
+            return render(request, template, { 'error': str(e)})
     else:
         if not 'id' in request.GET:
             return render(request, template, { 'error': 'No valid tax calculation ID was found when attempting to access tax calculation details'})
         else:
             id = int(request.GET['id'])
-            calculation = get_calculation(request.build_absolute_uri(reverse('calculations')), id)
+            try:
+                calculation = get_calculation(request.build_absolute_uri(reverse('calculations')), id)
+            except Exception as e:
+                return render(request, template, { 'error': str(e)})
 
     context = {
         'calculation': calculation,
