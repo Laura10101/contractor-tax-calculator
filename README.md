@@ -238,7 +238,7 @@ Alternatively, if using Gitpod, you can click below to create your own workspace
 - Uncle Bob’s Clean Code 
 - Government tax websites/legal resources 
 - Canva pallet picker (with colours amended by me)
-- Book on architecture principles/guidelines
+- [Gang of Four Design Patterns](https://en.wikipedia.org/wiki/Design_Patterns)
 - [Django Best Practices: Projects vs Apps | LearnDjango.com](https://learndjango.com/tutorials/django-best-practices-projects-vs-apps)
 - [Django Stripe Subscriptions | TestDriven.io](https://testdriven.io/blog/django-stripe-subscriptions/)
 - [Strategy (refactoring.guru)](https://refactoring.guru/design-patterns/strategy)
@@ -283,3 +283,4 @@ Alternatively, if using Gitpod, you can click below to create your own workspace
 - [Restricting Django views to logged in users](https://docs.djangoproject.com/en/5.0/topics/auth/default/#the-login-required-decorator)
 - [Stripe address element documentation](https://stripe.com/docs/elements/address-element?platform=web#autocomplete)
 - [Stripe address element example](https://github.com/stripe-samples/link/blob/main/client/html/index.js)
+- [Order specific value first when retrieving Django objects](https://stackoverflow.com/questions/2176346/can-django-orm-do-an-order-by-on-a-specific-value-of-a-column)
