@@ -1,38 +1,49 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block page_header %}
-    <div class="container header-container">
-        <div class="row">
-            <div class="col">
-                <h1>Create Calcuation</h1>
-                <h2>Select Jurisdictions</h2>
-            </div>
-        </div>
-    </div>
-{% endblock %}
-
 {% block content %}
     {% if not error %}
+        <!-- Page Header -->
+            <div class="row">
+                <div class="col text-center">
+                    <h1>Create Calcuation</h1>
+                    <h2>Select Jurisdictions</h2>
+                </div>
+            </div>
+        <!-- End Page Header -->
         <form action="{% url 'display_form' %}" method="POST">
             {% csrf_token %}
-            {% for jurisdiction in jurisdictions %}
-                <!-- The first jurisdiction is the special jurisdiction containing common questions -->
-                {% if jurisdiction.id > 1 %}
-                    <div class="form-check form-check-inline">
-                        <input
-                            class="form-check-input"
-                            type="checkbox"
-                            name="jurisdictions"
-                            id="jurisdiction_{{ jurisdiction.id }}"
-                            value="{{ jurisdiction.id }}">
-                        <label class="form-check-label" for="jurisdiction_{{ jurisdiction.id }}">
-                            {{ jurisdiction.name }}
-                        </label>
-                    </div>
-                {% endif %}
-            {% endfor %}
-            <input type="submit" value="Next">
+            <div class="row">
+                <div class="col">
+                    <!-- The first jurisdiction is the special jurisdiction containing common questions -->
+                    {% for jurisdiction in jurisdictions %}
+                        {% if jurisdiction.id > 1 %}
+                            <!-- Begin Jurisdiction -->
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-check form-check-inline">
+                                            <input
+                                                class="form-check-input input-lg"
+                                                type="checkbox"
+                                                name="jurisdictions"
+                                                id="jurisdiction_{{ jurisdiction.id }}"
+                                                value="{{ jurisdiction.id }}">
+                                            <label class="form-check-label lead" for="jurisdiction_{{ jurisdiction.id }}">
+                                                {{ jurisdiction.name }}
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            <!-- End Jurisdiction -->
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col text-center">
+                    <input type="submit" class="btn btn-primary" value="Next">
+                </div>
+            </div>
         </form>
     {% endif %}
 {% endblock %}
