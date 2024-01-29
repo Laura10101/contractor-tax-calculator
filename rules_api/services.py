@@ -304,11 +304,19 @@ def create_calculation(username, jurisdiction_ids, variable_table):
     calculation_result.username=username
     calculation_result.full_clean()
     calculation_result.save()
-    
+
+    # Validate the variable table
     for jurisdiction_id in jurisdiction_ids:
         if not isinstance(jurisdiction_id, int):
             raise ValidationError('jurisdiction_ids must be a valid list of integers')
-        
+
+        rulesets = RuleSet.objects.filter(jurisdiction_id__exact=jurisdiction_id).order_by('ordinal')
+        for ruleset in rulesets:
+            print(str(ruleset))
+            ruleset.validate(variable_table)
+    
+    # Apply the calculation
+    for jurisdiction_id in jurisdiction_ids:
         rulesets = RuleSet.objects.filter(jurisdiction_id__exact=jurisdiction_id).order_by('ordinal')
         for ruleset in rulesets:
             ruleset.calculate(variable_table, calculation_result)

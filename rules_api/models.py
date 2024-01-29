@@ -2,6 +2,7 @@ from django.db import models
 from polymorphic.models import PolymorphicModel
 from jurisdictions_api.models import Jurisdiction
 from django.core.validators import MinValueValidator
+from django.core.exceptions import ValidationError
 # Create your models here.
 # This class contains the results for a given calculation across all jurisdictions in the comparison
 class TaxCalculationResult(models.Model):
@@ -90,6 +91,10 @@ class RuleSet(models.Model):
             for rule in rules:
                 rule.calculate(variable_table, ruleset_result)
 
+    def validate(self, variable_table):
+        rules = self.rules.order_by('ordinal')
+        for rule in rules:
+            rule.validate(variable_table)
 
     def __str__(self):
         return Jurisdiction.objects.get(pk=self.jurisdiction_id).name + ' - ' + self.tax_category.name
@@ -105,6 +110,14 @@ class Rule(PolymorphicModel):
     # Indicates which value from the form submitted by the user this rule 
     # should be applied to 
     variable_name = models.CharField(max_length=255, null=False, blank=False)
+
+    def validate(self, variable_table):
+        if not self.variable_name in variable_table:
+            raise ValidationError("Variable " + self.variable_name + " was not found when validating rule " + str(self))
+
+        value = variable_table[self.variable_name]
+        if not isinstance(value, int) and not isinstance(value, float):
+            raise ValidationError("Value '" + value + "' is not valid for variable " + self.variable_name + " when validating rule " + str(self))
 
     def __str__(self):
         return str(self.ruleset) + ' - ' + self.name
