@@ -1,68 +1,82 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block page_header %}
-    <div class="container header-container">
-        <div class="row">
-            <div class="col">
-                <h1>Your Subscription Options</h1>
-            </div>
-        </div>
-    </div>
-{% endblock %}
-
 {% block content %}
-    <form method="POST" action="{% url 'checkout' %}">
-        {% csrf_token %}
-
-        <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-            <h1 class="display-4">Pricing</h1>
-            <p class="lead">
-                You don't currently have an active subscription. To use the tax calculator,
-                please choose one of the following to purchase a subscription:
-            </p>
-        </div>
-          
-        <div class="container">
-            <div class="card-deck mb-3 text-center">
-                {% for option in subscription_options %}
-                    <div class="card mb-4 shadow-sm">
-                        <div class="card-header">
-                            <h4 class="my-0 font-weight-normal">
-                                {% if option.subscription_months == 1 %}
-                                    1 Month: 
-                                {% else %}
-                                    {{ option.subscription_months }} Months: 
-                                {% endif %}
-                    
-                            </h4>
-                        </div>
-                        <div class="card-body">
-                            <h1 class="card-title pricing-card-title">
-                                £{{ option.subscription_price }}
-                            </h1>
-                            <ul class="list-unstyled mt-3 mb-4">
-                                <li>Access to all features</li>
-                                <li>Unlimited calculations</li>
-                            </ul>
-                            <div class="form-check form-check-inline">
-                                <input
-                                    class="form-check-input"
-                                    type="radio"
-                                    name="subscription"
-                                    value="{{ option.id }}"
-                                    id="{{ option.id }}">
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
+    <!-- Page Title -->
+        <div class="row">
+            <div class="col text-center">
+                <h1 class="display-4">Your Subscription Options</h1>
             </div>
         </div>
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="submit" id="submit" disabled>
-        </div>
+    <!-- End Page Title -->
 
-    </form>
+    <!-- Page Summary -->
+        <div class="row">
+            <div class="col text-center">
+                <h2 class="display-5">Pricing</h2>
+                <p class="lead">
+                    You don't currently have an active subscription. To use the tax calculator,
+                    please choose one of the following to purchase a subscription:
+                </p>
+            </div>
+        </div>
+    <!-- End Page Summary -->
+
+    <!-- Subscription Options Form -->
+        <form method="POST" action="{% url 'checkout' %}">
+            {% csrf_token %}
+            <!-- Subscription Options Card Deck -->
+                <div class="card-deck mb-3 text-center">
+                    {% for option in subscription_options %}
+                        <!-- Subscription Option Card -->
+                            <div class="card mb-4 shadow-sm">
+                                <!-- Card Header -->
+                                    <div class="card-header">
+                                        <h4 class="my-0 font-weight-normal">
+                                            {% if option.subscription_months == 1 %}
+                                                1 Month: 
+                                            {% else %}
+                                                {{ option.subscription_months }} Months: 
+                                            {% endif %}
+                                
+                                        </h4>
+                                    </div>
+                                <!-- End Card Header -->
+
+                                <!-- Card Body -->
+                                    <div class="card-body">
+                                        <h1 class="card-title pricing-card-title">
+                                            £{{ option.subscription_price }}
+                                        </h1>
+                                        <ul class="list-unstyled mt-3 mb-4">
+                                            <li>Access to all features</li>
+                                            <li>Unlimited calculations</li>
+                                        </ul>
+                                        <div class="form-check form-check-inline">
+                                            <input
+                                                class="form-check-input"
+                                                type="radio"
+                                                name="subscription"
+                                                value="{{ option.id }}"
+                                                id="{{ option.id }}">
+                                        </div>
+                                    </div>
+                                <!-- End Card Body -->
+                            </div>
+                        <!-- End Subscription Option Card -->
+                    {% endfor %}
+                </div>
+            <!-- End Subscription Options Card Deck -->
+
+            <!-- Form Submit Button -->
+                <div class="row">
+                    <div class="col text-center">
+                        <input type="submit" class="btn btn-primary" id="submit" value="Next" disabled>
+                    </div>
+                </div>
+            <!-- Form Submit Button -->
+        </form>
+    <!-- End Subscription Options Form -->
 {% endblock %}
 
 {% block postloadjs %}
