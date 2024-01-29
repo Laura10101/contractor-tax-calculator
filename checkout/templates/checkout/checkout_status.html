@@ -5,23 +5,29 @@
     <meta http-equiv="refresh" content="5">
 {% endblock %}
 
-{% block page_header %}
-    <div class="container header-container">
-        <div class="row">
-            <div class="col"><h1>Your payment is being processed</h1></div>
-        </div>
-    </div>
-{% endblock %}
-
 {% block content %}
     {% if not error %}
-        {% if payment_pending %}
-            <p>We are processing your payment, sit tight, we'll let you know once it's confirmed.</p>
-        {% else %}
-            <p>Your payment is {{ payment_status }}.</p>
-            {% if payment_status == 'failed' %}
-                <p>The reason for the failure is: {{ failure_reason }}</p>
-            {% endif %}
-        {% endif %}
+        <!-- Page Title -->
+        <div class="row">
+            <div class="col text-center">
+                <h1>Your payment is being processed</h1>
+            </div>
+        </div>
+        <!-- End Page Title -->
+
+        <!-- Status Message -->
+        <div class="row">
+            <div class="col text-center">
+                {% if payment_pending %}
+                    <p>We are processing your payment, sit tight, we'll let you know once it's confirmed.</p>
+                {% else %}
+                    <p>Your payment is {{ payment_status }}.</p>
+                    {% if payment_status == 'failed' %}
+                        <p>The reason for the failure is: {{ failure_reason }}</p>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+        <!-- End Status Message -->
     {% endif %}
 {% endblock %}
