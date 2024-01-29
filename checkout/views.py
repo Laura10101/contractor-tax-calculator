@@ -94,7 +94,7 @@ def confirm_checkout(request):
     data = json.loads(response.text)
     if data['result'] in ['processing', 'succeeded']:
         # Display success to user
-        return redirect('/checkout/status/' + str(payment_id) + '/')
+        return redirect('/contractors/checkout/status/' + str(payment_id) + '/')
     else:
         payment_status = 'failed'
         failure_reason = data['result']
