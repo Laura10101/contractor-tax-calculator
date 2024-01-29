@@ -113,7 +113,7 @@
                                                                                     id="{{ question.variable_name }}"
                                                                                     name="{{ question.variable_name }}"
                                                                                     class="form-control"
-                                                                                    step="0.1" />
+                                                                                    step="0.1">
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -137,11 +137,11 @@
                                                                                         <input
                                                                                             class="form-check-input"
                                                                                             type="checkbox"
-                                                                                            value=""
-                                                                                            id="{{ option_name }}">
+                                                                                            value="{{ option.id }}"
+                                                                                            id="option_{{ option.id }}">
                                                                                         <label
                                                                                             class="form-check-label"
-                                                                                            for="{{ option_name }}">
+                                                                                            for="option_{{ option.id }}">
                                                                                             {{ option.text }}
                                                                                         </label>
                                                                                     </div>
@@ -169,11 +169,11 @@
                                                                                                 class="form-check-input"
                                                                                                 type="radio"
                                                                                                 name="{{ question.variable_name }}"
-                                                                                                value=""
-                                                                                                id="option_name">
+                                                                                                value="{{ option.id }}"
+                                                                                                id="option_{{ option.id }}">
                                                                                             <label
                                                                                                 class="form-check-label"
-                                                                                                for="option_name">
+                                                                                                for="option_{{ option.id }}">
                                                                                                 {{ option.text }}
                                                                                             </label>
                                                                                         </div>
