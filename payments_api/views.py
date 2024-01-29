@@ -102,7 +102,16 @@ class PaymentDetail(APIView):
 
 class PaymentStatusDetail(APIView):
     def get(self, request, pk):
-        status, failure_reason = get_payment_status(pk)
+        try:
+            status, failure_reason = get_payment_status(pk)
+        except Payment.DoesNotExist:
+            return Response(status=404)
+        except Exception as e:
+            return Response(
+                { 'error' : str(e) },
+                status=400
+                )
+                
         response = {
             'id': pk,
             'status': status,
