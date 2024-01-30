@@ -125,7 +125,7 @@
 
                         <!-- Begin modal footer -->
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-secondary" onclick="cancelDialog('question-type-modal', true, true)">Cancel</button>
                                 <button type="button" class="btn btn-primary" onclick="questionTypeSelected()">Next</button>
                             </div>
                         <!-- End modal footer -->
@@ -188,7 +188,7 @@
 
                         <!-- Begin modal footer -->
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-secondary" onclick="cancelDialog('boolean-question-modal', true, true)">Close</button>
                                 <button type="button" class="btn btn-primary" onclick="saveQuestion()">Save changes</button>
                             </div>
                         <!-- End modal footer -->
@@ -277,7 +277,7 @@
                         <!-- End modal body -->
                         <!-- Begin modal footer -->
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-secondary" onclick="cancelDialog('numeric-question-modal', true, true)">Close</button>
                                 <button type="button" class="btn btn-primary" onclick="saveQuestion()">Save changes</button>
                             </div>
                         <!-- End modal footer -->
@@ -372,7 +372,7 @@
 
                         <!-- Begin modal footer -->
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-secondary" onclick="cancelChildDialog('multichoice-question-modal')">Close</button>
                                 <button type="button" class="btn btn-primary" onclick="saveQuestion()">Save changes</button>
                             </div>
                         <!-- End modal footer -->
@@ -420,7 +420,7 @@
 
                         <!-- Begin modal footer -->
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-secondary" onclick="cancelDialog('multiple-choice-option-modal', true, true)">Close</button>
                                 <button type="button" class="btn btn-primary" onclick="saveMultipleChoiceOption()">Create option</button>
                             </div>
                         <!-- End modal footer -->
@@ -453,7 +453,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" onclick="cancelDialog('ruleset-modal', true, true)">Close</button>
                 <button type="button" class="btn btn-primary" onclick="saveRuleset()">Save changes</button>
                 </div>
             </div>
@@ -495,7 +495,7 @@
 
                         <!-- Begin dialog footer -->
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-secondary" onclick="cancelDialog('rule-type-modal', true, true)">Close</button>
                                 <button type="button" class="btn btn-primary" onclick="ruleTypeSelected()">Save changes</button>
                             </div>
                         <!-- End dialog footer -->
@@ -559,7 +559,7 @@
 
                         <!-- Begin dialog footer -->
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-secondary" onclick="cancelDialog('flat-rate-rule-modal', true, true)">Close</button>
                                 <button type="button" class="btn btn-primary" onclick="saveRule()">Save changes</button>
                             </div>
                         <!-- End dialog footer -->
@@ -655,7 +655,7 @@
 
                         <!-- Begin dialog footer -->
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-secondary" onclick="cancelDialog('tiered-rate-rule-modal', true, true)">Close</button>
                                 <button type="button" class="btn btn-primary" onclick="saveRule()">Save changes</button>
                             </div>
                         <!-- End dialog footer -->
@@ -760,7 +760,7 @@
 
                         <!-- Begin modal footer -->
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-secondary" onclick="cancelDialog('secondary-tiered-rate-rule-modal', true, true)">Close</button>
                             <button type="button" class="btn btn-primary" onclick="saveRule()">Save changes</button>
                         </div>
                         <!-- End modal footer -->
@@ -818,7 +818,7 @@
 
                         <!-- Begin dialog footer -->
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-secondary" onclick="cancelChildDialog('rule-tier-modal')">Close</button>
                                 <button type="button" class="btn btn-primary" onclick="saveRuleTier()">Save changes</button>
                             </div>
                         <!-- End dialog footer -->
@@ -867,7 +867,7 @@
 
                         <!-- Begin dialog footer -->
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-secondary" onclick="cancelChildDialog('secondary-rule-tier-modal')">Close</button>
                                 <button type="button" class="btn btn-primary" onclick="saveRuleTier()">Save changes</button>
                             </div>
                         <!-- End dialog footer -->

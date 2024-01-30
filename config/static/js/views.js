@@ -175,6 +175,24 @@ function refreshQuestionsDisplay(refresher=getFormForJurisdiction) {
     refresher(jurisdictionId, displayQuestions, displayQuestionsLoadError);
 }
 
+function cancelDialog(dialogId, shouldClearDialogState, shouldClearParentState) {
+    hideDialog(dialogId);
+    if (shouldClearDialogState) {
+        clearDialogState();
+    }
+
+    if (shouldClearParentState) {
+        clearParentState();
+        app.parentRuleset = null;
+    }
+}
+
+function cancelChildDialog(dialogId) {
+    hideDialog(dialogId);
+    moveParentStateToAppState();
+    clearParentState();
+}
+
 function questionTypeSelected() {
     // Hide question type dialog
     hideDialog(questionTypeDialog.dialog.id);
@@ -226,7 +244,7 @@ function saveQuestionFailed(request, status, message) {
     try {
         errorMsg = request.responseJSON.error;
         error("An error occurred while attempting to save question: " + errorMsg);
-    } catch (error) {
+    } catch(ex) {
         error("An error occurred while attempting to save question.");
     }
 }
@@ -356,7 +374,7 @@ function deleteQuestionFailed(request, status, message) {
     try {
         errorMsg = request.responseJSON.error;
         error("An error occurred while attempting to delete question: " + errorMsg);
-    } catch (error) {
+    } catch(ex) {
         error("An error occurred while attempting to delete question.");
     }
 }
@@ -437,7 +455,7 @@ function saveMultipleChoiceOptionFailed(request, status, message) {
     try {
         errorMsg = request.responseJSON.error;
         error("An error occurred while attempting to save multiple choice option: " + errorMsg);
-    } catch (error) {
+    } catch(ex) {
         error("An error occurred while attempting to save multiple choice option.");
     }
 }
@@ -470,7 +488,7 @@ function deleteMultipleChoiceOptionFailed(request, status, message) {
     try {
         errorMsg = request.responseJSON.error;
         error("An error occurred while attempting to delete option: " + errorMsg);
-    } catch (error) {
+    } catch(ex) {
         error("An error occurred while attempting to delete option.");
     }
     
@@ -523,7 +541,7 @@ function saveRulesetFailed(request, status, message) {
     try {
         errorMsg = request.responseJSON.error;
         error("An error occurred while attempting to save ruleset: " + errorMsg);
-    } catch (error) {
+    } catch(ex) {
         error("An error occurred while attempting to save ruleset.");
     }
 }
@@ -565,7 +583,7 @@ function deleteRulesetFailed() {
     try {
         errorMsg = request.responseJSON.error;
         error("An error occurred while attempting to delete ruleset: " + errorMsg);
-    } catch (error) {
+    } catch(ex) {
         error("An error occurred while attempting to delete ruleset.");
     }
 }
@@ -672,7 +690,7 @@ function saveRuleFailed(request, status, message) {
     try {
         errorMsg = request.responseJSON.error;
         error("An error occurred while attempting to save rule: " + errorMsg);
-    } catch (error) {
+    } catch(ex) {
         error("An error occurred while attempting to save rule.");
     }
 }
@@ -839,7 +857,7 @@ function deleteRuleFailed() {
     try {
         errorMsg = request.responseJSON.error;
         error("An error occurred while attempting to delete rule: " + errorMsg);
-    } catch (error) {
+    } catch(ex) {
         error("An error occurred while attempting to delete rule.");
     }
 }
@@ -967,7 +985,7 @@ function saveRuleTierFailed(request, status, message) {
     try {
         errorMsg = request.responseJSON.error;
         error("An error occurred while attempting to save rule tier: " + errorMsg);
-    } catch (error) {
+    } catch(ex) {
         error("An error occurred while attempting to save rule tier.");
     }
 }
@@ -1171,7 +1189,7 @@ function deleteRuleTierFailed(request, status, message) {
     try {
         errorMsg = request.responseJSON.error;
         error("An error occurred while attempting to delete rule tier: " + errorMsg);
-    } catch (error) {
+    } catch(ex) {
         error("An error occurred while attempting to delete rule tier.");
     }
     moveParentStateToAppState();
