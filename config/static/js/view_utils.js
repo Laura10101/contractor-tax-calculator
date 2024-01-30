@@ -144,7 +144,7 @@ function resetContainer(containerId, prototypeIds) {
 // Display a list of jurisdictions in the jurisdictions select and set the onChange callback
 function initJurisdictionsSelect(jurisdictions, selectionChangedCallback) {
     // Get the jurisdictions select box
-    select = document.getElementById(jurisdictionsSelect.id);
+    let select = document.getElementById(jurisdictionsSelect.id);
 
     // Display only jurisdictions from the new list in the select box
     removeAllChildNodes(select);
@@ -566,7 +566,9 @@ function displayEditTieredRateRuleDialog(rule) {
 
 // Secondary Tiered Rate Rule Dialog Helpers
 function initPrimaryRulesSelect(rules) {
-    select = document.getElementById(secondaryTieredRateRuleDialog.primaryRule.input.id);
+    let select = document.getElementById(secondaryTieredRateRuleDialog.primaryRule.input.id);
+    removeAllChildNodes(select);
+
     rules.forEach(rule => {
         option = document.createElement("option");
         option.text = rule.name;
@@ -643,7 +645,9 @@ function displayEditRuleTierDialog(tier) {
 
 // Secondary Rule Tier Dialog Helpers
 function initPrimaryRuleTiersSelect(tiers) {
-    select = document.getElementById(secondaryRuleTierDialog.primaryTier.input.id);
+    let select = document.getElementById(secondaryRuleTierDialog.primaryTier.input.id);
+    removeAllChildNodes(select);
+    
     tiers.forEach(tier => {
         option = document.createElement("option");
         option.text = tier.min_value + " - " + tier.max_value + " (" + tier.tier_rate + ")";
