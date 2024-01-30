@@ -406,6 +406,7 @@ function swapQuestionOrdinals(question, findNewPosition, updater, refresher) {
         let update2 = updater(questionToSwap, doNothing, saveQuestionFailed);
 
         // Refresh the question display when both updates have completed
+        // Taken from https://www.codeproject.com/Articles/1181613/Waiting-For-Multiple-Ajax-Requests-jQuery
         $.when(update1, update2).then(function () {
             refresher();
         });
@@ -615,6 +616,7 @@ function swapRulesetOrdinals(ruleset, findNewPosition, updater, refresher) {
         let update2 = updater(rulesetToSwap.id, rulesetToSwap.ordinal, doNothing, saveRulesetFailed);
 
         // Refresh the ruleset display when both updates have completed
+        // Taken from https://www.codeproject.com/Articles/1181613/Waiting-For-Multiple-Ajax-Requests-jQuery
         $.when(update1, update2).then(function () {
             refresher();
         });
@@ -932,6 +934,7 @@ function swapRuleOrdinals(ruleset, rule, findNewPosition, updater, refresher) {
         let update2 = updater(ruleset, ruleToSwap);
 
         // Refresh the ruleset display when both updates have completed
+        // Taken from https://www.codeproject.com/Articles/1181613/Waiting-For-Multiple-Ajax-Requests-jQuery
         $.when(update1, update2).then(function () {
             refresher();
         });
@@ -1129,6 +1132,7 @@ function swapRuleTierOrdinals(swapPrimary, tier, findNewPosition, updater, refre
         let update2 = updater(swapPrimary, tierToSwap);
 
         // Refresh the ruleset display
+        // Taken from https://www.codeproject.com/Articles/1181613/Waiting-For-Multiple-Ajax-Requests-jQuery
         $.when(update1, update2).then(function() {
             refresher();
         });
