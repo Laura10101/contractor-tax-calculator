@@ -264,13 +264,23 @@ function updateMultipleChoiceQuestionDialogOptionsDisplay(options) {
     });
 }
 
-function initMultipleChoiceQuestionDialog(dialogLabel, questionText, explainer, variableName, isMandatory, allowMultiselect, options) {
+function initMultipleChoiceQuestionDialog(dialogLabel, questionText, explainer, variableName, isMandatory, allowMultiselect, options, showOptions=false) {
     document.getElementById(multipleChoiceQuestionDialog.label.id).innerText = dialogLabel;
     document.getElementById(multipleChoiceQuestionDialog.questionText.input.id).value = questionText;
     document.getElementById(multipleChoiceQuestionDialog.explainer.input.id).value = explainer;
     document.getElementById(multipleChoiceQuestionDialog.variableName.input.id).value = variableName;
     document.getElementById(multipleChoiceQuestionDialog.isMandatory.input.id).checked = isMandatory;
     document.getElementById(multipleChoiceQuestionDialog.allowMultiselect.input.id).checked = allowMultiselect;
+    let optionsRow = document.getElementById("options-row");
+    if (showOptions) {
+        if (optionsRow.classList.contains("hidden")) {
+            optionsRow.classList.remove("hidden");
+        }
+    } else {
+        if (!optionsRow.classList.contains("hidden")) {
+            optionsRow.classList.add("hidden");
+        }
+    }
     updateMultipleChoiceQuestionDialogOptionsDisplay(options);
 }
 
@@ -515,17 +525,27 @@ function displayEditFlatRateRuleDialog(rule) {
 }
 
 // Tiered Rate Rule Dialog Helpers
-function initTieredRateRuleDialog(dialogLabel, name, explainer, variableName, tiers) {
+function initTieredRateRuleDialog(dialogLabel, name, explainer, variableName, tiers, showTiers=false) {
     document.getElementById(tieredRateRuleDialog.label.id).innerText = dialogLabel;
     document.getElementById(tieredRateRuleDialog.name.input.id).value = name;
     document.getElementById(tieredRateRuleDialog.explainer.input.id).value = explainer;
     document.getElementById(tieredRateRuleDialog.variableName.input.id).value = variableName;
+    let tiersRow = document.getElementById("tiers-row");
+    if (showTiers) {
+        if (tiersRow.classList.contains("hidden")) {
+            tiersRow.classList.remove("hidden");
+        }
+    } else {
+        if (!tiersRow.classList.contains("hidden")) {
+            tiersRow.classList.add("hidden");
+        }
+    }
     updateRuleTierTable(true, tiers);
 }
 
 function displayCreateTieredRateRuleDialog() {
     // Initialise the boolean question dialog with appropriate values for a create
-    initTieredRateRuleDialog("Create Tiered Rate Rule", "", "", "", []);
+    initTieredRateRuleDialog("Create Tiered Rate Rule", "", "", "", [], false);
     // Show the dialog
     showDialog(tieredRateRuleDialog.dialog.id);
 }
@@ -536,7 +556,8 @@ function displayEditTieredRateRuleDialog(rule) {
         rule.name,
         rule.explainer,
         rule.variable_name,
-        rule.tiers
+        rule.tiers,
+        true
     );
     // Show the dialog
     showDialog(tieredRateRuleDialog.dialog.id);
@@ -553,18 +574,28 @@ function initPrimaryRulesSelect(rules) {
     });
 }
 
-function initSecondaryTieredRateRuleDialog(dialogLabel, name, explainer, variableName, primaryRules, tiers) {
+function initSecondaryTieredRateRuleDialog(dialogLabel, name, explainer, variableName, primaryRules, tiers, showTiers=true) {
     document.getElementById(secondaryTieredRateRuleDialog.label.id).innerText = dialogLabel;
     document.getElementById(secondaryTieredRateRuleDialog.name.input.id).value = name;
     document.getElementById(secondaryTieredRateRuleDialog.explainer.input.id).value = explainer;
     document.getElementById(secondaryTieredRateRuleDialog.variableName.input.id).value = variableName;
+    let tiersRow = document.getElementById("secondary-tiers-row");
+    if (showTiers) {
+        if (tiersRow.classList.contains("hidden")) {
+            tiersRow.classList.remove("hidden");
+        }
+    } else {
+        if (!tiersRow.classList.contains("hidden")) {
+            tiersRow.classList.add("hidden");
+        }
+    }
     initPrimaryRulesSelect(primaryRules);
     updateRuleTierTable(false, tiers);
 }
 
 function displayCreateSecondaryTieredRateRuleDialog(primaryRules) {
     // Initialise the boolean question dialog with appropriate values for a create
-    initSecondaryTieredRateRuleDialog("Create Secondary Tiered Rate Rule", "", "", "", primaryRules, []);
+    initSecondaryTieredRateRuleDialog("Create Secondary Tiered Rate Rule", "", "", "", primaryRules, [], false);
     // Show the dialog
     showDialog(secondaryTieredRateRuleDialog.dialog.id);
 }
@@ -576,7 +607,8 @@ function displayEditSecondaryTieredRateRuleDialog(rule, primaryRules) {
         rule.explainer,
         rule.variable_name,
         primaryRules,
-        rule.tiers
+        rule.tiers,
+        true
     );
     // Show the dialog
     showDialog(secondaryTieredRateRuleDialog.dialog.id);
