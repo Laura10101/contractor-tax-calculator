@@ -586,6 +586,9 @@ function editRule(ruleset, rule) {
             break;
         case "tiered_rate":
                 setDialogState(dialogStates.modes.edit, dialogStates.entityTypes.tieredRateRule, rule);
+                console.log("editRule app state");
+                console.log(app);
+                console.log("");
                 displayEditTieredRateRuleDialog(rule);
             break;
         case "secondary_tiered_rate":
@@ -986,6 +989,9 @@ function createRuleTier(createPrimary) {
     moveAppStateToParentState();
     if (createPrimary) {
         setDialogState(dialogStates.modes.create, dialogStates.entityTypes.ruleTier, null);
+        console.log("createRuleTier app state");
+        console.log(app);
+        console.log("");
         displayCreateRuleTierDialog();
     } else {
         primaryTiers = app.parentState.entity.primary_rule.tiers;
@@ -1007,6 +1013,9 @@ function editRuleTier(editPrimary, tier) {
 }
 
 function saveRuleTierOrdinal(isPrimary, tier) {
+    console.log("saveRuleTierOrdinal app state");
+    console.log(app);
+    console.log("");
     rule = app.dialogState.entity;
     ruleset = findParentRuleset(rule.id);
     if (isPrimary) {

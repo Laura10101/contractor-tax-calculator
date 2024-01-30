@@ -187,8 +187,8 @@ function createNumericQuestion(formId, text, ordinal, explainer, variableName, i
         is_mandatory: isMandatory,
         type: "numeric",
         is_integer: isInteger,
-        min_value: minValue == "" || minValue == null ? null : minValue,
-        max_value: maxValue == "" || maxValue == null ? null : maxValue
+        min_value: !isNaN(parseInt(minValue)) ? parseInt(minValue) : null,
+        max_value: !isNaN(parseInt(maxValue)) ? parseInt(maxValue) : null
     };
     post(endpoints.forms.questions(formId), data, onSuccess, onFailure);
 }
@@ -201,8 +201,8 @@ function updateNumericQuestion(formId, questionId, text, ordinal, explainer, isM
         is_mandatory: isMandatory,
         type: "numeric",
         is_integer: isInteger,
-        min_value: typeof(minValue) == "number" ? (minValue == null ? null : minValue) : (minValue == "" || minValue == null ? null : minValue),
-        max_value: typeof(maxValue) == "number" ? (maxValue == null ? null : maxValue) : (maxValue == "" || maxValue == null ? null : maxValue),
+        min_value: !isNaN(parseInt(minValue)) ? parseInt(minValue) : null,
+        max_value: !isNaN(parseInt(maxValue)) ? parseInt(maxValue) : null
     };
     put(endpoints.forms.questions(formId), questionId, data, onSuccess, onFailure);
 }
@@ -315,7 +315,7 @@ function createFlatRateRule(rulesetId, name, explainer, variableName, ordinal, t
         variable_name: variableName,
         ordinal: ordinal,
         type: "flat_rate",
-        tax_rate: parseInt(taxRate)
+        tax_rate: !isNaN(parseFloat(taxRate)) ? parseFloat(taxRate) : null
     };
     post(endpoints.rules.rules(rulesetId), data, onSuccess, onFailure);
 }
@@ -327,7 +327,7 @@ function updateFlatRateRule(rulesetId, ruleId, name, explainer, variableName, or
         variable_name: variableName,
         ordinal: ordinal,
         type: "flat_rate",
-        tax_rate: parseInt(taxRate)
+        tax_rate: !isNaN(parseFloat(taxRate)) ? parseFloat(taxRate) : null
     };
     put(endpoints.rules.rules(rulesetId), ruleId, data, onSuccess, onFailure);
 }
@@ -387,20 +387,20 @@ function removeRule(rulesetId, ruleId, onSuccess, onFailure) {
  */
 function postRuleTier(rulesetId, ruleId, minValue, maxValue, ordinal, taxRate, onSuccess, onFailure) {
     data = {
-        min_value: minValue == "" ? null : minValue,
-        max_value: maxValue == "" ? null : maxValue,
+        min_value: !isNaN(parseInt(minValue)) ? parseInt(minValue) : null,
+        max_value: !isNaN(parseInt(maxValue)) ? parseInt(maxValue) : null,
         ordinal: ordinal,
-        tax_rate: taxRate
+        tax_rate: !isNaN(parseFloat(taxRate)) ? parseFloat(taxRate) : null
     };
     post(endpoints.rules.tiers(rulesetId, ruleId), data, onSuccess, onFailure);
 }
 
 function updateRuleTier(rulesetId, ruleId, tierId, minValue, maxValue, ordinal, taxRate, onSuccess, onFailure) {
     data = {
-        min_value: minValue == "" ? null : minValue,
-        max_value: maxValue == "" ? null : maxValue,
+        min_value: !isNaN(parseInt(minValue)) ? parseInt(minValue) : null,
+        max_value: !isNaN(parseInt(maxValue)) ? parseInt(maxValue) : null,
         ordinal: ordinal,
-        tax_rate: taxRate
+        tax_rate: !isNaN(parseFloat(taxRate)) ? parseFloat(taxRate) : null
     };
     put(endpoints.rules.tiers(rulesetId, ruleId), tierId, data, onSuccess, onFailure);
 }
@@ -416,7 +416,7 @@ function postSecondaryRuleTier(rulesetId, ruleId, primaryTierId, ordinal, taxRat
     data = {
         primary_tier_id: parseInt(primaryTierId),
         ordinal: ordinal,
-        tax_rate: taxRate
+        tax_rate: !isNaN(parseFloat(taxRate)) ? parseFloat(taxRate) : null
     };
     post(endpoints.rules.secondaryTiers(rulesetId, ruleId), data, onSuccess, onFailure);
 }
@@ -425,7 +425,7 @@ function updateSecondaryRuleTier(rulesetId, ruleId, tierId, primaryTierId, ordin
     data = {
         primary_tier_id: primaryTierId,
         ordinal: ordinal,
-        tax_rate: taxRate
+        tax_rate: !isNaN(parseFloat(taxRate)) ? parseFloat(taxRate) : null
     };
     put(endpoints.rules.secondaryTiers(rulesetId, ruleId), tierId, data, onSuccess, onFailure);
 }
