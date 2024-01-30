@@ -284,3 +284,4 @@ Alternatively, if using Gitpod, you can click below to create your own workspace
 - [Stripe address element documentation](https://stripe.com/docs/elements/address-element?platform=web#autocomplete)
 - [Stripe address element example](https://github.com/stripe-samples/link/blob/main/client/html/index.js)
 - [Order specific value first when retrieving Django objects](https://stackoverflow.com/questions/2176346/can-django-orm-do-an-order-by-on-a-specific-value-of-a-column)
+- [Deduplicating a Javascript array](https://builtin.com/software-engineering-perspectives/remove-duplicates-from-array-javascript)

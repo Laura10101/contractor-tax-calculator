@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block extra_js %}
+    <script src="{% static 'js/validation.js' %}"></script>
+{% endblock %}
+
 {% block content %}
     {% if not error %}
         <div class="row">
@@ -9,9 +13,18 @@
                 <h2>Enter Financial Information</h2>
             </div>
         </div>
+
+        <!-- Begin validation errors -->
+        <div class="row">
+            <div id="errors" class="col errors">
+
+            </div>
+        </div>
+        <!-- Begin validation error modal -->
+
         <!-- Code from https://getbootstrap.com/docs/4.3/components/collapse/ -->
         <!-- Begin jurisdictions forms -->
-        <form action="{% url 'display_calculation' %}" method="POST">
+        <form id="jurisdiction-forms" action="{% url 'display_calculation' %}" method="POST">
             <input type="hidden" name="jurisdiction_ids" value="{{ jurisdiction_ids }}">
             {% csrf_token %}
             <div class="row">
@@ -37,14 +50,14 @@
                                             <!-- Jurisdiction question set body -->
                                             <div id="collapse-{{ jurisdiction.id }}" class="collapse show" aria-labelledby="heading-{{ jurisdiction.id }}"
                                                 data-parent="#jurisdictions-accordion">
-                                                <div class="card-body">
+                                                <div class="card-body text-center">
                                                     {% for question in form.questions %}
                                                         {% with type=question.type %}
                                                         {% if type == 'boolean' %}
                                                             <!-- Boolean question -->
-                                                                <div class="card" style="width: 18rem;">
+                                                                <div class="card">
                                                                     <div class="card-body">
-                                                                        <h5 class="card-title">
+                                                                        <h5 class="card-title" id="{{ question.variable_name}}-title">
                                                                             {{ question.text }}
                                                                         </h5>
                                                                         <h6 class="card-subtitle mb-2 text-muted">
@@ -52,7 +65,7 @@
                                                                         </h6>
                                                                         <div class="form-check">
                                                                             <input
-                                                                                class="form-check-input"
+                                                                                class="form-check-input boolean"
                                                                                 type="radio"
                                                                                 name="{{ question.variable_name }}"
                                                                                 id="{{ question.variable_name }}Yes"
@@ -65,7 +78,7 @@
                                         
                                                                         <div class="form-check">
                                                                             <input
-                                                                                class="form-check-input"
+                                                                                class="form-check-input boolean"
                                                                                 type="radio"
                                                                                 name="{{ question.variable_name }}"
                                                                                 id="{{ question.variable_name }}No"
@@ -82,7 +95,7 @@
                                                                 <!-- Integer question -->
                                                                     <div class="card" style="width: 18rem;">
                                                                         <div class="card-body">
-                                                                            <h5 class="card-title">
+                                                                            <h5 class="card-title" id="{{ question.variable_name}}-title">
                                                                                 {{ question.text }}
                                                                             </h5>
                                                                             <h6 class="card-subtitle mb-2 text-muted">
@@ -93,7 +106,7 @@
                                                                                     type="number"
                                                                                     id="{{ question.variable_name }}"
                                                                                     name="{{ question.variable_name }}"
-                                                                                    class="form-control" />
+                                                                                    class="form-control integer" />
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -102,7 +115,7 @@
                                                                 <!-- Floating point question -->
                                                                     <div class="card" style="width: 18rem;">
                                                                         <div class="card-body">
-                                                                            <h5 class="card-title">
+                                                                            <h5 class="card-title" id="{{ question.variable_name}}-title">
                                                                                 {{ question.text }}
                                                                             </h5>
                                                                             <h6 class="card-subtitle mb-2 text-muted">
@@ -112,7 +125,7 @@
                                                                                     type="number"
                                                                                     id="{{ question.variable_name }}"
                                                                                     name="{{ question.variable_name }}"
-                                                                                    class="form-control"
+                                                                                    class="form-control float"
                                                                                     step="0.1">
                                                                             </div>
                                                                         </div>
@@ -124,7 +137,7 @@
                                                                 <!-- Multiselect question -->
                                                                     <div class="card" style="width: 18rem;">
                                                                         <div class="card-body">
-                                                                            <h5 class="card-title">
+                                                                            <h5 class="card-title" id="{{ question.variable_name}}-title">
                                                                                 {{ question.text }}
                                                                             </h5>
                                                                             <h6 class="card-subtitle mb-2 text-muted">
@@ -135,13 +148,14 @@
                                                                                 <!-- Multiple choice option -->
                                                                                     <div class="form-check">
                                                                                         <input
-                                                                                            class="form-check-input"
+                                                                                            class="form-check-input multi-select"
                                                                                             type="checkbox"
                                                                                             value="{{ option.id }}"
-                                                                                            id="option_{{ option.id }}">
+                                                                                            id="{{ option.id }}"
+                                                                                            name="{{ question.variable_name }}">
                                                                                         <label
                                                                                             class="form-check-label"
-                                                                                            for="option_{{ option.id }}">
+                                                                                            for="{{ option.id }}">
                                                                                             {{ option.text }}
                                                                                         </label>
                                                                                     </div>
@@ -155,7 +169,7 @@
                                                                 <!-- Single choice question -->
                                                                     <div class="card" style="width: 18rem;">
                                                                         <div class="card-body">
-                                                                            <h5 class="card-title">
+                                                                            <h5 class="card-title" id="{{ question.variable_name}}-title">
                                                                                 {{ question.text }}
                                                                             </h5>
                                                                             <h6 class="card-subtitle mb-2 text-muted">
@@ -166,14 +180,14 @@
                                                                                     <!-- Multiple choice option -->
                                                                                         <div class="form-check">
                                                                                             <input
-                                                                                                class="form-check-input"
+                                                                                                class="form-check-input single-select"
                                                                                                 type="radio"
                                                                                                 name="{{ question.variable_name }}"
                                                                                                 value="{{ option.id }}"
-                                                                                                id="option_{{ option.id }}">
+                                                                                                id="{{ option.id }}">
                                                                                             <label
                                                                                                 class="form-check-label"
-                                                                                                for="option_{{ option.id }}">
+                                                                                                for="{{ option.id }}">
                                                                                                 {{ option.text }}
                                                                                             </label>
                                                                                         </div>
@@ -201,7 +215,7 @@
             </div>
             <div class="row">
                 <div class="col text-center">
-                    <input type="submit" class="btn btn-primary" value="Next">
+                    <button type="button" id="next-button" class="btn btn-primary" onclick="validateForm()">Next</button>
                 </div>
             </div>
         </form>
