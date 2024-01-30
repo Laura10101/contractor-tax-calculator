@@ -224,6 +224,37 @@ function findQuestionById(questionId) {
     return question;
 }
 
+function getValidQuestionTextVariableNamePairs() {
+    let questions = getQuestions();
+    let variables = [];
+    questions.forEach(question => {
+        if (question.type == "numeric") {
+            variables.push({
+                questionText: question.text,
+                variableName: question.variable_name
+            });
+        }
+    });
+    return variables.sort(function(a, b) {
+        if (a.variableName == b.variableName) {
+            return 0;
+        }
+
+        return a.variableName < b.variableName ? -1 : 1;
+    });
+}
+
+function isDuplicateVariableName(variableName) {
+    let isDuplicate = false;
+    let existingVariableNames = getValidQuestionTextVariableNamePairs();
+    existingVariableNames.forEach(candidateVariableName => {
+        if (candidateVariableName.variableName == variableName) {
+            isDuplicate = true;
+        }
+    });
+    return isDuplicate;
+}
+
 function findMultiplpeChoiceOptionById(optionId) {
     let option = null;
 
@@ -266,6 +297,21 @@ function findRuleById(ruleId) {
     });
 
     return rule;
+}
+
+function primaryRuleHasDependentSecondaryRules(primaryRuleId) {
+    let hasDependents = false;
+    let primaryRule = findRuleById(primaryRuleId);
+    if (primaryRule == null) {
+        return null;
+    }
+    let secondaryRules = getRulesByTypeForJurisdiction("secondary_tiered_rate");
+    secondaryRules.forEach(secondaryRule => {
+        if (secondaryRule.primary_rule_id == primaryRuleId) {
+            hasDependents = true;
+        }
+    });
+    return hasDependents;
 }
 
 function findParentRuleset(ruleId) {
@@ -316,6 +362,23 @@ function findSecondaryRuleTierById(tierId) {
     });
 
     return tier;
+}
+
+function primaryRuleTierHasDependentSecondaryTiers(primaryTierId) {
+    let hasDependents = false;
+    let primaryTier = findPrimaryRuleTierById(primaryTierId);
+    if (primaryTier == null) {
+        return null;
+    }
+    let secondaryRules = getRulesByTypeForJurisdiction("secondary_tiered_rate");
+    secondaryRules.forEach(secondaryRule => {
+        secondaryRule.tiers.forEach(secondaryTier => {
+            if (secondaryTier.primary_tier_id == primaryTierId) {
+                hasDependents = true;
+            }
+        });
+    });
+    return hasDependents;
 }
 
 /*
@@ -623,5 +686,9 @@ if (typeof module !== "undefined") module.exports = {
     findPreviousRuleTier,
     findNextRuleTier,
     resequenceRuleTierOrdinals,
-    refreshAppState
+    refreshAppState,
+    primaryRuleHasDependentSecondaryRules,
+    primaryRuleTierHasDependentSecondaryTiers,
+    getValidQuestionTextVariableNamePairs,
+    isDuplicateVariableName
 };

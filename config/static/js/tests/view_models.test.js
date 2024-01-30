@@ -34,7 +34,11 @@ const {
     getNextRuleTierOrdinal,
     findPreviousRuleTier,
     findNextRuleTier,
-    resequenceRuleTierOrdinals
+    resequenceRuleTierOrdinals,
+    primaryRuleHasDependentSecondaryRules,
+    primaryRuleTierHasDependentSecondaryTiers,
+    getValidQuestionTextVariableNamePairs,
+    isDuplicateVariableName
  } = require("../view_models");
 
 describe("App state management", () => {
@@ -169,6 +173,19 @@ describe("View model accessor methods", () => {
             let question = findQuestionById(42);
             expect(question).toBeNull();
         });
+
+        test("should return the correct list of valid variable name/question text pairs", () => {
+            let variables = getValidQuestionTextVariableNamePairs();
+
+            expect(variables.length).toBe(1);
+            console.log(variables[0]);
+            expect(variables[0].questionText).toBe("A numeric question test");
+            expect(variables[0].variableName).toBe("numeric_var");
+        });
+
+        test("should correctly identify duplicate variable names", () => {
+            expect(isDuplicateVariableName("numeric_var")).toBe(true);
+        });
     });
 
     describe("Rulesets", () => {
@@ -269,6 +286,11 @@ describe("View model accessor methods", () => {
             expect(rules).toBeDefined();
             expect(rules.length).toBe(0);
         });
+
+        test("correctly determine if primary rule has dependent secondary rules", () => {
+            expect(primaryRuleHasDependentSecondaryRules(44)).toBe(true);
+            expect(primaryRuleHasDependentSecondaryRules(13)).toBe(true);
+        });
     });
 
     describe("Rule tiers", () => {
@@ -285,6 +307,10 @@ describe("View model accessor methods", () => {
         test("return null given an invalid rule tier id", () => {
             let tier = findPrimaryRuleTierById(42);
             expect(tier).toBeNull();
+        });
+
+        test("correctly determine if primary rule tier has dependent secondary rule tiers", () => {
+            expect(primaryRuleTierHasDependentSecondaryTiers(3)).toBe(true);
         });
     });
 });
