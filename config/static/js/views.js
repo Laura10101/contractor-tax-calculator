@@ -87,6 +87,7 @@ if (typeof require !== "undefined") {
     getNextRulesetOrdinal = viewModels.getNextRulesetOrdinal;
     getNextRuleOrdinal = viewModels.getNextRuleOrdinal;
     getNextRuleTierOrdinal = viewModels.getNextRuleTierOrdinal;
+    refreshAppState = viewModels.refreshAppState;
 
     // View utils
     showDialog = viewUtils.showDialog;
@@ -126,6 +127,8 @@ function doNothing() {}
  */
 function displayQuestions(data) {
     app.jurisdictionForm = data;
+    refreshAppState();
+
     updateQuestionDisplay(app.jurisdictionForm.forms[Object.keys(app.jurisdictionForm.forms)[0]].questions);
 }
 
@@ -144,6 +147,7 @@ function jurisdictionSelected() {
 
 function loadJurisdictionSelect(data) {
     app.jurisdictions = data.jurisdictions;
+
     initJurisdictionsSelect(app.jurisdictions, jurisdictionSelected);
     jurisdictionSelected();
 }
@@ -219,7 +223,12 @@ function saveQuestionSucceeded(data, textStatus, request, refresher=refreshQuest
 }
 
 function saveQuestionFailed(request, status, message) {
-    error("An error occurred while attempting to save question.");
+    try {
+        errorMsg = request.responseJSON.error;
+        error("An error occurred while attempting to save question: " + errorMsg);
+    } catch (error) {
+        error("An error occurred while attempting to save question.");
+    }
 }
 
 function saveQuestion(booleanQuestionCreator=createBooleanQuestion, numericQuestionCreator=createNumericQuestion,
@@ -344,7 +353,12 @@ function deleteQuestionSucceeded(request, status, message, ordinalUpdater=update
 }
 
 function deleteQuestionFailed(request, status, message) {
-    error("An error occurred while attempting to delete question.");
+    try {
+        errorMsg = request.responseJSON.error;
+        error("An error occurred while attempting to delete question: " + errorMsg);
+    } catch (error) {
+        error("An error occurred while attempting to delete question.");
+    }
 }
 
 function confirmDeleteQuestion(event, remover=removeQuestion) {
@@ -391,6 +405,7 @@ function moveQuestionDown(question, updater=updateQuestion, refresher=refreshQue
  */
 function displayMultipleChoiceOptions(data) {
     app.jurisdictionForm = data;
+    refreshAppState();
 
     if (app.parentState.entity != null) {
         if (app.parentState.entityType == dialogStates.entityTypes.multipleChoiceQuestion) {
@@ -419,7 +434,12 @@ function saveMultipleChoiceOptionSucceeded(data, textStatus, request, refresher=
 }
 
 function saveMultipleChoiceOptionFailed(request, status, message) {
-    error("An error occurred while attempting to save multiple choice option.");
+    try {
+        errorMsg = request.responseJSON.error;
+        error("An error occurred while attempting to save multiple choice option: " + errorMsg);
+    } catch (error) {
+        error("An error occurred while attempting to save multiple choice option.");
+    }
 }
 
 function saveMultipleChoiceOption(creator=postMultipleChoiceOption) {
@@ -447,7 +467,13 @@ function deleteMultipleChoiceOptionSucceeded(request, status, message, displayRe
 }
 
 function deleteMultipleChoiceOptionFailed(request, status, message) {
-    error("An error occurred while attempting to delete option.");
+    try {
+        errorMsg = request.responseJSON.error;
+        error("An error occurred while attempting to delete option: " + errorMsg);
+    } catch (error) {
+        error("An error occurred while attempting to delete option.");
+    }
+    
     moveParentStateToAppState();
     clearParentState();
     showDialog(multipleChoiceQuestionDialog.dialog.id);
@@ -473,6 +499,8 @@ function deleteMultipleChoiceOption(option) {
  */
 function displayRulesets(data) {
     app.jurisdictionRules = data;
+    refreshAppState();
+
     updateRulesetsDisplay(app.jurisdictionRules);
 }
 
@@ -492,7 +520,12 @@ function saveRulesetSucceeded(data, textStatus, request, refresher=refreshRulese
 }
 
 function saveRulesetFailed(request, status, message) {
-    error("An error occurred while attempting to save ruleset.");
+    try {
+        errorMsg = request.responseJSON.error;
+        error("An error occurred while attempting to save ruleset: " + errorMsg);
+    } catch (error) {
+        error("An error occurred while attempting to save ruleset.");
+    }
 }
 
 function saveRuleset(creator=postRuleset) {
@@ -529,7 +562,12 @@ function deleteRulesetSucceeded(data, textStatus, request, ordinalUpdater=patchR
 }
 
 function deleteRulesetFailed() {
-    error("An error occurred while attempting to delete ruleset.");
+    try {
+        errorMsg = request.responseJSON.error;
+        error("An error occurred while attempting to delete ruleset: " + errorMsg);
+    } catch (error) {
+        error("An error occurred while attempting to delete ruleset.");
+    }
 }
 
 function confirmDeleteRuleset(event, remover=removeRuleset) {
@@ -631,7 +669,12 @@ function saveRuleSucceeded(data, textStatus, request, refresher=refreshRulesetsD
 }
 
 function saveRuleFailed(request, status, message) {
-    error("An error occurred while attempting to save rule.");
+    try {
+        errorMsg = request.responseJSON.error;
+        error("An error occurred while attempting to save rule: " + errorMsg);
+    } catch (error) {
+        error("An error occurred while attempting to save rule.");
+    }
 }
 
 function saveRule(flatRateRuleCreator=createFlatRateRule, tieredRateRuleCreator=createTieredRateRule,
@@ -793,7 +836,12 @@ function deleteRuleSucceeded(data, textStatus, request, flatRateRuleUpdater=upda
 }
 
 function deleteRuleFailed() {
-    error("An error occurred while attempting to delete rule.");
+    try {
+        errorMsg = request.responseJSON.error;
+        error("An error occurred while attempting to delete rule: " + errorMsg);
+    } catch (error) {
+        error("An error occurred while attempting to delete rule.");
+    }
 }
 
 function confirmDeleteRule(event, remover=removeRule) {
@@ -882,10 +930,12 @@ function moveRuleDown(ruleset, rule, updater=updateRuleOrdinal, refresher=refres
  */
 function displayRuleTiersLoadedSucceeded(data, textStatus, request) {
     app.jurisdictionRules = data;
+    refreshAppState();
 
     if (app.parentState.entity != null) {
         moveParentStateToAppState();
     }
+
     rule = findRuleById(app.dialogState.entity.id);
     tiers = rule.tiers;
     switch(app.dialogState.entityType) {
@@ -914,7 +964,12 @@ function saveRuleTierSucceeded(data, textStatus, request, refresher=refreshRuleT
 }
 
 function saveRuleTierFailed(request, status, message) {
-    error("An error occurred while attempting to save rule tier.");
+    try {
+        errorMsg = request.responseJSON.error;
+        error("An error occurred while attempting to save rule tier: " + errorMsg);
+    } catch (error) {
+        error("An error occurred while attempting to save rule tier.");
+    }
 }
 
 function saveRuleTier(ruleTierCreator=postRuleTier, secondaryRuleTierCreator=postSecondaryRuleTier, ruleTierUpdater=updateRuleTier,
@@ -1113,7 +1168,12 @@ function deleteRuleTierSucceeded(data, textStatus, request, primaryTierUpdater=u
 }
 
 function deleteRuleTierFailed(request, status, message) {
-    error("An error occurred while attempting to delete rule tier.");
+    try {
+        errorMsg = request.responseJSON.error;
+        error("An error occurred while attempting to delete rule tier: " + errorMsg);
+    } catch (error) {
+        error("An error occurred while attempting to delete rule tier.");
+    }
     moveParentStateToAppState();
 }
 
