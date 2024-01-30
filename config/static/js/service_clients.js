@@ -50,7 +50,7 @@ function toUrl(endpoint) {
 
 function query(endpoint, query, success, error) {
     url = toUrl(endpoint);
-    $.ajax({
+    return $.ajax({
         type: "GET",
         url: query == null ? url: url + "?" + queryToString(query),
         contentType: "application/json; charset=utf-8",
@@ -62,7 +62,7 @@ function query(endpoint, query, success, error) {
 
 function get(endpoint, id, success, error) {
     url = toUrl(endpoint);
-    $.ajax({
+    return $.ajax({
         type: "GET",
         url: url + id + "/",
         contentType: "application/json; charset=utf-8",
@@ -74,7 +74,7 @@ function get(endpoint, id, success, error) {
 
 function post(endpoint, data, success, error) {
     url = toUrl(endpoint);
-    $.ajax({
+    return $.ajax({
         type: "POST",
         url: url,
         headers: { 'X-CSRFToken': getCSRFCookie() },
@@ -88,7 +88,7 @@ function post(endpoint, data, success, error) {
 
 function put(endpoint, id, data, success, error) {
     url = toUrl(endpoint);
-    $.ajax({
+    return $.ajax({
         type: "PUT",
         url: url + id + "/",
         headers: { 'X-CSRFToken': getCSRFCookie() },
@@ -102,7 +102,7 @@ function put(endpoint, id, data, success, error) {
 
 function patch(endpoint, id, data, success, error) {
     url = toUrl(endpoint);
-    $.ajax({
+    return $.ajax({
         type: "PATCH",
         url: url + id + "/",
         headers: { 'X-CSRFToken': getCSRFCookie() },
@@ -116,7 +116,7 @@ function patch(endpoint, id, data, success, error) {
 
 function remove(endpoint, id, success, error) {
     url = toUrl(endpoint);
-    $.ajax({
+    return $.ajax({
         type: "DELETE",
         url: url + id + "/",
         headers: { 'X-CSRFToken': getCSRFCookie() },
@@ -132,14 +132,14 @@ function remove(endpoint, id, success, error) {
  */
 
 function getJurisdictions(onSuccess, onFailure) {
-    query(endpoints.jurisdictions.base, null, onSuccess, onFailure);
+    return query(endpoints.jurisdictions.base, null, onSuccess, onFailure);
 }
 
 /*
  * Tax categories service client
  */
 function getTaxCategories(onSuccess, onFailure) {
-    query(endpoints.rules.taxCategories, null, onSuccess, onFailure);
+    return query(endpoints.rules.taxCategories, null, onSuccess, onFailure);
 }
 
 /*
@@ -149,7 +149,7 @@ function getFormForJurisdiction(jurisdictionId, onSuccess, onFailure) {
     queryParameters = {
         jurisdiction_ids: jurisdictionId
     }
-    query(endpoints.forms.base, queryParameters, onSuccess, onFailure);
+    return query(endpoints.forms.base, queryParameters, onSuccess, onFailure);
 }
 
 /*
@@ -164,7 +164,7 @@ function createBooleanQuestion(formId, text, ordinal, explainer, variableName, i
         is_mandatory: isMandatory,
         type: "boolean"
     };
-    post(endpoints.forms.questions(formId), data, onSuccess, onFailure);
+    return post(endpoints.forms.questions(formId), data, onSuccess, onFailure);
 }
 
 function updateBooleanQuestion(formId, questionId, text, ordinal, explainer, isMandatory, onSuccess, onFailure) {
@@ -175,7 +175,7 @@ function updateBooleanQuestion(formId, questionId, text, ordinal, explainer, isM
         is_mandatory: isMandatory,
         type: "boolean"
     };
-    put(endpoints.forms.questions(formId), questionId, data, onSuccess, onFailure);
+    return put(endpoints.forms.questions(formId), questionId, data, onSuccess, onFailure);
 }
 
 function createNumericQuestion(formId, text, ordinal, explainer, variableName, isMandatory, isInteger, minValue, maxValue, onSuccess, onFailure) {
@@ -190,7 +190,7 @@ function createNumericQuestion(formId, text, ordinal, explainer, variableName, i
         min_value: !isNaN(parseInt(minValue)) ? parseInt(minValue) : null,
         max_value: !isNaN(parseInt(maxValue)) ? parseInt(maxValue) : null
     };
-    post(endpoints.forms.questions(formId), data, onSuccess, onFailure);
+    return post(endpoints.forms.questions(formId), data, onSuccess, onFailure);
 }
 
 function updateNumericQuestion(formId, questionId, text, ordinal, explainer, isMandatory, isInteger, minValue, maxValue, onSuccess, onFailure) {
@@ -204,7 +204,7 @@ function updateNumericQuestion(formId, questionId, text, ordinal, explainer, isM
         min_value: !isNaN(parseInt(minValue)) ? parseInt(minValue) : null,
         max_value: !isNaN(parseInt(maxValue)) ? parseInt(maxValue) : null
     };
-    put(endpoints.forms.questions(formId), questionId, data, onSuccess, onFailure);
+    return put(endpoints.forms.questions(formId), questionId, data, onSuccess, onFailure);
 }
 
 function createMultipleChoiceQuestion(formId, text, ordinal, explainer, variableName, isMandatory, onSuccess, onFailure) {
@@ -216,7 +216,7 @@ function createMultipleChoiceQuestion(formId, text, ordinal, explainer, variable
         is_mandatory: isMandatory,
         type: "multiple_choice"
     };
-    post(endpoints.forms.questions(formId), data, onSuccess, onFailure);
+    return post(endpoints.forms.questions(formId), data, onSuccess, onFailure);
 }
 
 function updateMultipleChoiceQuestion(formId, questionId, text, ordinal, explainer, isMandatory, onSuccess, onFailure) {
@@ -227,17 +227,17 @@ function updateMultipleChoiceQuestion(formId, questionId, text, ordinal, explain
         is_mandatory: isMandatory,
         type: "multiple_choice"
     };
-    put(endpoints.forms.questions(formId), questionId, data, onSuccess, onFailure);
+    return put(endpoints.forms.questions(formId), questionId, data, onSuccess, onFailure);
 }
 
 function updateQuestion(question, onSuccess, onFailure) {
     formId = getFormId();
     switch (question.type) {
         case "boolean":
-                updateBooleanQuestion(formId, question.id, question.text, question.ordinal, question.explainer, question.is_mandatory, onSuccess, onFailure);
+                return updateBooleanQuestion(formId, question.id, question.text, question.ordinal, question.explainer, question.is_mandatory, onSuccess, onFailure);
             break;
         case "numeric":
-                updateNumericQuestion(
+                return updateNumericQuestion(
                     formId,
                     question.id,
                     question.text,
@@ -251,13 +251,13 @@ function updateQuestion(question, onSuccess, onFailure) {
                     onFailure);
             break;
         case "multiple_choice":
-                    updateMultipleChoiceQuestion(formId, question.id, question.text, question.ordinal, question.explainer, question.is_mandatory, onSuccess, onFailure);
+                return updateMultipleChoiceQuestion(formId, question.id, question.text, question.ordinal, question.explainer, question.is_mandatory, onSuccess, onFailure);
             break;
     }
 }
 
 function removeQuestion(formId, questionId, onSuccess, onFailure) {
-    remove(endpoints.forms.questions(formId), questionId, onSuccess, onFailure);
+    return remove(endpoints.forms.questions(formId), questionId, onSuccess, onFailure);
 }
 
 /*
@@ -268,11 +268,11 @@ function postMultipleChoiceOption(formId, questionId, text, explainer, onSuccess
         text: text,
         explainer: explainer
     }
-    post(endpoints.forms.multipleChoiceOptions(formId, questionId), data, onSuccess, onFailure);
+    return post(endpoints.forms.multipleChoiceOptions(formId, questionId), data, onSuccess, onFailure);
 }
 
 function removeMultipleChoiceOption(formId, questionId, optionId, onSuccess, onFailure) {
-    remove(endpoints.forms.multipleChoiceOptions(formId, questionId), optionId, onSuccess, onFailure);
+    return remove(endpoints.forms.multipleChoiceOptions(formId, questionId), optionId, onSuccess, onFailure);
 }
 
 /*
@@ -282,7 +282,7 @@ function getRulesetsForJurisdiction(jurisdictionId, onSuccess, onFailure) {
     queryParameters = {
         jurisdiction_id: jurisdictionId
     };
-    query(endpoints.rules.rulesets, queryParameters, onSuccess, onFailure);
+    return query(endpoints.rules.rulesets, queryParameters, onSuccess, onFailure);
 }
 
 function postRuleset(jurisdictionId, taxCategoryId, ordinal, onSuccess, onFailure) {
@@ -291,18 +291,18 @@ function postRuleset(jurisdictionId, taxCategoryId, ordinal, onSuccess, onFailur
         tax_category_id: parseInt(taxCategoryId),
         ordinal: ordinal
     };
-    post(endpoints.rules.rulesets, data, onSuccess, onFailure);
+    return post(endpoints.rules.rulesets, data, onSuccess, onFailure);
 }
 
 function patchRuleset(rulesetId, ordinal, onSuccess, onFailure) {
     data = {
         ordinal: ordinal
     };
-    patch(endpoints.rules.rulesets, rulesetId, data, onSuccess, onFailure);
+    return patch(endpoints.rules.rulesets, rulesetId, data, onSuccess, onFailure);
 }
 
 function removeRuleset(rulesetId, onSuccess, onFailure) {
-    remove(endpoints.rules.rulesets, rulesetId, onSuccess, onFailure);
+    return remove(endpoints.rules.rulesets, rulesetId, onSuccess, onFailure);
 }
 
 /*
@@ -317,7 +317,7 @@ function createFlatRateRule(rulesetId, name, explainer, variableName, ordinal, t
         type: "flat_rate",
         tax_rate: !isNaN(parseFloat(taxRate)) ? parseFloat(taxRate) : null
     };
-    post(endpoints.rules.rules(rulesetId), data, onSuccess, onFailure);
+    return post(endpoints.rules.rules(rulesetId), data, onSuccess, onFailure);
 }
 
 function updateFlatRateRule(rulesetId, ruleId, name, explainer, variableName, ordinal, taxRate, onSuccess, onFailure) {
@@ -329,7 +329,7 @@ function updateFlatRateRule(rulesetId, ruleId, name, explainer, variableName, or
         type: "flat_rate",
         tax_rate: !isNaN(parseFloat(taxRate)) ? parseFloat(taxRate) : null
     };
-    put(endpoints.rules.rules(rulesetId), ruleId, data, onSuccess, onFailure);
+    return put(endpoints.rules.rules(rulesetId), ruleId, data, onSuccess, onFailure);
 }
 
 function createTieredRateRule(rulesetId, name, explainer, variableName, ordinal, onSuccess, onFailure) {
@@ -340,7 +340,7 @@ function createTieredRateRule(rulesetId, name, explainer, variableName, ordinal,
         ordinal: ordinal,
         type: "tiered_rate"
     };
-    post(endpoints.rules.rules(rulesetId), data, onSuccess, onFailure);
+    return post(endpoints.rules.rules(rulesetId), data, onSuccess, onFailure);
 }
 
 function updateTieredRateRule(rulesetId, ruleId, name, explainer, variableName, ordinal, onSuccess, onFailure) {
@@ -351,7 +351,7 @@ function updateTieredRateRule(rulesetId, ruleId, name, explainer, variableName, 
         ordinal: ordinal,
         type: "tiered_rate"
     };
-    put(endpoints.rules.rules(rulesetId), ruleId, data, onSuccess, onFailure);
+    return put(endpoints.rules.rules(rulesetId), ruleId, data, onSuccess, onFailure);
 }
 
 function createSecondaryTieredRateRule(rulesetId, name, explainer, variableName, ordinal, primaryRuleId, onSuccess, onFailure) {
@@ -363,7 +363,7 @@ function createSecondaryTieredRateRule(rulesetId, name, explainer, variableName,
         type: "secondary_tiered_rate",
         primary_rule_id: parseInt(primaryRuleId)
     };
-    post(endpoints.rules.rules(rulesetId), data, onSuccess, onFailure);
+    return post(endpoints.rules.rules(rulesetId), data, onSuccess, onFailure);
 }
 
 function updateSecondaryTieredRateRule(rulesetId, ruleId, name, explainer, variableName, ordinal, primaryRuleId, onSuccess, onFailure) {
@@ -375,11 +375,11 @@ function updateSecondaryTieredRateRule(rulesetId, ruleId, name, explainer, varia
         type: "secondary_tiered_rate",
         primary_rule_id: parseInt(primaryRuleId)
     };
-    put(endpoints.rules.rules(rulesetId), ruleId, data, onSuccess, onFailure);
+    return put(endpoints.rules.rules(rulesetId), ruleId, data, onSuccess, onFailure);
 }
 
 function removeRule(rulesetId, ruleId, onSuccess, onFailure) {
-    remove(endpoints.rules.rules(rulesetId), ruleId, onSuccess, onFailure);
+    return remove(endpoints.rules.rules(rulesetId), ruleId, onSuccess, onFailure);
 }
 
 /*
@@ -392,7 +392,7 @@ function postRuleTier(rulesetId, ruleId, minValue, maxValue, ordinal, taxRate, o
         ordinal: ordinal,
         tax_rate: !isNaN(parseFloat(taxRate)) ? parseFloat(taxRate) : null
     };
-    post(endpoints.rules.tiers(rulesetId, ruleId), data, onSuccess, onFailure);
+    return post(endpoints.rules.tiers(rulesetId, ruleId), data, onSuccess, onFailure);
 }
 
 function updateRuleTier(rulesetId, ruleId, tierId, minValue, maxValue, ordinal, taxRate, onSuccess, onFailure) {
@@ -402,11 +402,11 @@ function updateRuleTier(rulesetId, ruleId, tierId, minValue, maxValue, ordinal, 
         ordinal: ordinal,
         tax_rate: !isNaN(parseFloat(taxRate)) ? parseFloat(taxRate) : null
     };
-    put(endpoints.rules.tiers(rulesetId, ruleId), tierId, data, onSuccess, onFailure);
+    return put(endpoints.rules.tiers(rulesetId, ruleId), tierId, data, onSuccess, onFailure);
 }
 
 function removeRuleTier(rulesetId, ruleId, tierId, onSuccess, onFailure) {
-    remove(endpoints.rules.tiers(rulesetId, ruleId), tierId, onSuccess, onFailure);
+    return remove(endpoints.rules.tiers(rulesetId, ruleId), tierId, onSuccess, onFailure);
 }
 
 /*
@@ -418,7 +418,7 @@ function postSecondaryRuleTier(rulesetId, ruleId, primaryTierId, ordinal, taxRat
         ordinal: ordinal,
         tax_rate: !isNaN(parseFloat(taxRate)) ? parseFloat(taxRate) : null
     };
-    post(endpoints.rules.secondaryTiers(rulesetId, ruleId), data, onSuccess, onFailure);
+    return post(endpoints.rules.secondaryTiers(rulesetId, ruleId), data, onSuccess, onFailure);
 }
 
 function updateSecondaryRuleTier(rulesetId, ruleId, tierId, primaryTierId, ordinal, taxRate, onSuccess, onFailure) {
@@ -427,11 +427,11 @@ function updateSecondaryRuleTier(rulesetId, ruleId, tierId, primaryTierId, ordin
         ordinal: ordinal,
         tax_rate: !isNaN(parseFloat(taxRate)) ? parseFloat(taxRate) : null
     };
-    put(endpoints.rules.secondaryTiers(rulesetId, ruleId), tierId, data, onSuccess, onFailure);
+    return put(endpoints.rules.secondaryTiers(rulesetId, ruleId), tierId, data, onSuccess, onFailure);
 }
 
 function removeSecondaryRuleTier(rulesetId, ruleId, tierId, onSuccess, onFailure) {
-    remove(endpoints.rules.secondaryTiers(rulesetId, ruleId), tierId, onSuccess, onFailure);
+    return remove(endpoints.rules.secondaryTiers(rulesetId, ruleId), tierId, onSuccess, onFailure);
 }
 
 if (typeof module != "undefined") module.exports = {

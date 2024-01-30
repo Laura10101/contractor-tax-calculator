@@ -121,7 +121,7 @@ if (typeof require !== "undefined") {
     updateRulesetsDisplay = viewUtils.updateRulesetsDisplay;
 }
 
-function doNothing() {}
+function doNothing() { }
 /*
  * Forms Views
  */
@@ -402,11 +402,13 @@ function swapQuestionOrdinals(question, findNewPosition, updater, refresher) {
         questionToSwap.ordinal = originalOrdinal;
 
         // Save the questions
-        updater(question, doNothing, saveQuestionFailed);
-        updater(questionToSwap, doNothing, saveQuestionFailed);
+        let update1 = updater(question, doNothing, saveQuestionFailed);
+        let update2 = updater(questionToSwap, doNothing, saveQuestionFailed);
 
-        // Refresh the question display
-        refresher();
+        // Refresh the question display when both updates have completed
+        $.when(update1, update2).then(function () {
+            refresher();
+        });
     }
 }
 
@@ -599,7 +601,7 @@ function deleteRuleset(ruleset) {
 }
 
 function swapRulesetOrdinals(ruleset, findNewPosition, updater, refresher) {
-    // Find the question that needs to be swapped
+    // Find the ruleset that needs to be swapped
     let rulesetToSwap = findNewPosition(ruleset);
 
     if (rulesetToSwap != null) {
@@ -608,12 +610,14 @@ function swapRulesetOrdinals(ruleset, findNewPosition, updater, refresher) {
         ruleset.ordinal = rulesetToSwap.ordinal;
         rulesetToSwap.ordinal = originalOrdinal;
 
-        // Save the questions
-        updater(ruleset.id, ruleset.ordinal, doNothing, saveRulesetFailed);
-        updater(rulesetToSwap.id, rulesetToSwap.ordinal, doNothing, saveRulesetFailed);
+        // Save the rulesets
+        let update1 = updater(ruleset.id, ruleset.ordinal, doNothing, saveRulesetFailed);
+        let update2 = updater(rulesetToSwap.id, rulesetToSwap.ordinal, doNothing, saveRulesetFailed);
 
-        // Refresh the question display
-        refresher();
+        // Refresh the ruleset display when both updates have completed
+        $.when(update1, update2).then(function () {
+            refresher();
+        });
     }
 }
 
@@ -642,9 +646,6 @@ function editRule(ruleset, rule) {
             break;
         case "tiered_rate":
                 setDialogState(dialogStates.modes.edit, dialogStates.entityTypes.tieredRateRule, rule);
-                console.log("editRule app state");
-                console.log(app);
-                console.log("");
                 displayEditTieredRateRuleDialog(rule);
             break;
         case "secondary_tiered_rate":
@@ -927,11 +928,13 @@ function swapRuleOrdinals(ruleset, rule, findNewPosition, updater, refresher) {
         ruleToSwap.ordinal = originalOrdinal;
 
         // Save the ordinals
-        updater(ruleset, rule);
-        updater(ruleset, ruleToSwap);
+        let update1 = updater(ruleset, rule);
+        let update2 = updater(ruleset, ruleToSwap);
 
-        // Refresh the ruleset display
-        refresher();
+        // Refresh the ruleset display when both updates have completed
+        $.when(update1, update2).then(function () {
+            refresher();
+        });
     }
 }
 
@@ -1062,9 +1065,6 @@ function createRuleTier(createPrimary) {
     moveAppStateToParentState();
     if (createPrimary) {
         setDialogState(dialogStates.modes.create, dialogStates.entityTypes.ruleTier, null);
-        console.log("createRuleTier app state");
-        console.log(app);
-        console.log("");
         displayCreateRuleTierDialog();
     } else {
         primaryTiers = app.parentState.entity.primary_rule.tiers;
@@ -1086,9 +1086,6 @@ function editRuleTier(editPrimary, tier) {
 }
 
 function saveRuleTierOrdinal(isPrimary, tier) {
-    console.log("saveRuleTierOrdinal app state");
-    console.log(app);
-    console.log("");
     rule = app.dialogState.entity;
     ruleset = findParentRuleset(rule.id);
     if (isPrimary) {
@@ -1128,10 +1125,13 @@ function swapRuleTierOrdinals(swapPrimary, tier, findNewPosition, updater, refre
         tierToSwap.ordinal = originalOrdinal;
 
         // Save the questions
-        updater(swapPrimary, tier);
-        updater(swapPrimary, tierToSwap);
+        let update1 = updater(swapPrimary, tier);
+        let update2 = updater(swapPrimary, tierToSwap);
 
-        refresher();
+        // Refresh the ruleset display
+        $.when(update1, update2).then(function() {
+            refresher();
+        });
     }
 }
 
