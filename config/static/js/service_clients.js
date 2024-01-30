@@ -387,8 +387,8 @@ function removeRule(rulesetId, ruleId, onSuccess, onFailure) {
  */
 function postRuleTier(rulesetId, ruleId, minValue, maxValue, ordinal, taxRate, onSuccess, onFailure) {
     data = {
-        min_value: minValue,
-        max_value: maxValue,
+        min_value: minValue == "" ? null : minValue,
+        max_value: maxValue == "" ? null : maxValue,
         ordinal: ordinal,
         tax_rate: taxRate
     };
@@ -397,8 +397,8 @@ function postRuleTier(rulesetId, ruleId, minValue, maxValue, ordinal, taxRate, o
 
 function updateRuleTier(rulesetId, ruleId, tierId, minValue, maxValue, ordinal, taxRate, onSuccess, onFailure) {
     data = {
-        min_value: minValue,
-        max_value: maxValue,
+        min_value: minValue == "" ? null : minValue,
+        max_value: maxValue == "" ? null : maxValue,
         ordinal: ordinal,
         tax_rate: taxRate
     };
