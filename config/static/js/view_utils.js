@@ -264,7 +264,7 @@ function updateMultipleChoiceQuestionDialogOptionsDisplay(options) {
     });
 }
 
-function initMultipleChoiceQuestionDialog(dialogLabel, questionText, explainer, variableName, isMandatory, allowMultiselect, options, showOptions=false) {
+function initMultipleChoiceQuestionDialog(dialogLabel, questionText, explainer, variableName, isMandatory, allowMultiselect, options, showOptions=true) {
     document.getElementById(multipleChoiceQuestionDialog.label.id).innerText = dialogLabel;
     document.getElementById(multipleChoiceQuestionDialog.questionText.input.id).value = questionText;
     document.getElementById(multipleChoiceQuestionDialog.explainer.input.id).value = explainer;
@@ -300,7 +300,8 @@ function displayEditMultipleChoiceQuestionDialog(question) {
         question.variable_name,
         question.is_mandatory,
         question.is_multiselect,
-        question.options
+        question.options,
+        true
     );
     // Show the dialog
     showDialog(multipleChoiceQuestionDialog.dialog.id);
