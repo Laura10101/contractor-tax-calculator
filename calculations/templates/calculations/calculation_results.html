@@ -23,7 +23,7 @@
         {% for jurisdiction_name, jurisdiction in summaries.items %}
             <!-- Start modal for jurisdiction {{ jurisdiction_name }} -->
                 <section>
-                    <div class="modal" id="calculation-detail-{{ jurisdiction_name }}" tabindex="-1">
+                    <div class="modal" id="calculation-detail-{{ jurisdiction_name|slugify }}" tabindex="-1">
                         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                             <div class="modal-content">
                                 <!-- Begin modal header -->
@@ -52,9 +52,9 @@
                                                             <tr>
                                                                 <td class="text-center">{{ result.tax_category }}</td>
                                                                 <td class="text-center">{{ result.variable_name }}</td>
-                                                                <td class="text-center">{{ result.taxable_amount }}</td>
-                                                                <td class="text-center">{{ result.tax_rate }}</td>
-                                                                <td class="text-center">{{ result.tax_payable }}</td>
+                                                                <td class="text-center">{{ result.taxable_amount|floatformat:2 }}</td>
+                                                                <td class="text-center">{{ result.tax_rate|floatformat:2 }}</td>
+                                                                <td class="text-center">{{ result.tax_payable|floatformat:2 }}</td>
                                                             </tr>
                                                         {% endfor %}
                                                     {% endif %}
@@ -101,7 +101,7 @@
                                                         {% if category != 'jurisdiction_id' %}
                                                             <tr>
                                                                 <th scope="row" class="text-center">{{ category }}</th>
-                                                                <td class="text-center">{{ tax_payable }}</td>
+                                                                <td class="text-center">{{ tax_payable|floatformat:2 }}</td>
                                                             </tr>
                                                         {% endif %}
                                                     {% endfor %}
@@ -111,7 +111,8 @@
                                     </div>
                                     <div class="row">
                                         <div class="col text-center">
-                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#calculation-detail-{{ jurisdiction_name }}">
+                                            <button type="button" class="btn btn-primary"
+                                                data-toggle="modal" data-target="#calculation-detail-{{ jurisdiction_name|slugify }}">
                                                 View calculation
                                             </button>
                                         </div>

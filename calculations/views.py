@@ -106,6 +106,7 @@ def display_calculation(request):
     if request.method == 'POST':
         try:
             calculation = create_calculation(request.build_absolute_uri(reverse('calculations')), request)
+            print(str(calculation))
         except Exception as e:
             return render(request, template, { 'error': str(e)})
     else:
