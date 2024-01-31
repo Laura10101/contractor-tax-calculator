@@ -9,9 +9,3 @@ class RuleSetAdmin(admin.ModelAdmin):
 
 # Register your models here.
 admin.site.register(TaxCategory)
-admin.site.register(RuleSet, RuleSetAdmin)
-admin.site.register(FlatRateRule)
-admin.site.register(TieredRateRule)
-admin.site.register(SecondaryTieredRateRule)
-admin.site.register(RuleTier)
-admin.site.register(SecondaryRuleTier)
