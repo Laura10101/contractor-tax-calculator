@@ -283,6 +283,29 @@ function isDuplicateVariableName(variableName) {
     return isDuplicate;
 }
 
+// Check if there are any rules whose variable name matches the
+// variable name of the specified question
+function questionHasDependentRules(questionId) {
+    // Get the variable name from the question
+    let question = findQuestionById(questionId);
+    if (question == null) {
+        return null;
+    }
+    let varName = question.variable_name;
+    let hasDependents = false;
+
+    // Check all rules to see if there are any dependents
+    app.jurisdictionRules.forEach(ruleset => {
+        ruleset.rules.forEach(rule => {
+            if (rule.variable_name == varName) {
+                hasDependents = true;
+            }
+        });
+    });
+
+    return hasDependents;
+}
+
 /*
  * View Model Accessor Methods - Multiple choice options
  */
@@ -800,5 +823,6 @@ if (typeof module !== "undefined") module.exports = {
     primaryRuleHasDependentSecondaryRules,
     primaryRuleTierHasDependentSecondaryTiers,
     getValidQuestionTextVariableNamePairs,
-    isDuplicateVariableName
+    isDuplicateVariableName,
+    questionHasDependentRules
 };

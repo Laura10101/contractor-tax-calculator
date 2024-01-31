@@ -70,6 +70,15 @@ const rules = [
                 variable_name: "salary",
                 type: "tiered_rate",
                 tiers: []
+            },
+            {
+                id: 219,
+                name: "A Completely Mock rule",
+                explainer: "test_explainer",
+                ordinal: 1,
+                variable_name: "numeric_var",
+                taxRate: 20,
+                type: "test_type"
             }
         ]
     },

@@ -38,7 +38,8 @@ const {
     primaryRuleHasDependentSecondaryRules,
     primaryRuleTierHasDependentSecondaryTiers,
     getValidQuestionTextVariableNamePairs,
-    isDuplicateVariableName
+    isDuplicateVariableName,
+    questionHasDependentRules
  } = require("../view_models");
 
 describe("App state management", () => {
@@ -185,6 +186,11 @@ describe("View model accessor methods", () => {
 
         test("should correctly identify duplicate variable names", () => {
             expect(isDuplicateVariableName("numeric_var")).toBe(true);
+        });
+
+        test("should correctly identify rules dependent on a given question's variable", () => {
+            expect(questionHasDependentRules(4)).toBe(true);
+            expect(questionHasDependentRules(3)).toBe(false);
         });
     });
 
