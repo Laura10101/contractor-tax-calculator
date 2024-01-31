@@ -808,7 +808,7 @@ function saveRule(flatRateRuleCreator=createFlatRateRule, tieredRateRuleCreator=
                 break;
             // Create secondary tiered rate rule
             case dialogStates.entityTypes.secondaryTieredRateRule:
-                    errors = viewUtils.validateSecondaryTieredRateRuleDialog();
+                    errors = validateSecondaryTieredRateRuleDialog();
                     if (errors.length == 0) {
                         hideDialog(secondaryTieredRateRuleDialog.dialog.id);
                         secondaryTieredRateRuleCreator(
@@ -1128,7 +1128,7 @@ function saveRuleTier(ruleTierCreator=postRuleTier, secondaryRuleTierCreator=pos
                     }
                 break;
             case dialogStates.entityTypes.secondaryRuleTier:
-                    errors = viewUtils.validateSecondaryRuleTierDialog();
+                    errors = validateSecondaryRuleTierDialog();
                     if (errors.length == 0) {
                         hideDialog(secondaryRuleTierDialog.dialog.id);
                         secondaryRuleTierCreator(
