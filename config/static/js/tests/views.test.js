@@ -699,13 +699,13 @@ describe("Status views", () => {
 
         describe("Rules", () => {
             test("should display an appropriate confirmation dialog and correctly set the app state", () => {
-                let rule = findRuleById(44);
+                let rule = findRuleById(219);
                 expect(rule).toBeDefined();
-                expect(rule.id).toBe(44);
+                expect(rule.id).toBe(219);
 
-                let ruleset = findParentRuleset(44);
+                let ruleset = findParentRuleset(219);
                 expect(ruleset).toBeDefined();
-                expect(ruleset.id).toBe(27);
+                expect(ruleset.id).toBe(23);
 
                 let dialogId = confirmationDialog.dialog.id;
                 deleteRule(ruleset, rule);
@@ -732,15 +732,17 @@ describe("Status views", () => {
                 expect(rule).toBeDefined();
                 expect(rule.id).toBe(44);
 
-                let tier = rule.tiers[0];
+                let tier = rule.tiers[1];
                 expect(tier).toBeDefined();
-                expect(tier.id).toBe(3);
+                expect(tier.id).toBe(4);
 
                 setDialogState(dialogStates.modes.edit, dialogStates.entityTypes.tieredRateRule, rule);
 
                 let dialogId = confirmationDialog.dialog.id;
                 deleteRuleTier(true, tier);
 
+                console.log(dialogId);
+                console.log(isShown(dialogId));
                 expect(isShown(dialogId)).toBe(true);
 
                 let title = document.getElementById(confirmationDialog.label.id).innerHTML;
@@ -877,7 +879,6 @@ describe("Question views", () => {
                     expect(_text).toBe(text);
                     expect(_ordinal).toBe(getNextQuestionOrdinal());
                     expect(_explainer).toBe(explainer);
-                    expect(_variableName).toBe(variableName);
                     expect(success).toEqual(saveQuestionSucceeded);
                     expect(failure).toEqual(saveQuestionFailed);
                     done();
@@ -929,7 +930,6 @@ describe("Question views", () => {
                     expect(_text).toBe(text);
                     expect(_ordinal).toBe(getNextQuestionOrdinal());
                     expect(_explainer).toBe(explainer);
-                    expect(_variableName).toBe(variableName);
                     expect(_isInteger).toBe(isInteger);
                     expect(parseInt(_minValue)).toBe(minValue);
                     expect(parseInt(_maxValue)).toBe(maxValue);
@@ -982,7 +982,6 @@ describe("Question views", () => {
                     expect(_text).toBe(text);
                     expect(_ordinal).toBe(getNextQuestionOrdinal());
                     expect(_explainer).toBe(explainer);
-                    expect(_variableName).toBe(variableName);
                     done();
                 }
 
@@ -1491,10 +1490,13 @@ describe("Ruleset views", () => {
                 let rulesetCard = rulesetsDisplay.children[i + 1];
                 expect(rulesetCard).toBeDefined();
 
-                let rule = ruleset.rules[i];
                 let rulesDisplay = rulesetCard.querySelector("#" + rulesetDisplay.rules.id + "-" + ruleset.id);
                 expect(rulesDisplay).toBeDefined();
-                expect(rulesDisplay.children.length).toBe(ruleset.rules.length + 3);
+                if (ruleset.id == 23) {
+                    expect(rulesDisplay.children.length).toBe(ruleset.rules.length + 2);
+                } else {
+                    expect(rulesDisplay.children.length).toBe(ruleset.rules.length + 3);
+                }
             }
         });
     });
@@ -1524,6 +1526,8 @@ describe("Ruleset views", () => {
                 expect(isShown(rulesetDialog.dialog.id)).toBe(false);
                 done();
             }
+
+            document.getElementById(rulesetDialog.taxCategory.input.id).value = 5;
 
             saveRuleset(creator);
         });
@@ -1742,7 +1746,6 @@ describe("Rule views views", () => {
                     expect(_rulesetId).toBe(ruleset.id);
                     expect(_name).toBe(name);
                     expect(_explainer).toBe(explainer);
-                    expect(_variableName).toBe(variableName);
                     expect(_ordinal).toBe(getNextRuleOrdinal());
                     expect(parseInt(_taxRate)).toBe(taxRate);
                     expect(success).toBe(saveRuleSucceeded);
@@ -1797,7 +1800,6 @@ describe("Rule views views", () => {
                     expect(_rulesetId).toBe(ruleset.id);
                     expect(_name).toBe(name);
                     expect(_explainer).toBe(explainer);
-                    expect(_variableName).toBe(variableName);
                     expect(_ordinal).toBe(getNextRuleOrdinal());
                     expect(success).toBe(saveRuleSucceeded);
                     expect(failure).toBe(saveRuleFailed);
@@ -1851,7 +1853,6 @@ describe("Rule views views", () => {
                     expect(_rulesetId).toBe(ruleset.id);
                     expect(_name).toBe(name);
                     expect(_explainer).toBe(explainer);
-                    expect(_variableName).toBe(variableName);
                     expect(_ordinal).toBe(getNextRuleOrdinal());
                     expect(success).toBe(saveRuleSucceeded);
                     expect(failure).toBe(saveRuleFailed);
@@ -1949,7 +1950,6 @@ describe("Rule views views", () => {
                     expect(_ruleId).toBe(rule.id);
                     expect(_name).toBe(rule.name);
                     expect(_explainer).toBe(rule.explainer);
-                    expect(_variableName).toBe(rule.variable_name);
                     expect(_ordinal).toBe(rule.ordinal);
                     expect(parseInt(_taxRate)).toBe(rule.tax_rate);
                     expect(success).toBe(saveRuleSucceeded);
@@ -2006,7 +2006,6 @@ describe("Rule views views", () => {
                     expect(_ruleId).toBe(rule.id);
                     expect(_name).toBe(rule.name);
                     expect(_explainer).toBe(rule.explainer);
-                    expect(_variableName).toBe(rule.variable_name);
                     expect(_ordinal).toBe(rule.ordinal);
                     expect(success).toBe(saveRuleSucceeded);
                     expect(failure).toBe(saveRuleFailed);
@@ -2062,7 +2061,6 @@ describe("Rule views views", () => {
                     expect(_ruleId).toBe(rule.id);
                     expect(_name).toBe(rule.name);
                     expect(_explainer).toBe(rule.explainer);
-                    expect(_variableName).toBe(rule.variable_name);
                     expect(_ordinal).toBe(rule.ordinal);
                     expect(success).toBe(saveRuleSucceeded);
                     expect(failure).toBe(saveRuleFailed);

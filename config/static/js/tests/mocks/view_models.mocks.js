@@ -10,7 +10,8 @@ const taxCategories = [
     { tax_category_id: 1, name: "Dividend Tax" },
     { tax_category_id: 2, name: "Corporation Tax" },
     { tax_category_id: 3, name: "Income Tax" },
-    { tax_category_id: 4, name: "VAT" }
+    { tax_category_id: 4, name: "VAT" },
+    { tax_category_id: 5, name: "Mock Category for Testing" }
 ];
 
 const forms = {
