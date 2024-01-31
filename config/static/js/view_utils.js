@@ -322,10 +322,15 @@ function validateNumericQuestionDialog(questionId=null) {
     let text = document.getElementById(numericQuestionDialog.questionText.input.id).value;
     let variableName = document.getElementById(numericQuestionDialog.variableName.input.id).value;
     let minValue = document.getElementById(numericQuestionDialog.minimumValue.input.id).value;
+    let maxValue = document.getElementById(numericQuestionDialog.maximumValue.input.id).value;
     let errors = validateQuestionData(text, variableName, questionId);
 
     if (!intIsValid(minValue)) {
         errors.push("<p>Minimium value must be a valid integer (whole number)<p>");
+    }
+
+    if (!intIsValid(maxValue) && maxValue != "") {
+        errors.push("<p>Maximum value must be a valid integer (whole number)</p>");
     }
 
     return errors;
@@ -877,7 +882,7 @@ function validateRuleTierDialog() {
         errors.push("<p>Minimum value is required to be a valid integer</p>");
     }
 
-    if (!intIsValid(maxValue)) {
+    if (!intIsValid(maxValue) && maxValue != "") {
         errors.push("<p>Maximum value is required to be a valid integer</p>");
     }
 
