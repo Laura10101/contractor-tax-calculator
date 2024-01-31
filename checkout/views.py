@@ -30,7 +30,9 @@ def checkout(request):
         return render(request, template, { 'error': 'Failed to find subscription option with id ' + str(subscription_option_id) })
 
     try:
-        option_data = json.loads(response.text)['subscription_option']
+        data = json.loads(response.text)
+        print(data)
+        option_data = data['subscription_option']
     except:
         return render(request, template, { 'error': 'Failed to retrieve subscription option with response code ' + str(response.status_code) })
 
@@ -47,18 +49,18 @@ def checkout(request):
 
     # POST data to payment API
     # This will create Stripe payment confirmation and local record 
+    url = base_url + '/api/payments/'
     response = requests.post(url, json=data)
+    print(response.text)
 
     try:
-        option_data = json.loads(response.text)['subscription_option']
+        payment_result = json.loads(response.text)
+        payment_id, client_secret = payment_result['payment_id'], payment_result['client_secret']
     except:
-        return render(request, template, { 'error': 'Failed to retrieve subscription option with response code ' + str(response.status_code) })
+        return render(request, template, { 'error': 'Failed to create payment intent with response code ' + str(response.status_code) })
 
     if 'error' in option_data:
-        return render(request, template, { 'error': 'Failed to retrieve subscription option with error ' + option_data['error'] })
-
-    payment_result = json.loads(response.text)
-    payment_id, client_secret = payment_result['payment_id'], payment_result['client_secret']
+        return render(request, template, { 'error': 'Failed to create payment intent with error: ' + option_data['error'] })
 
     context = { 
         'stripe_public_key': stripe_public_key,
