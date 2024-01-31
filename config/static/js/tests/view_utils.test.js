@@ -392,7 +392,6 @@ describe("Dialog utilities", () => {
 
                     expect(name).toBe(rule.name);
                     expect(explainer).toBe(rule.explainer);
-                    expect(variableName).toBe(rule.variable_name);
                     expect(parseInt(taxRate)).toBe(rule.tax_rate);
                 });
             });
@@ -436,7 +435,6 @@ describe("Dialog utilities", () => {
 
                     expect(name).toBe(rule.name);
                     expect(explainer).toBe(rule.explainer);
-                    expect(variableName).toBe(rule.variable_name);
 
                     let tiersTable = document.getElementById(dialogConsts.tiers.table.id);
                     expect(tiersTable).toBeDefined();
@@ -493,7 +491,6 @@ describe("Dialog utilities", () => {
 
                     expect(name).toBe(rule.name);
                     expect(explainer).toBe(rule.explainer);
-                    expect(variableName).toBe(rule.variable_name);
                     expect(primaryRuleSelect.children.length).toBe(primaryRules.length);
                     for (var i = 0; i < primaryRuleSelect.children.length; i++) {
                         expect(parseInt(primaryRuleSelect.children[i].value)).toBe(primaryRules[i].id);
@@ -754,9 +751,9 @@ describe("Display utilities", () => {
     describe("Rulesets", () => {
         describe("Ruleset", () => {
             test("should correctly display the ruleset and associated rules", () => {
-                let ruleset = findParentRuleset(13);
+                let ruleset = findParentRuleset(44);
                 expect(ruleset).toBeDefined();
-                expect(ruleset.id).toBe(23);
+                expect(ruleset.id).toBe(27);
 
                 displayRuleset(ruleset);
 

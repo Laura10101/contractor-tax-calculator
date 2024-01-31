@@ -37,6 +37,7 @@ if (typeof require !== "undefined") {
     getTaxCategoryById = viewModels.getTaxCategoryById;
     findPrimaryRuleTierById = viewModels.findPrimaryRuleTierById;
     taxCategoryHasRulesetForJurisdiction = viewModels.taxCategoryHasRulesetForJurisdiction;
+    getValidQuestionTextVariableNamePairs = viewModels.getValidQuestionTextVariableNamePairs;
 }
 /*
  * Dialog Helper Functions
