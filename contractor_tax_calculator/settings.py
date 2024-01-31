@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     'home',
     'subscription',
     'calculations',
+    'allauth.socialaccount',
     'config',
     'storages',
 ]
