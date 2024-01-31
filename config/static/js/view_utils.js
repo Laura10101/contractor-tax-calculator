@@ -589,7 +589,7 @@ function initRulesetDialog(dialogLabel, taxCategories) {
 
 function displayCreateRulesetDialog() {
     // Initialise the ruleset dialog with appropriate values for a create
-    initRulesetDialog("Create Ruleset", app.taxCategories);
+    initRulesetDialog("Create Tax Rule Collection", app.taxCategories);
     // Show the dialog
     showDialog(rulesetDialog.dialog.id);
 }
@@ -672,14 +672,14 @@ function initFlatRateRuleDialog(dialogLabel, name, explainer, variableName, taxR
 
 function displayCreateFlatRateRuleDialog() {
     // Initialise the boolean question dialog with appropriate values for a create
-    initFlatRateRuleDialog("Create Flat Rate Rule", "", "", "", "");
+    initFlatRateRuleDialog("Create Flat Rate", "", "", "", "");
     // Show the dialog
     showDialog(flatRateRuleDialog.dialog.id);
 }
 
 function displayEditFlatRateRuleDialog(rule) {
     initFlatRateRuleDialog(
-        "Edit Flat Rate Rule",
+        "Edit Flat Rate",
         rule.name,
         rule.explainer,
         rule.variable_name,
@@ -732,14 +732,14 @@ function initTieredRateRuleDialog(dialogLabel, name, explainer, variableName, ti
 
 function displayCreateTieredRateRuleDialog() {
     // Initialise the boolean question dialog with appropriate values for a create
-    initTieredRateRuleDialog("Create Tiered Rate Rule", "", "", "", [], false);
+    initTieredRateRuleDialog("Create Tiered Rate", "", "", "", [], false);
     // Show the dialog
     showDialog(tieredRateRuleDialog.dialog.id);
 }
 
 function displayEditTieredRateRuleDialog(rule) {
     initTieredRateRuleDialog(
-        "Edit Tiered Rate Rule",
+        "Edit Tiered Rate",
         rule.name,
         rule.explainer,
         rule.variable_name,
@@ -802,14 +802,14 @@ function initSecondaryTieredRateRuleDialog(dialogLabel, name, explainer, variabl
 
 function displayCreateSecondaryTieredRateRuleDialog(primaryRules) {
     // Initialise the boolean question dialog with appropriate values for a create
-    initSecondaryTieredRateRuleDialog("Create Secondary Tiered Rate Rule", "", "", "", primaryRules, [], false);
+    initSecondaryTieredRateRuleDialog("Create Progressive Tiered Rate", "", "", "", primaryRules, [], false);
     // Show the dialog
     showDialog(secondaryTieredRateRuleDialog.dialog.id);
 }
 
 function displayEditSecondaryTieredRateRuleDialog(rule, primaryRules) {
     initSecondaryTieredRateRuleDialog(
-        "Edit Secondary Tiered Rate Rule",
+        "Edit Progressive Tiered Rate",
         rule.name,
         rule.explainer,
         rule.variable_name,

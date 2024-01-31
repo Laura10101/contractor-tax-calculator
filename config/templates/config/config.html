@@ -463,7 +463,7 @@
             <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                <h5 class="modal-title" id="ruleset-modal-label">Create Ruleset</h5>
+                <h5 class="modal-title" id="ruleset-modal-label">Create Tax Rule Collection</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -546,7 +546,7 @@
                     <div class="modal-content">
                         <!-- Begin dialog header -->
                             <div class="modal-header">
-                                <h5 class="modal-title" id="flat-rate-rule-modal-label">Create Flat Rate Rule</h5>
+                                <h5 class="modal-title" id="flat-rate-rule-modal-label">Create Flat Rate</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -579,7 +579,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col" id="flat-rate-rule-modal-variable-name-label">
-                                            Data Source
+                                            Income Source
                                         </div>
                                         <div class="col">
                                             <select class="custom-select" id="flat-rate-rule-modal-variable-name-input">
@@ -616,7 +616,7 @@
                     <div class="modal-content">
                         <!-- Begin dialog header -->
                             <div class="modal-header">
-                                <h5 class="modal-title" id="tiered-rate-rule-modal-label">Create Tiered Rate Rule</h5>
+                                <h5 class="modal-title" id="tiered-rate-rule-modal-label">Create Tiered Rate</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -650,7 +650,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col" id="tiered-rate-rule-modal-variable-name-label">
-                                            Data Source
+                                            Income Source
                                         </div>
                                         <div class="col">
                                             <select class="custom-select" id="tiered-rate-rule-modal-variable-name-input">
@@ -729,7 +729,7 @@
                     <div class="modal-content">
                         <!-- Begin modal header -->
                             <div class="modal-header">
-                                <h5 class="modal-title" id="secondary-tiered-rate-rule-modal-label">Create Secondary Tiered Rate Rule</h5>
+                                <h5 class="modal-title" id="secondary-tiered-rate-rule-modal-label">Create Progessive Tiered Rate</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -762,7 +762,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col" id="secondary-tiered-rate-rule-modal-variable-name-label">
-                                            Data Source
+                                            Income Source
                                         </div>
                                         <div class="col">
                                             <select class="custom-select" id="secondary-tiered-rate-rule-modal-variable-name-input">
@@ -1209,9 +1209,9 @@
                                         <div class="col">
                                             <button type="button" class="btn btn-primary" onclick="createRuleset()"
                                                 data-toggle="tooltip" data-placement="top"
-                                                title="Rule sets group rules by the category of tax they relate to. Click to create a new tax category">
+                                                title="Tax rule collections group rules by the category of tax they relate to. Click to create a new tax rule collection.">
                                                 <i class="fas fa-plus"></i>
-                                                Rule Set
+                                                Tax Rule Collection
                                             </button>
                                         </div>
                                     </div>
@@ -1226,14 +1226,19 @@
                                                         <div class="card-body">
                                                             <table class="table table-borderless">
                                                                 <tbody>
+                                                                    <!-- Ruleset details -->
                                                                     <tr>
-                                                                        <!-- Ruleset details -->
+                                                                        <td>
+
+                                                                        </td>
+                                                                    </tr>
+                                                                    <!-- End ruleset details -->
+                                                                    <tr>
                                                                         <td>
                                                                             <i class="fas fa-list-ol"></i>
                                                                             <p id="ruleset-display-card-name">Ruleset name</p>
                                                                             <p id="ruleset-display-card-tax-category">Tax category name</p>
                                                                         </td>
-                                                                        <!-- End ruleset details -->
 
                                                                         <!-- Rules -->
                                                                         <td id="ruleset-display-card-rules">
@@ -1245,7 +1250,7 @@
                                                                                             <tr>
                                                                                                 <td rowspan="4">
                                                                                                     <i class="fas fa-percent"></i>
-                                                                                                    Flat rate rule
+                                                                                                    Flat rate
                                                                                                 </td>
                                                                                                 <td id="flat-rate-rule-display-card-name">Name</td>
                                                                                                 <td rowspan="4">
@@ -1286,7 +1291,7 @@
                                                                                             <tr>
                                                                                                 <td rowspan="3">
                                                                                                     <i class="fas fa-layer-group"></i>
-                                                                                                    Tiered rate rule
+                                                                                                    Tiered rate
                                                                                                 </td>
                                                                                                 <td id="tiered-rate-rule-display-card-name">Name</td>
                                                                                                 <td rowspan="3">
@@ -1324,7 +1329,7 @@
                                                                                             <tr>
                                                                                                 <td rowspan="4">
                                                                                                     <i class="fas fa-link"></i>
-                                                                                                    Secondary tiered rate rule
+                                                                                                    Progressive tiered rate
                                                                                                 </td>
                                                                                                 <td id="secondary-tiered-rate-rule-display-card-name">Name</td>
                                                                                                 <td rowspan="4">
