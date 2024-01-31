@@ -221,6 +221,16 @@ function getTaxCategoryById(id) {
     return category;
 }
 
+function taxCategoryHasRulesetForJurisdiction(taxCategoryId) {
+    let hasRuleset = false;
+    app.jurisdictionRules.forEach(ruleset => {
+        if (ruleset.tax_category_id == taxCategoryId) {
+            hasRuleset = true;
+        }
+    });
+    return hasRuleset;
+}
+
 /*
  * View Model Accessor Methods - Questions
  */
@@ -825,5 +835,6 @@ if (typeof module !== "undefined") module.exports = {
     primaryRuleTierHasDependentSecondaryTiers,
     getValidQuestionTextVariableNamePairs,
     isDuplicateVariableName,
-    questionHasDependentRules
+    questionHasDependentRules,
+    taxCategoryHasRulesetForJurisdiction
 };

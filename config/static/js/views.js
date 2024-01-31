@@ -124,6 +124,18 @@ if (typeof require !== "undefined") {
     displayCreateSecondaryRuleTierDialog = viewUtils.displayCreateSecondaryRuleTierDialog;
     displayEditSecondaryRuleTierDialog = viewUtils.displayEditSecondaryRuleTierDialog;
     updateRulesetsDisplay = viewUtils.updateRulesetsDisplay;
+    validateBooleanQuestionDialog = viewUtils.validateBooleanQuestionDialog;
+    validateNumericQuestionDialog = viewUtils.validateNumericQuestionDialog;
+    validateMultipleChoiceQuestionDialog = viewUtils.validateMultipleChoiceQuestionDialog;
+    validateMultipleChoiceOptionDialog = viewUtils.validateMultipleChoiceOptionDialog;
+    validateRulesetDialog = viewUtils.validateRulesetDialog;
+    validateRuleData = viewUtils.validateRuleData;
+    validateFlatRateRuleDialog = viewUtils.validateFlatRateRuleDialog;
+    validateTieredRateRuleDialog = viewUtils.validateTieredRateRuleDialog;
+    validateSecondaryTieredRateRuleDialog = viewUtils.validateSecondaryTieredRateRuleDialog;
+    validateRuleTierDialog = viewUtils.validateRuleTierDialog;
+    validateSecondaryRuleTierDialog = viewUtils.validateSecondaryRuleTierDialog;
+    displayValidationErrors = viewUtils.displayValidationErrors;
 }
 
 function doNothing() { }
@@ -258,53 +270,69 @@ function saveQuestion(booleanQuestionCreator=createBooleanQuestion, numericQuest
     multipleChoiceQuestionCreator=createMultipleChoiceQuestion, booleanQuestionUpdater=updateBooleanQuestion, numericQuestionUpdater=updateNumericQuestion,
     multipleChoiceQuestionUpdater=updateMultipleChoiceQuestion) {
     formId = getFormId();
+    let errors = [];
 
     if (app.dialogState.mode == dialogStates.modes.create) {
         switch (app.dialogState.entityType) {
             // Create boolean question
             case dialogStates.entityTypes.booleanQuestion:
-                    hideDialog(booleanQuestionDialog.dialog.id);
-                    booleanQuestionCreator(
-                        formId,
-                        document.getElementById(booleanQuestionDialog.questionText.input.id).value,
-                        getNextQuestionOrdinal(),
-                        document.getElementById(booleanQuestionDialog.explainer.input.id).value,
-                        document.getElementById(booleanQuestionDialog.variableName.input.id).value,
-                        document.getElementById(booleanQuestionDialog.isMandatory.input.id).checked,
-                        saveQuestionSucceeded,
-                        saveQuestionFailed
-                    );
+                    errors = validateBooleanQuestionDialog();
+                    if (errors.length == 0) {
+                        hideDialog(booleanQuestionDialog.dialog.id);
+                        booleanQuestionCreator(
+                            formId,
+                            document.getElementById(booleanQuestionDialog.questionText.input.id).value,
+                            getNextQuestionOrdinal(),
+                            document.getElementById(booleanQuestionDialog.explainer.input.id).value,
+                            document.getElementById(booleanQuestionDialog.variableName.input.id).value,
+                            document.getElementById(booleanQuestionDialog.isMandatory.input.id).checked,
+                            saveQuestionSucceeded,
+                            saveQuestionFailed
+                        );
+                    } else {
+                        displayValidationErrors(booleanQuestionDialog.errors.id, errors);
+                    }
                 break;
             // Create numeric question
             case dialogStates.entityTypes.numericQuestion:
-                    hideDialog(numericQuestionDialog.dialog.id);
-                    numericQuestionCreator(
-                        formId,
-                        document.getElementById(numericQuestionDialog.questionText.input.id).value,
-                        getNextQuestionOrdinal(),
-                        document.getElementById(numericQuestionDialog.explainer.input.id).value,
-                        document.getElementById(numericQuestionDialog.variableName.input.id).value,
-                        document.getElementById(numericQuestionDialog.isMandatory.input.id).checked,
-                        document.getElementById(numericQuestionDialog.isInteger.input.id).checked,
-                        document.getElementById(numericQuestionDialog.minimumValue.input.id).value,
-                        document.getElementById(numericQuestionDialog.maximumValue.input.id).value,
-                        saveQuestionSucceeded,
-                        saveQuestionFailed
-                    )
+                    errors = validateNumericQuestionDialog();
+                    if (errors.length == 0) {
+                        hideDialog(numericQuestionDialog.dialog.id);
+                        numericQuestionCreator(
+                            formId,
+                            document.getElementById(numericQuestionDialog.questionText.input.id).value,
+                            getNextQuestionOrdinal(),
+                            document.getElementById(numericQuestionDialog.explainer.input.id).value,
+                            document.getElementById(numericQuestionDialog.variableName.input.id).value,
+                            document.getElementById(numericQuestionDialog.isMandatory.input.id).checked,
+                            document.getElementById(numericQuestionDialog.isInteger.input.id).checked,
+                            document.getElementById(numericQuestionDialog.minimumValue.input.id).value,
+                            document.getElementById(numericQuestionDialog.maximumValue.input.id).value,
+                            saveQuestionSucceeded,
+                            saveQuestionFailed
+                        );
+                    } else {
+                        displayValidationErrors(numericQuestionDialog.errors.id, errors);
+                    }
                 break;
             // Create multiple choice questions
             case dialogStates.entityTypes.multipleChoiceQuestion:
-                    hideDialog(multipleChoiceQuestionDialog.dialog.id);
-                    multipleChoiceQuestionCreator(
-                        formId,
-                        document.getElementById(multipleChoiceQuestionDialog.questionText.input.id).value,
-                        getNextQuestionOrdinal(),
-                        document.getElementById(multipleChoiceQuestionDialog.explainer.input.id).value,
-                        document.getElementById(multipleChoiceQuestionDialog.variableName.input.id).value,
-                        document.getElementById(multipleChoiceQuestionDialog.isMandatory.input.id).checked,
-                        saveQuestionSucceeded,
-                        saveQuestionFailed
-                    )
+                    errors = validateMultipleChoiceQuestionDialog();
+                    if (errors.length == 0) {
+                        hideDialog(multipleChoiceQuestionDialog.dialog.id);
+                        multipleChoiceQuestionCreator(
+                            formId,
+                            document.getElementById(multipleChoiceQuestionDialog.questionText.input.id).value,
+                            getNextQuestionOrdinal(),
+                            document.getElementById(multipleChoiceQuestionDialog.explainer.input.id).value,
+                            document.getElementById(multipleChoiceQuestionDialog.variableName.input.id).value,
+                            document.getElementById(multipleChoiceQuestionDialog.isMandatory.input.id).checked,
+                            saveQuestionSucceeded,
+                            saveQuestionFailed
+                        )
+                    } else {
+                        displayValidationErrors(multipleChoiceQuestionDialog.errors.id, errors);
+                    }
                 break;
         }
         
@@ -314,48 +342,63 @@ function saveQuestion(booleanQuestionCreator=createBooleanQuestion, numericQuest
         switch(app.dialogState.entityType) {
             // Edit boolean question
             case dialogStates.entityTypes.booleanQuestion:
-                    hideDialog(booleanQuestionDialog.dialog.id);
-                    booleanQuestionUpdater(
-                        formId,
-                        question.id,
-                        document.getElementById(booleanQuestionDialog.questionText.input.id).value,
-                        question.ordinal,
-                        document.getElementById(booleanQuestionDialog.explainer.input.id).value,
-                        document.getElementById(booleanQuestionDialog.isMandatory.input.id).checked,
-                        saveQuestionSucceeded,
-                        saveQuestionFailed
-                    )
+                    errors = validateBooleanQuestionDialog(question.id);
+                    if (errors.length == 0) {
+                        hideDialog(booleanQuestionDialog.dialog.id);
+                        booleanQuestionUpdater(
+                            formId,
+                            question.id,
+                            document.getElementById(booleanQuestionDialog.questionText.input.id).value,
+                            question.ordinal,
+                            document.getElementById(booleanQuestionDialog.explainer.input.id).value,
+                            document.getElementById(booleanQuestionDialog.isMandatory.input.id).checked,
+                            saveQuestionSucceeded,
+                            saveQuestionFailed
+                        );
+                    } else {
+                        displayValidationErrors(booleanQuestionDialog.errors.id, errors);
+                    }
                 break;
             // Edit numeric question
             case dialogStates.entityTypes.numericQuestion:
-                    hideDialog(numericQuestionDialog.dialog.id);
-                    numericQuestionUpdater(
-                        formId,
-                        question.id,
-                        document.getElementById(numericQuestionDialog.questionText.input.id).value,
-                        question.ordinal,
-                        document.getElementById(numericQuestionDialog.explainer.input.id).value,
-                        document.getElementById(numericQuestionDialog.isMandatory.input.id).checked,
-                        document.getElementById(numericQuestionDialog.isInteger.input.id).checked,
-                        document.getElementById(numericQuestionDialog.minimumValue.input.id).value,
-                        document.getElementById(numericQuestionDialog.maximumValue.input.id).value,
-                        saveQuestionSucceeded,
-                        saveQuestionFailed
-                    );
+                    errors = validateNumericQuestionDialog(question.id);
+                    if (errors.length == 0) {
+                        hideDialog(numericQuestionDialog.dialog.id);
+                        numericQuestionUpdater(
+                            formId,
+                            question.id,
+                            document.getElementById(numericQuestionDialog.questionText.input.id).value,
+                            question.ordinal,
+                            document.getElementById(numericQuestionDialog.explainer.input.id).value,
+                            document.getElementById(numericQuestionDialog.isMandatory.input.id).checked,
+                            document.getElementById(numericQuestionDialog.isInteger.input.id).checked,
+                            document.getElementById(numericQuestionDialog.minimumValue.input.id).value,
+                            document.getElementById(numericQuestionDialog.maximumValue.input.id).value,
+                            saveQuestionSucceeded,
+                            saveQuestionFailed
+                        );
+                    } else {
+                        displayValidationErrors(numericQuestionDialog.errors.id, errors);
+                    }
                 break;
             // Edit multiple choice question
             case dialogStates.entityTypes.multipleChoiceQuestion:
-                    hideDialog(multipleChoiceQuestionDialog.dialog.id);
-                    multipleChoiceQuestionUpdater(
-                        formId,
-                        question.id,
-                        document.getElementById(multipleChoiceQuestionDialog.questionText.input.id).value,
-                        question.ordinal,
-                        document.getElementById(multipleChoiceQuestionDialog.explainer.input.id).value,
-                        document.getElementById(multipleChoiceQuestionDialog.isMandatory.input.id).checked,
-                        saveQuestionSucceeded,
-                        saveQuestionFailed
-                    )
+                    errors = validateMultipleChoiceQuestionDialog(question.id);
+                    if (errors.length == 0) {
+                        hideDialog(multipleChoiceQuestionDialog.dialog.id);
+                        multipleChoiceQuestionUpdater(
+                            formId,
+                            question.id,
+                            document.getElementById(multipleChoiceQuestionDialog.questionText.input.id).value,
+                            question.ordinal,
+                            document.getElementById(multipleChoiceQuestionDialog.explainer.input.id).value,
+                            document.getElementById(multipleChoiceQuestionDialog.isMandatory.input.id).checked,
+                            saveQuestionSucceeded,
+                            saveQuestionFailed
+                        );
+                    } else {
+                        displayValidationErrors(multipleChoiceQuestionDialog.errors.id, errors);
+                    }
                 break;
         }
     } else {
@@ -473,15 +516,20 @@ function saveMultipleChoiceOptionFailed(request, status, message) {
 }
 
 function saveMultipleChoiceOption(creator=postMultipleChoiceOption) {
-    hideDialog(multipleChoiceOptionDialog.dialog.id);
+    let errors = validateMultipleChoiceOptionDialog();
+    if (errors.length == 0) {
+        hideDialog(multipleChoiceOptionDialog.dialog.id);
 
-    let formId = getFormId();
-    let questionId = app.parentState.entity.id;
-    let name = document.getElementById(multipleChoiceOptionDialog.name.input.id).value;
-    let explainer = document.getElementById(multipleChoiceOptionDialog.explainer.input.id).value;
+        let formId = getFormId();
+        let questionId = app.parentState.entity.id;
+        let name = document.getElementById(multipleChoiceOptionDialog.name.input.id).value;
+        let explainer = document.getElementById(multipleChoiceOptionDialog.explainer.input.id).value;
 
-    if (app.dialogState.mode == dialogStates.modes.create) {
-        creator(formId, questionId, name, explainer, saveMultipleChoiceOptionSucceeded, saveMultipleChoiceOptionFailed);
+        if (app.dialogState.mode == dialogStates.modes.create) {
+            creator(formId, questionId, name, explainer, saveMultipleChoiceOptionSucceeded, saveMultipleChoiceOptionFailed);
+        }
+    } else {
+        displayValidationErrors(multipleChoiceOptionDialog.errors.id, errors);
     }
 }
 
@@ -559,14 +607,19 @@ function saveRulesetFailed(request, status, message) {
 }
 
 function saveRuleset(creator=postRuleset) {
-    hideDialog(rulesetDialog.dialog.id);
+    let errors = validateRulesetDialog();
+    if (errors.length == 0) {
+        hideDialog(rulesetDialog.dialog.id);
 
-    jurisdictionId = getSelectedJurisdictionId();
-    taxCategoryId = document.getElementById(rulesetDialog.taxCategory.input.id).value;
-    ordinal = getNextRulesetOrdinal();
+        jurisdictionId = getSelectedJurisdictionId();
+        taxCategoryId = document.getElementById(rulesetDialog.taxCategory.input.id).value;
+        ordinal = getNextRulesetOrdinal();
 
-    if (app.dialogState.mode == dialogStates.modes.create) {
-        creator(jurisdictionId, taxCategoryId, ordinal, saveRulesetSucceeded, saveRulesetFailed);
+        if (app.dialogState.mode == dialogStates.modes.create) {
+            creator(jurisdictionId, taxCategoryId, ordinal, saveRulesetSucceeded, saveRulesetFailed);
+        }
+    } else {
+        displayValidationErrors(rulesetDialog.errors.id, errors);
     }
 }
 
@@ -712,48 +765,65 @@ function saveRule(flatRateRuleCreator=createFlatRateRule, tieredRateRuleCreator=
     secondaryTieredRateRuleUpdater=updateSecondaryTieredRateRule) {
     rulesetId = app.parentRuleset.id;
 
+    let errors = [];
+
     if (app.dialogState.mode == dialogStates.modes.create) {
         switch (app.dialogState.entityType) {
             // Create flat rate rule
             case dialogStates.entityTypes.flatRateRule:
-                    hideDialog(flatRateRuleDialog.dialog.id);
-                    flatRateRuleCreator(
-                        rulesetId,
-                        document.getElementById(flatRateRuleDialog.name.input.id).value,
-                        document.getElementById(flatRateRuleDialog.explainer.input.id).value,
-                        document.getElementById(flatRateRuleDialog.variableName.input.id).value,
-                        getNextRuleOrdinal(),
-                        document.getElementById(flatRateRuleDialog.taxRate.input.id).value,
-                        saveRuleSucceeded,
-                        saveRuleFailed
-                    )
+                    errors = validateFlatRateRuleDialog();
+                    if (errors.length == 0) {
+                        hideDialog(flatRateRuleDialog.dialog.id);
+                        flatRateRuleCreator(
+                            rulesetId,
+                            document.getElementById(flatRateRuleDialog.name.input.id).value,
+                            document.getElementById(flatRateRuleDialog.explainer.input.id).value,
+                            document.getElementById(flatRateRuleDialog.variableName.input.id).value,
+                            getNextRuleOrdinal(),
+                            document.getElementById(flatRateRuleDialog.taxRate.input.id).value,
+                            saveRuleSucceeded,
+                            saveRuleFailed
+                        );
+                    } else {
+                        displayValidationErrors(flatRateRuleDialog.errors.id, errors);
+                    }
                 break;
             // Create tiered rate rule
             case dialogStates.entityTypes.tieredRateRule:
-                    hideDialog(tieredRateRuleDialog.dialog.id);
-                    tieredRateRuleCreator(
-                        rulesetId,
-                        document.getElementById(tieredRateRuleDialog.name.input.id).value,
-                        document.getElementById(tieredRateRuleDialog.explainer.input.id).value,
-                        document.getElementById(tieredRateRuleDialog.variableName.input.id).value,
-                        getNextRuleOrdinal(),
-                        saveRuleSucceeded,
-                        saveRuleFailed
-                    );
+                    errors = validateTieredRateRuleDialog();
+                    if (errors.length == 0) {
+                        hideDialog(tieredRateRuleDialog.dialog.id);
+                        tieredRateRuleCreator(
+                            rulesetId,
+                            document.getElementById(tieredRateRuleDialog.name.input.id).value,
+                            document.getElementById(tieredRateRuleDialog.explainer.input.id).value,
+                            document.getElementById(tieredRateRuleDialog.variableName.input.id).value,
+                            getNextRuleOrdinal(),
+                            saveRuleSucceeded,
+                            saveRuleFailed
+                        );
+                    } else {
+                        displayValidationErrors(tieredRateRuleDialog.errors.id, errors);
+                    }
                 break;
             // Create secondary tiered rate rule
             case dialogStates.entityTypes.secondaryTieredRateRule:
-                    hideDialog(secondaryTieredRateRuleDialog.dialog.id);
-                    secondaryTieredRateRuleCreator(
-                        rulesetId,
-                        document.getElementById(secondaryTieredRateRuleDialog.name.input.id).value,
-                        document.getElementById(secondaryTieredRateRuleDialog.explainer.input.id).value,
-                        document.getElementById(secondaryTieredRateRuleDialog.variableName.input.id).value,
-                        getNextRuleOrdinal(),
-                        document.getElementById(secondaryTieredRateRuleDialog.primaryRule.input.id).value,
-                        saveRuleSucceeded,
-                        saveRuleFailed
-                    );
+                    errors = viewUtils.validateSecondaryTieredRateRuleDialog();
+                    if (errors.length == 0) {
+                        hideDialog(secondaryTieredRateRuleDialog.dialog.id);
+                        secondaryTieredRateRuleCreator(
+                            rulesetId,
+                            document.getElementById(secondaryTieredRateRuleDialog.name.input.id).value,
+                            document.getElementById(secondaryTieredRateRuleDialog.explainer.input.id).value,
+                            document.getElementById(secondaryTieredRateRuleDialog.variableName.input.id).value,
+                            getNextRuleOrdinal(),
+                            document.getElementById(secondaryTieredRateRuleDialog.primaryRule.input.id).value,
+                            saveRuleSucceeded,
+                            saveRuleFailed
+                        );
+                    } else {
+                        displayValidationErrors(secondaryTieredRateRuleDialog.errors.id, errors);
+                    }
                 break;
         }
         
@@ -762,47 +832,62 @@ function saveRule(flatRateRuleCreator=createFlatRateRule, tieredRateRuleCreator=
         switch(app.dialogState.entityType) {
             // Edit flat rate rule
             case dialogStates.entityTypes.flatRateRule:
-                    hideDialog(flatRateRuleDialog.dialog.id);
-                    flatRateRuleUpdater(
-                        rulesetId,
-                        rule.id,
-                        document.getElementById(flatRateRuleDialog.name.input.id).value,
-                        document.getElementById(flatRateRuleDialog.explainer.input.id).value,
-                        document.getElementById(flatRateRuleDialog.variableName.input.id).value,
-                        rule.ordinal,
-                        document.getElementById(flatRateRuleDialog.taxRate.input.id).value,
-                        saveRuleSucceeded,
-                        saveRuleFailed
-                    );
+                    errors = validateFlatRateRuleDialog();
+                    if (errors.length == 0) {
+                        hideDialog(flatRateRuleDialog.dialog.id);
+                        flatRateRuleUpdater(
+                            rulesetId,
+                            rule.id,
+                            document.getElementById(flatRateRuleDialog.name.input.id).value,
+                            document.getElementById(flatRateRuleDialog.explainer.input.id).value,
+                            document.getElementById(flatRateRuleDialog.variableName.input.id).value,
+                            rule.ordinal,
+                            document.getElementById(flatRateRuleDialog.taxRate.input.id).value,
+                            saveRuleSucceeded,
+                            saveRuleFailed
+                        );
+                    } else {
+                        displayValidationErrors(flatRateRuleDialog.errors.id, errors);
+                    }
                 break;
             // Edit tiered rate rule
             case dialogStates.entityTypes.tieredRateRule:
-                    hideDialog(tieredRateRuleDialog.dialog.id);
-                    tieredRateRuleUpdater(
-                        rulesetId,
-                        rule.id,
-                        document.getElementById(tieredRateRuleDialog.name.input.id).value,
-                        document.getElementById(tieredRateRuleDialog.explainer.input.id).value,
-                        document.getElementById(tieredRateRuleDialog.variableName.input.id).value,
-                        rule.ordinal,
-                        saveRuleSucceeded,
-                        saveRuleFailed
-                    );
+                    errors = validateTieredRateRuleDialog();
+                    if (errors.length == 0) {
+                        hideDialog(tieredRateRuleDialog.dialog.id);
+                        tieredRateRuleUpdater(
+                            rulesetId,
+                            rule.id,
+                            document.getElementById(tieredRateRuleDialog.name.input.id).value,
+                            document.getElementById(tieredRateRuleDialog.explainer.input.id).value,
+                            document.getElementById(tieredRateRuleDialog.variableName.input.id).value,
+                            rule.ordinal,
+                            saveRuleSucceeded,
+                            saveRuleFailed
+                        );
+                    } else {
+                        displayValidationErrors(tieredRateRuleDialog.errors.id, errors);
+                    }
                 break;
             // Edit secondary tiered rate rule
             case dialogStates.entityTypes.secondaryTieredRateRule:
-                    hideDialog(secondaryTieredRateRuleDialog.dialog.id);
-                    secondaryTieredRateRuleUpdater(
-                        rulesetId,
-                        rule.id,
-                        document.getElementById(secondaryTieredRateRuleDialog.name.input.id).value,
-                        document.getElementById(secondaryTieredRateRuleDialog.explainer.input.id).value,
-                        document.getElementById(secondaryTieredRateRuleDialog.variableName.input.id).value,
-                        rule.ordinal,
-                        document.getElementById(secondaryTieredRateRuleDialog.primaryRule.input.id).value,
-                        saveRuleSucceeded,
-                        saveRuleFailed
-                    );
+                    errors = validateSecondaryTieredRateRuleDialog();
+                    if (errors.length == 0) {
+                        hideDialog(secondaryTieredRateRuleDialog.dialog.id);
+                        secondaryTieredRateRuleUpdater(
+                            rulesetId,
+                            rule.id,
+                            document.getElementById(secondaryTieredRateRuleDialog.name.input.id).value,
+                            document.getElementById(secondaryTieredRateRuleDialog.explainer.input.id).value,
+                            document.getElementById(secondaryTieredRateRuleDialog.variableName.input.id).value,
+                            rule.ordinal,
+                            document.getElementById(secondaryTieredRateRuleDialog.primaryRule.input.id).value,
+                            saveRuleSucceeded,
+                            saveRuleFailed
+                        );
+                    } else {
+                        displayValidationErrors(secondaryTieredRateRuleDialog.errors.id, errors);
+                    }
                 break;
         }
     } else {
@@ -1019,64 +1104,86 @@ function saveRuleTier(ruleTierCreator=postRuleTier, secondaryRuleTierCreator=pos
     rule = app.parentState.entity;
     ruleset = findParentRuleset(rule.id);
 
+    let errors = [];
+
     if (app.dialogState.mode == dialogStates.modes.create)
     {
         switch (app.dialogState.entityType) {
             case dialogStates.entityTypes.ruleTier:
-                    hideDialog(ruleTierDialog.dialog.id);
-                    ruleTierCreator(
-                        ruleset.id,
-                        rule.id,
-                        document.getElementById(ruleTierDialog.minimumValue.input.id).value,
-                        document.getElementById(ruleTierDialog.maximumValue.input.id).value,
-                        getNextRuleTierOrdinal(rule),
-                        document.getElementById(ruleTierDialog.taxRate.input.id).value,
-                        saveRuleTierSucceeded,
-                        saveRuleTierFailed
-                    );
+                    errors = validateRuleTierDialog();
+                    if (errors.length == 0) {
+                        hideDialog(ruleTierDialog.dialog.id);
+                        ruleTierCreator(
+                            ruleset.id,
+                            rule.id,
+                            document.getElementById(ruleTierDialog.minimumValue.input.id).value,
+                            document.getElementById(ruleTierDialog.maximumValue.input.id).value,
+                            getNextRuleTierOrdinal(rule),
+                            document.getElementById(ruleTierDialog.taxRate.input.id).value,
+                            saveRuleTierSucceeded,
+                            saveRuleTierFailed
+                        );
+                    } else {
+                        displayValidationErrors(ruleTierDialog.errors.id, errors);
+                    }
                 break;
             case dialogStates.entityTypes.secondaryRuleTier:
-                    hideDialog(secondaryRuleTierDialog.dialog.id);
-                    secondaryRuleTierCreator(
-                        ruleset.id,
-                        rule.id,
-                        document.getElementById(secondaryRuleTierDialog.primaryTier.input.id).value,
-                        getNextRuleTierOrdinal(rule),
-                        document.getElementById(secondaryRuleTierDialog.taxRate.input.id).value,
-                        saveRuleTierSucceeded,
-                        saveRuleTierFailed
-                    );
+                    errors = viewUtils.validateSecondaryRuleTierDialog();
+                    if (errors.length == 0) {
+                        hideDialog(secondaryRuleTierDialog.dialog.id);
+                        secondaryRuleTierCreator(
+                            ruleset.id,
+                            rule.id,
+                            document.getElementById(secondaryRuleTierDialog.primaryTier.input.id).value,
+                            getNextRuleTierOrdinal(rule),
+                            document.getElementById(secondaryRuleTierDialog.taxRate.input.id).value,
+                            saveRuleTierSucceeded,
+                            saveRuleTierFailed
+                        );
+                    } else {
+                        displayValidationErrors(ruleTierDialog.errors.id, errors);
+                    }
                 break;
         }
     } else if (app.dialogState.mode == dialogStates.modes.edit) {
         tier = app.dialogState.entity;
         switch (app.dialogState.entityType) {
             case dialogStates.entityTypes.ruleTier:
-                    hideDialog(ruleTierDialog.dialog.id);
-                    ruleTierUpdater(
-                        ruleset.id,
-                        rule.id,
-                        tier.id,
-                        document.getElementById(ruleTierDialog.minimumValue.input.id).value,
-                        document.getElementById(ruleTierDialog.maximumValue.input.id).value,
-                        tier.ordinal,
-                        document.getElementById(ruleTierDialog.taxRate.input.id).value,
-                        saveRuleTierSucceeded,
-                        saveRuleTierFailed
-                    );
+                    errors = validateRuleTierDialog();
+                    if (errors.length == 0) {
+                        hideDialog(ruleTierDialog.dialog.id);
+                        ruleTierUpdater(
+                            ruleset.id,
+                            rule.id,
+                            tier.id,
+                            document.getElementById(ruleTierDialog.minimumValue.input.id).value,
+                            document.getElementById(ruleTierDialog.maximumValue.input.id).value,
+                            tier.ordinal,
+                            document.getElementById(ruleTierDialog.taxRate.input.id).value,
+                            saveRuleTierSucceeded,
+                            saveRuleTierFailed
+                        );
+                    } else {
+                        displayValidationErrors(ruleTierDialog.errors.id, errors);
+                    }
                 break;
             case dialogStates.entityTypes.secondaryRuleTier:
-                    hideDialog(secondaryRuleTierDialog.dialog.id);
-                    secondaryRuleTierUpdater(
-                        ruleset.id,
-                        rule.id,
-                        tier.id,
-                        tier.primary_tier_id,
-                        tier.ordinal,
-                        document.getElementById(secondaryRuleTierDialog.taxRate.input.id).value,
-                        saveRuleTierSucceeded,
-                        saveRuleTierFailed
-                    );
+                    errors = validateSecondaryRuleTierDialog();
+                    if (errors.length == 0) {
+                        hideDialog(secondaryRuleTierDialog.dialog.id);
+                        secondaryRuleTierUpdater(
+                            ruleset.id,
+                            rule.id,
+                            tier.id,
+                            tier.primary_tier_id,
+                            tier.ordinal,
+                            document.getElementById(secondaryRuleTierDialog.taxRate.input.id).value,
+                            saveRuleTierSucceeded,
+                            saveRuleTierFailed
+                        );
+                    } else {
+                        displayValidationErrors(secondaryRuleTierDialog.errors.id, errors);
+                    }
                 break;
         }
     }

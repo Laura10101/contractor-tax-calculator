@@ -120,6 +120,10 @@ const questionTypeDialog = {
         id: "question-type-modal-label"
     },
 
+    errors: {
+        id: ""
+    },
+
     questionType: {
         label: {
             id: "question-type-modal-input-label"
@@ -138,6 +142,10 @@ const booleanQuestionDialog = {
 
     label: {
         id: "boolean-question-modal-label"
+    },
+
+    errors: {
+        id: "boolean-question-errors"
     },
 
     questionText: {
@@ -184,6 +192,10 @@ const numericQuestionDialog = {
 
     label: {
         id: "numeric-question-modal-label"
+    },
+
+    errors: {
+        id: "numeric-question-errors"
     },
 
     questionText: {
@@ -259,6 +271,10 @@ const multipleChoiceQuestionDialog = {
         id: "multichoice-question-modal-label"
     },
 
+    errors: {
+        id: "multichoice-question-errors"
+    },
+
     questionText: {
         label: {
             id: "multichoice-question-modal-question-text-label"
@@ -327,6 +343,10 @@ const multipleChoiceOptionDialog = {
 
     label: {
         id: "multiple-choice-option-modal-label"
+    },
+
+    errors: {
+        id: "multiple-choice-option-errors"
     },
 
     name: {
@@ -429,6 +449,10 @@ const rulesetDialog = {
         id: "ruleset-modal-label"
     },
 
+    errors: {
+        id: "ruleset-errors"
+    },
+
     taxCategory: {
         label: {
             id: "ruleset-modal-tax-category-label"
@@ -467,6 +491,10 @@ const flatRateRuleDialog = {
 
     label: {
         id: "flat-rate-rule-modal-label"
+    },
+
+    errors: {
+        id: "flat-rate-rule-errors"
     },
 
     name: {
@@ -513,6 +541,10 @@ const tieredRateRuleDialog = {
 
     label: {
         id: "tiered-rate-rule-modal-label"
+    },
+
+    errors: {
+        id: "tiered-rate-rule-errors"
     },
 
     name: {
@@ -571,6 +603,10 @@ const secondaryTieredRateRuleDialog = {
 
     label: {
         id: "secondary-tiered-rate-rule-modal-label"
+    },
+
+    errors: {
+        id: "secondary-tiered-rate-rule-errors"
     },
 
     name: {
@@ -640,6 +676,10 @@ const ruleTierDialog = {
         id: "rule-tier-modal-label"
     },
 
+    errors: {
+        id: "rule-tier-errors"
+    },
+
     minimumValue: {
         label: {
             id: "rule-tier-modal-min-label"
@@ -675,6 +715,10 @@ const secondaryRuleTierDialog = {
 
     label: {
         id: "secondary-rule-tier-modal-label"
+    },
+
+    errors: {
+        id: "secondary-rule-tier-errors"
     },
 
     primaryTier: {

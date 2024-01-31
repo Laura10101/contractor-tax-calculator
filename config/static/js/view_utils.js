@@ -36,30 +36,62 @@ if (typeof require !== "undefined") {
     app = viewModels.app;
     getTaxCategoryById = viewModels.getTaxCategoryById;
     findPrimaryRuleTierById = viewModels.findPrimaryRuleTierById;
+    taxCategoryHasRulesetForJurisdiction = viewModels.taxCategoryHasRulesetForJurisdiction;
 }
 /*
- * General Helper Functions
+ * Dialog Helper Functions
  */
 
+// Display a general status message
 function showMessage(message, title="An Error Occurred") {
     document.getElementById(statusDialog.label.id).innerHTML = title;
     document.getElementById(statusDialog.message.id).innerHTML = message;
     showDialog(statusDialog.dialog.id);
 }
 
+// Display an error message specifically
 function error(message) {
     showMessage(message);
 }
 
+// Display a success message specifically
 function success(message) {
     showMessage(message, "Success");
 }
 
+// Display a confirmation dialog box
 function confirm(message, onConfirm) {
     document.getElementById(confirmationDialog.message.id).innerHTML = message;
     document.getElementById(confirmationDialog.confirmationButton.id).onclick = onConfirm;
     showDialog(confirmationDialog.dialog.id);
 }
+
+// Show a bootstrap modal with the given ID
+function showDialog(dialogId) {
+    $("#" + dialogId).modal("show");
+}
+
+// Hide a bootstrap modal with the given ID
+function hideDialog(dialogId) {
+    $("#" + dialogId).modal("hide");
+}
+
+/*
+ * Validation Error Helper Functions
+ */
+function displayValidationErrors(errorContainerId, errors) {
+    let errorContainer = document.getElementById(errorContainerId);
+    errorContainer.innerHTML = errors.join("");
+}
+
+function clearValidationErrors(errorContainerId) {
+    let errorContainer = document.getElementById(errorContainerId);
+    errorContainer.innerHTML = "";
+}
+
+/*
+ * DOM Helper Functions
+ */
 
 // Remove all child nodes of a parent DOM element
 // Taken from https://www.javascripttutorial.net/dom/manipulating/remove-all-child-nodes/
@@ -69,12 +101,22 @@ function removeAllChildNodes(parent) {
     }
 }
 
-function showDialog(dialogId) {
-    $("#" + dialogId).modal("show");
-}
+// Remove all children of a container except for the given list of prototype elements
+function resetContainer(containerId, prototypeIds) {
+    // Get the prototypes into an array
+    prototypes = {};
+    prototypeIds.forEach(prototypeId => {
+        prototypes[prototypeId] = document.getElementById(prototypeId);
+    });
 
-function hideDialog(dialogId) {
-    $("#" + dialogId).modal("hide");
+    // Clear the container
+    container = document.getElementById(containerId);
+    removeAllChildNodes(container);
+
+    // Add the prototypes back in
+    for (const prototypeId in prototypes) {
+        container.appendChild(prototypes[prototypeId]);
+    }
 }
 
 function updateRuleTierTable(updatePrimary, tiers) {
@@ -123,20 +165,6 @@ function updateRuleTierTable(updatePrimary, tiers) {
     });
 }
 
-function resetContainer(containerId, prototypeIds) {
-    prototypes = {};
-    prototypeIds.forEach(prototypeId => {
-        prototypes[prototypeId] = document.getElementById(prototypeId);
-    });
-
-    container = document.getElementById(containerId);
-    removeAllChildNodes(container);
-
-    for (const prototypeId in prototypes) {
-        container.appendChild(prototypes[prototypeId]);
-    }
-}
-
 /*
  * Jurisdiction Select Helper Functions
  */
@@ -159,18 +187,58 @@ function initJurisdictionsSelect(jurisdictions, selectionChangedCallback) {
     select.addEventListener("change", selectionChangedCallback);
 }
 
+// Return the id of the selected jurisdiction
 function getSelectedJurisdictionId() {
     return document.getElementById(jurisdictionsSelect.id).value;
 }
 
 /*
+ * Validation Helpers
+ */
+function floatIsValid(value) {
+    return !isNaN(parseFloat(value));
+}
+
+function intIsValid(value) {
+    return !isNaN(parseInt(value));
+}
+
+/*
  * Question Dialog Helper Functions
  */
+function validateQuestionData(text, variableName, questionId) {
+    let errors = [];
+    if (text == "" || text.length < 3) {
+        errors.push("<p>The question text is a required field and its length must be > 3 characters</p>");
+    }
 
-// Boolean Question Dialog Helpers
+    // If the question has no ID or the variable name has changed
+    // Validate the variable name
+    if (questionId == null) {
+        if (isDuplicateVariableName(variableName)) {
+            errors.push("<p>A question already exists with the variable name '" + variableName + "'. Variable name must be unique<p>");
+        }
+    } else if (findQuestionById(questionId).variable_name != variableName) {
+        if (isDuplicateVariableName(variableName)) {
+            errors.push("<p>A question already exists with the variable name '" + variableName + "'. Variable name must be unique<p>");
+        }
+    }
+
+    let varNameRegEx = RegExp("^[A-Za-z0-9-_]+$");
+    if (!varNameRegEx.test(variableName)) {
+        errors.push("<p>The variable name must contain only alphanumeric characters, hyphens or underscores.</p>");
+    }
+
+    return errors;
+}
+
+/*
+ * Question Dialog Helper Functions - Boolean
+ */
 
 // Set the label and input values on a boolean question dialog
 function initBooleanQuestionDialog(dialogLabel, questionText, explainer, variableName, isMandatory) {
+    clearValidationErrors(booleanQuestionDialog.errors.id);
     document.getElementById(booleanQuestionDialog.label.id).innerText = dialogLabel;
     document.getElementById(booleanQuestionDialog.questionText.input.id).value = questionText;
     document.getElementById(booleanQuestionDialog.explainer.input.id).value = explainer;
@@ -186,6 +254,7 @@ function displayCreateBooleanQuestionDialog() {
     showDialog(booleanQuestionDialog.dialog.id);
 }
 
+// Display the boolean question dialog box in edit mode
 function displayEditBooleanQuestionDialog(question) {
     // Initialise the boolean question dialog with appropriate values for a create
     initBooleanQuestionDialog(
@@ -199,9 +268,21 @@ function displayEditBooleanQuestionDialog(question) {
     showDialog(booleanQuestionDialog.dialog.id);
 }
 
+// Check if the current input in the boolean question dialog is valid
+// If not, return a list of errors
+function validateBooleanQuestionDialog(questionId=null) {
+    let text = document.getElementById(booleanQuestionDialog.questionText.input.id).value;
+    let variableName = document.getElementById(booleanQuestionDialog.variableName.input.id).value;
+    let errors = validateQuestionData(text, variableName, questionId);
+    return errors;
+}
 
-// Numeric Question Dialog Helpers
+
+/*
+ * Question Dialog Helper Functions - Numeric
+ */
 function initNumericQuestionDialog(dialogLabel, questionText, explainer, variableName, isMandatory, isInteger, minValue, maxValue) {
+    clearValidationErrors(numericQuestionDialog.errors.id);
     document.getElementById(numericQuestionDialog.label.id).innerText = dialogLabel;
     document.getElementById(numericQuestionDialog.questionText.input.id).value = questionText;
     document.getElementById(numericQuestionDialog.explainer.input.id).value = explainer;
@@ -234,6 +315,24 @@ function displayEditNumericQuestionDialog(question) {
     showDialog(numericQuestionDialog.dialog.id);
 }
 
+// Check if the current input in the numeric question dialog is valid
+// If not, return a list of errors
+function validateNumericQuestionDialog(questionId=null) {
+    let text = document.getElementById(numericQuestionDialog.questionText.input.id).value;
+    let variableName = document.getElementById(numericQuestionDialog.variableName.input.id).value;
+    let minValue = document.getElementById(numericQuestionDialog.minimumValue.input.id).value;
+    let errors = validateQuestionData(text, variableName, questionId);
+
+    if (!intIsValid(minValue)) {
+        errors.push("<p>Minimium value must be a valid integer (whole number)<p>");
+    }
+
+    return errors;
+}
+
+/*
+ * Question Dialog Helper Functions - Multiple Choice
+ */
 // Multiple Choice Question Dialog
 function updateMultipleChoiceQuestionDialogOptionsDisplay(options) {
     // Get the row 
@@ -264,7 +363,9 @@ function updateMultipleChoiceQuestionDialogOptionsDisplay(options) {
     });
 }
 
+// Initialise the multiple choice question dialog
 function initMultipleChoiceQuestionDialog(dialogLabel, questionText, explainer, variableName, isMandatory, allowMultiselect, options, showOptions=true) {
+    clearValidationErrors(multipleChoiceQuestionDialog.errors.id);
     document.getElementById(multipleChoiceQuestionDialog.label.id).innerText = dialogLabel;
     document.getElementById(multipleChoiceQuestionDialog.questionText.input.id).value = questionText;
     document.getElementById(multipleChoiceQuestionDialog.explainer.input.id).value = explainer;
@@ -281,6 +382,7 @@ function initMultipleChoiceQuestionDialog(dialogLabel, questionText, explainer, 
             optionsRow.classList.add("hidden");
         }
     }
+    // Update the options display
     updateMultipleChoiceQuestionDialogOptionsDisplay(options);
 }
 
@@ -307,10 +409,18 @@ function displayEditMultipleChoiceQuestionDialog(question) {
     showDialog(multipleChoiceQuestionDialog.dialog.id);
 }
 
+function validateMultipleChoiceQuestionDialog(questionId=null) {
+    let text = document.getElementById(multipleChoiceQuestionDialog.questionText.input.id).value;
+    let variableName = document.getElementById(multipleChoiceQuestionDialog.variableName.input.id).value;
+    let errors = validateQuestionData(text, variableName, questionId);
+    return errors;
+}
+
 /*
  * Multiple Choice Option Helper Functions
  */
 function initMultipleChoiceOptionDialog(name, explainer) {
+    clearValidationErrors(multipleChoiceOptionDialog.errors.id);
     document.getElementById(multipleChoiceOptionDialog.name.input.id).value = name;
     document.getElementById(multipleChoiceOptionDialog.explainer.input.id).value = explainer;
 }
@@ -322,6 +432,14 @@ function displayCreateMultipleChoiceOptionDialog() {
     showDialog(multipleChoiceOptionDialog.dialog.id);
 }
 
+function validateMultipleChoiceOptionDialog() {
+    let errors = [];
+    let name = document.getElementById(multipleChoiceOptionDialog.name.input.id).value;
+    if (name == "" || name.length < 3) {
+        errors.push("<p>Name is a required field and must be at least 3 characters</p>");
+    }
+    return errors;
+}
 
 /*
  * Question Display Helper Functions
@@ -451,12 +569,12 @@ function updateQuestionDisplay(questions) {
 }
 
 /*
- * Rule Dialog Helper Functions
+ * Ruleset Dialog Helper Functions
  */
-// Rule Type Dialog Helpers
 
 // Ruleset Dialog Helpers
 function initRulesetDialog(dialogLabel, taxCategories) {
+    clearValidationErrors(rulesetDialog.errors.id);
     document.getElementById(rulesetDialog.label.id).innerText = dialogLabel;
     select = document.getElementById(rulesetDialog.taxCategory.input.id);
     removeAllChildNodes(select);
@@ -475,6 +593,22 @@ function displayCreateRulesetDialog() {
     showDialog(rulesetDialog.dialog.id);
 }
 
+// Check if the current input in the ruleset dialog is valid
+// If not, return a list of errors
+function validateRulesetDialog() {
+    let taxCategoryId = document.getElementById(rulesetDialog.taxCategory.input.id).value;
+    let errors = [];
+
+    if (taxCategoryHasRulesetForJurisdiction(taxCategoryId)) {
+        errors.push("<p>A ruleset already exists for this tax category. Please choose another tax category.</p>");
+    }
+
+    return errors;
+}
+
+/*
+ * Rule Dialog Helper Functions - Rule Type
+ */
 // Handle selection of a question type via question type modal
 function ruleTypeChosen() {
     // Close the modal
@@ -497,8 +631,23 @@ function ruleTypeChosen() {
     }
 }
 
+/*
+ * Rule Dialog Helper Functions - General Validation
+ */
+function validateRuleData(name) {
+    let errors = [];
+    if (name == "" || name.length < 3) {
+        errors.push("<p>Name is a required field and must be at least 3 characters long</p>");
+    }
+    return errors;
+}
+
+/*
+ * Rule Dialog Helper Functions - Flat Rate Rules
+ */
 // Flat Rate Rule Dialog Helpers
 function initFlatRateRuleDialog(dialogLabel, name, explainer, variableName, taxRate) {
+    clearValidationErrors(flatRateRuleDialog.errors.id);
     document.getElementById(flatRateRuleDialog.label.id).innerText = dialogLabel;
     document.getElementById(flatRateRuleDialog.name.input.id).value = name;
     document.getElementById(flatRateRuleDialog.explainer.input.id).value = explainer;
@@ -525,8 +674,29 @@ function displayEditFlatRateRuleDialog(rule) {
     showDialog(flatRateRuleDialog.dialog.id);
 }
 
+// Check if the current input in the rule dialog is valid
+// If not, return a list of errors
+function validateFlatRateRuleDialog() {
+    let errors = [];
+
+    let name = document.getElementById(flatRateRuleDialog.name.input.id).value;
+    let taxRate = document.getElementById(flatRateRuleDialog.taxRate.input.id).value;
+
+    errors = validateRuleData(name);
+
+    if (!floatIsValid(taxRate)) {
+        errors.push("<p>Tax rate is a required to be a valid decimal number</p>");
+    }
+
+    return errors;
+}
+
+/*
+ * Rule Dialog Helper Functions - Tiered Rate Rules
+ */
 // Tiered Rate Rule Dialog Helpers
 function initTieredRateRuleDialog(dialogLabel, name, explainer, variableName, tiers, showTiers=false) {
+    clearValidationErrors(tieredRateRuleDialog.errors.id);
     document.getElementById(tieredRateRuleDialog.label.id).innerText = dialogLabel;
     document.getElementById(tieredRateRuleDialog.name.input.id).value = name;
     document.getElementById(tieredRateRuleDialog.explainer.input.id).value = explainer;
@@ -564,6 +734,22 @@ function displayEditTieredRateRuleDialog(rule) {
     showDialog(tieredRateRuleDialog.dialog.id);
 }
 
+// Check if the current input in the rule dialog is valid
+// If not, return a list of errors
+function validateTieredRateRuleDialog() {
+    let errors = [];
+
+    let name = document.getElementById(tieredRateRuleDialog.name.input.id).value;
+
+    errors = validateRuleData(name);
+
+    return errors;
+}
+
+/*
+ * Rule Dialog Helper Functions - Secondary Tiered Rate Rules
+ */
+
 // Secondary Tiered Rate Rule Dialog Helpers
 function initPrimaryRulesSelect(rules) {
     let select = document.getElementById(secondaryTieredRateRuleDialog.primaryRule.input.id);
@@ -578,6 +764,7 @@ function initPrimaryRulesSelect(rules) {
 }
 
 function initSecondaryTieredRateRuleDialog(dialogLabel, name, explainer, variableName, primaryRules, tiers, showTiers=true) {
+    clearValidationErrors(secondaryTieredRateRuleDialog.errors.id);
     document.getElementById(secondaryTieredRateRuleDialog.label.id).innerText = dialogLabel;
     document.getElementById(secondaryTieredRateRuleDialog.name.input.id).value = name;
     document.getElementById(secondaryTieredRateRuleDialog.explainer.input.id).value = explainer;
@@ -617,8 +804,25 @@ function displayEditSecondaryTieredRateRuleDialog(rule, primaryRules) {
     showDialog(secondaryTieredRateRuleDialog.dialog.id);
 }
 
+// Check if the current input in the rule dialog is valid
+// If not, return a list of errors
+function validateSecondaryTieredRateRuleDialog() {
+    let errors = [];
+
+    let name = document.getElementById(secondaryTieredRateRuleDialog.name.input.id).value;
+
+    errors = validateRuleData(name);
+    
+    return errors;
+}
+
+/*
+ * Rule Tier Dialog Helper Functions
+ */
+
 // Primary Rule Tier Dialog Helpers
 function initRuleTierDialog(dialogLabel, minValue, maxValue, taxRate) {
+    clearValidationErrors(ruleTierDialog.errors.id);
     document.getElementById(ruleTierDialog.label.id).innerText = dialogLabel;
     document.getElementById(ruleTierDialog.minimumValue.input.id).value = minValue;
     document.getElementById(ruleTierDialog.maximumValue.input.id).value = maxValue;
@@ -643,6 +847,33 @@ function displayEditRuleTierDialog(tier) {
     showDialog(ruleTierDialog.dialog.id);
 }
 
+// Check if the current input in the rule tier dialog is valid
+// If not, return a list of errors
+function validateRuleTierDialog() {
+    let errors = [];
+
+    let minValue = document.getElementById(ruleTierDialog.minimumValue.input.id).value;
+    let maxValue = document.getElementById(ruleTierDialog.maximumValue.input.id).value;
+    let taxRate = document.getElementById(ruleTierDialog.taxRate.input.id).value;
+
+    if (!intIsValid(minValue)) {
+        errors.push("<p>Minimum value is required to be a valid integer</p>");
+    }
+
+    if (!intIsValid(maxValue)) {
+        errors.push("<p>Maximum value is required to be a valid integer</p>");
+    }
+
+    if (!floatIsValid(taxRate)) {
+        errors.push("<p>Tax rate is required to be a valid decimal number</p>");
+    }
+    
+    return errors;
+}
+
+/*
+ * Secondary Rule Tier Dialog Helper Functions
+ */
 // Secondary Rule Tier Dialog Helpers
 function initPrimaryRuleTiersSelect(tiers) {
     let select = document.getElementById(secondaryRuleTierDialog.primaryTier.input.id);
@@ -657,6 +888,7 @@ function initPrimaryRuleTiersSelect(tiers) {
 }
 
 function initSecondaryRuleTierDialog(dialogLabel, primaryRuleTiers, taxRate) {
+    clearValidationErrors(secondaryRuleTierDialog.errors.id);
     document.getElementById(secondaryRuleTierDialog.label.id).innerText = dialogLabel;
     initPrimaryRuleTiersSelect(primaryRuleTiers);
     document.getElementById(secondaryRuleTierDialog.taxRate.input.id).value = taxRate;
@@ -677,6 +909,20 @@ function displayEditSecondaryRuleTierDialog(tier, primaryTiers) {
     );
     // Show the dialog
     showDialog(secondaryRuleTierDialog.dialog.id);
+}
+
+// Check if the current input in the rule tier dialog is valid
+// If not, return a list of errors
+function validateSecondaryRuleTierDialog() {
+    let errors = [];
+
+    let taxRate = document.getElementById(secondaryRuleTierDialog.taxRate.input.id).value;
+
+    if (!floatIsValid(taxRate)) {
+        errors.push("<p>Tax rate is required to be a valid decimal number</p>");
+    }
+    
+    return errors;
 }
 
 /*
@@ -876,5 +1122,17 @@ if (typeof module !== "undefined") module.exports = {
     initTieredRateRuleDialog,
     initSecondaryTieredRateRuleDialog,
     initRuleTierDialog,
-    initSecondaryRuleTierDialog
+    initSecondaryRuleTierDialog,
+    validateBooleanQuestionDialog,
+    validateNumericQuestionDialog,
+    validateMultipleChoiceQuestionDialog,
+    validateMultipleChoiceOptionDialog,
+    validateRulesetDialog,
+    validateRuleData,
+    validateFlatRateRuleDialog,
+    validateTieredRateRuleDialog,
+    validateSecondaryTieredRateRuleDialog,
+    validateRuleTierDialog,
+    validateSecondaryRuleTierDialog,
+    displayValidationErrors
 };
