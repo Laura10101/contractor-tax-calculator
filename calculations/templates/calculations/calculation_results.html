@@ -20,6 +20,18 @@
                 </div>
             </div>
         </section>
+        <!-- Breadcrumb -->
+            <div class="row">
+                <div class="col">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb bg-white">
+                            <li class="breadcrumb-item"><a href="{% url 'select_jurisdictions' %}">Create Tax Calculation</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">View Tax Calculation</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        <!-- End breadcrumb -->
         {% for jurisdiction_name, jurisdiction in summaries.items %}
             <!-- Start modal for jurisdiction {{ jurisdiction_name }} -->
                 <section>
