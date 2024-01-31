@@ -377,7 +377,11 @@
                                                         <table class="table" id="multichoice-question-modal-options-table">
                                                             <tr id="multichoice-question-modal-options-row" class="hidden">
                                                                 <td id="multichoice-question-modal-options-text">Option text</td>
-                                                                <td><i class="fas fa-trash-alt delete-button"></i></td>
+                                                                <td>
+                                                                    <i class="fas fa-trash-alt delete-button"
+                                                                        data-toggle="tooltip" data-placement="top"
+                                                                        title="Delete this option"></i>
+                                                                </td>
                                                             </tr>
                                                         </table>
                                                     </div>
@@ -659,7 +663,9 @@
                                                 <div class="row">
                                                     <div class="col">
                                                         <h5 id="tiered-rate-rule-modal-tiers-label">
-                                                            Tiers <i class="fas fa-plus" onclick="createRuleTier(true)"></i>
+                                                            Tiers <i class="fas fa-plus" onclick="createRuleTier(true)"
+                                                            data-toggle="tooltip" data-placement="top"
+                                                            title="Add an additional tier to calculate a portion of the taxable income at a different rate"></i>
                                                         </h5>
                                                     </div>
                                                 </div>
@@ -680,10 +686,18 @@
                                                                     <td id="tiered-rate-rule-modal-tiers-max">£25,000.00</td>
                                                                     <td id="tiered-rate-rule-modal-tiers-rate">8%</td>
                                                                     <td>
-                                                                        <i class="fas fa-edit edit-button"></i>
-                                                                        <i class="fas fa-trash-alt delete-button"></i>
-                                                                        <i class="fas fa-arrow-up move-up-button"></i>
-                                                                        <i class="fas fa-arrow-down move-down-button"></i>
+                                                                        <i class="fas fa-edit edit-button"
+                                                                            data-toggle="tooltip" data-placement="top"
+                                                                            title="Edit this tax tier"></i>
+                                                                        <i class="fas fa-trash-alt delete-button"
+                                                                            data-toggle="tooltip" data-placement="top"
+                                                                            title="Delete this tax tier"></i>
+                                                                        <i class="fas fa-arrow-up move-up-button"
+                                                                            data-toggle="tooltip" data-placement="top"
+                                                                            title="Move this tax tier up"></i>
+                                                                        <i class="fas fa-arrow-down move-down-button"
+                                                                            data-toggle="tooltip" data-placement="top"
+                                                                            title="Move this tax tier down"></i>
                                                                     </td>
                                                                 </tr>
                                                             </tbody>
@@ -770,7 +784,9 @@
                                                 <div class="row">
                                                     <div class="col">
                                                         <h5 id="secondary-tiered-rate-rule-modal-tiers-label">
-                                                            Tiers <i class="fas fa-plus" onclick="createRuleTier(false)"></i>
+                                                            Tiers <i class="fas fa-plus" onclick="createRuleTier(false)"
+                                                            data-toggle="tooltip" data-placement="top"
+                                                            title="Add an additional tier to calculate a portion of the taxable income at a different rate"></i>
                                                         </h5>
                                                     </div>
                                                 </div>
@@ -791,10 +807,18 @@
                                                                     <td id="secondary-tiered-rate-rule-modal-tiers-max">£25,000.00</td>
                                                                     <td id="secondary-tiered-rate-rule-modal-tiers-rate">8%</td>
                                                                     <td>
-                                                                        <i class="fas fa-edit edit-button"></i>
-                                                                        <i class="fas fa-trash-alt delete-button"></i>
-                                                                        <i class="fas fa-arrow-up move-up-button"></i>
-                                                                        <i class="fas fa-arrow-down move-down-button"></i>
+                                                                        <i class="fas fa-edit edit-button"
+                                                                            data-toggle="tooltip" data-placement="top"
+                                                                            title="Edit this tax tier"></i>
+                                                                        <i class="fas fa-trash-alt delete-button"
+                                                                            data-toggle="tooltip" data-placement="top"
+                                                                            title="Delete this tax tier"></i>
+                                                                        <i class="fas fa-arrow-up move-up-button"
+                                                                            data-toggle="tooltip" data-placement="top"
+                                                                            title="Move this tax tier up"></i>
+                                                                        <i class="fas fa-arrow-down move-down-button"
+                                                                            data-toggle="tooltip" data-placement="top"
+                                                                            title="Move this tax tier down"></i>
                                                                     </td>
                                                                 </tr>
                                                             </tbody>
@@ -1019,12 +1043,16 @@
                                         <div class="col">
                                             <div class="nav nav-pills" id="nav-tab" role="tablist">
                                                 <button class="nav-link active" id="nav-forms-tab" data-toggle="tab" data-target="#nav-forms"
-                                                    type="button" role="tab" aria-controls="nav-forms" aria-selected="true">
-                                                    Manage Forms
+                                                    type="button" role="tab" aria-controls="nav-forms" aria-selected="true"
+                                                    data-toggle="tooltip" data-placement="top"
+                                                    title="Add, edit, and remove the questions that IT contractors need to be asked to calculate tax for this jurisdiction">
+                                                    Manage Questions
                                                 </button>
                                                 <button class="nav-link" id="nav-rules-tab" data-toggle="tab" data-target="#nav-rules"
-                                                    type="button" role="tab" aria-controls="nav-rules" aria-selected="false">
-                                                    Manage Rules
+                                                    type="button" role="tab" aria-controls="nav-rules" aria-selected="false"
+                                                    data-toggle="tooltip" data-placement="top"
+                                                    title="Add, edit, and remove the tax rules that are used to calculate tax for this jurisdiction">
+                                                    Manage Tax Rates
                                                 </button>
                                             </div>
                                         </div>
@@ -1042,7 +1070,8 @@
                                     <!-- Form manager options -->
                                     <div class="row">
                                         <div class="col">
-                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#question-type-modal">
+                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#question-type-modal"
+                                                data-toggle="tooltip" data-placement="top" title="Add a new question">
                                                 <i class="fas fa-plus"></i> Question
                                             </button>
                                         </div>
@@ -1058,14 +1087,18 @@
                                                             <tr>
                                                                 <td rowspan="4">
                                                                     <i class="fas fa-toggle-on"></i>
-                                                                    Boolean Question
+                                                                    Yes/No Question
                                                                 </td>
                                                                 <td id="boolean-question-display-text">Text</td>
                                                                 <td rowspan="4">
-                                                                    <i class="fas fa-edit edit-button"></i>
-                                                                    <i class="fas fa-trash-alt delete-button"></i>
-                                                                    <i class="fas fa-arrow-up move-up-button"></i>
-                                                                    <i class="fas fa-arrow-down move-down-button"></i>
+                                                                    <i class="fas fa-edit edit-button"
+                                                                        data-toggle="tooltip" data-placement="top" title="Edit this question"></i>
+                                                                    <i class="fas fa-trash-alt delete-button"
+                                                                        data-toggle="tooltip" data-placement="top" title="Delete this question"></i>
+                                                                    <i class="fas fa-arrow-up move-up-button"
+                                                                        data-toggle="tooltip" data-placement="top" title="Move this question up"></i>
+                                                                    <i class="fas fa-arrow-down move-down-button"
+                                                                        data-toggle="tooltip" data-placement="top" title="Move this question down"></i>
                                                                 </td>
                                                             </tr>
                                                             <tr>
@@ -1095,10 +1128,14 @@
                                                                 </td>
                                                                 <td id="numeric-question-display-text">Text</td>
                                                                 <td rowspan="5">
-                                                                    <i class="fas fa-edit edit-button"></i>
-                                                                    <i class="fas fa-trash-alt delete-button"></i>
-                                                                    <i class="fas fa-arrow-up move-up-button"></i>
-                                                                    <i class="fas fa-arrow-down move-down-button"></i>
+                                                                    <i class="fas fa-edit edit-button"
+                                                                        data-toggle="tooltip" data-placement="top" title="Edit this question"></i>
+                                                                    <i class="fas fa-trash-alt delete-button"
+                                                                        data-toggle="tooltip" data-placement="top" title="Delete this question"></i>
+                                                                    <i class="fas fa-arrow-up move-up-button"
+                                                                        data-toggle="tooltip" data-placement="top" title="Move this question up"></i>
+                                                                    <i class="fas fa-arrow-down move-down-button"
+                                                                        data-toggle="tooltip" data-placement="top" title="Move this question down"></i>
                                                                 </td>
                                                             </tr>
                                                             <tr>
@@ -1131,10 +1168,14 @@
                                                                 </td>
                                                                 <td id="multichoice-question-display-text">Text</td>
                                                                 <td rowspan="5">
-                                                                    <i class="fas fa-edit edit-button"></i>
-                                                                    <i class="fas fa-trash-alt delete-button"></i>
-                                                                    <i class="fas fa-arrow-up move-up-button"></i>
-                                                                    <i class="fas fa-arrow-down move-down-button"></i>
+                                                                    <i class="fas fa-edit edit-button"
+                                                                        data-toggle="tooltip" data-placement="top" title="Edit this question"></i>
+                                                                    <i class="fas fa-trash-alt delete-button"
+                                                                        data-toggle="tooltip" data-placement="top" title="Delete this question"></i>
+                                                                    <i class="fas fa-arrow-up move-up-button"
+                                                                        data-toggle="tooltip" data-placement="top" title="Move this question up"></i>
+                                                                    <i class="fas fa-arrow-down move-down-button"
+                                                                        data-toggle="tooltip" data-placement="top" title="Move this question down"></i>
                                                                 </td>
                                                             </tr>
                                                             <tr>
@@ -1166,8 +1207,11 @@
                                     <!-- Rule manager options -->
                                     <div class="row">
                                         <div class="col">
-                                            <button type="button" class="btn btn-primary" onclick="createRuleset()">
-                                                <i class="fas fa-plus"></i> Ruleset
+                                            <button type="button" class="btn btn-primary" onclick="createRuleset()"
+                                                data-toggle="tooltip" data-placement="top"
+                                                title="Rule sets group rules by the category of tax they relate to. Click to create a new tax category">
+                                                <i class="fas fa-plus"></i>
+                                                Rule Set
                                             </button>
                                         </div>
                                     </div>
@@ -1205,10 +1249,18 @@
                                                                                                 </td>
                                                                                                 <td id="flat-rate-rule-display-card-name">Name</td>
                                                                                                 <td rowspan="4">
-                                                                                                    <i class="fas fa-edit edit-button"></i>
-                                                                                                    <i class="fas fa-trash-alt delete-button"></i>
-                                                                                                    <i class="fas fa-arrow-up move-up-button"></i>
-                                                                                                    <i class="fas fa-arrow-down move-down-button"></i>
+                                                                                                    <i class="fas fa-edit edit-button"
+                                                                                                        data-toggle="tooltip" data-placement="top"
+                                                                                                        title="Edit this rule"></i>
+                                                                                                    <i class="fas fa-trash-alt delete-button"
+                                                                                                        data-toggle="tooltip" data-placement="top"
+                                                                                                        title="Delete this rule"></i>
+                                                                                                    <i class="fas fa-arrow-up move-up-button"
+                                                                                                        data-toggle="tooltip" data-placement="top"
+                                                                                                        title="Move this rule up"></i>
+                                                                                                    <i class="fas fa-arrow-down move-down-button"
+                                                                                                        data-toggle="tooltip" data-placement="top"
+                                                                                                        title="Move this rule down"></i>
                                                                                                 </td>
                                                                                             </tr>
                                                                                             <tr>
@@ -1238,10 +1290,18 @@
                                                                                                 </td>
                                                                                                 <td id="tiered-rate-rule-display-card-name">Name</td>
                                                                                                 <td rowspan="3">
-                                                                                                    <i class="fas fa-edit edit-button"></i>
-                                                                                                    <i class="fas fa-trash-alt delete-button"></i>
-                                                                                                    <i class="fas fa-arrow-up move-up-button"></i>
-                                                                                                    <i class="fas fa-arrow-down move-down-button"></i>
+                                                                                                    <i class="fas fa-edit edit-button"
+                                                                                                        data-toggle="tooltip" data-placement="top"
+                                                                                                        title="Edit this rule"></i>
+                                                                                                    <i class="fas fa-trash-alt delete-button"
+                                                                                                        data-toggle="tooltip" data-placement="top"
+                                                                                                        title="Delete this rule"></i>
+                                                                                                    <i class="fas fa-arrow-up move-up-button"
+                                                                                                        data-toggle="tooltip" data-placement="top"
+                                                                                                        title="Move this rule up"></i>
+                                                                                                    <i class="fas fa-arrow-down move-down-button"
+                                                                                                        data-toggle="tooltip" data-placement="top"
+                                                                                                        title="Move this rule down"></i>
                                                                                                 </td>
                                                                                             </tr>
                                                                                             <tr>
@@ -1268,10 +1328,18 @@
                                                                                                 </td>
                                                                                                 <td id="secondary-tiered-rate-rule-display-card-name">Name</td>
                                                                                                 <td rowspan="4">
-                                                                                                    <i class="fas fa-edit edit-button"></i>
-                                                                                                    <i class="fas fa-trash-alt delete-button"></i>
-                                                                                                    <i class="fas fa-arrow-up move-up-button"></i>
-                                                                                                    <i class="fas fa-arrow-down move-down-button"></i>
+                                                                                                    <i class="fas fa-edit edit-button"
+                                                                                                        data-toggle="tooltip" data-placement="top"
+                                                                                                        title="Edit this rule"></i>
+                                                                                                    <i class="fas fa-trash-alt delete-button"
+                                                                                                        data-toggle="tooltip" data-placement="top"
+                                                                                                        title="Delete this rule"></i>
+                                                                                                    <i class="fas fa-arrow-up move-up-button"
+                                                                                                        data-toggle="tooltip" data-placement="top"
+                                                                                                        title="Move this rule up"></i>
+                                                                                                    <i class="fas fa-arrow-down move-down-button"
+                                                                                                        data-toggle="tooltip" data-placement="top"
+                                                                                                        title="Move this rule down"></i>
                                                                                                 </td>
                                                                                             </tr>
                                                                                             <tr>
@@ -1293,10 +1361,14 @@
 
                                                                         <!-- Ruleset actions -->
                                                                         <td>
-                                                                            <i class="fas fa-plus add-rule-button"></i>
-                                                                            <i class="fas fa-trash-alt delete-ruleset-button"></i>
-                                                                            <i class="fas fa-arrow-up move-ruleset-up-button"></i>
-                                                                            <i class="fas fa-arrow-down move-ruleset-down-button"></i>
+                                                                            <i class="fas fa-plus add-rule-button"
+                                                                                data-toggle="tooltip" data-placement="top" title="Edit this ruleset"></i>
+                                                                            <i class="fas fa-trash-alt delete-ruleset-button"
+                                                                                data-toggle="tooltip" data-placement="top" title="Delete this ruleset"></i>
+                                                                            <i class="fas fa-arrow-up move-ruleset-up-button"
+                                                                                data-toggle="tooltip" data-placement="top" title="Move this ruleset up"></i>
+                                                                            <i class="fas fa-arrow-down move-ruleset-down-button"
+                                                                                data-toggle="tooltip" data-placement="top" title="Move this ruleset down"></i>
                                                                         </td>
                                                                         <!-- End ruleset actions -->
                                                                     </tr>
