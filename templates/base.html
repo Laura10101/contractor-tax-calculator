@@ -41,61 +41,77 @@
   </head>
   <body>
     <!-- Begin page header -->
-        <header class="container-fluid fixed-top">
-            <div id="topnav" class="row bg-white pt-lg-2 d-none d-lg-flex">
-                <!-- Begin home link -->
-                    <div class="col-12 col-lg-4 my-auto py-1 py-lg-0 text-center text-lg-left">
-                        <a href="{% url 'index' %}" class="nav-link main-logo-link">
-                            <h2 class="logo-font text-black my-0"><strong>Tax</strong> Calculator</h2>
+    <header class="navbar fixed-top navbar-expand-lg navbar-light bg-white">
+        <a href="{% url 'index' %}" class="nav-link main-logo-link">
+            <h2 class="logo-font text-black my-0"><strong>Tax</strong> Calculator</h2>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-nav"
+            aria-controls="main-nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="main-nav">
+            <nav>
+                <ul class="navbar-nav mr-auto list-inline list-unstyled text-center text-lg-right my-0">
+                    {% if request.user.is_authenticated %}
+                    <!-- Action Links -->
+                    <li class="list-inline-item dropdown">
+                        <a class="nav-link text-black" href="#" id="user-options" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <div class="text-center">
+                                <div><i class="fas fa-tasks fa-lg"></i></div>
+                                <p class="my-0">My Tasks</p>
+                            </div>
                         </a>
-                    </div>
-                <!-- End home link -->
-                <div class="col-12 col-lg-4 my-auto py-1 py-lg-0 text-center text-lg-left">
-                    <!-- Begin create calculation link -->
-                        {% if request.user.is_authenticated %}
-                            {% if request.user.is_superuser is not True %}
-                            <a href="{% url 'select_jurisdictions' %}" class="text-black nav-link">
-                                <div class="text-center">
-                                    <div><i class="fas fa-calculator fa-lg"></i></div>
-                                    <p class="my-0">Create Tax Calculation</p>
-                                </div>
-                            </a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="{% url 'contractor_home' %}">View My Dashboard</a>
+                            <a class="dropdown-item" href="{% url 'select_jurisdictions' %}">Create Tax Calculation</a>
+                        </div>
+                    </li>
+                    <!-- End Action Links -->
+                    {% endif %}
+
+                    {% if request.user.is_superuser %}
+                    <!-- Admin Links -->
+                    <li class="list-inline-item dropdown">
+                        <a class="text-black nav-link" href="#" id="user-options" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <div class="text-center">
+                                <div><i class="fas fa-tools fa-lg"></i></div>
+                                <p class="my-0">Admin</p>
+                            </div>
+                        </a>
+                        <div class="dropdown-menu">
+                            {% if request.user.is_superuser %}
+                            <a class="dropdown-item" href="{% url 'admin:index' %}">Users, Tax Categories & Jurisdictions</a>
+                            <a class="dropdown-item" href="{% url 'config' %}">Questions & Rules</a>
                             {% endif %}
-                        {% endif %}
-                    <!-- End calculation link -->
-                </div>
-                <div class="col-12 col-lg-4 my-auto py-1 py-lg-0">
-                    <!-- Begin navigation -->
-                        <nav>
-                            <!-- Navigation for non-mobile devices -->
-                                <ul class="list-inline list-unstyled text-center text-lg-right my-0">
-                                    <li class="list-inline-item dropdown">
-                                        <a class="text-black nav-link" href="#" id="user-options" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <div class="text-center">
-                                                <div><i class="fas fa-user fa-lg"></i></div>
-                                                <p class="my-0">My Account</p>
-                                            </div>
-                                        </a>
-                                        <div class="dropdown-menu border-0" aria-labelledby="user-options">
-                                            {% if request.user.is_authenticated %}
-                                                {% if request.user.is_superuser %}
-                                                {% else %}
-                                                {% endif %}
-                                                <a href="{% url 'account_logout' %}" class="dropdown-item">Logout</a>
-                                            {% else %}
-                                                <a href="{% url 'account_signup' %}" class="dropdown-item">Register</a>
-                                                <a href="{% url 'account_login' %}" class="dropdown-item">Login</a>
-                                            {% endif %}
-                                        </div>
-                                    </li>
-                                </ul>
-                            <!-- End navigation for non-mobile devices -->
-                        </nav>
-                    <!-- End navigation -->
-                </div>
-            </div>
-        </header>
-    <!-- End page header-->
+                        </div>
+                    </li>
+                    <!-- End Admin Links -->
+                    {% endif %}
+
+                    <!-- Account Links -->
+                    <li class="list-inline-item dropdown">
+                        <a class="text-black nav-link" href="#" id="user-options" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <div class="text-center">
+                                <div><i class="fas fa-user fa-lg"></i></div>
+                                <p class="my-0">My Account</p>
+                            </div>
+                        </a>
+                        <div class="dropdown-menu border-0" aria-labelledby="user-options">
+                            {% if request.user.is_authenticated %}
+                                <a href="{% url 'account_logout' %}" class="dropdown-item">Logout</a>
+                            {% else %}
+                                <a href="{% url 'account_signup' %}" class="dropdown-item">Register</a>
+                                <a href="{% url 'account_login' %}" class="dropdown-item">Login</a>
+                            {% endif %}
+                        </div>
+                    </li>
+                    <!-- End Account Links -->
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <!-- End page header -->
 
     <!-- Begin page content -->
         <div class="container content-container">
