@@ -88,6 +88,11 @@ if (typeof require !== "undefined") {
     getNextRuleOrdinal = viewModels.getNextRuleOrdinal;
     getNextRuleTierOrdinal = viewModels.getNextRuleTierOrdinal;
     refreshAppState = viewModels.refreshAppState;
+    primaryRuleHasDependentSecondaryRules = viewModels.primaryRuleHasDependentSecondaryRules;
+    primaryRuleTierHasDependentSecondaryTiers = viewModels.primaryRuleTierHasDependentSecondaryTiers;
+    getValidQuestionTextVariableNamePairs = viewModels.getValidQuestionTextVariableNamePairs;
+    isDuplicateVariableName = viewModels.isDuplicateVariableName;
+    questionHasDependentRules = viewModels.questionHasDependentRules;
 
     // View utils
     showDialog = viewUtils.showDialog;
@@ -387,8 +392,12 @@ function confirmDeleteQuestion(event, remover=removeQuestion) {
 }
 
 function deleteQuestion(question) {
-    setDialogState(dialogStates.modes.delete, dialogStates.entityTypes.question, question);
-    confirm("Please confirm you wish for the following question to be deleted: " + question.text + ".", confirmDeleteQuestion);
+    if (!questionHasDependentRules(question.id)) {
+        setDialogState(dialogStates.modes.delete, dialogStates.entityTypes.question, question);
+        confirm("Please confirm you wish for the following question to be deleted: " + question.text + ".", confirmDeleteQuestion);
+    } else {
+        error("The following question cannot be deleted as rules exist which depend on this question: '" + question.text + "'. Please delete dependent rules first.");
+    }
 }
 
 function swapQuestionOrdinals(question, findNewPosition, updater, refresher) {
@@ -871,9 +880,18 @@ function confirmDeleteRule(event, remover=removeRule) {
 }
 
 function deleteRule(ruleset, rule) {
-    setParentRuleset(ruleset);
-    setDialogState(dialogStates.modes.delete, dialogStates.entityTypes.rule, rule);
-    confirm("Please confirm you wish for the following rule to be deleted: " + rule.name + ".", confirmDeleteRule);
+    let proceed = true;
+    if (rule.type == "tiered_rate") {
+        if (primaryRuleHasDependentSecondaryRules(rule.id)) {
+            error("The following rule cannot be deleted as secondary rules exist which depend on it: '" + rule.name + "'. Please delete dependent secondary rules first.");
+            proceed = false;
+        }
+    }
+    if (proceed) {
+        setParentRuleset(ruleset);
+        setDialogState(dialogStates.modes.delete, dialogStates.entityTypes.rule, rule);
+        confirm("Please confirm you wish for the following rule to be deleted: " + rule.name + ".", confirmDeleteRule);
+    }
 }
 
 function updateRuleOrdinal(ruleset, rule) {
@@ -1219,11 +1237,16 @@ function confirmDeleteRuleTier(event, primaryRemover=removeRuleTier, secondaryRe
 function deleteRuleTier(isPrimary, tier) {
     moveAppStateToParentState();
     if (isPrimary) {
-        setDialogState(dialogStates.modes.delete, dialogStates.entityTypes.ruleTier, tier);
+        if (!primaryRuleTierHasDependentSecondaryTiers(tier.id)) {
+            setDialogState(dialogStates.modes.delete, dialogStates.entityTypes.ruleTier, tier);
+            confirm("Please confirm you wish for the selected rule tier to be deleted.", confirmDeleteRuleTier);
+        } else {
+            error("The selected tier cannot be deleted as secondary tiers exist which depend on it. Please delete dependent secondary tiers first.");
+        }
     } else {
         setDialogState(dialogStates.modes.delete, dialogStates.entityTypes.secondaryRuleTier, tier);
+        confirm("Please confirm you wish for the selected rule tier to be deleted.", confirmDeleteRuleTier);
     }
-    confirm("Please confirm you wish for the selected rule tier to be deleted.", confirmDeleteRuleTier);
 }
 
 /*

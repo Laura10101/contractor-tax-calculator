@@ -292,6 +292,7 @@ function questionHasDependentRules(questionId) {
         return null;
     }
     let varName = question.variable_name;
+
     let hasDependents = false;
 
     // Check all rules to see if there are any dependents
