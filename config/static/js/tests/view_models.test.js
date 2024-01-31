@@ -39,7 +39,8 @@ const {
     primaryRuleTierHasDependentSecondaryTiers,
     getValidQuestionTextVariableNamePairs,
     isDuplicateVariableName,
-    questionHasDependentRules
+    questionHasDependentRules,
+    isAllJurisdictionsForm
  } = require("../view_models");
 
 describe("App state management", () => {
@@ -127,6 +128,13 @@ describe("View model accessor methods", () => {
         test("should return the correct form id from view model", () => {
             let formId = getFormId();
             expect(formId).toBe(1);
+        });
+
+        test("should correctly identify the default form", () => {
+            let form = app.jurisdictionForm;
+            expect(isAllJurisdictionsForm(form)).toBe(true);
+            expect(isAllJurisdictionsForm({ "forms": { "2": {} }})).toBe(false);
+            expect(isAllJurisdictionsForm({ "forms": { "0": {} }})).toBe(false);
         });
     });
 

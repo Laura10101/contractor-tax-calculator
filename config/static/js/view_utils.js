@@ -642,6 +642,19 @@ function validateRuleData(name) {
     return errors;
 }
 
+function initVariableNamesSelect(selectId) {
+    let select = document.getElementById(selectId);
+    removeAllChildNodes(select);
+
+    let variables = getValidQuestionTextVariableNamePairs();
+    variables.forEach(variable => {
+        option = document.createElement("option");
+        option.text = variable.questionText + " (" + variable.variableName + ")";
+        option.value = variable.variableName;
+        select.add(option);
+    });
+}
+
 /*
  * Rule Dialog Helper Functions - Flat Rate Rules
  */
@@ -651,6 +664,7 @@ function initFlatRateRuleDialog(dialogLabel, name, explainer, variableName, taxR
     document.getElementById(flatRateRuleDialog.label.id).innerText = dialogLabel;
     document.getElementById(flatRateRuleDialog.name.input.id).value = name;
     document.getElementById(flatRateRuleDialog.explainer.input.id).value = explainer;
+    initVariableNamesSelect(flatRateRuleDialog.variableName.input.id);
     document.getElementById(flatRateRuleDialog.variableName.input.id).value = variableName;
     document.getElementById(flatRateRuleDialog.taxRate.input.id).value = taxRate;
 }
@@ -700,6 +714,7 @@ function initTieredRateRuleDialog(dialogLabel, name, explainer, variableName, ti
     document.getElementById(tieredRateRuleDialog.label.id).innerText = dialogLabel;
     document.getElementById(tieredRateRuleDialog.name.input.id).value = name;
     document.getElementById(tieredRateRuleDialog.explainer.input.id).value = explainer;
+    initVariableNamesSelect(tieredRateRuleDialog.variableName.input.id);
     document.getElementById(tieredRateRuleDialog.variableName.input.id).value = variableName;
     let tiersRow = document.getElementById("tiers-row");
     if (showTiers) {
@@ -768,6 +783,7 @@ function initSecondaryTieredRateRuleDialog(dialogLabel, name, explainer, variabl
     document.getElementById(secondaryTieredRateRuleDialog.label.id).innerText = dialogLabel;
     document.getElementById(secondaryTieredRateRuleDialog.name.input.id).value = name;
     document.getElementById(secondaryTieredRateRuleDialog.explainer.input.id).value = explainer;
+    initVariableNamesSelect(secondaryTieredRateRuleDialog.variableName.input.id);
     document.getElementById(secondaryTieredRateRuleDialog.variableName.input.id).value = variableName;
     let tiersRow = document.getElementById("secondary-tiers-row");
     if (showTiers) {

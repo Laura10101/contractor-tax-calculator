@@ -23,6 +23,7 @@ let app = {
     },
     jurisdictions: [],
     taxCategories: [],
+    allJurisdictionsForm: null,
     jurisdictionForm: {},
     jurisdictionRules: [],
     dialogState: {
@@ -101,6 +102,11 @@ function moveParentStateToAppState() {
 // Set the ruleset that is the parent of the rule currently being acted on
 function setParentRuleset(ruleset) {
     app.parentRuleset = ruleset;
+}
+
+// Set the common jurisdiction form - this contains questions that will be displayed for all jurisdictions
+function setCommonQuestions(form) {
+    app.allJurisdictionsForm = form;
 }
 
 // Refresh any entities that are held within the app state after
@@ -240,6 +246,24 @@ function getQuestions() {
     return app.jurisdictionForm.forms[Object.keys(app.jurisdictionForm.forms)[0]].questions;
 }
 
+function getCommonQuestions() {
+    if (app.allJurisdictionsForm == null) {
+        return [];
+    }
+    return app.allJurisdictionsForm.forms[Object.keys(app.allJurisdictionsForm.forms)[0]].questions;
+}
+
+function isAllJurisdictionsForm(form) {
+    if (form == null) {
+        return false;
+    }
+    try {
+        return Object.keys(form.forms)[0] == "1";
+    } catch (ex) {
+        return false;
+    }
+}
+
 // Calculate the next question ordinal in the current sequence
 function getNextQuestionOrdinal() {
     return getQuestions().length + 1;
@@ -263,8 +287,10 @@ function findQuestionById(questionId) {
 // currently to support responses from non-numeric questions
 function getValidQuestionTextVariableNamePairs() {
     let questions = getQuestions();
+    let commonQuestions = getCommonQuestions();
+    let allQuestions = questions.concat(commonQuestions);
     let variables = [];
-    questions.forEach(question => {
+    allQuestions.forEach(question => {
         if (question.type == "numeric") {
             variables.push({
                 questionText: question.text,
@@ -836,5 +862,7 @@ if (typeof module !== "undefined") module.exports = {
     getValidQuestionTextVariableNamePairs,
     isDuplicateVariableName,
     questionHasDependentRules,
-    taxCategoryHasRulesetForJurisdiction
+    taxCategoryHasRulesetForJurisdiction,
+    isAllJurisdictionsForm,
+    setCommonQuestions
 };

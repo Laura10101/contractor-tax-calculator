@@ -93,6 +93,8 @@ if (typeof require !== "undefined") {
     getValidQuestionTextVariableNamePairs = viewModels.getValidQuestionTextVariableNamePairs;
     isDuplicateVariableName = viewModels.isDuplicateVariableName;
     questionHasDependentRules = viewModels.questionHasDependentRules;
+    isAllJurisdictionsForm = viewModels.isAllJurisdictionsForm;
+    setCommonQuestions = viewModels.setCommonQuestions;
 
     // View utils
     showDialog = viewUtils.showDialog;
@@ -144,6 +146,9 @@ function doNothing() { }
  */
 function displayQuestions(data) {
     app.jurisdictionForm = data;
+    if (isAllJurisdictionsForm(app.jurisdictionForm)) {
+        setCommonQuestions(app.jurisdictionForm);
+    }
     refreshAppState();
 
     updateQuestionDisplay(app.jurisdictionForm.forms[Object.keys(app.jurisdictionForm.forms)[0]].questions);
