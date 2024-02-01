@@ -21,17 +21,18 @@ def contains_required_attributes(request, required_attributes):
 # Create your views here.
 class PaymentsList(APIView):
     def get(self, request):
-        required_attributes = ['user_id']
 
         # Validate data 
-        if not contains_required_attributes(request, required_attributes):
+        if not 'user_id' in request.GET:
             return Response(
                 { 'error' : 'Invalid request. Please supply all required attributes.' },
                 status=400
                 )
 
+        print("Request is valid so far")
+
         # Extract data required for service method
-        user_id = request.data['user_id']
+        user_id = request.GET['user_id']
 
         try:
             payments = get_recent_payments(user_id)
@@ -40,6 +41,27 @@ class PaymentsList(APIView):
                 { 'error' : str(e) },
                 status=404
                 )
+
+        # Create response
+        payment_statuses = {
+            -1: 'failed',
+            1: 'created',
+            2: 'intended',
+            3: 'pending',
+            4: 'complete',
+        }
+        response = []
+        for payment in payments.all():
+            response.append({
+                'id': payment.id,
+                'created_date': payment.created_date,
+                'completed_date': payment.completed_or_failed_date,
+                'total': payment.total,
+                'status': payment_statuses[payment.status]
+            })
+
+        # Return response 
+        return Response(response)
 
     def post(self, request):
         required_attributes = [
