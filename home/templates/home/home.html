@@ -44,20 +44,20 @@
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th scope="col">Created</th>
-                                            <th scope="col">Completed</th>
-                                            <th scope="col">Total</th>
-                                            <th scope="col">Status</th>
-                                            <th scope="col">Actions</th>
+                                            <th scope="col" class="text-center">Created</th>
+                                            <th scope="col" class="text-center">Completed</th>
+                                            <th scope="col" class="text-center">Total</th>
+                                            <th scope="col" class="text-center">Status</th>
+                                            <th scope="col" class="text-center">Actions</th>
                                         </tr>
                                     </thead>
                                     {% for payment in payments %}
                                         <tr>
-                                            <td>{{ payment.created_date|date:'d-m-Y H:M:S' }}</td>
-                                            <td>{{ payment.completed_date|date:'d-m-Y H:M:S' }}</td>
-                                            <td>{{ payment.total }}</td>
-                                            <td>{{ payment.status }}</td>
-                                            <td><a href="{% url 'checkout_status' id=payment.id %}">View</a></td>
+                                            <td class="text-center">{{ payment.created_date|date:'d-m-Y H:M:S' }}</td>
+                                            <td class="text-center">{{ payment.completed_date|date:'d-m-Y H:M:S' }}</td>
+                                            <td class="text-center">{{ payment.total }}</td>
+                                            <td class="text-center">{{ payment.status }}</td>
+                                            <td class="text-center"><a href="{% url 'checkout_status' id=payment.id %}"><i class="far fa-eye"></i></a></td>
                                         </tr>
                                     {% endfor %}
                                 </table>
@@ -85,23 +85,22 @@
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th scope="col">Date Created</th>
-                                    <th scope="col">Jurisdictions Included</th>
-                                    <th scope="col">Actions</th>
+                                    <th scope="col" class="text-center">Date Created</th>
+                                    <th scope="col" class="text-center">Jurisdictions Included</th>
+                                    <th scope="col" class="text-center">Actions</th>
                                 </tr>
                             </thead>
                             {% for calculation in calculations %}
-                                {{ calculation.id }}
                                 <tr>
-                                    <td>{{ calculation.created_date|date:'d-m-Y H:M:S' }}</td>
-                                    <td>
+                                    <td class="text-center">{{ calculation.created_date|date:'d-m-Y H:M:S' }}</td>
+                                    <td class="text-center">
                                         <ul>
                                             {% for jurisdiction in calculation.jurisdictions %}
                                                 <li>{{ jurisdiction }}</li>
                                             {% endfor %}
                                         </ul>
                                     </td>
-                                    <td><a href="{% url 'display_calculation' %}?id={{ calculation.id }}">View</a></td>
+                                    <td class="text-center"><a href="{% url 'display_calculation' %}?id={{ calculation.id }}"><i class="far fa-eye"></i></a></td>
                                 </tr>
                             {% endfor %}
                         </table>
