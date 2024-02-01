@@ -118,9 +118,41 @@
             {% if messages %}
                 <!-- Begin flashed messages -->
                     <section>
-                        <div class="row messages">
-                            <div class="col">
-                                {{ messages }}
+                        <div class="row">
+                            <div class="col toast-container top-0 start-50 translate-middle-x">
+                                {% for message in messages %}
+                                    <div class="toast" data-autohide="false" aria-live="assertive" aria-atomic="true">
+                                        <div class="toast-header">
+                                            {% if message.level == DEFAULT_MESSAGE_LEVELS.DEBUG %}
+                                                <strong class="mr-auto">
+                                                    <i class="fas fa-question-circle"></i> Debug Information
+                                                </strong>
+                                            {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                                                <strong class="mr-auto">
+                                                    <i class="fas fa-info-circle"></i> Information
+                                                </strong>
+                                            {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                                                <strong class="mr-auto">
+                                                    <i class="fas fa-check-circle"></i> Success
+                                                </strong>
+                                            {% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+                                                <strong class="mr-auto">
+                                                    <i class="fas fa-exclamation-triangle"></i> Warning
+                                                </strong>
+                                            {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                                                <strong class="mr-auto">
+                                                    <i class="fas fa-exclamation-circle"></i> Error
+                                                </strong>
+                                            {% endif %}
+                                            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="toast-body {% if message.tags %}{{ message.tags }}{% endif %}">
+                                            {{ message }}
+                                        </div>
+                                    </div>
+                                {% endfor %}
                             </div>
                         </div>
                     </section>
@@ -152,6 +184,12 @@
             <!-- End main content -->
         </div>
     <!-- End page content -->
+
+    {% block toastjs %}
+        <script type="text/javascript">
+            $('.toast').toast('show');
+        </script>
+    {% endblock %}
 
     {% block postloadjs %}
     {% endblock %}

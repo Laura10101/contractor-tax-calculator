@@ -1,3 +1,13 @@
 .content-container {
     margin-top: 80px;
 }
+
+.navbar-expand-lg .navbar-collapse {
+    justify-content: flex-end;
+}
+
+.toast {
+    max-width: none;
+    margin-bottom: 10px;
+    box-shadow: none;
+}
