@@ -1,5 +1,5 @@
 # Tax Calculator
-
+kjjh
 The aim of this project was to create a tax calculator designed specifically for IT contractors that would compare and contrast take home pay across different jurisdictions. 
 
 IT contractors are highly paid, incredibly busy people who usually have no or little knowledge of tax law, and especially international tax law. Being a demographic who often are able to work remotely, they are often able to benefit from relocating. 
