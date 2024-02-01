@@ -1,16 +1,15 @@
+Note to marker: the admin user site has been designed for a sophisticated professional tax adviser who has commissioned the project. As a result, and to keep the user experience streamlined, it does not explain tax concepts, rules, or basic instructions as the user would have in-depth knowledge of these. 
+
 # Tax Calculator
-kjjh
-The aim of this project was to create a tax calculator designed specifically for IT contractors that would compare and contrast take home pay across different jurisdictions. 
+The aim of this project was to create a tax calculator for IT contractors to compare take home pay across different jurisdictions. 
 
-IT contractors are highly paid, incredibly busy people who usually have no or little knowledge of tax law, and especially international tax law. Being a demographic who often are able to work remotely, they are often able to benefit from relocating. 
+Tax law is complex and time consuming to research. This project aims to democratise tax knowledge so that the average IT contractor can see with a quick calculation how they will be affected by taxes in different jurisdictions. 
 
-Tax law is complex and it can take a huge amount of research and knowledge for the lay person to understand it. Since tax is such a critical aspect in financial planning, this project aims to democratise tax knowledge so that the average IT contractor can see with a quick calculation how they will be affected by taxes in different jurisdictions. 
+This calculator is of use to any IT contractor considering moving countries. It is also useful to those in the UK, since certain tax matters are devolved which means that tax rates can be different in England, Wales, Scotland and Northern Ireland. As a result, for some residents who live near the borders, a simple  move to the next village can result in a drastically different tax bill. 
 
-This calculator is of use to any IT contractor considering moving countries. It is also particularly useful to those in the UK, since certain tax matters are devolved which means that tax rates can be different in England, Wales, Scotland and Northern Ireland. This means that, for some residents who live near the borders, a simple house move to the next village can result in a drastically different tax bill. 
+The goal of this calculator is to allow them to see an indicative calculation of how a move would affect their take home pay, without them having to spend weeks investigating complex legal issues or spending thousands on tax advisers. In the event that they are seriously considering a move to another jurisdiction after seeing the indicative calculation, then they will be advised to seek personalised, specialist advice.
 
-With an increasing tax burden, inflation and ever diminishing levels of service in the UK, it is likely that increasing numbers of contractors will consider a move abroad. The goal of this calculator is to allow them to see an indicative calculation of how a move would affect their take home pay, without them having to spend weeks investigating complex legal issues or spending thousands on tax advisers. In the event that they are seriously considering a move to another jurisdiction after seeing the indicative calculation, then they will be advised to seek personalised, specialist advice.
-
-The tax calculator could be expanded in the future to be of use to a wider demographic than just IT contractors. However, because of the time limits involved I have selected IT contractors specifically to limit the scope of the project in order to allow me to create it to a high standard within the time permitted. The software architecture of this project has been designed with scalability/xxxx? In mind, to ensure that additional jurisdictions and demographics can be added easily.
+The tax calculator could be expanded in the future to be of use to a wider demographic than just IT contractors. The software architecture of this project has been designed with scalability/xxxx? in mind, to ensure that additional jurisdictions and demographics can be added easily.
 
 ## Users
 The users of this site will be any IT contractor working outside IR35 and considering moving to another tax jurisdiction. The site may also be suitable for any other type of contractor working through a limited company in the same way.  
@@ -22,9 +21,9 @@ Average age is 42 years old
 
 Source: Information Technology Contractor Demographics and Statistics [2023]: Number Of Information Technology Contractors In The US (zippia.com)
 
-Since IT contractors work through limited companies and have to submit various tax returns each year I would expect the users to be reasonably sophisticated users, possibly with multiple sources of income, and a reasonable understanding of tax language. I therefore did not define terms like ‘corporation tax’ as the average user of this site would more likely than not already be familiar with these terms. I do not have any data to test this assumption at this stage, as this is a totally new site that does not build on anything existing. As the site is used, data will be collected and if it appears that my assumptions are incorrect then the user experience can be tweaked to perfect it for less sophisticated users. For example the terms could be clarified in some additional notes. For the sake of a clean user experience those notes have not been included at this stage. 
+Since most IT contractors work through limited companies and submit tax returns each year I would expect the users to be reasonably sophisticated, possibly with multiple sources of income, and a reasonable understanding of tax language. I therefore did not define terms like ‘corporation tax’ as the average user of this site would more likely than not already be familiar with them. I do not have any data to test this assumption, as this is a new site. As it is used, data will be collected and if my assumptions are incorrect the user experience can be modified. For example the terms could be clarified in some additional notes. For the sake of a clean user experience those notes have not been included at this stage. 
 
-Additionally, there will also be at least one admin user who will be able to log in and and new jurisdictions and update tax rates for existing jurisdictions. 
+Additionally, there will also be one admin user who will be able to log in, add new jurisdictions and update tax rates for existing jurisdictions. It is critical to note that the admin user is a sophisticated professional tax adviser who has commissioned the project. As a result, and to keep the user experience streamlined, the admin user section does not explain tax concepts, rules, or basic instructions as the user would have in-depth knowledge of these. 
 
 ## User stories 
 
