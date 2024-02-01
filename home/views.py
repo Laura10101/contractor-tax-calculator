@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.contrib import admin
 from django.contrib.auth.decorators import login_required
+from .helpers import *
 
 # Create your views here
 def index(request):
@@ -28,7 +29,33 @@ def admin_index(request):
 @login_required
 def home(request):
     template = 'home/home.html'
-    context = {
-    }
+    base_url = request.scheme + '://' + request.get_host()
 
+    user_id = request.user.id
+    username = request.user.username
+
+    context = {}
+
+    # Add subscription status to the context
+    try:
+        subscription_is_active = has_active_subscription(base_url, user_id)
+        context['subscription_is_active'] = subscription_is_active
+    except Exception as e:
+        context['subscription_error'] = str(e)
+
+    # Add recent payments to the context
+    try:
+        recent_payments = get_recent_payments(base_url, user_id)
+        context['payments'] = recent_payments
+    except Exception as e:
+        context['payments_error'] = str(e)
+
+    # Add calculations to the context
+    try:
+        calculations = get_calculations(base_url, username)
+        context['calculations'] = calculations
+    except Exception as e:
+        context['calculations_error'] = str(e)
+
+    print(str(context))
     return render(request, template, context)

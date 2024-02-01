@@ -3,9 +3,112 @@
 
 {% block content %}
     {% if not error %}
+        <!-- Page Title -->
         <div class="row">
             <div class="col text-center"><h1 class="page-header">Welcome to your dashboard</h1></div>
         </div>
+        <!-- End Page Title -->
+
+        <div class="row">
+            <!-- Subscription Status -->
+                <div class="col text-center">
+                    <h2>Your Subscription</h2>
+                    {% if subscription_error %}
+                        <p class="lead">An error occurred while checking your subscription: {{ subscription_error }}</p>
+                    {% else %}
+                        {% if subscription_is_active %}
+                            <p class="lead">Your subscription is currently active</p>
+                        {% else %}
+                            <p class="lead">Your subscription is currently <b>not</b> active. <a href="{% url 'subscription' %}">Click here to renew</a>.</p>"
+                        {% endif %}
+                    {% endif %}
+                </div>
+            <!-- End Subscription Status -->
+
+            <!-- Recent Payments -->
+                <div class="col">
+                    <div class="row">
+                        <div class="col text-center"><h2>Your Recent Payments</h2></div>
+                    </div>
+                    {% if payments_error %}
+                        <div class="row">
+                            <div class="col text-center lead">An error occurred while retrieving your recent payments: {{ payments_error }}</div>
+                        </div>
+                    {% else %}
+                        {% if payments|length == 0 %}
+                            <div class="row">
+                                <div class="col text-center lead">No recent payments were found for your account.</div>
+                            </div>
+                        {% else %}
+                            <div class="row">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Created</th>
+                                            <th scope="col">Completed</th>
+                                            <th scope="col">Total</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    {% for payment in payments %}
+                                        <tr>
+                                            <td>{{ payment.created_date|date:'d-m-Y H:M:S' }}</td>
+                                            <td>{{ payment.completed_date|date:'d-m-Y H:M:S' }}</td>
+                                            <td>{{ payment.total }}</td>
+                                            <td>{{ payment.status }}</td>
+                                            <td><a href="{% url 'checkout_status' id=payment.id %}">View</a></td>
+                                        </tr>
+                                    {% endfor %}
+                                </table>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            <!-- Recent Payments -->
+        </div>
+        <!-- Calculations -->
+            <div class="row">
+                <div class="col text-center">
+                    <h2>Your Calculations</h2>
+                </div>
+            </div>
+            {% if calculations_error %}
+                <div class="row">
+                    <div class="col text-center">
+                        <p class="lead">An error occurred while retrieving your calculation summary: {{ calculations_error }}</p>
+                    </div>
+                </div>
+            {% else %}
+                <div class="row">
+                    <div class="col text-center">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Date Created</th>
+                                    <th scope="col">Jurisdictions Included</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                            </thead>
+                            {% for calculation in calculations %}
+                                {{ calculation.id }}
+                                <tr>
+                                    <td>{{ calculation.created_date|date:'d-m-Y H:M:S' }}</td>
+                                    <td>
+                                        <ul>
+                                            {% for jurisdiction in calculation.jurisdictions %}
+                                                <li>{{ jurisdiction }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </td>
+                                    <td><a href="{% url 'display_calculation' %}?id={{ calculation.id }}">View</a></td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            {% endif %}
+        <!-- End Calculations-->
     {% endif %}
 {% endblock %}
 
