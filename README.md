@@ -77,29 +77,18 @@ LEAVE THIS BIT FOR NOW
 MAKE THIS BIT BULLET POINTS
 For this project I had to be very careful to keep the scope as tight as possible since there was a large amount of legal research, algorithms and architecture to carry out. With the limited time available, I had to prioritise. I architected the project in an agile way, to ensure that I could come back to it at a later date and add functionality as easily as possible. With more time, I would consider adding the following functionality:
 
-With more time, I would add more jurisdictions with a view to including every jurisdiction across the globe. This would take a significant amount of research which would need to be kept up to date each year as tax regimes change across the globe. 
-
-I would also add a feature to allow various elements to be ‘mixed and matched’: for example for a user to enter their company as being based in one country whilst they are based in another. This adds an additional layer of complexity as it involves the interplay of international, cross-jurisdictional tax laws.
-
-I would collect data on users to ensure that my assumptions about who the users are likely to be are correct. If the data suggests that the user's profile is different than expected, the user experience can be tweaked to make it more suitable to the majority of users. For example, if users are less knowledgeable than expected then additional explanatory notes/pages can be added to explain the basic terms. 
-
-A nice additional feature would be something along the lines of ‘Where will I be best off’. This feature would allow a user to enter their details - their income and its sources, and then tell them the top 3 jurisdictions where they would benefit from the maximum level of take home pay. 
-
-Another addition would be to include pension information, including pension tax relief. This has not been included at this time because it requires an in-depth knowledge of pension tax law in each jurisdiction, and there simply wasn’t time to accurately include these additional complex algorithms and calculations. 
-
-Clearly, getting the legal information accurate is a critical part of this project. Fortunately, I have a legal background so am accustomed to researching and deciphering complex legal problems. In an ideal world, this would be double checked by a specialist international tax lawyer from each jurisdiction. That has not been done yet, so a disclaimer has been included on each page. If the site becomes very popular, then that is an additional step that could be undertaken each year for an added level of certainty. 
-
-Allow the site to be used in multiple currencies.
-
-Ability to edit an existing calculation to add additional jurisdictions, rather than to have to start all over again if adding a new jurisdiction.
-
-A function that says your total tax percentage of income is…….
-A function where you can enter your income and it will return the most tax efficient place to live, or order them from best to worst 
-A function to do: company is based in jurisdiction x, person is based in jurisdiction y
-Broaden it out beyond just IT contractors 
-Add more jurisdictions 
-Add tax reliefs and allowances 
-Add dividend allowance - skipped for now for UK 
+- More jurisdictions with a view to including every jurisdiction across the globe. This would take a significant amount of research which would need to be kept up to date each year as tax regimes change.
+- A feature to allow elements to be ‘mixed and matched’: for example for a user to enter their company as being based in one country whilst they are based in another. This adds an additional layer of complexity as it involves the interplay of international, cross-jurisdictional tax laws.
+- Collect data on users to ensure that my assumptions about them are correct and change the UX is needed. For example, if users are less knowledgeable than expected then additional explanatory notes/pages can be added to explain the basic terms.
+- A feature along the lines of ‘Where will I be best off’. This feature would allow a user to enter their details - their income and its sources, and then tell them the top 3 jurisdictions where they would benefit from the maximum level of take home pay.
+- Include pension information, including pension tax relief. This has not been included yet because it requires an in-depth knowledge of pension tax law in each jurisdiction, and there simply wasn’t time to research and include these additional complex algorithms and calculations.
+- Accuracy is a critical part of this project. Fortunately, I have a legal background so am accustomed to researching and deciphering complex legal problems. In an ideal world, this would be double checked by a specialist international tax lawyer from each jurisdiction. That has not been done yet, #######so a disclaimer has been included on each page#######. This could be included at a later date.
+- Allow the site to be used in multiple currencies.
+- The ability to edit an existing calculation to add additional jurisdictions, rather than to have to start all over again if adding a new jurisdiction.
+- A function that says your total tax percentage of income is x%.
+- A function where you can enter your income and it will return the most tax efficient place to live, or order them from best to worst
+- Broaden it out beyond just IT contractors by including additional types of tax
+- Include tax reliefs and allowances 
 
 ## Technical Design and Rationale
 
