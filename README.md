@@ -42,9 +42,11 @@ Additionally, there will also be one admin user who will be able to log in, add 
 - Be able to log in easily and securely 
 
 ## Challenges Faced
-Tax ranges and limits are specified in the currency of the jurisdiction. This site is currently aimed at UK residents so will only take income in GBP for the time being. Since currencies change all the time, we will need to plug into a currency conversion site to get an up to date conversion, or manually enter the currency conversion rates but then they will go out of date quickly. We need to convert the GBP income into the currency of the jurisdiction (UAED, SD) and then convert it back to GBP using the same conversion rate after the calculation is done. So if we take a rate from a live site we will want to save that rate somewhere until the conversion back is completed, rather than using 2 different rates. 
+Tax law is highly complex. Different systems have different types of rules and caluclations. In order to limit the scope of the project, personal allowances have not been included yet. The project is dependent upon the calculations being accurate. Therefore research was a critical aspect. The sophisticated admin user will need to keep the information up to date for the calculator to continue to be accurate over time. 
 
-The project is dependent upon the calculations being accurate. Therefore research was a critical aspect of this project and my legal background was very useful. With more time, more jurisdictions could be added to the calculator but as a one-person project I limited it to 6 jurisdictions to keep the scope of the project reasonable. The admin user will need to keep the information up to date for the calculator to continue to be accurate over time. 
+Tax ranges and limits are specified in the currency of the jurisdiction. This site is currently aimed at UK residents so will only take income in GBP for the time being. 
+
+The architecture of the project was critical to ensuring that the project is scalable and can be amended and kept up to date. 
 
 ## UX
 
@@ -53,13 +55,15 @@ The aim of this site was to appear professional, accurate and trustworthy with g
 
 (colours TBC!!!!)
 
-As this is an entirely new site, I do not have any demographic data about the expected users. Once the site is in use data will be collected and demographic assumptions will be revised. The colour scheme could then be changed if it was felt necessary. 
+As this is an entirely new site, I do not have any demographic data about the expected users. Once the site is in use data will be collected and demographic assumptions will be revised. The colour scheme can then be changed if it is felt necessary. 
 
 ### Typography
-Blah
+Since the site is conveing complex informaiton, a simple, clear text was desired. 
 
 ### Imagery
-Talk about no real images to keep it clean, and use of font awesome
+The site is free from images to ensure a clean, simple interface. 
+
+Font awesome was used to........ 
 
 ### Wireframes
 LEAVE THIS BIT FOR NOW
