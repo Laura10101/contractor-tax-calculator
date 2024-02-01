@@ -73,7 +73,21 @@ def create_calculation(url, request):
     
 
 def get_calculation(url, id):
-    return {}
+    response = requests.get(url + str(id) + '/')
+
+    if response.status_code == 404:
+        raise Exception('No calculation could be found for the id ' + str(id))
+    else:
+        try:
+            data = json.loads(response.text)
+        except:
+            raise Exception('Failed to retrieve the calculation with id ' + str(id) + '.')
+        
+        if 'error' in data:
+            raise Exception(data['error'])
+
+    print(data)
+    return data
 
 def cast(value):
     if value.lower() in ['true', 'false']:
@@ -96,7 +110,7 @@ def find_jurisdiction_name(jurisdiction_id, all_jurisdictions):
 def get_jurisdiction_calculation_summaries(calculation, jurisdictions_url):
     all_jurisdictions = get_jurisdictions_by_ids(jurisdictions_url)
     jurisdictions = {}
-
+    print(calculation)
     for jurisdiction_id, jurisdiction_results in calculation['jurisdictions'].items():
         jurisdiction_name = find_jurisdiction_name(jurisdiction_id, all_jurisdictions)
         if not jurisdiction_name in jurisdictions:

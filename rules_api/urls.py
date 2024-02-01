@@ -13,4 +13,5 @@ urlpatterns = [
     path('taxcategories/', TaxCategoriesList.as_view()),
     path('taxcategories/<int:pk>/', TaxCategoryDetail.as_view()),
     path('calculations/', TaxCalculationsList.as_view(), name='calculations'),
+    path('calculations/<int:pk>/', TaxCalculationDetail.as_view(), name='calculations_detail'),
 ]

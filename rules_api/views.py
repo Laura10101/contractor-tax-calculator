@@ -582,6 +582,7 @@ class SecondaryRuleTierDetail(APIView):
 
 # Helper to convert tax calculation result to dictionary
 def serialise_tax_calculation_result(result):
+    print('Serialising tax calculation')
     serialised_result = {
         'calculation_id': result.id,
         'username': result.username,
@@ -683,10 +684,10 @@ class TaxCalculationsList(APIView):
         return Response(response)
 
 # Create django rest tax calculation detail view 
-class TaxCalculationsList(APIView):
-    def get(self, request, id):
+class TaxCalculationDetail(APIView):
+    def get(self, request, pk):
         try:
-            calculation = get_calculation_by_id(id)
+            calculation = get_calculation_by_id(pk)
         except TaxCalculationResult.DoesNotExist:
             return Response(
                 { 'error' : 'No tax calculations found for id' + str(id) + '.' },
@@ -694,4 +695,5 @@ class TaxCalculationsList(APIView):
                 )
 
         serialised_calculation = serialise_tax_calculation_result(calculation)
+        print(str(serialised_calculation))
         return Response(serialised_calculation)
