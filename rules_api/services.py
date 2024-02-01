@@ -325,3 +325,6 @@ def create_calculation(username, jurisdiction_ids, variable_table):
 
 def get_calculations_for_user(username):
     return TaxCalculationResult.objects.filter(username__exact=username).order_by('-created')
+
+def get_calculation_by_id(id):
+    return TaxCalculationResult.objects.get(id)

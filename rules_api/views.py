@@ -681,3 +681,17 @@ class TaxCalculationsList(APIView):
             response.append(serialised_result)
 
         return Response(response)
+
+# Create django rest tax calculation detail view 
+class TaxCalculationsList(APIView):
+    def get(self, request, id):
+        try:
+            calculation = get_calculation_by_id(id)
+        except TaxCalculationResult.DoesNotExist:
+            return Response(
+                { 'error' : 'No tax calculations found for id' + str(id) + '.' },
+                status=status.HTTP_404_NOT_FOUND
+                )
+
+        serialised_calculation = serialise_tax_calculation_result(calculation)
+        return Response(serialised_calculation)
