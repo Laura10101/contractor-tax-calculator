@@ -63,7 +63,7 @@ Since the site is conveing complex informaiton, a simple, clear text was desired
 ### Imagery
 The site is free from images to ensure a clean, simple interface. 
 
-Font awesome was used to........ 
+Font awesome was used to provide simple, clear graphics. 
 
 ### Wireframes
 LEAVE THIS BIT FOR NOW
@@ -74,7 +74,6 @@ LEAVE THIS BIT FOR NOW
 ### Existing Features
 
 ### Features Left to Implement
-MAKE THIS BIT BULLET POINTS
 For this project I had to be very careful to keep the scope as tight as possible since there was a large amount of legal research, algorithms and architecture to carry out. With the limited time available, I had to prioritise. I architected the project in an agile way, to ensure that I could come back to it at a later date and add functionality as easily as possible. With more time, I would consider adding the following functionality:
 
 - More jurisdictions with a view to including every jurisdiction across the globe. This would take a significant amount of research which would need to be kept up to date each year as tax regimes change.
@@ -115,13 +114,16 @@ The forms will be different for each country - different questions for each coun
 
 We will focus on IT contractors and then expand with more time. 
 
-The problem is this: how do I get info from users when the info needed is dependent on the particular country and the calcularton needed is also dependent on the particular country?
+The problem is this: how do I get info from users when the info needed is dependent on the particular country and the calculation needed is also dependent on the particular country?
 
 I want to architect this in a way that means other countries can be added in the future without needing to change the software itself. This will make the project more extensible and future-proof, and is in line with the principles of Uncle Bob’s ‘Clean Code’ - reducing the time and expense needed to update the project in the future. 
 
 Solution A = use a big if statement, with hard coded calculations for each country, and then the algorithm selects if country A, use set of rules B etc. But software engineers have to change it all every time a new country added, and it requires a release of code every time a new country is added because all of the logic is hard coded. Uncle Bob doesn’t like if statements! 
+
 Solution B = extension. Create a software module for each country and each will have hard coded questions and answers. So each country would be like a plug in, so that doesn’t require a redeployment of code if changes made, but you need a software engineer to create a new plugin and maintain the logic for each country. 
+
 Solution C: configuration. Come up with a generic algorithm that is data driven and store all of the knowledge in a database and have an algorithm that uses the knowledge in the database to work out what questions to ask and what calculations to apply. Benefit of this is that an admin user can update the database with a new country, and no software engineering is needed. This makes the project much more accessible, usable and updateable. Therefore this is the option I selected. The issue with this option is that if a new country has totally different tax rules than those in the existing database, then a software engineer would need to update the system. This option can lead a developer down a rabbit hole, trying to anticipate every single tax rule set that might possibly come up. But all tax systems I have studied so far have had similar rules, so this still remains the best option. In the event that a new country was added with drastically different rules, software engineering would be required to ensure the overall logic still worked.
+
 This project is about striking a balance between ensuring the application is useful to the end user (IT contractors) whilst also being easily updatable by an admin user as far as that is reasonably practicable. There may be outlying cases where a software engineer would be required to add a new country, but I am limiting the scope where possible to minimise this risk.  
 
 ### Important Technical Decisions
@@ -219,6 +221,9 @@ Alternatively, if using Gitpod, you can click below to create your own workspace
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/Laura10101/cat-identifier)
 
 ## Credits
+
+### Thanks
+I would like to thank the Code Institute for all of the support through all four of my projects. Special thanks goes to Tim Nelson who was my personal tutor. He is a remarkable software professional and has a natural ability to teach and inspire. 
 
 ### Educational Resources
 - Uncle Bob’s Clean Code 
