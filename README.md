@@ -1,16 +1,15 @@
+Note to marker: the admin user site has been designed for a sophisticated professional tax adviser who has commissioned the project. As a result, and to keep the user experience streamlined, it does not explain tax concepts, rules, or basic instructions as the user would have in-depth knowledge of these. 
+
 # Tax Calculator
-kjjh
-The aim of this project was to create a tax calculator designed specifically for IT contractors that would compare and contrast take home pay across different jurisdictions. 
+The aim of this project was to create a tax calculator for IT contractors to compare take home pay across different jurisdictions. 
 
-IT contractors are highly paid, incredibly busy people who usually have no or little knowledge of tax law, and especially international tax law. Being a demographic who often are able to work remotely, they are often able to benefit from relocating. 
+Tax law is complex and time consuming to research. This project aims to democratise tax knowledge so that the average IT contractor can see with a quick calculation how they will be affected by taxes in different jurisdictions. 
 
-Tax law is complex and it can take a huge amount of research and knowledge for the lay person to understand it. Since tax is such a critical aspect in financial planning, this project aims to democratise tax knowledge so that the average IT contractor can see with a quick calculation how they will be affected by taxes in different jurisdictions. 
+This calculator is of use to any IT contractor considering moving countries. It is also useful to those in the UK, since certain tax matters are devolved which means that tax rates can be different in England, Wales, Scotland and Northern Ireland. As a result, for some residents who live near the borders, a simple  move to the next village can result in a drastically different tax bill. 
 
-This calculator is of use to any IT contractor considering moving countries. It is also particularly useful to those in the UK, since certain tax matters are devolved which means that tax rates can be different in England, Wales, Scotland and Northern Ireland. This means that, for some residents who live near the borders, a simple house move to the next village can result in a drastically different tax bill. 
+The goal of this calculator is to allow them to see an indicative calculation of how a move would affect their take home pay, without them having to spend weeks investigating complex legal issues or spending thousands on tax advisers. In the event that they are seriously considering a move to another jurisdiction after seeing the indicative calculation, then they will be advised to seek personalised, specialist advice.
 
-With an increasing tax burden, inflation and ever diminishing levels of service in the UK, it is likely that increasing numbers of contractors will consider a move abroad. The goal of this calculator is to allow them to see an indicative calculation of how a move would affect their take home pay, without them having to spend weeks investigating complex legal issues or spending thousands on tax advisers. In the event that they are seriously considering a move to another jurisdiction after seeing the indicative calculation, then they will be advised to seek personalised, specialist advice.
-
-The tax calculator could be expanded in the future to be of use to a wider demographic than just IT contractors. However, because of the time limits involved I have selected IT contractors specifically to limit the scope of the project in order to allow me to create it to a high standard within the time permitted. The software architecture of this project has been designed with scalability/xxxx? In mind, to ensure that additional jurisdictions and demographics can be added easily.
+The tax calculator could be expanded in the future to be of use to a wider demographic than just IT contractors. The software architecture of this project has been designed with scalability/xxxx? in mind, to ensure that additional jurisdictions and demographics can be added easily.
 
 ## Users
 The users of this site will be any IT contractor working outside IR35 and considering moving to another tax jurisdiction. The site may also be suitable for any other type of contractor working through a limited company in the same way.  
@@ -22,9 +21,9 @@ Average age is 42 years old
 
 Source: Information Technology Contractor Demographics and Statistics [2023]: Number Of Information Technology Contractors In The US (zippia.com)
 
-Since IT contractors work through limited companies and have to submit various tax returns each year I would expect the users to be reasonably sophisticated users, possibly with multiple sources of income, and a reasonable understanding of tax language. I therefore did not define terms like ‘corporation tax’ as the average user of this site would more likely than not already be familiar with these terms. I do not have any data to test this assumption at this stage, as this is a totally new site that does not build on anything existing. As the site is used, data will be collected and if it appears that my assumptions are incorrect then the user experience can be tweaked to perfect it for less sophisticated users. For example the terms could be clarified in some additional notes. For the sake of a clean user experience those notes have not been included at this stage. 
+Since most IT contractors work through limited companies and submit tax returns each year I would expect the users to be reasonably sophisticated, possibly with multiple sources of income, and a reasonable understanding of tax language. I therefore did not define terms like ‘corporation tax’ as the average user of this site would more likely than not already be familiar with them. I do not have any data to test this assumption, as this is a new site. As it is used, data will be collected and if my assumptions are incorrect the user experience can be modified. For example the terms could be clarified in some additional notes. For the sake of a clean user experience those notes have not been included at this stage. 
 
-Additionally, there will also be at least one admin user who will be able to log in and and new jurisdictions and update tax rates for existing jurisdictions. 
+Additionally, there will also be one admin user who will be able to log in, add new jurisdictions and update tax rates for existing jurisdictions. It is critical to note that the admin user is a sophisticated professional tax adviser who has commissioned the project. As a result, and to keep the user experience streamlined, the admin user section does not explain tax concepts, rules, or basic instructions as the user would have in-depth knowledge of these. 
 
 ## User stories 
 
@@ -43,9 +42,11 @@ Additionally, there will also be at least one admin user who will be able to log
 - Be able to log in easily and securely 
 
 ## Challenges Faced
-Tax ranges and limits are specified in the currency of the jurisdiction. This site is currently aimed at UK residents so will only take income in GBP for the time being. Since currencies change all the time, we will need to plug into a currency conversion site to get an up to date conversion, or manually enter the currency conversion rates but then they will go out of date quickly. We need to convert the GBP income into the currency of the jurisdiction (UAED, SD) and then convert it back to GBP using the same conversion rate after the calculation is done. So if we take a rate from a live site we will want to save that rate somewhere until the conversion back is completed, rather than using 2 different rates. 
+Tax law is highly complex. Different systems have different types of rules and caluclations. In order to limit the scope of the project, personal allowances have not been included yet. The project is dependent upon the calculations being accurate. Therefore research was a critical aspect. The sophisticated admin user will need to keep the information up to date for the calculator to continue to be accurate over time. 
 
-The project is dependent upon the calculations being accurate. Therefore research was a critical aspect of this project and my legal background was very useful. With more time, more jurisdictions could be added to the calculator but as a one-person project I limited it to 6 jurisdictions to keep the scope of the project reasonable. The admin user will need to keep the information up to date for the calculator to continue to be accurate over time. 
+Tax ranges and limits are specified in the currency of the jurisdiction. This site is currently aimed at UK residents so will only take income in GBP for the time being. 
+
+The architecture of the project was critical to ensuring that the project is scalable and can be amended and kept up to date. 
 
 ## UX
 
@@ -54,13 +55,15 @@ The aim of this site was to appear professional, accurate and trustworthy with g
 
 (colours TBC!!!!)
 
-As this is an entirely new site, I do not have any demographic data about the expected users. Once the site is in use data will be collected and demographic assumptions will be revised. The colour scheme could then be changed if it was felt necessary. 
+As this is an entirely new site, I do not have any demographic data about the expected users. Once the site is in use data will be collected and demographic assumptions will be revised. The colour scheme can then be changed if it is felt necessary. 
 
 ### Typography
-Blah
+Since the site is conveing complex informaiton, a simple, clear text was desired. 
 
 ### Imagery
-Talk about no real images to keep it clean, and use of font awesome
+The site is free from images to ensure a clean, simple interface. 
+
+Font awesome was used to provide simple, clear graphics. 
 
 ### Wireframes
 LEAVE THIS BIT FOR NOW
@@ -71,32 +74,20 @@ LEAVE THIS BIT FOR NOW
 ### Existing Features
 
 ### Features Left to Implement
-MAKE THIS BIT BULLET POINTS
 For this project I had to be very careful to keep the scope as tight as possible since there was a large amount of legal research, algorithms and architecture to carry out. With the limited time available, I had to prioritise. I architected the project in an agile way, to ensure that I could come back to it at a later date and add functionality as easily as possible. With more time, I would consider adding the following functionality:
 
-With more time, I would add more jurisdictions with a view to including every jurisdiction across the globe. This would take a significant amount of research which would need to be kept up to date each year as tax regimes change across the globe. 
-
-I would also add a feature to allow various elements to be ‘mixed and matched’: for example for a user to enter their company as being based in one country whilst they are based in another. This adds an additional layer of complexity as it involves the interplay of international, cross-jurisdictional tax laws.
-
-I would collect data on users to ensure that my assumptions about who the users are likely to be are correct. If the data suggests that the user's profile is different than expected, the user experience can be tweaked to make it more suitable to the majority of users. For example, if users are less knowledgeable than expected then additional explanatory notes/pages can be added to explain the basic terms. 
-
-A nice additional feature would be something along the lines of ‘Where will I be best off’. This feature would allow a user to enter their details - their income and its sources, and then tell them the top 3 jurisdictions where they would benefit from the maximum level of take home pay. 
-
-Another addition would be to include pension information, including pension tax relief. This has not been included at this time because it requires an in-depth knowledge of pension tax law in each jurisdiction, and there simply wasn’t time to accurately include these additional complex algorithms and calculations. 
-
-Clearly, getting the legal information accurate is a critical part of this project. Fortunately, I have a legal background so am accustomed to researching and deciphering complex legal problems. In an ideal world, this would be double checked by a specialist international tax lawyer from each jurisdiction. That has not been done yet, so a disclaimer has been included on each page. If the site becomes very popular, then that is an additional step that could be undertaken each year for an added level of certainty. 
-
-Allow the site to be used in multiple currencies.
-
-Ability to edit an existing calculation to add additional jurisdictions, rather than to have to start all over again if adding a new jurisdiction.
-
-A function that says your total tax percentage of income is…….
-A function where you can enter your income and it will return the most tax efficient place to live, or order them from best to worst 
-A function to do: company is based in jurisdiction x, person is based in jurisdiction y
-Broaden it out beyond just IT contractors 
-Add more jurisdictions 
-Add tax reliefs and allowances 
-Add dividend allowance - skipped for now for UK 
+- More jurisdictions with a view to including every jurisdiction across the globe. This would take a significant amount of research which would need to be kept up to date each year as tax regimes change.
+- A feature to allow elements to be ‘mixed and matched’: for example for a user to enter their company as being based in one country whilst they are based in another. This adds an additional layer of complexity as it involves the interplay of international, cross-jurisdictional tax laws.
+- Collect data on users to ensure that my assumptions about them are correct and change the UX is needed. For example, if users are less knowledgeable than expected then additional explanatory notes/pages can be added to explain the basic terms.
+- A feature along the lines of ‘Where will I be best off’. This feature would allow a user to enter their details - their income and its sources, and then tell them the top 3 jurisdictions where they would benefit from the maximum level of take home pay.
+- Include pension information, including pension tax relief. This has not been included yet because it requires an in-depth knowledge of pension tax law in each jurisdiction, and there simply wasn’t time to research and include these additional complex algorithms and calculations.
+- Accuracy is a critical part of this project. Fortunately, I have a legal background so am accustomed to researching and deciphering complex legal problems. In an ideal world, this would be double checked by a specialist international tax lawyer from each jurisdiction. That has not been done yet, #######so a disclaimer has been included on each page#######. This could be included at a later date.
+- Allow the site to be used in multiple currencies.
+- The ability to edit an existing calculation to add additional jurisdictions, rather than to have to start all over again if adding a new jurisdiction.
+- A function that says your total tax percentage of income is x%.
+- A function where you can enter your income and it will return the most tax efficient place to live, or order them from best to worst
+- Broaden it out beyond just IT contractors by including additional types of tax
+- Include tax reliefs and allowances 
 
 ## Technical Design and Rationale
 
@@ -123,13 +114,16 @@ The forms will be different for each country - different questions for each coun
 
 We will focus on IT contractors and then expand with more time. 
 
-The problem is this: how do I get info from users when the info needed is dependent on the particular country and the calcularton needed is also dependent on the particular country?
+The problem is this: how do I get info from users when the info needed is dependent on the particular country and the calculation needed is also dependent on the particular country?
 
 I want to architect this in a way that means other countries can be added in the future without needing to change the software itself. This will make the project more extensible and future-proof, and is in line with the principles of Uncle Bob’s ‘Clean Code’ - reducing the time and expense needed to update the project in the future. 
 
 Solution A = use a big if statement, with hard coded calculations for each country, and then the algorithm selects if country A, use set of rules B etc. But software engineers have to change it all every time a new country added, and it requires a release of code every time a new country is added because all of the logic is hard coded. Uncle Bob doesn’t like if statements! 
+
 Solution B = extension. Create a software module for each country and each will have hard coded questions and answers. So each country would be like a plug in, so that doesn’t require a redeployment of code if changes made, but you need a software engineer to create a new plugin and maintain the logic for each country. 
+
 Solution C: configuration. Come up with a generic algorithm that is data driven and store all of the knowledge in a database and have an algorithm that uses the knowledge in the database to work out what questions to ask and what calculations to apply. Benefit of this is that an admin user can update the database with a new country, and no software engineering is needed. This makes the project much more accessible, usable and updateable. Therefore this is the option I selected. The issue with this option is that if a new country has totally different tax rules than those in the existing database, then a software engineer would need to update the system. This option can lead a developer down a rabbit hole, trying to anticipate every single tax rule set that might possibly come up. But all tax systems I have studied so far have had similar rules, so this still remains the best option. In the event that a new country was added with drastically different rules, software engineering would be required to ensure the overall logic still worked.
+
 This project is about striking a balance between ensuring the application is useful to the end user (IT contractors) whilst also being easily updatable by an admin user as far as that is reasonably practicable. There may be outlying cases where a software engineer would be required to add a new country, but I am limiting the scope where possible to minimise this risk.  
 
 ### Important Technical Decisions
@@ -227,6 +221,9 @@ Alternatively, if using Gitpod, you can click below to create your own workspace
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/Laura10101/cat-identifier)
 
 ## Credits
+
+### Thanks
+I would like to thank the Code Institute for all of the support through all four of my projects. Special thanks goes to Tim Nelson who was my personal tutor. He is a remarkable software professional and has a natural ability to teach and inspire. 
 
 ### Educational Resources
 - Uncle Bob’s Clean Code 
