@@ -89,3 +89,10 @@ def get_payment_status(id):
         4: 'complete',
     }
     return payment_statuses[payment.status], payment.stripe_error
+
+def get_recent_payments(user_id):
+    payments = Payment.objects.filter(user_id__exact=user_id).order_by('-created_date', '-status')
+    if payments.count() <= 5:
+        return payments.all()
+    else:
+        return payments.all()[0:5]
