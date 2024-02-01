@@ -24,8 +24,25 @@ def create_form(jurisdiction_id):
     return new_form.id
 
 # Create new method to delete forms 
-def delete_form(id): 
-    Form.objects.get(pk=id).delete()    
+def delete_form_for_jurisdiction(jurisdiction_id):
+    print('jurisdiction id = ' + str(jurisdiction_id))
+    forms = Form.objects.filter(jurisdiction_id__exact=jurisdiction_id)
+    if forms.count() != 1:
+        raise ValidationError("Multiple forms found when deleting jurisdiction with id " + str(jurisdiction_id))
+    
+    form = forms.first()
+    print('Retrieved form')
+    for question in form.questions.all():
+        print('Deleting question ' + str(question.id))
+        if isinstance(question, MultipleChoiceQuestion):
+            print('Is Multiple Choice')
+            for option in question.options.all():
+                print('Deleting option ' + str(option.id))
+                delete_multiple_choice_option(option.id)
+        delete_question(question.id)
+        print('Deleted question')
+    form.delete()
+    print('Deleted form')
 
 # Create new method to create questions 
 # Requires 3 methods - one for each type of question
