@@ -8,9 +8,7 @@ def trigger_form_creation(sender, instance, created, **kwargs):
         create_form(instance.id)
 
 def trigger_form_deletion(sender, instance, *args, **kwargs):
-    print('Triggered form deletion for jurisdiction ' + str(instance.id))
     delete_form_for_jurisdiction(instance.id)
-    print('Form deleted')
 
 post_save.connect(trigger_form_creation, sender=Jurisdiction)
 post_delete.connect(trigger_form_deletion, sender=Jurisdiction)
