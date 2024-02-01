@@ -71,20 +71,13 @@ def delete_ruleset(id):
 
 # Delete all rulesets under a jurisdiction
 def delete_rulesets_for_jurisdiction(jurisdiction_id):
-    print('Deleting rulesets for jurisdiction ' + str(jurisdiction_id))
     rulesets = RuleSet.objects.filter(jurisdiction_id__exact=jurisdiction_id)
-    print('Found ' + str(rulesets.count()) + ' rulesets')
     for ruleset in rulesets.all():
-        print('Deleting rules ruleset ' + str(ruleset.id))
         for rule in ruleset.rules.all():
             if isinstance(rule, TieredRateRule) or isinstance(rule, SecondaryTieredRateRule):
-                print('Has tiers. Deleting them...')
                 for tier in rule.tiers.all():
-                    print('Deleting tier ' + str(tier.id))
                     tier.delete()
-            print('Deleting rule ' + str(rule.id))
             rule.delete()
-        print('Deleting ruleset ' + str(ruleset.id))
         ruleset.delete()
 
 ### TAX CATEGORIES ###
