@@ -141,6 +141,55 @@ if (typeof require !== "undefined") {
 }
 
 function doNothing() { }
+
+/*
+ * Dialog Actions
+ */
+function cancelDialog(dialogId, shouldClearDialogState, shouldClearParentState) {
+    hideDialog(dialogId);
+    if (shouldClearDialogState) {
+        clearDialogState();
+    }
+
+    if (shouldClearParentState) {
+        clearParentState();
+        app.parentRuleset = null;
+    }
+}
+
+function cancelChildDialog(dialogId) {
+    hideDialog(dialogId);
+    moveParentStateToAppState();
+    clearParentState();
+}
+
+function cancelConfirmationDialog() {
+    hideDialog(confirmationDialog.dialog.id);
+    switch (app.dialogState.entityType) {
+        case dialogStates.entityTypes.question:
+                clearDialogState();
+                clearParentState();
+            break;
+        case dialogStates.entityTypes.multipleChoiceOption:
+                moveParentStateToAppState();
+            break;
+        case dialogStates.entityTypes.ruleset:
+                clearDialogState();
+                clearParentState();
+            break;
+        case dialogStates.entityTypes.rule:
+                clearDialogState();
+                clearParentState();
+            break;
+        case dialogStates.entityTypes.ruleTier:
+                moveParentStateToAppState();
+            break;
+        case dialogStates.entityTypes.secondaryRuleTier:
+                moveParentStateToAppState();
+            break;
+    }
+}
+
 /*
  * Forms Views
  */
@@ -195,24 +244,6 @@ function displayTaxCategoryLoadError() {
 function refreshQuestionsDisplay(refresher=getFormForJurisdiction) {
     jurisdictionId = getSelectedJurisdictionId();
     refresher(jurisdictionId, displayQuestions, displayQuestionsLoadError);
-}
-
-function cancelDialog(dialogId, shouldClearDialogState, shouldClearParentState) {
-    hideDialog(dialogId);
-    if (shouldClearDialogState) {
-        clearDialogState();
-    }
-
-    if (shouldClearParentState) {
-        clearParentState();
-        app.parentRuleset = null;
-    }
-}
-
-function cancelChildDialog(dialogId) {
-    hideDialog(dialogId);
-    moveParentStateToAppState();
-    clearParentState();
 }
 
 function questionTypeSelected() {
@@ -573,7 +604,6 @@ function confirmDeleteMultipleChoiceOption(event, remover=removeMultipleChoiceOp
 function deleteMultipleChoiceOption(option) {
     moveAppStateToParentState();
     setDialogState(dialogStates.modes.delete, dialogStates.entityTypes.multipleChoiceOption, option);
-    hideDialog(multipleChoiceQuestionDialog.dialog.id);
     confirm("Please confirm you wish for the following option to be deleted: " + option.text + ".", confirmDeleteMultipleChoiceOption);
 }
 
@@ -768,7 +798,7 @@ function saveRuleFailed(request, status, message) {
 function saveRule(flatRateRuleCreator=createFlatRateRule, tieredRateRuleCreator=createTieredRateRule,
     secondaryTieredRateRuleCreator=createSecondaryTieredRateRule, flatRateRuleUpdater=updateFlatRateRule, tieredRateRuleUpdater=updateTieredRateRule,
     secondaryTieredRateRuleUpdater=updateSecondaryTieredRateRule) {
-    rulesetId = app.parentRuleset.id;
+    rulesetId = findParentRuleset(app.dialogState.entity.id).id;
 
     let errors = [];
 
