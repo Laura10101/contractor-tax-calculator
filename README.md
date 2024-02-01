@@ -42,19 +42,36 @@ Additionally, there will also be at least one admin user who will be able to log
 - Be able to update the tax rates for an existing country 
 - Be able to log in easily and securely 
 
-## Branding 
+## Challenges Faced
+Tax ranges and limits are specified in the currency of the jurisdiction. This site is currently aimed at UK residents so will only take income in GBP for the time being. Since currencies change all the time, we will need to plug into a currency conversion site to get an up to date conversion, or manually enter the currency conversion rates but then they will go out of date quickly. We need to convert the GBP income into the currency of the jurisdiction (UAED, SD) and then convert it back to GBP using the same conversion rate after the calculation is done. So if we take a rate from a live site we will want to save that rate somewhere until the conversion back is completed, rather than using 2 different rates. 
+
+The project is dependent upon the calculations being accurate. Therefore research was a critical aspect of this project and my legal background was very useful. With more time, more jurisdictions could be added to the calculator but as a one-person project I limited it to 6 jurisdictions to keep the scope of the project reasonable. The admin user will need to keep the information up to date for the calculator to continue to be accurate over time. 
+
+## UX
+
+### Colour Scheme
 The aim of this site was to appear professional, accurate and trustworthy with good levels of contrast to satisfy optimal UX design. As a result the following colour scheme was used: 
 
 (colours TBC!!!!)
 
 As this is an entirely new site, I do not have any demographic data about the expected users. Once the site is in use data will be collected and demographic assumptions will be revised. The colour scheme could then be changed if it was felt necessary. 
 
-## Complexities 
-Tax ranges and limits are specified in the currency of the jurisdiction. This site is currently aimed at UK residents so will only take income in GBP for the time being. Since currencies change all the time, we will need to plug into a currency conversion site to get an up to date conversion, or manually enter the currency conversion rates but then they will go out of date quickly. We need to convert the GBP income into the currency of the jurisdiction (UAED, SD) and then convert it back to GBP using the same conversion rate after the calculation is done. So if we take a rate from a live site we will want to save that rate somewhere until the conversion back is completed, rather than using 2 different rates. 
+### Typography
+Blah
 
-The project is dependent upon the calculations being accurate. Therefore research was a critical aspect of this project and my legal background was very useful. With more time, more jurisdictions could be added to the calculator but as a one-person project I limited it to 6 jurisdictions to keep the scope of the project reasonable. The admin user will need to keep the information up to date for the calculator to continue to be accurate over time. 
+### Imagery
+Talk about no real images to keep it clean, and use of font awesome
 
-## Additions with more time 
+### Wireframes
+LEAVE THIS BIT FOR NOW
+
+
+## Features
+
+### Existing Features
+
+### Features Left to Implement
+MAKE THIS BIT BULLET POINTS
 For this project I had to be very careful to keep the scope as tight as possible since there was a large amount of legal research, algorithms and architecture to carry out. With the limited time available, I had to prioritise. I architected the project in an agile way, to ensure that I could come back to it at a later date and add functionality as easily as possible. With more time, I would consider adding the following functionality:
 
 With more time, I would add more jurisdictions with a view to including every jurisdiction across the globe. This would take a significant amount of research which would need to be kept up to date each year as tax regimes change across the globe. 
@@ -81,8 +98,25 @@ Add more jurisdictions
 Add tax reliefs and allowances 
 Add dividend allowance - skipped for now for UK 
 
-## Working notes
-### Conceptual summary of the problem:
+## Technical Design and Rationale
+
+### High Level Architecture
+Diagram and brief explanation
+
+### Data Model
+
+**The Jurisdictions Domain**
+
+**The Forms Domain**
+
+**The Rules Domain**
+
+**The Subscriptions Domain**
+
+**The Payments Domain**
+
+
+### Technical Challenges
 The fundamental problem is that you need to gather info from the user and then apply a series of calculations to work out, based on that info, how the user will be taxed. The problem is that the structure of the calculations, and the calculations themselves, and the info on which they are based, varies from country to country. 
 
 The forms will be different for each country - different questions for each country, and the calculations are going to be different for each country. so …. How do we come up with a piece of software that can gather the right info from the user for all of the countries, and then apply the right calculation for all of the countries. 
@@ -98,55 +132,15 @@ Solution B = extension. Create a software module for each country and each will 
 Solution C: configuration. Come up with a generic algorithm that is data driven and store all of the knowledge in a database and have an algorithm that uses the knowledge in the database to work out what questions to ask and what calculations to apply. Benefit of this is that an admin user can update the database with a new country, and no software engineering is needed. This makes the project much more accessible, usable and updateable. Therefore this is the option I selected. The issue with this option is that if a new country has totally different tax rules than those in the existing database, then a software engineer would need to update the system. This option can lead a developer down a rabbit hole, trying to anticipate every single tax rule set that might possibly come up. But all tax systems I have studied so far have had similar rules, so this still remains the best option. In the event that a new country was added with drastically different rules, software engineering would be required to ensure the overall logic still worked.
 This project is about striking a balance between ensuring the application is useful to the end user (IT contractors) whilst also being easily updatable by an admin user as far as that is reasonably practicable. There may be outlying cases where a software engineer would be required to add a new country, but I am limiting the scope where possible to minimise this risk.  
 
-### Technical Decisions
+### Important Technical Decisions
 When implementing DELETE methods on APIs, I had to decide whether to put filters in the HTTP request body or in the query string. After some research, the following article recommended putting the filters in the query string for DELETEs as request bodies are not widely supported for DELETE:
 REST/HTTP - Should you use a body for your DELETE requests? (peterdaugaardrasmussen.com)
 Initially I used ordinals to order the questions and rules, but I later decided to use linked lists instead. Linked lists allowed me to ………………………………………..
 When loading objects out of the database using ordinals, there is no guarantee that the objects will be retrieved in the order of the ordinal, so then I would need to create a sorting function. 
-With linked lists, the objects would be accessed in the correct sorted order, as the first object in the list will be accessed first and then from the first object the pointers control the order in which the subsequent objects are accessed. 
+With linked lists, the objects would be accessed in the correct sorted order, as the first object in the list will be accessed first and then from the first object the pointers control the order in which the subsequent objects are accessed.
 
-### Data models
-Data lives in 2 places: first in the database when storing it and second in the computer’s memory, which is where the class structure comes in (class structure is the in memory representation of the data). So if you design your class structure you are automatically designing your database structure as well. Django will automatically create the DB structure from the model layer. 
-Data domains:
-Users: Stores information about the users, their password hashes, and their profiles
-Forms: Stores information about the questions and types of answer that we will ask to the user in order to gather the information required as input to the tax calculator.
-Rules: Stores the tax rules for different jurisdictions that are used to calculate tax based on the information given by the user.
-Calculations: Stores the output of the calculations that are requested by the users.
-Payments: Stores information about payments made by users, and outstanding payments.
-
-### Class structure 
-There are 3 main components that I need to solve the problem. For each country I need to get certain info from the user. 
-Some Qs are generic, some are country specific. 
-The first part of the problem is displaying the right Qs to the user, depending on what you need. 
-UX: ask only the relevant Qs to the user for the country they are interested in. 
-There will be 4 elements to the data model: 
-1. So the system needs to know which Qs to ask to the user. So I’ll call this the ‘form building domain or component’. 
-UX: need to consider the order of the Qs. it may not make sense to ask all the generic Qs followed by the country-specific ones. We may need to intersperse them. 
-Have question sections, so the country-specific Qs can be asked in the correct section i.e. corporation tax, income tax etc. 
-Specify the type of answer that the Q allows - that will determine what input type is needed for the answer
-Validation rules need to be considered
-Classes needed for form builder@
-1. Section 
-2. Question 
-3. Answer template/validation 
-Field type can be:
-Currency 
-Validation will be: 
-must be a whole number, no commas etc
-Min value/max value
-Number
-Validation will be:
-Min value/max value
-Boolean 
-yes/no
-Multiselect
-Single select 
-
-
-2. Once I've got the info I have to produce the calculations via a set of rules. So the second part of the problem is the rule building part of the problem. 
-3. The user facing application is the third part.
-Plug in to currency converter. Get conversion rate, store as variable so use same rate both ways. 
-4. The country builder - the admin user will use this in combination with form builder and rule builder to add new countries etc. 
+## Testing
+For all testing, please refer to the TESTING.md file.
 
 ## Deployment
 
