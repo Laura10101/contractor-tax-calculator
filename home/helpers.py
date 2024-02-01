@@ -89,9 +89,11 @@ def get_calculations(base_url, username):
         # Find the jurisdiction name for each jurisdiction in the calculation
         for jurisdiction_id_as_str, jurisdiction in calculation['jurisdictions'].items():
             jurisdiction_id = int(jurisdiction_id_as_str)
+            jurisdiction_name = 'Deleted Jurisdiction ' +  str(jurisdiction_id)
             for jurisdiction in jurisdictions:
                 if jurisdiction['id'] == jurisdiction_id:
-                    calculation_sumnmary['jurisdictions'].append(jurisdiction['name'])
+                    jurisdiction_name = jurisdiction['name']
+            calculation_sumnmary['jurisdictions'].append(jurisdiction_name)
         
         calculations.append(calculation_sumnmary)
     
