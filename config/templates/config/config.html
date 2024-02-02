@@ -1,94 +1,15 @@
-{% load static %}<!doctype html>
-<html lang="en">
-  <head>
-    {% block meta %}
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    {% endblock %}
+{% extends "base.html" %}
+{% load static %}
 
-    {% block corecss %}
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
-        <link rel="stylesheet" href="{% static 'css/config.css' %}">
-    {% endblock %}
+{% block extra_js %}
+    <script src="{% static 'js/view_consts.js' %}"></script>
+    <script src="{% static 'js/view_models.js' %}"></script>
+    <script src="{% static 'js/service_clients.js' %}"></script>
+    <script src="{% static 'js/view_utils.js' %}"></script>
+    <script src="{% static 'js/views.js' %}"></script>
+{% endblock %}
 
-    {% block corejs %}
-        <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js" integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+" crossorigin="anonymous"></script>
-        <!-- Stripe -->
-        <script src="https://js.stripe.com/v3/"></script>
-        <script src="https://kit.fontawesome.com/a9e2e6347a.js" crossorigin="anonymous"></script>
-    {% endblock %}
-
-    {% block extra_js %}
-        <script src="{% static 'js/view_consts.js' %}"></script>
-        <script src="{% static 'js/view_models.js' %}"></script>
-        <script src="{% static 'js/service_clients.js' %}"></script>
-        <script src="{% static 'js/view_utils.js' %}"></script>
-        <script src="{% static 'js/views.js' %}"></script>
-    {% endblock %}
-    
-    <title>Contractor Tax Calculator - Configure Jurisdictions</title>
-  </head>
-  <body>
-    <!-- Begin page header -->
-        <header class="container-fluid fixed-top">
-            <div id="topnav" class="row bg-white pt-lg-2 d-none d-lg-flex">
-                <!-- Begin home link -->
-                    <div class="col-12 col-lg-4 my-auto py-1 py-lg-0 text-center text-lg-left">
-                        <a href="{% url 'index' %}" class="nav-link main-logo-link">
-                            <h2 class="logo-font text-black my-0"><strong>Tax</strong> Calculator</h2>
-                        </a>
-                    </div>
-                <!-- End home link -->
-                <div class="col-12 col-lg-4 my-auto py-1 py-lg-0 text-center text-lg-left">
-                    <!-- Begin create calculation link -->
-                        {% if request.user.is_authenticated %}
-                            {% if request.user.is_superuser is not True %}
-                            <a href="{% url 'select_jurisdictions' %}" class="text-black nav-link">
-                                <div class="text-center">
-                                    <div><i class="fas fa-calculator fa-lg"></i></div>
-                                    <p class="my-0">Create Tax Calculation</p>
-                                </div>
-                            </a>
-                            {% endif %}
-                        {% endif %}
-                    <!-- End calculation link -->
-                </div>
-                <div class="col-12 col-lg-4 my-auto py-1 py-lg-0">
-                    <!-- Begin navigation -->
-                        <nav>
-                            <!-- Navigation for non-mobile devices -->
-                                <ul class="list-inline list-unstyled text-center text-lg-right my-0">
-                                    <li class="list-inline-item dropdown">
-                                        <a class="text-black nav-link" href="#" id="user-options" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <div class="text-center">
-                                                <div><i class="fas fa-user fa-lg"></i></div>
-                                                <p class="my-0">My Account</p>
-                                            </div>
-                                        </a>
-                                        <div class="dropdown-menu border-0" aria-labelledby="user-options">
-                                            {% if request.user.is_authenticated %}
-                                                {% if request.user.is_superuser %}
-                                                {% else %}
-                                                {% endif %}
-                                                <a href="{% url 'account_logout' %}" class="dropdown-item">Logout</a>
-                                            {% else %}
-                                                <a href="{% url 'account_signup' %}" class="dropdown-item">Register</a>
-                                                <a href="{% url 'account_login' %}" class="dropdown-item">Login</a>
-                                            {% endif %}
-                                        </div>
-                                    </li>
-                                </ul>
-                            <!-- End navigation for non-mobile devices -->
-                        </nav>
-                    <!-- End navigation -->
-                </div>
-            </div>
-        </header>
-    <!-- End page header-->
-
+{% block content %}
     <!-- Begin dialog prototypes -->
         <!-- Question type dialog -->
             <div class="modal" id="question-type-modal" tabindex="-1" data-backdrop="static" data-keyboard="false" 
@@ -1023,6 +944,15 @@
 
     <!-- Begin page content -->
         <div class="container content-container">
+            <!-- Page Title -->
+                <section>
+                    <div class="row">
+                        <div class="col text-center">
+                            <h1 class="display-5 fw-bold text-body-emphasis">Configure Questions & Tax Rates</h1>
+                        </div>
+                    </div>
+                </section>
+            <!-- End Page Title -->
             <!-- Begin main content -->
                 <main>
                     <!-- Begin control panel -->
@@ -1395,8 +1325,4 @@
             <!-- End main content -->
         </div>
     <!-- End page content -->
-
-    {% block postloadjs %}
-    {% endblock %}
-  </body>
-</html>
+{% endblock %}
