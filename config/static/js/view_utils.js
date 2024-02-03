@@ -1054,10 +1054,6 @@ function displayRuleset(ruleset) {
     rulesetNameDisplay.id += "-" + ruleset.id;
     rulesetNameDisplay.innerHTML = ruleset.name;
 
-    rulesetTaxCategoryDisplay = display.querySelector("#" + rulesetDisplay.taxCategpry.id);
-    rulesetTaxCategoryDisplay.id += "-" + ruleset.id;
-    rulesetTaxCategoryDisplay.innerHTML = getTaxCategoryById(ruleset.tax_category_id).name;
-
     rulesetRulesDisplay = display.querySelector("#" + rulesetDisplay.rules.id);
     rulesetRulesDisplay.id += "-" + ruleset.id;
 
