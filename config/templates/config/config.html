@@ -972,13 +972,13 @@
                                     <!-- Begin tab controls -->
                                         <div class="col">
                                             <div class="nav nav-pills" id="nav-tab" role="tablist">
-                                                <button class="nav-link active" id="nav-forms-tab" data-toggle="tab" data-target="#nav-forms"
+                                                <button class="nav-link active mt-3 border" id="nav-forms-tab" data-toggle="tab" data-target="#nav-forms"
                                                     type="button" role="tab" aria-controls="nav-forms" aria-selected="true"
                                                     data-toggle="tooltip" data-placement="top"
                                                     title="Add, edit, and remove the questions that IT contractors need to be asked to calculate tax for this jurisdiction">
                                                     Manage Questions
                                                 </button>
-                                                <button class="nav-link" id="nav-rules-tab" data-toggle="tab" data-target="#nav-rules"
+                                                <button class="nav-link mt-3 border" id="nav-rules-tab" data-toggle="tab" data-target="#nav-rules"
                                                     type="button" role="tab" aria-controls="nav-rules" aria-selected="false"
                                                     data-toggle="tooltip" data-placement="top"
                                                     title="Add, edit, and remove the tax rules that are used to calculate tax for this jurisdiction">
@@ -993,14 +993,14 @@
                     <!-- End control panel -->
 
                     <!-- Begin tab content -->
-                        <div class="tab-content" id="nav-tabContent">
+                        <div class="tab-content border" id="nav-tabContent">
                             <!-- Forms config -->
                             <div class="tab-pane fade show active" id="nav-forms" role="tabpanel" aria-labelledby="nav-forms-tab">
                                 <div class="container">
                                     <!-- Form manager options -->
                                     <div class="row">
-                                        <div class="col">
-                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#question-type-modal"
+                                        <div class="col manage-option-col">
+                                            <button type="button" class="btn btn-primary mt-3" data-toggle="modal" data-target="#question-type-modal"
                                                 data-toggle="tooltip" data-placement="top" title="Add a new question">
                                                 <i class="fas fa-plus"></i> Question
                                             </button>
@@ -1056,13 +1056,13 @@
                                                     <table class="table table-borderless">
                                                         <tbody>
                                                             <tr>
-                                                                <td rowspan="5">
+                                                                <td rowspan="5" class=".entity-type-col">
                                                                     <i class="fas fa-chart-pie"></i>
                                                                     Numeric Question
                                                                 </td>
-                                                                <td><b>Question Text</b></td>
-                                                                <td id="numeric-question-display-text">Text</td>
-                                                                <td rowspan="5">
+                                                                <td class=".entity-field-name-col"><b>Question Text</b></td>
+                                                                <td id="numeric-question-display-text" class=".entity-field-value-col">Text</td>
+                                                                <td rowspan="5" class=".entity-actions-col">
                                                                     <i class="fas fa-edit edit-button"
                                                                         data-toggle="tooltip" data-placement="top" title="Edit this question"></i>
                                                                     <i class="fas fa-trash-alt delete-button"
@@ -1150,8 +1150,8 @@
                                 <div class="container">
                                     <!-- Rule manager options -->
                                     <div class="row">
-                                        <div class="col">
-                                            <button type="button" class="btn btn-primary" onclick="createRuleset()"
+                                        <div class="col manage-option-col">
+                                            <button type="button" class="btn btn-primary mt-3" onclick="createRuleset()"
                                                 data-toggle="tooltip" data-placement="top"
                                                 title="Tax rule collections group rules by the category of tax they relate to. Click to create a new tax rule collection.">
                                                 <i class="fas fa-plus"></i>
@@ -1159,7 +1159,7 @@
                                             </button>
                                         </div>
                                     </div>
-                                    <!-- Rule form manager options -->
+                                    <!-- Rule manager options -->
 
                                     <div class="row">
                                         <div class="col">

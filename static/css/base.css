@@ -15,3 +15,24 @@
 .hidden {
     display: none;
 }
+
+.manage-option-col {
+    display: flex;
+    justify-content:flex-end;
+}
+
+.entity-type-col {
+    width: 20%;
+}
+
+.entity-field-name-col {
+    width: 20%;
+}
+
+.entity-field-value-col {
+    width: 45%;
+}
+
+.entity-actions-col {
+    width: 15%;
+}
