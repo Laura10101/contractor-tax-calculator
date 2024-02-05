@@ -162,7 +162,6 @@ function cancelDialog(dialogId, shouldClearDialogState, shouldClearParentState) 
 function cancelChildDialog(dialogId) {
     hideDialog(dialogId);
     moveParentStateToAppState();
-    clearParentState();
 }
 
 function cancelConfirmationDialog() {

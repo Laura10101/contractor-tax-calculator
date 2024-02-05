@@ -153,7 +153,7 @@ const config = {
   // https://jestjs.io/docs/configuration
   testEnvironmentOptions:
   {
-    url: "https://8000-laura10101-contractorta-g5o2od5xoex.ws-eu107.gitpod.io/",
+    url: "https://8000-laura10101-contractorta-g5o2od5xoex.ws-eu108.gitpod.io/",
   },
 
   // Adds a location field to test results

@@ -57,7 +57,6 @@ function clearDialogState() {
         entityType: null,
         entity: null
     };
-    app.parentRuleset = null
 }
 
 // Set the entity currently being acted on (created, updated, deleted)
