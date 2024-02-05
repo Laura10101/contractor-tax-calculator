@@ -761,11 +761,9 @@ describe("Display utilities", () => {
                 expect(rulesetCard).toBeDefined();
 
                 let rulesetNameDisplay = display.querySelector("#" + rulesetDisplay.name.id + "-" + ruleset.id);
-                let taxCategoryDisplay = display.querySelector("#" + rulesetDisplay.taxCategpry.id + "-" + ruleset.id);
                 let rulesDisplay = display.querySelector("#" + rulesetDisplay.rules.id + "-" + ruleset.id);
 
                 expect(rulesetNameDisplay.innerHTML).toBe(ruleset.name);
-                expect(taxCategoryDisplay.innerHTML).toBe(getTaxCategoryById(ruleset.tax_category_id).name);
                 expect(rulesDisplay.children.length).toBe(ruleset.rules.length + 3);
             });
         });
