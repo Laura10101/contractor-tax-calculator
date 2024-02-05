@@ -48,6 +48,24 @@ function toUrl(endpoint) {
     return app.apiHost.protocol + "//" + app.apiHost.hostname + "/api/" + endpoint;
 }
 
+// Perform an asynchronous update on all elements in a queue
+// and then call a given function once all elements have been processed
+function processBatch(requestQueue, updater, onQueueEmpty) {
+    if (requestQueue.length > 0) {
+        let batchSize = 5;
+        let batch = [];
+        for (var i = 0; i < batchSize; i++) {
+            if (requestQueue.length > 0) {
+                let item = requestQueue.pop();
+                batch.push(updater(item));
+            }
+        }
+        $.when(...batch).then(function() { processBatch(requestQueue, updater, onQueueEmpty); });
+    } else {
+        onQueueEmpty();
+    }
+}
+
 function query(endpoint, query, success, error) {
     url = toUrl(endpoint);
     return $.ajax({
@@ -378,6 +396,49 @@ function updateSecondaryTieredRateRule(rulesetId, ruleId, name, explainer, varia
     return put(endpoints.rules.rules(rulesetId), ruleId, data, onSuccess, onFailure);
 }
 
+function updateRule(rulesetId, rule, flatRateRuleUpdater, tieredRateRuleUpdater, secondaryTieredRateRuleUpdater, onSuccess, onFailure) {
+    switch (rule.type) {
+        case "flat_rate":
+                flatRateRuleUpdater(
+                    rulesetId,
+                    rule.id,
+                    rule.name,
+                    rule.explainer,
+                    rule.variable_name,
+                    rule.ordinal,
+                    rule.tax_rate,
+                    onSuccess,
+                    onFailure
+                );
+            break;
+        case "tiered_rate":
+                tieredRateRuleUpdater(
+                    rulesetId,
+                    rule.id,
+                    rule.name,
+                    rule.explainer,
+                    rule.variable_name,
+                    rule.ordinal,
+                    onSuccess,
+                    onFailure
+                );
+            break;
+        case "secondary_tiered_rate":
+                secondaryTieredRateRuleUpdater(
+                    rulesetId,
+                    rule.id,
+                    rule.name,
+                    rule.explainer,
+                    rule.variable_name,
+                    rule.ordinal,
+                    rule.primary_rule.id,
+                    onSuccess,
+                    onFailure
+                );
+            break;
+    }
+}
+
 function removeRule(rulesetId, ruleId, onSuccess, onFailure) {
     return remove(endpoints.rules.rules(rulesetId), ruleId, onSuccess, onFailure);
 }
@@ -466,5 +527,7 @@ if (typeof module != "undefined") module.exports = {
     removeRuleTier,
     postSecondaryRuleTier,
     updateSecondaryRuleTier,
-    removeSecondaryRuleTier
+    removeSecondaryRuleTier,
+    processBatch,
+    updateRule
 };

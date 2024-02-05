@@ -56,6 +56,8 @@ if (typeof require !== "undefined") {
     postSecondaryRuleTier = serviceClients.postSecondaryRuleTier;
     updateSecondaryRuleTier = serviceClients.updateSecondaryRuleTier;
     removeSecondaryRuleTier = serviceClients.removeSecondaryRuleTier;
+    processBatch = serviceClients.processBatch;
+    updateRule = serviceClients.updateRule;
 
     // View models
     app = viewModels.app;
@@ -445,13 +447,22 @@ function saveQuestion(booleanQuestionCreator=createBooleanQuestion, numericQuest
 function deleteQuestionSucceeded(request, status, message, ordinalUpdater=updateQuestion, displayRefresher=refreshQuestionsDisplay) {
     success("The selected question was successfully deleted.");
     questions = resequenceQuestionOrdinals(app.dialogState.entity);
+    let requestQueue = [];
     questions.forEach(question => {
         if (question.id != app.dialogState.entity.id) {
-            ordinalUpdater(question, doNothing, saveQuestionFailed);
+            requestQueue.push(question);
+            //ordinalUpdater(question, doNothing, saveQuestionFailed);
         }
     })
-    clearDialogState();
-    displayRefresher();
+
+    processBatch(
+        requestQueue,
+        function(question) { ordinalUpdater(question, doNothing, saveQuestionFailed); },
+        function() {
+            clearDialogState();
+            displayRefresher();
+        }
+    );
 }
 
 function deleteQuestionFailed(request, status, message) {
@@ -666,17 +677,25 @@ function createRuleset() {
 function deleteRulesetSucceeded(data, textStatus, request, ordinalUpdater=patchRuleset, displayRefresher=refreshRulesetsDisplay) {
     success("The selected ruleset was successfully deleted.");
     rulesets = resequenceRulesetOrdinals(app.dialogState.entity);
+    let requestQueue = [];
     rulesets.forEach(ruleset => {
         if (ruleset.id != app.dialogState.entity.id) {
-            ordinalUpdater(
+            requestQueue.push(ruleset);
+            /*ordinalUpdater(
                 ruleset.id,
                 ruleset.ordinal,
                 doNothing,
-                saveRulesetFailed);
+                saveRulesetFailed);*/
         }
     });
-    clearDialogState();
-    displayRefresher();
+
+    processBatch(
+        requestQueue,
+        function(ruleset) { ordinalUpdater(ruleset.id, ruleset.ordinal, doNothing, saveRulesetFailed); },
+        function() { 
+            clearDialogState();
+            displayRefresher();
+        });
 }
 
 function deleteRulesetFailed() {
@@ -798,7 +817,7 @@ function saveRuleFailed(request, status, message) {
 function saveRule(flatRateRuleCreator=createFlatRateRule, tieredRateRuleCreator=createTieredRateRule,
     secondaryTieredRateRuleCreator=createSecondaryTieredRateRule, flatRateRuleUpdater=updateFlatRateRule, tieredRateRuleUpdater=updateTieredRateRule,
     secondaryTieredRateRuleUpdater=updateSecondaryTieredRateRule) {
-    rulesetId = findParentRuleset(app.dialogState.entity.id).id;
+    rulesetId = app.parentRuleset.id;
 
     let errors = [];
 
@@ -935,54 +954,31 @@ function deleteRuleSucceeded(data, textStatus, request, flatRateRuleUpdater=upda
 
     success("The selected rule was successfully deleted.");
     rules = resequenceRuleOrdinals(app.dialogState.entity);
+    let requestQueue = [];
     rules.forEach(rule => {
         if (rule.id != app.dialogState.entity.id) {
-            switch(rule.type) {
-                case "flat_rate":
-                        flatRateRuleUpdater(
-                            app.parentRuleset.id,
-                            rule.id,
-                            rule.name,
-                            rule.explainer,
-                            rule.variable_name,
-                            rule.ordinal,
-                            rule.tax_rate,
-                            doNothing,
-                            saveRuleFailed
-                        );
-                    break;
-                case "tiered_rate":
-                        tieredRateRuleUpdater(
-                            app.parentRuleset.id,
-                            rule.id,
-                            rule.name,
-                            rule.explainer,
-                            rule.variable_name,
-                            rule.ordinal,
-                            doNothing,
-                            saveRuleFailed
-                        );
-                    break;
-                case "secondary_tiered_rate":
-                        if (rule.primary_rule.id != app.dialogState.entity.id) {
-                            secondaryTieredRateRuleUpdater(
-                                app.parentRuleset.id,
-                                rule.id,
-                                rule.name,
-                                rule.explainer,
-                                rule.variable_name,
-                                rule.ordinal,
-                                rule.primary_rule.id,
-                                doNothing,
-                                saveRuleFailed
-                            );
-                        }
-                    break;
-            }
+            requestQueue.push(rule);
         }
     });
-    clearDialogState();
-    displayRefresher();
+
+    processBatch(
+        requestQueue,
+        function(rule) {
+            updateRule(
+                findParentRuleset(rule.id).id,
+                rule,
+                flatRateRuleUpdater,
+                tieredRateRuleUpdater,
+                secondaryTieredRateRuleUpdater,
+                doNothing,
+                saveRuleFailed
+            );
+        },
+        function() {
+            clearDialogState();
+            displayRefresher();
+        }
+    );
 }
 
 function deleteRuleFailed() {
@@ -1314,39 +1310,54 @@ function deleteRuleTierSucceeded(data, textStatus, request, primaryTierUpdater=u
     ruleset = findParentRuleset(rule.id);
 
     tiers = resequenceRuleTierOrdinals(app.dialogState.entity);
+    let requestQueue = [];
     tiers.forEach(tier => {
         if (tier.id != app.dialogState.entity.id) {
-            switch(app.dialogState.entityType) {
-                case dialogStates.entityTypes.ruleTier:
-                        primaryTierUpdater(
-                            ruleset.id,
-                            rule.id,
-                            tier.id,
-                            tier.min_value,
-                            tier.max_value,
-                            tier.ordinal,
-                            tier.tier_rate,
-                            doNothing,
-                            saveRuleTierFailed
-                        );
-                    break;
-                case dialogStates.entityTypes.secondaryRuleTier:
-                        secondaryTierUpdater(
-                            ruleset.id,
-                            rule.id,
-                            tier.id,
-                            tier.primary_tier_id,
-                            tier.ordinal,
-                            tier.tier_rate,
-                            doNothing,
-                            saveRuleTierFailed
-                        );
-                    break;
-            }
+            requestQueue.push(tier);
         }
     });
-    moveParentStateToAppState();
-    displayRefresher();
+    if (app.dialogState.entityType == dialogStates.entityTypes.ruleTier) {
+        processBatch(
+            requestQueue,
+            function(tier) { 
+                primaryTierUpdater(
+                    ruleset.id,
+                    rule.id,
+                    tier.id,
+                    tier.min_value,
+                    tier.max_value,
+                    tier.ordinal,
+                    tier.tier_rate,
+                    doNothing,
+                    saveRuleTierFailed
+                );
+             },
+             function() {
+                moveParentStateToAppState();
+                displayRefresher();
+             }
+        );
+    } else if (app.dialogState.entityType == dialogStates.entityTypes.secondaryRuleTier) {
+        processBatch(
+            requestQueue,
+            function(tier) { 
+                secondaryTierUpdater(
+                    ruleset.id,
+                    rule.id,
+                    tier.id,
+                    tier.primary_tier_id,
+                    tier.ordinal,
+                    tier.tier_rate,
+                    doNothing,
+                    saveRuleTierFailed
+                );
+             },
+             function() {
+                moveParentStateToAppState();
+                displayRefresher();
+             }
+        );
+    }
 }
 
 function deleteRuleTierFailed(request, status, message) {

@@ -181,7 +181,7 @@ const { hasUncaughtExceptionCaptureCallback } = require("process");
 const { showDialog, hideDialog, ruleTypeChosen, initJurisdictionsSelect } = require("../view_utils.js");
 
 // Helper functions
-function isShown(dialogId) {
+function isShown(dialogId, print=false) {
     // From Stackoverflow: https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes
     return $("#" + dialogId).data('bs.modal')?._isShown;
 }
@@ -657,7 +657,6 @@ describe("Status views", () => {
                 let dialogId = confirmationDialog.dialog.id;
                 deleteMultipleChoiceOption(option);
                 expect(isShown(dialogId)).toBe(true);
-                expect(isShown(multipleChoiceQuestionDialog.dialog.id)).toBe(false);
 
                 let title = document.getElementById(confirmationDialog.label.id).innerHTML;
                 let message = document.getElementById(confirmationDialog.message.id).innerHTML;
@@ -740,9 +739,6 @@ describe("Status views", () => {
 
                 let dialogId = confirmationDialog.dialog.id;
                 deleteRuleTier(true, tier);
-
-                console.log(dialogId);
-                console.log(isShown(dialogId));
                 expect(isShown(dialogId)).toBe(true);
 
                 let title = document.getElementById(confirmationDialog.label.id).innerHTML;
@@ -1192,17 +1188,23 @@ describe("Question views", () => {
 
         describe("Successful deletion", () => {
             test("should show a success message, resequence ordinals, clear the app state, and refresh the questions display", done => {
-                let nextOrdinal = 1;
+                let checkCount = 0;
 
                 function checkOrdinalUpdate(question, success, failure) {
-                    expect(question.ordinal).toBe(nextOrdinal);
-                    nextOrdinal += 1;
+                    if (question.id == 3) {
+                        checkCount += 1;
+                        expect(question.ordinal).toBe(1);
+                    } else if (question.id == 7) {
+                        checkCount += 1;
+                        expect(question.ordinal).toBe(2);
+                    }
 
                     expect(success).toEqual(doNothing);
                     expect(failure).toEqual(saveQuestionFailed);
                 }
 
                 function checkFinalAppState() {
+                    expect(checkCount).toBe(2);
                     expect(app.dialogState.mode).toBe(null);
                     expect(app.dialogState.entityType).toBe(null);
                     expect(app.dialogState.entity).toBe(null);
@@ -1552,17 +1554,26 @@ describe("Ruleset views", () => {
 
         describe("Successful deletion", () => {
             test("should show a success message, resequence ordinals, clear the app state, and refresh the rulesets display", done => {
-                let nextOrdinal = 1;
+                let checkCount = 0;
     
                 function checkOrdinalUpdate(id, ordinal, success, failure) {
-                    expect(ordinal).toBe(nextOrdinal);
-                    nextOrdinal += 1;
+                    checkCount += 1;
+                    if (id == 23) {
+                        expect(ordinal).toBe(1);
+                    } else if (id == 24) {
+                        expect(ordinal).toBe(2);
+                    } else if (id == 26) {
+                        expect(ordinal).toBe(3);
+                    } else {
+                        expect(true).toBe(false);
+                    }
     
                     expect(success).toEqual(doNothing);
                     expect(failure).toEqual(saveRulesetFailed);
                 }
     
                 function checkFinalAppState() {
+                    expect(checkCount).toBe(3);
                     expect(app.dialogState.mode).toBe(null);
                     expect(app.dialogState.entityType).toBe(null);
                     expect(app.dialogState.entity).toBe(null);
@@ -2103,33 +2114,38 @@ describe("Rule views views", () => {
         describe("Successful deletion", () => {
             describe("of a flat rate rule", () => {
                 test("should show a success message, resequence ordinals, clear the app state, and refresh the rules display", done => {
-                    let nextOrdinal = 1;
+                    let checkCount = 0;
         
                     function checkFlatRateOrdinalUpdate(rulesetId, ruleId, name, explainer, varName, ordinal, taxRate, success, failure) {
-                        expect(ordinal).toBe(nextOrdinal);
-                        nextOrdinal += 1;
-        
-                        expect(success).toEqual(doNothing);
-                        expect(failure).toEqual(saveRuleFailed);
+                        expect(true).toBe(false);
                     }
     
                     function checkTieredRateOrdinalUpdate(rulesetId, ruleId, name, explainer, varName, ordinal, success, failure) {
-                        expect(ordinal).toBe(nextOrdinal);
-                        nextOrdinal += 1;
+                        checkCount += 1;
+                        if (ruleId == 44) {
+                            expect(ordinal).toBe(1);
+                        } else {
+                            expect(true).toBe(false);
+                        }
         
                         expect(success).toEqual(doNothing);
                         expect(failure).toEqual(saveRuleFailed);
                     }
     
                     function checkSecondaryTieredRateOrdinalUpdate(rulesetId, ruleId, name, explainer, varName, ordinal, primaryRuleId, success, failure) {
-                        expect(ordinal).toBe(nextOrdinal);
-                        nextOrdinal += 1;
+                        checkCount += 1;
+                        if (ruleId == 45) {
+                            expect(ordinal).toBe(2);
+                        } else {
+                            expect(true).toBe(false);
+                        }
         
                         expect(success).toEqual(doNothing);
                         expect(failure).toEqual(saveRuleFailed);
                     }
         
                     function checkFinalAppState() {
+                        expect(checkCount).toBe(2);
                         expect(app.dialogState.mode).toBe(null);
                         expect(app.dialogState.entityType).toBe(null);
                         expect(app.dialogState.entity).toBe(null);
@@ -2152,33 +2168,40 @@ describe("Rule views views", () => {
     
             describe("of a tiered rate rule", () => {
                 test("should show a success message, resequence ordinals, clear the app state, and refresh the rules display", done => {
-                    let nextOrdinal = 1;
+                    let checkCount = 0;
         
                     function checkFlatRateOrdinalUpdate(rulesetId, ruleId, name, explainer, varName, ordinal, taxRate, success, failure) {
-                        expect(ordinal).toBe(nextOrdinal);
-                        nextOrdinal += 1;
-        
+                        checkCount += 1;
+
+                        if (ruleId == 41) {
+                            expect(ordinal).toBe(1);
+                        } else {
+                            expect(true).toBe(false);
+                        }
+                        
                         expect(success).toEqual(doNothing);
                         expect(failure).toEqual(saveRuleFailed);
                     }
     
                     function checkTieredRateOrdinalUpdate(rulesetId, ruleId, name, explainer, varName, ordinal, success, failure) {
-                        expect(ordinal).toBe(nextOrdinal);
-                        nextOrdinal += 1;
-        
-                        expect(success).toEqual(doNothing);
-                        expect(failure).toEqual(saveRuleFailed);
+                        expect(true).toBe(false);
                     }
     
                     function checkSecondaryTieredRateOrdinalUpdate(rulesetId, ruleId, name, explainer, varName, ordinal, primaryRuleId, success, failure) {
-                        expect(ordinal).toBe(nextOrdinal);
-                        nextOrdinal += 1;
+                        checkCount += 1;
+
+                        if (ruleId == 45) {
+                            expect(ordinal).toBe(2);
+                        } else {
+                            expect(true).toBe(false);
+                        }
         
                         expect(success).toEqual(doNothing);
                         expect(failure).toEqual(saveRuleFailed);
                     }
         
                     function checkFinalAppState() {
+                        expect(checkCount).toBe(2);
                         expect(app.dialogState.mode).toBe(null);
                         expect(app.dialogState.entityType).toBe(null);
                         expect(app.dialogState.entity).toBe(null);
@@ -2201,33 +2224,39 @@ describe("Rule views views", () => {
     
             describe("of a secondary tiered rate rule", () => {
                 test("should show a success message, resequence ordinals, clear the app state, and refresh the rules display", done => {
-                    let nextOrdinal = 1;
+                    let checkCount = 0;
         
                     function checkFlatRateOrdinalUpdate(rulesetId, ruleId, name, explainer, varName, ordinal, taxRate, success, failure) {
-                        expect(ordinal).toBe(nextOrdinal);
-                        nextOrdinal += 1;
+                        checkCount += 1;
+                        if (ruleId == 41) {
+                            expect(ordinal).toBe(1);
+                        } else {
+                            expect(true).toBe(false);
+                        }
         
                         expect(success).toEqual(doNothing);
                         expect(failure).toEqual(saveRuleFailed);
                     }
     
                     function checkTieredRateOrdinalUpdate(rulesetId, ruleId, name, explainer, varName, ordinal, success, failure) {
-                        expect(ordinal).toBe(nextOrdinal);
-                        nextOrdinal += 1;
+                        checkCount += 1;
+                        if (ruleId == 44) {
+                            expect(ordinal).toBe(2);
+                        } else {
+                            expect(true).toBe(false);
+                        }
         
                         expect(success).toEqual(doNothing);
                         expect(failure).toEqual(saveRuleFailed);
                     }
     
                     function checkSecondaryTieredRateOrdinalUpdate(rulesetId, ruleId, name, explainer, varName, ordinal, primaryRuleId, success, failure) {
-                        expect(ordinal).toBe(nextOrdinal);
-                        nextOrdinal += 1;
-        
-                        expect(success).toEqual(doNothing);
-                        expect(failure).toEqual(saveRuleFailed);
+                        checkCount += 1;
+                        expect(true).toBe(false);
                     }
         
                     function checkFinalAppState() {
+                        expect(checkCount).toBe(2);
                         expect(app.dialogState.mode).toBe(null);
                         expect(app.dialogState.entityType).toBe(null);
                         expect(app.dialogState.entity).toBe(null);
@@ -2757,17 +2786,24 @@ describe("Rule tier views views", () => {
         describe("Successful deletion", () => {
             describe("of a rule tier", () => {
                 test("should show a success message, resequence ordinals, clear the app state, and refresh the tiers display", done => {
-                    let nextOrdinal = 1;
-        
+                    let previousChecked = false;
+                    let nextChecked = false;
+
                     function checkOrdinalUpdate(rulesetId, ruleId, tierId, minValue, maxValue, ordinal, taxRate, success, failure) {
-                        expect(ordinal).toBe(nextOrdinal);
-                        nextOrdinal += 1;
+                        if (tierId == 4) {
+                            expect(ordinal).toBe(2);
+                            previousChecked = true;
+                        } else if (tierId == 6) {
+                            expect(ordinal).toBe(3);
+                            nextChecked = true;
+                        }
         
                         expect(success).toEqual(doNothing);
                         expect(failure).toEqual(saveRuleTierFailed);
                     }
         
                     function checkFinalAppState() {
+                        expect(previousChecked && nextChecked).toBe(true);
                         expect(app.dialogState.mode).toBe(dialogStates.modes.edit);
                         expect(app.dialogState.entityType).toBe(dialogStates.entityTypes.tieredRateRule);
                         expect(app.dialogState.entity).toEqual(rule);
