@@ -217,11 +217,11 @@ function validateQuestionData(text, variableName, questionId) {
     // Validate the variable name
     if (questionId == null) {
         if (isDuplicateVariableName(variableName)) {
-            errors.push("<p>A question already exists with the variable name '" + variableName + "'. Variable name must be unique<p>");
+            errors.push("<p>A question already exists with the data name '" + variableName + "'. Data name must be unique<p>");
         }
     } else if (findQuestionById(questionId).variable_name != variableName) {
         if (isDuplicateVariableName(variableName)) {
-            errors.push("<p>A question already exists with the variable name '" + variableName + "'. Variable name must be unique<p>");
+            errors.push("<p>A question already exists with the data name '" + variableName + "'. Data name must be unique<p>");
         }
     }
 

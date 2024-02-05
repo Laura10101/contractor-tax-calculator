@@ -284,13 +284,13 @@ function findQuestionById(questionId) {
 // Extract the list of variable names from current questions
 // For now, non-numeric questions are excluded as rules are not able
 // currently to support responses from non-numeric questions
-function getValidQuestionTextVariableNamePairs() {
+function getValidQuestionTextVariableNamePairs(includeOnlyNumeric=true) {
     let questions = getQuestions();
     let commonQuestions = getCommonQuestions();
     let allQuestions = questions.concat(commonQuestions);
     let variables = [];
     allQuestions.forEach(question => {
-        if (question.type == "numeric") {
+        if ((includeOnlyNumeric && question.type == "numeric") || !includeOnlyNumeric) {
             variables.push({
                 questionText: question.text,
                 variableName: question.variable_name
@@ -309,7 +309,7 @@ function getValidQuestionTextVariableNamePairs() {
 // Check if the variable name provided is a duplicate of the existing variable names
 function isDuplicateVariableName(variableName) {
     let isDuplicate = false;
-    let existingVariableNames = getValidQuestionTextVariableNamePairs();
+    let existingVariableNames = getValidQuestionTextVariableNamePairs(false);
     existingVariableNames.forEach(candidateVariableName => {
         if (candidateVariableName.variableName == variableName) {
             isDuplicate = true;
