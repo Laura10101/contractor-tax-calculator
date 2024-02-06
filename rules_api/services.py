@@ -327,10 +327,22 @@ def create_calculation(username, jurisdiction_ids, variable_table):
             ruleset.validate(variable_table)
     
     # Apply the calculation
+    excluded_jurisdiction_ids = []
     for jurisdiction_id in jurisdiction_ids:
         rulesets = RuleSet.objects.filter(jurisdiction_id__exact=jurisdiction_id).order_by('ordinal')
-        for ruleset in rulesets:
-            ruleset.calculate(variable_table, calculation_result)
+        if rulesets.count() == 0:
+            excluded_jurisdiction_ids.append(jurisdiction_id)
+        else:
+            has_rules = False
+            for ruleset in rulesets:
+                if ruleset.rules.count() > 0:
+                    has_rules = True
+                ruleset.calculate(variable_table, calculation_result)
+
+            if not has_rules:
+                excluded_jurisdiction_ids.append(jurisdiction_id)
+    
+    calculation_result.excluded_jurisdiction_ids = ','.join(excluded_jurisdiction_ids)
 
     return calculation_result
 

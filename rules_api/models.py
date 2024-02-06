@@ -8,6 +8,7 @@ from django.core.exceptions import ValidationError
 class TaxCalculationResult(models.Model):
     username = models.CharField(max_length=255, null=False, blank=False)
     created = models.DateTimeField(auto_now_add=True)
+    excluded_jurisdiction_ids = models.CharField(max_length=255, null=False, blank=True)
 
     def add_ruleset_result(self, jurisdiction_id, tax_category_id, tax_category_name):
         result = TaxRuleSetResult.objects.create(
