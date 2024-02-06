@@ -3,11 +3,9 @@ const $ = require("jquery");
 require("bootstrap");
 
 const { 
-    dialogStates,
     statusDialog,
     confirmationDialog,
     jurisdictionsSelect,
-    questionTypeDialog,
     booleanQuestionDialog,
     numericQuestionDialog,
     multipleChoiceQuestionDialog,
@@ -17,7 +15,6 @@ const {
     numericQuestionDisplay,
     multipleChoiceQuestionDisplay,
     rulesetDialog,
-    ruleTypeDialog,
     flatRateRuleDialog,
     tieredRateRuleDialog,
     secondaryTieredRateRuleDialog,
@@ -33,7 +30,7 @@ const {
 const { buildAppState } = require("./mocks/view_models.mocks.js");
 
 const {
-    app, findQuestionById, findRuleById, getRulesByTypeForJurisdiction, getQuestions, findParentRuleset, getTaxCategoryById, findPrimaryRuleTierById
+    app, findQuestionById, findRuleById, getRulesByTypeForJurisdiction, getQuestions, findParentRuleset, findPrimaryRuleTierById
  } = require("../view_models");
 
 const {
@@ -42,16 +39,12 @@ const {
     error,
     success,
     confirm,
-    removeAllChildNodes,
     updateRuleTierTable,
-    resetContainer,
     initJurisdictionsSelect,
-    getSelectedJurisdictionId,
     displayCreateBooleanQuestionDialog,
     displayEditBooleanQuestionDialog,
     displayCreateNumericQuestionDialog,
     displayEditNumericQuestionDialog,
-    updateMultipleChoiceQuestionDialogOptionsDisplay,
     displayCreateMultipleChoiceQuestionDialog,
     displayEditMultipleChoiceQuestionDialog,
     displayCreateMultipleChoiceOptionDialog,
@@ -60,7 +53,6 @@ const {
     displayMultipleChoiceQuestion,
     updateQuestionDisplay,
     displayCreateRulesetDialog,
-    ruleTypeChosen,
     displayCreateFlatRateRuleDialog,
     displayEditFlatRateRuleDialog,
     displayCreateTieredRateRuleDialog,
@@ -310,7 +302,6 @@ describe("Dialog utilities", () => {
                     let explainer = document.getElementById(dialogConsts.explainer.input.id).value;
                     let variableName = document.getElementById(dialogConsts.variableName.input.id).value;
                     let isMandatory = document.getElementById(dialogConsts.isMandatory.input.id).checked;
-                    let allowMultiselect = document.getElementById(dialogConsts.allowMultiselect.input.id).checked;
 
                     expect(text).toBe(question.text);
                     expect(explainer).toBe(question.explainer);
@@ -392,7 +383,6 @@ describe("Dialog utilities", () => {
                     
                     let name = document.getElementById(dialogConsts.name.input.id).value;
                     let explainer = document.getElementById(dialogConsts.explainer.input.id).value;
-                    let variableName = document.getElementById(dialogConsts.variableName.input.id).value;
                     let taxRate = document.getElementById(dialogConsts.taxRate.input.id).value;
 
                     expect(name).toBe(rule.name);
@@ -436,7 +426,6 @@ describe("Dialog utilities", () => {
                     
                     let name = document.getElementById(dialogConsts.name.input.id).value;
                     let explainer = document.getElementById(dialogConsts.explainer.input.id).value;
-                    let variableName = document.getElementById(dialogConsts.variableName.input.id).value;
 
                     expect(name).toBe(rule.name);
                     expect(explainer).toBe(rule.explainer);
@@ -491,7 +480,6 @@ describe("Dialog utilities", () => {
                     
                     let name = document.getElementById(dialogConsts.name.input.id).value;
                     let explainer = document.getElementById(dialogConsts.explainer.input.id).value;
-                    let variableName = document.getElementById(dialogConsts.variableName.input.id).value;
                     let primaryRuleSelect = document.getElementById(dialogConsts.primaryRule.input.id);
 
                     expect(name).toBe(rule.name);
