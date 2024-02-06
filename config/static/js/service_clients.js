@@ -52,7 +52,8 @@ function toUrl(endpoint) {
 // and then call a given function once all elements have been processed
 function processBatch(requestQueue, updater, onQueueEmpty) {
     if (requestQueue.length > 0) {
-        let batchSize = 5;
+        console.log("Process batch");
+        let batchSize = 3;
         let batch = [];
         for (var i = 0; i < batchSize; i++) {
             if (requestQueue.length > 0) {
