@@ -111,6 +111,11 @@ def get_jurisdiction_calculation_summaries(calculation, jurisdictions_url):
     all_jurisdictions = get_jurisdictions_by_ids(jurisdictions_url)
     jurisdictions = {}
     print(calculation)
+    excluded_jurisdiction_ids = calculation['excluded_jurisdiction_ids'].split(',')
+    excluded_jurisdictions = []
+    for id in excluded_jurisdiction_ids:
+        excluded_jurisdictions.append(find_jurisdiction_name(id, all_jurisdictions))
+
     for jurisdiction_id, jurisdiction_results in calculation['jurisdictions'].items():
         jurisdiction_name = find_jurisdiction_name(jurisdiction_id, all_jurisdictions)
         if not jurisdiction_name in jurisdictions:
@@ -131,5 +136,5 @@ def get_jurisdiction_calculation_summaries(calculation, jurisdictions_url):
             total += tax_payable
 
         jurisdictions[jurisdiction_name]['Total'] = total
-    return jurisdictions
+    return jurisdictions, excluded_jurisdictions
 

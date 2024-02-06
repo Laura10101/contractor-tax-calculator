@@ -124,9 +124,11 @@ def display_calculation(request):
             except Exception as e:
                 return render(request, template, { 'error': str(e)})
 
+    summaries, excluded_jurisdictions = get_jurisdiction_calculation_summaries(calculation, request.build_absolute_uri(reverse('jurisdictions')))
     context = {
         'calculation': calculation,
-        'summaries': get_jurisdiction_calculation_summaries(calculation, request.build_absolute_uri(reverse('jurisdictions')))
+        'summaries': summaries,
+        'excluded_jurisdictions': excluded_jurisdictions,
     }
     return render(request, template, context)
 

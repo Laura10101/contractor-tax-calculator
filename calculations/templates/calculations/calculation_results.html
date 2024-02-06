@@ -135,6 +135,17 @@
                 {% if forloop.counter|divisibleby:2 or forloop.last %}
                     </div>
                 {% endif %}
+
+                {% if excluded_jurisdictions|length > 0 %}
+                    <div class="row">
+                        <div class="col text-center">
+                            <p>No tax rates were configured for the following jurisdictions so they were excluded from the calculation:</p>
+                            {% for jurisdiction_name in excluded_jurisdictions %}
+                            <p>{{ jurisdiction_name }}</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
             <!-- End jurisdiction results card -->
         {% endfor %}
     {% endif %}
