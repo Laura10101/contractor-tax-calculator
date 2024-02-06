@@ -112,12 +112,23 @@ def get_jurisdiction_calculation_summaries(calculation, jurisdictions_url):
     jurisdictions = {}
     print(calculation)
     excluded_jurisdiction_ids = calculation['excluded_jurisdiction_ids'].split(',')
+    print('source of excluded jurisdiction ids: ' + str(calculation['excluded_jurisdiction_ids'].split(',')))
+    print('excluded_jurisdiction_ids: ' + str(excluded_jurisdiction_ids) + "; len=" + str(len(excluded_jurisdiction_ids)))
     excluded_jurisdictions = []
     for id in excluded_jurisdiction_ids:
-        excluded_jurisdictions.append(find_jurisdiction_name(id, all_jurisdictions))
+        try:
+            jurisdiction_name = find_jurisdiction_name(int(id), all_jurisdictions)
+            if jurisdiction_name is None:
+                excluded_jurisdictions.append('Deleted jurisdiction ' + str(id))
+            else:
+                excluded_jurisdictions.append(jurisdiction_name)
+        except:
+            pass
 
     for jurisdiction_id, jurisdiction_results in calculation['jurisdictions'].items():
         jurisdiction_name = find_jurisdiction_name(jurisdiction_id, all_jurisdictions)
+        if jurisdiction_name is None:
+            jurisdiction_name = 'Deleted Jurisdiction ' + str(jurisdiction_id)
         if not jurisdiction_name in jurisdictions:
             jurisdictions[jurisdiction_name] = {
                 'jurisdiction_id': jurisdiction_id,

@@ -583,6 +583,8 @@ class SecondaryRuleTierDetail(APIView):
 # Helper to convert tax calculation result to dictionary
 def serialise_tax_calculation_result(result):
     print('Serialising tax calculation')
+    print('type of excluded jurisdiction ids: ' + str(type(result.excluded_jurisdiction_ids)))
+    print('excluded jurisdiction ids (api): ' + result.excluded_jurisdiction_ids)
     serialised_result = {
         'calculation_id': result.id,
         'username': result.username,

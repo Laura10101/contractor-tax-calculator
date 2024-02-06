@@ -96,7 +96,7 @@
                             </thead>
                             {% for calculation in calculations %}
                                 <tr>
-                                    <td class="text-center">{{ calculation.created_date|date:'d-m-Y H:M:S' }}</td>
+                                    <td class="text-center">{{ calculation.created_date }}</td>
                                     <td class="text-center">
                                         {% for jurisdiction in calculation.jurisdictions %}
                                             <p>{{ jurisdiction }}</p>

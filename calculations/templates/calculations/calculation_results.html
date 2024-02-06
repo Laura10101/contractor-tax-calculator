@@ -139,7 +139,7 @@
                 {% if excluded_jurisdictions|length > 0 %}
                     <div class="row">
                         <div class="col text-center">
-                            <p>No tax rates were configured for the following jurisdictions so they were excluded from the calculation:</p>
+                            <p>No tax results are available for the following jurisdictions as no tax rates are configured for these jurisdictions:</p>
                             {% for jurisdiction_name in excluded_jurisdictions %}
                             <p>{{ jurisdiction_name }}</p>
                             {% endfor %}
