@@ -37,7 +37,7 @@ let app = {
         entity: null
     },
     parentRuleset: null
-}
+};
 
 /*
  * API Host View Model Methods
@@ -245,6 +245,8 @@ function getQuestions() {
     return app.jurisdictionForm.forms[Object.keys(app.jurisdictionForm.forms)[0]].questions;
 }
 
+// Return the common questions that are contained within the default
+// jurisdiction's form
 function getCommonQuestions() {
     if (app.allJurisdictionsForm == null) {
         return [];
@@ -256,6 +258,8 @@ function getCommonQuestions() {
     }
 }
 
+// Check if the provided form is the default form
+// that includes questions to be used for all jurisdictions
 function isAllJurisdictionsForm(form) {
     if (form == null) {
         return false;
@@ -826,6 +830,7 @@ function resequenceRuleTierOrdinals(deletedTier) {
  */
 if (typeof module !== "undefined") module.exports = {
     app,
+    setApiHost,
     clearDialogState,
     setDialogState,
     setParentState,
