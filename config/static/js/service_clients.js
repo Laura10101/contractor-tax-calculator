@@ -168,7 +168,7 @@ function getTaxCategories(onSuccess, onFailure) {
 function getFormForJurisdiction(jurisdictionId, onSuccess, onFailure) {
     queryParameters = {
         jurisdiction_ids: jurisdictionId
-    }
+    };
     return query(endpoints.forms.base, queryParameters, onSuccess, onFailure);
 }
 
@@ -255,7 +255,6 @@ function updateQuestion(question, onSuccess, onFailure) {
     switch (question.type) {
         case "boolean":
                 return updateBooleanQuestion(formId, question.id, question.text, question.ordinal, question.explainer, question.is_mandatory, onSuccess, onFailure);
-            break;
         case "numeric":
                 return updateNumericQuestion(
                     formId,
@@ -269,10 +268,8 @@ function updateQuestion(question, onSuccess, onFailure) {
                     question.max_value,
                     onSuccess,
                     onFailure);
-            break;
         case "multiple_choice":
                 return updateMultipleChoiceQuestion(formId, question.id, question.text, question.ordinal, question.explainer, question.is_mandatory, onSuccess, onFailure);
-            break;
     }
 }
 
@@ -287,7 +284,7 @@ function postMultipleChoiceOption(formId, questionId, text, explainer, onSuccess
     data = {
         text: text,
         explainer: explainer
-    }
+    };
     return post(endpoints.forms.multipleChoiceOptions(formId, questionId), data, onSuccess, onFailure);
 }
 
