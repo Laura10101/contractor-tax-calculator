@@ -84,7 +84,11 @@ const {
 // Helper functions
 function isShown(dialogId) {
     // From Stackoverflow: https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes
-    return $("#" + dialogId).data('bs.modal')?._isShown;
+    let data = $("#" + dialogId).data('bs.modal');
+    if (typeof data === 'undefined' || data == null) {
+        return data;
+    }
+    return data._isShown;
 }
 
 // Prepare state for tests
@@ -341,7 +345,7 @@ describe("Dialog utilities", () => {
         describe("Create", () => {
             test("should correctly display the create ruleset dialog", () => {
                 let dialogConsts = rulesetDialog;
-                displayCreateRulesetDialog()
+                displayCreateRulesetDialog();
                 expect(isShown(dialogConsts.dialog.id)).toBe(true);
                 
                 let taxCategories = document.getElementById(dialogConsts.taxCategory.input.id);
@@ -570,7 +574,7 @@ describe("Dialog utilities", () => {
                 expect(primaryTierSelect.children).toBeDefined();
                 expect(primaryTierSelect.children.length).toBe(rule.tiers.length);
                 for (var i = 0; i < primaryTierSelect.children.length; i++) {
-                    expect(parseInt(primaryTierSelect.children[i].value)).toBe(rule.tiers[i].id)
+                    expect(parseInt(primaryTierSelect.children[i].value)).toBe(rule.tiers[i].id);
                 }
             });
         });
@@ -604,7 +608,7 @@ describe("Dialog utilities", () => {
                 expect(primaryTierSelect.children).toBeDefined();
                 expect(primaryTierSelect.children.length).toBe(rule.tiers.length);
                 for (var i = 0; i < primaryTierSelect.children.length; i++) {
-                    expect(parseInt(primaryTierSelect.children[i].value)).toBe(rule.tiers[i].id)
+                    expect(parseInt(primaryTierSelect.children[i].value)).toBe(rule.tiers[i].id);
                 }
             });
         });
