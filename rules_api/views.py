@@ -588,6 +588,7 @@ def serialise_tax_calculation_result(result):
         'username': result.username,
         'created': result.created,
         'jurisdictions': {},
+        'excluded_jurisdiction_ids': result.excluded_jurisdiction_ids,
     }
 
     for ruleset_result in result.results.all():
