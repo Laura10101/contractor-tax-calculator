@@ -1,42 +1,52 @@
+/* Push content below navbar */
 .content-container {
     margin-top: 80px; 
 }
 
+/* Header and navbar */
 .navbar-expand-lg .navbar-collapse {
     justify-content: flex-end;
 }
 
+/* Toasts */
 .toast {
     max-width: none;
     margin-bottom: 10px;
     box-shadow: none;
 }
 
+/* Visibility */
 .hidden {
     display: none;
 }
 
+/* Config app management options */
 .manage-option-col {
     display: flex;
     justify-content:flex-end;
 }
 
+/* Rule container */
+.rule-container {
+    background-color: #e9f5f9;
+}
+
+/* Config app - entity displays - entity type column */
 .entity-type-col {
     width: 20%;
 }
 
+/* Config app - entity displays - field name column */
 .entity-field-name-col {
     width: 20%;
 }
 
+/* Config app - entity displays - field value column */
 .entity-field-value-col {
     width: 45%;
 }
 
+/* Config app - entity displays - entity actions column */
 .entity-actions-col {
     width: 15%;
-}
-
-.rule-container {
-    background-color: #e9f5f9;
 }
