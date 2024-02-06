@@ -15,9 +15,6 @@ const {
     multipleChoiceQuestionDialog,
     multipleChoiceOptionDialog,
     questionDisplayContainer,
-    booleanQuestionDisplay,
-    numericQuestionDisplay,
-    multipleChoiceQuestionDisplay,
     rulesetDialog,
     ruleTypeDialog,
     flatRateRuleDialog,
@@ -26,46 +23,8 @@ const {
     ruleTierDialog,
     secondaryRuleTierDialog,
     rulesetsDisplayContainer,
-    rulesetDisplay,
-    flatRateRuleDisplay,
-    tieredRateRuleDisplay,
-    secondaryTieredRateRuleDisplay
+    rulesetDisplay
  } = require("../view_consts");
-
- const {
-    queryToString,
-    toUrl,
-    getJurisdictions,
-    getTaxCategories,
-    getFormForJurisdiction,
-    createBooleanQuestion,
-    updateBooleanQuestion,
-    createNumericQuestion,
-    updateNumericQuestion,
-    createMultipleChoiceQuestion,
-    updateMultipleChoiceQuestion,
-    updateQuestion,
-    removeQuestion,
-    postMultipleChoiceOption,
-    removeMultipleChoiceOption,
-    getRulesetsForJurisdiction,
-    postRuleset,
-    patchRuleset,
-    removeRuleset,
-    createFlatRateRule,
-    updateFlatRateRule,
-    createTieredRateRule,
-    updateTieredRateRule,
-    createSecondaryTieredRateRule,
-    updateSecondaryTieredRateRule,
-    removeRule,
-    postRuleTier,
-    updateRuleTier,
-    removeRuleTier,
-    postSecondaryRuleTier,
-    updateSecondaryRuleTier,
-    removeSecondaryRuleTier
-} = require("../service_clients");
 
 const { buildAppState } = require("./mocks/view_models.mocks.js");
 
@@ -76,8 +35,6 @@ const {
     getRulesByTypeForJurisdiction,
     getQuestions,
     findParentRuleset,
-    getTaxCategoryById,
-    findPrimaryRuleTierById,
     setDialogState,
     setParentRuleset,
     setParentState,
@@ -132,7 +89,6 @@ const {
     saveQuestion,
     deleteQuestionSucceeded,
     deleteQuestion,
-    swapQuestionOrdinals,
     moveQuestionUp,
     moveQuestionDown,
     displayMultipleChoiceOptions,
@@ -150,7 +106,6 @@ const {
     deleteRulesetSucceeded,
     confirmDeleteRuleset,
     deleteRuleset,
-    swapRulesetOrdinals,
     moveRulesetUp,
     moveRulesetDown,
     addRule,
@@ -161,8 +116,6 @@ const {
     deleteRuleSucceeded,
     confirmDeleteRule,
     deleteRule,
-    updateRuleOrdinal,
-    swapRuleOrdinals,
     moveRuleUp,
     moveRuleDown,
     displayRuleTiersLoadedSucceeded,
@@ -171,22 +124,23 @@ const {
     saveRuleTier,
     createRuleTier,
     editRuleTier,
-    saveRuleTierOrdinal,
-    swapRuleTierOrdinals,
     moveRuleTierUp,
     moveRuleTierDown,
     deleteRuleTierSucceeded,
     confirmDeleteRuleTier,
-    deleteRuleTier,
-    init
+    deleteRuleTier
 } = require("../views");
-const { hasUncaughtExceptionCaptureCallback } = require("process");
-const { showDialog, hideDialog, ruleTypeChosen, initJurisdictionsSelect } = require("../view_utils.js");
+const { showDialog, initJurisdictionsSelect } = require("../view_utils.js");
 
 // Helper functions
 function isShown(dialogId, print=false) {
     // From Stackoverflow: https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes
-    return $("#" + dialogId).data('bs.modal')?._isShown;
+    let data = $("#" + dialogId).data('bs.modal');
+    if (typeof data === 'undefined' || data == null) {
+        return data;
+    } else {
+        return data._isShown;
+    }
 }
 
 beforeAll(() => {
@@ -1259,7 +1213,7 @@ describe("Question views", () => {
                 expect(entity.id).toBe(4);
 
                 let selectedEntityChecked = false;
-                let previousEntityChecked = false
+                let previousEntityChecked = false;
 
                 function checkOrdinal(updatedEntity, success, failure) {
                     if (updatedEntity.id == 4) {
@@ -1285,7 +1239,7 @@ describe("Question views", () => {
                 expect(entity.id).toBe(4);
 
                 let selectedEntityChecked = false;
-                let nextEntityChecked = false
+                let nextEntityChecked = false;
 
                 function checkOrdinal(updatedEntity, success, failure) {
                     if (updatedEntity.id == 4) {
@@ -1628,7 +1582,7 @@ describe("Ruleset views", () => {
                 expect(entity.id).toBe(24);
 
                 let selectedEntityChecked = false;
-                let previousEntityChecked = false
+                let previousEntityChecked = false;
 
                 function checkOrdinal(rulesetId, rulesetOrdinal, success, failure) {
                     if (rulesetId == 24) {
@@ -1654,7 +1608,7 @@ describe("Ruleset views", () => {
                 expect(entity.id).toBe(24);
 
                 let selectedEntityChecked = false;
-                let nextEntityChecked = false
+                let nextEntityChecked = false;
 
                 function checkOrdinal(rulesetId, rulesetOrdinal, success, failure) {
                     if (rulesetId == 24) {
@@ -2320,7 +2274,7 @@ describe("Rule views views", () => {
                 expect(parent).toBeDefined();
 
                 let selectedEntityChecked = false;
-                let previousEntityChecked = false
+                let previousEntityChecked = false;
 
                 function checkOrdinal(ruleset, updatedEntity) {
                     if (updatedEntity.id == 44) {
@@ -2347,7 +2301,7 @@ describe("Rule views views", () => {
                 expect(parent).toBeDefined();
 
                 let selectedEntityChecked = false;
-                let nextEntityChecked = false
+                let nextEntityChecked = false;
 
                 function checkOrdinal(ruleset, updatedEntity) {
                     if (updatedEntity.id == 44) {
@@ -2581,7 +2535,6 @@ describe("Rule tier views views", () => {
             setParentState(dialogStates.modes.edit, dialogStates.entityTypes.secondaryTieredRateRule, rule);
             setDialogState(dialogStates.modes.create, dialogStates.entityTypes.secondaryRuleTier, null);
 
-            let primaryRuleId = 44;
             let primaryRule = findRuleById(ruleId);
             expect(primaryRule).toBeDefined();
 
@@ -2723,7 +2676,6 @@ describe("Rule tier views views", () => {
             setParentState(dialogStates.modes.edit, dialogStates.entityTypes.secondaryTieredRateRule, rule);
             setDialogState(dialogStates.modes.create, dialogStates.entityTypes.secondaryRuleTier, null);
 
-            let primaryRuleId = 44;
             let primaryRule = findRuleById(ruleId);
             expect(primaryRule).toBeDefined();
 
@@ -2910,7 +2862,7 @@ describe("Rule tier views views", () => {
                 expect(parent).toBeDefined();
 
                 let selectedEntityChecked = false;
-                let previousEntityChecked = false
+                let previousEntityChecked = false;
 
                 function checkOrdinal(swapPrimary, updatedEntity) {
                     if (updatedEntity.id == 5) {
@@ -2943,7 +2895,7 @@ describe("Rule tier views views", () => {
                 expect(parent).toBeDefined();
 
                 let selectedEntityChecked = false;
-                let nextEntityChecked = false
+                let nextEntityChecked = false;
 
                 function checkOrdinal(swapPrimary, updatedEntity) {
                     if (updatedEntity.id == 5) {
