@@ -1,3 +1,4 @@
+/* jshint esversion: 8 */
 const { dialogStates } = require("../view_consts");
 const { buildAppState } = require("./mocks/view_models.mocks.js");
 const {

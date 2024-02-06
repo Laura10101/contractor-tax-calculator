@@ -1,3 +1,5 @@
+/* jshint esversion: 8 */
+// Mock jurisdictions for testing
 const jurisdictions = [
     { id: 1, name: "All Jurisdictions" },
     { id: 2, name: "France" },
@@ -6,6 +8,7 @@ const jurisdictions = [
     { id: 5, name: "Japan" }
 ];
 
+// Mock tax categories for testing
 const taxCategories = [
     { tax_category_id: 1, name: "Dividend Tax" },
     { tax_category_id: 2, name: "Corporation Tax" },
@@ -14,6 +17,7 @@ const taxCategories = [
     { tax_category_id: 5, name: "Mock Category for Testing" }
 ];
 
+// Mock forms for testing - sampled from test database
 const forms = {
     "forms": {
       "1": {
@@ -56,6 +60,7 @@ const forms = {
     }
 };
 
+// Mock ruleset and rules for testing
 const rules = [
     {
         id: 23,
@@ -245,13 +250,14 @@ function deepClone(object) {
     return JSON.parse(JSON.stringify(object));
 }
 
+// Build a mock app state to use for testing
 function buildAppState() {
     return {
         jurisdictions: deepClone(jurisdictions),
         taxCategories: deepClone(taxCategories),
         jurisdictionForm: deepClone(forms),
         jurisdictionRules: deepClone(rules)
-    }
+    };
 }
 
 module.exports = { buildAppState };
