@@ -15,11 +15,9 @@ const {
     updateNumericQuestion,
     createMultipleChoiceQuestion,
     updateMultipleChoiceQuestion,
-    updateQuestion,
     removeQuestion,
     postMultipleChoiceOption,
     removeMultipleChoiceOption,
-    getRulesetsForJurisdiction,
     postRuleset,
     patchRuleset,
     removeRuleset,
@@ -209,7 +207,6 @@ describe("Question service clients", () => {
                     let text = "A boolean question test - UPDATED";
                     let explainer = "Created by automated test - UPDATED";
                     let ordinal = 2;
-                    let variableName = "boolean_var";
                     let isMandatory = true;
                     updateBooleanQuestion(1, id, text, ordinal, explainer, isMandatory, checkAjaxResponse, checkAjaxResponse);
                 }
@@ -247,7 +244,6 @@ describe("Question service clients", () => {
                     let text = null;
                     let explainer = "Created by automated test - UPDATED";
                     let ordinal = 2;
-                    let variableName = null;
                     let isMandatory = true;
                     updateBooleanQuestion(1, id, text, ordinal, explainer, isMandatory, checkAjaxResponse, checkAjaxResponse);
                 }
@@ -336,7 +332,6 @@ describe("Question service clients", () => {
                     let text = "A numeric question test UPDATED";
                     let explainer = "Created by automated test UPDATED";
                     let ordinal = 1;
-                    let variableName = "numeric_var";
                     let isMandatory = true;
                     let minValue = 1;
                     let maxValue = 100;
@@ -379,7 +374,6 @@ describe("Question service clients", () => {
                     let text = "A numeric question test UPDATED";
                     let explainer = "Created by automated test UPDATED";
                     let ordinal = null;
-                    let variableName = "numeric_var";
                     let isMandatory = true;
                     let minValue = 1;
                     let maxValue = null;
@@ -505,7 +499,6 @@ describe("Question service clients", () => {
                     let text = null;
                     let explainer = "Created by automated test - UPDATED";
                     let ordinal = 2;
-                    let variableName = null;
                     let isMandatory = true;
                     updateMultipleChoiceQuestion(1, id, text, ordinal, explainer, isMandatory, checkAjaxResponse, checkAjaxResponse);
                 }
@@ -968,7 +961,6 @@ describe("Rule service clients", () => {
                 let explainer = "Created by automated test";
                 let ordinal = 1;
                 let variableName = "numeric_var";
-                let taxRate = 20;
                 createTieredRateRule(rulesetId, name, explainer, variableName, ordinal, checkAjaxResponse, checkAjaxResponse);
             }, 10000);
         });
@@ -996,7 +988,7 @@ describe("Rule service clients", () => {
                     let explainer = "Created by automated test UPDATED";
                     let ordinal = 1;
                     let variableName = "numeric_var";
-                    updateTieredRateRule(rulesetId, ruleId, name, explainer, variableName, ordinal, checkAjaxResponse, checkAjaxResponse)
+                    updateTieredRateRule(rulesetId, ruleId, name, explainer, variableName, ordinal, checkAjaxResponse, checkAjaxResponse);
 
                     done();
                 }
@@ -1033,7 +1025,7 @@ describe("Rule service clients", () => {
                     let explainer = "Created by automated test UPDATED";
                     let ordinal = 1;
                     let variableName = "numeric_var";
-                    updateTieredRateRule(rulesetId, ruleId, name, explainer, variableName, ordinal, checkAjaxResponse, checkAjaxResponse)
+                    updateTieredRateRule(rulesetId, ruleId, name, explainer, variableName, ordinal, checkAjaxResponse, checkAjaxResponse);
 
                     done();
                 }
