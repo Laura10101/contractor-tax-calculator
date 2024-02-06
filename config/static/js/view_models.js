@@ -249,7 +249,11 @@ function getCommonQuestions() {
     if (app.allJurisdictionsForm == null) {
         return [];
     }
-    return app.allJurisdictionsForm.forms[Object.keys(app.allJurisdictionsForm.forms)[0]].questions;
+    if (Object.keys(app.allJurisdictionsForm.forms)[0] != Object.keys(app.jurisdictionForm.forms)[0]) {
+        return app.allJurisdictionsForm.forms[Object.keys(app.allJurisdictionsForm.forms)[0]].questions;
+    } else {
+        return [];
+    }
 }
 
 function isAllJurisdictionsForm(form) {
