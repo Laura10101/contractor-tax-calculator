@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load date_extras %}
 
 {% block content %}
     {% if not error %}
@@ -53,8 +54,8 @@
                                     </thead>
                                     {% for payment in payments %}
                                         <tr>
-                                            <td class="text-center">{{ payment.created_date|date:'d-m-Y H:M:S' }}</td>
-                                            <td class="text-center">{{ payment.completed_date|date:'d-m-Y H:M:S' }}</td>
+                                            <td class="text-center">{{ payment.created_date|datestring }}</td>
+                                            <td class="text-center">{{ payment.completed_date|datestring }}</td>
                                             <td class="text-center">{{ payment.total }}</td>
                                             <td class="text-center">{{ payment.status }}</td>
                                             <td class="text-center">
@@ -96,7 +97,7 @@
                             </thead>
                             {% for calculation in calculations %}
                                 <tr>
-                                    <td class="text-center">{{ calculation.created_date }}</td>
+                                    <td class="text-center">{{ calculation.created_date|datestring }}</td>
                                     <td class="text-center">
                                         {% for jurisdiction in calculation.jurisdictions %}
                                             <p>{{ jurisdiction }}</p>
