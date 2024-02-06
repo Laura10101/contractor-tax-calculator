@@ -1,6 +1,8 @@
 const $ = require("jquery");
 require("bootstrap");
-
+// Reading Jest config in tests
+// Taken from: https://stackoverflow.com/questions/65698821/how-to-read-jest-config-values-within-test
+const config = require("../../../../jest.config");
 const { 
     dialogStates,
     statusDialog,
@@ -187,8 +189,14 @@ function isShown(dialogId, print=false) {
 }
 
 beforeAll(() => {
-    app.apiHost.protocol = "https:";
-    app.apiHost.hostname = "8000-laura10101-contractorta-g5o2od5xoex.ws-eu107.gitpod.io";
+    console.log(config);
+    // Get different components of configured base URL
+    // Taken from https://stackoverflow.com/questions/6941533/get-protocol-domain-and-port-from-url
+    let baseUrlComponents = config.testEnvironmentOptions.url.split("/");
+    app.apiHost.protocol = baseUrlComponents[0];
+    app.apiHost.hostname = baseUrlComponents[2];
+    console.log(app.apiHost.protocol);
+    console.log(app.apiHost.hostname);
     jest.useRealTimers();
 });
 

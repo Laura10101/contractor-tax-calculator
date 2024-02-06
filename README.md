@@ -277,3 +277,5 @@ I would like to thank the Code Institute for all of the support through all four
 - [Order specific value first when retrieving Django objects](https://stackoverflow.com/questions/2176346/can-django-orm-do-an-order-by-on-a-specific-value-of-a-column)
 - [Deduplicating a Javascript array](https://builtin.com/software-engineering-perspectives/remove-duplicates-from-array-javascript)
 - [Waiting for multiple JQuery AJAX requests to complete](https://www.codeproject.com/Articles/1181613/Waiting-For-Multiple-Ajax-Requests-jQuery)
+- [Extracting protocol and hostname from URL in JavaScript](https://stackoverflow.com/questions/6941533/get-protocol-domain-and-port-from-url)
+- [Reading Jest config in test code](https://stackoverflow.com/questions/65698821/how-to-read-jest-config-values-within-test)
