@@ -238,13 +238,15 @@ function validateQuestionData(text, variableName, questionId) {
  */
 
 // Set the label and input values on a boolean question dialog
-function initBooleanQuestionDialog(dialogLabel, questionText, explainer, variableName, isMandatory) {
+function initBooleanQuestionDialog(dialogLabel, questionText, explainer, variableName, isMandatory, canEditVariableName=true) {
     clearValidationErrors(booleanQuestionDialog.errors.id);
     document.getElementById(booleanQuestionDialog.label.id).innerText = dialogLabel;
     document.getElementById(booleanQuestionDialog.questionText.input.id).value = questionText;
     document.getElementById(booleanQuestionDialog.explainer.input.id).value = explainer;
     document.getElementById(booleanQuestionDialog.variableName.input.id).value = variableName;
     document.getElementById(booleanQuestionDialog.isMandatory.input.id).checked = isMandatory;
+
+    document.getElementById(booleanQuestionDialog.variableName.input.id).readOnly = !canEditVariableName;
 }
 
 // Set up and display a create question dialog
@@ -263,7 +265,8 @@ function displayEditBooleanQuestionDialog(question) {
         question.text,
         question.explainer,
         question.variable_name,
-        question.is_mandatory
+        question.is_mandatory,
+        false
     );
     // Show the dialog
     showDialog(booleanQuestionDialog.dialog.id);
@@ -282,7 +285,7 @@ function validateBooleanQuestionDialog(questionId=null) {
 /*
  * Question Dialog Helper Functions - Numeric
  */
-function initNumericQuestionDialog(dialogLabel, questionText, explainer, variableName, isMandatory, isInteger, minValue, maxValue) {
+function initNumericQuestionDialog(dialogLabel, questionText, explainer, variableName, isMandatory, isInteger, minValue, maxValue, canEditVariableName=true) {
     clearValidationErrors(numericQuestionDialog.errors.id);
     document.getElementById(numericQuestionDialog.label.id).innerText = dialogLabel;
     document.getElementById(numericQuestionDialog.questionText.input.id).value = questionText;
@@ -292,6 +295,8 @@ function initNumericQuestionDialog(dialogLabel, questionText, explainer, variabl
     document.getElementById(numericQuestionDialog.isInteger.input.id).checked = isInteger;
     document.getElementById(numericQuestionDialog.minimumValue.input.id).value = minValue;
     document.getElementById(numericQuestionDialog.maximumValue.input.id).value = maxValue;
+
+    document.getElementById(numericQuestionDialog.variableName.input.id).readOnly = !canEditVariableName;
 }
 
 function displayCreateNumericQuestionDialog() {
@@ -310,7 +315,8 @@ function displayEditNumericQuestionDialog(question) {
         question.is_mandatory,
         question.is_integer,
         question.min_value,
-        question.max_value
+        question.max_value,
+        false
     );
     // Show the dialog
     showDialog(numericQuestionDialog.dialog.id);
@@ -370,7 +376,8 @@ function updateMultipleChoiceQuestionDialogOptionsDisplay(options) {
 }
 
 // Initialise the multiple choice question dialog
-function initMultipleChoiceQuestionDialog(dialogLabel, questionText, explainer, variableName, isMandatory, allowMultiselect, options, showOptions=true) {
+function initMultipleChoiceQuestionDialog(dialogLabel, questionText, explainer, variableName, isMandatory,
+    allowMultiselect, options, showOptions=true, canEditVariableName=true) {
     clearValidationErrors(multipleChoiceQuestionDialog.errors.id);
     document.getElementById(multipleChoiceQuestionDialog.label.id).innerText = dialogLabel;
     document.getElementById(multipleChoiceQuestionDialog.questionText.input.id).value = questionText;
@@ -390,6 +397,8 @@ function initMultipleChoiceQuestionDialog(dialogLabel, questionText, explainer, 
     }
     // Update the options display
     updateMultipleChoiceQuestionDialogOptionsDisplay(options);
+
+    document.getElementById(multipleChoiceQuestionDialog.variableName.input.id).readOnly = !canEditVariableName;
 }
 
 function displayCreateMultipleChoiceQuestionDialog() {
@@ -409,7 +418,8 @@ function displayEditMultipleChoiceQuestionDialog(question) {
         question.is_mandatory,
         question.is_multiselect,
         question.options,
-        true
+        true,
+        false
     );
     // Show the dialog
     showDialog(multipleChoiceQuestionDialog.dialog.id);
