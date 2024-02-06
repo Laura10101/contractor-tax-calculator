@@ -116,10 +116,15 @@ function resetContainer(containerId, prototypeIds) {
 
     // Add the prototypes back in
     for (const prototypeId in prototypes) {
-        container.appendChild(prototypes[prototypeId]);
+        if (prototypes.hasOwnProperty(prototypeId)) {
+            container.appendChild(prototypes[prototypeId]);
+        }
     }
 }
 
+// Update the table used to display primary and secondary
+// rule tiers in the create tiered rate and secondary tiered rate
+// rule dialogs
 function updateRuleTierTable(updatePrimary, tiers) {
     // Get the row
     if (updatePrimary) {
@@ -156,10 +161,10 @@ function updateRuleTierTable(updatePrimary, tiers) {
         }
 
         // Add event handlers to tier actions
-        tierRow.querySelector(".edit-button").onclick = function() { editRuleTier(updatePrimary, tier); }
-        tierRow.querySelector(".delete-button").onclick = function() { deleteRuleTier(updatePrimary, tier); }
-        tierRow.querySelector(".move-up-button").onclick = function() { moveRuleTierUp(updatePrimary, tier); }
-        tierRow.querySelector(".move-down-button").onclick = function() { moveRuleTierDown(updatePrimary, tier); }
+        tierRow.querySelector(".edit-button").onclick = function() { editRuleTier(updatePrimary, tier); };
+        tierRow.querySelector(".delete-button").onclick = function() { deleteRuleTier(updatePrimary, tier); };
+        tierRow.querySelector(".move-up-button").onclick = function() { moveRuleTierUp(updatePrimary, tier); };
+        tierRow.querySelector(".move-down-button").onclick = function() { moveRuleTierDown(updatePrimary, tier); };
 
         // Add the new row
         table.appendChild(tierRow);
@@ -368,7 +373,7 @@ function updateMultipleChoiceQuestionDialogOptionsDisplay(options) {
         optionRow.children[0].innerHTML = option.text;
 
         // Set delete button event handler
-        optionRow.querySelector(".delete-button").onclick = function() { deleteMultipleChoiceOption(option); }
+        optionRow.querySelector(".delete-button").onclick = function() { deleteMultipleChoiceOption(option); };
 
         // Add the new row
         optionsTable.appendChild(optionRow);
@@ -484,10 +489,10 @@ function displayBooleanQuestion(question) {
     questionMandatoryDisplay.innerHTML = question.is_mandatory ? "Mandatory" : "Optional";
     
     // Set the action event handlers
-    questionDisplay.querySelector(".edit-button").onclick = function() { editQuestion(question); }
-    questionDisplay.querySelector(".delete-button").onclick = function() { deleteQuestion(question); }
-    questionDisplay.querySelector(".move-up-button").onclick = function() { moveQuestionUp(question); }
-    questionDisplay.querySelector(".move-down-button").onclick = function() { moveQuestionDown(question); }
+    questionDisplay.querySelector(".edit-button").onclick = function() { editQuestion(question); };
+    questionDisplay.querySelector(".delete-button").onclick = function() { deleteQuestion(question); };
+    questionDisplay.querySelector(".move-up-button").onclick = function() { moveQuestionUp(question); };
+    questionDisplay.querySelector(".move-down-button").onclick = function() { moveQuestionDown(question); };
 
     // Add the question display to the container
     document.getElementById(questionDisplayContainer.id).appendChild(questionDisplay);
@@ -520,10 +525,10 @@ function displayNumericQuestion(question) {
     questionValidationSummaryDisplay.innerHTML += " between " + question.min_value + " and " + question.max_value;
 
     // Set the action event handlers
-    questionDisplay.querySelector(".edit-button").onclick = function() { editQuestion(question); }
-    questionDisplay.querySelector(".delete-button").onclick = function() { deleteQuestion(question); }
-    questionDisplay.querySelector(".move-up-button").onclick = function() { moveQuestionUp(question); }
-    questionDisplay.querySelector(".move-down-button").onclick = function() { moveQuestionDown(question); }
+    questionDisplay.querySelector(".edit-button").onclick = function() { editQuestion(question); };
+    questionDisplay.querySelector(".delete-button").onclick = function() { deleteQuestion(question); };
+    questionDisplay.querySelector(".move-up-button").onclick = function() { moveQuestionUp(question); };
+    questionDisplay.querySelector(".move-down-button").onclick = function() { moveQuestionDown(question); };
 
     document.getElementById(questionDisplayContainer.id).appendChild(questionDisplay);
 }
@@ -554,10 +559,10 @@ function displayMultipleChoiceQuestion(question) {
     questionMultiselectDisplay.innerHTML = question.is_multiselect ? "Allow multiple selections" : "Single selection only";  
 
     // Set the action event handlers
-    questionDisplay.querySelector(".edit-button").onclick = function() { editQuestion(question); }
-    questionDisplay.querySelector(".delete-button").onclick = function() { deleteQuestion(question); }
-    questionDisplay.querySelector(".move-up-button").onclick = function() { moveQuestionUp(question); }
-    questionDisplay.querySelector(".move-down-button").onclick = function() { moveQuestionDown(question); }
+    questionDisplay.querySelector(".edit-button").onclick = function() { editQuestion(question); };
+    questionDisplay.querySelector(".delete-button").onclick = function() { deleteQuestion(question); };
+    questionDisplay.querySelector(".move-up-button").onclick = function() { moveQuestionUp(question); };
+    questionDisplay.querySelector(".move-down-button").onclick = function() { moveQuestionDown(question); };
 
     document.getElementById(questionDisplayContainer.id).appendChild(questionDisplay);
 }
@@ -985,10 +990,10 @@ function displayFlatRateRule(rulesetRulesDisplay, ruleset, rule) {
     ruleTaxRateDisplay.innerHTML = rule.tax_rate;
 
     // Set event handlers on buttons
-    ruleDisplay.querySelector(".edit-button").onclick = function() { editRule(ruleset, rule); }
-    ruleDisplay.querySelector(".delete-button").onclick = function() { deleteRule(ruleset, rule); }
-    ruleDisplay.querySelector(".move-up-button").onclick = function() { moveRuleUp(ruleset, rule); }
-    ruleDisplay.querySelector(".move-down-button").onclick = function() { moveRuleDown(ruleset, rule); }
+    ruleDisplay.querySelector(".edit-button").onclick = function() { editRule(ruleset, rule); };
+    ruleDisplay.querySelector(".delete-button").onclick = function() { deleteRule(ruleset, rule); };
+    ruleDisplay.querySelector(".move-up-button").onclick = function() { moveRuleUp(ruleset, rule); };
+    ruleDisplay.querySelector(".move-down-button").onclick = function() { moveRuleDown(ruleset, rule); };
     
     rulesetRulesDisplay.appendChild(ruleDisplay);
 }
@@ -1014,10 +1019,10 @@ function displayTieredRateRule(rulesetRulesDisplay, ruleset, rule) {
     ruleExplainerDisplay.innerHTML = rule.explainer;
 
     // Set event handlers on buttons
-    ruleDisplay.querySelector(".edit-button").onclick = function() { editRule(ruleset, rule); }
-    ruleDisplay.querySelector(".delete-button").onclick = function() { deleteRule(ruleset, rule); }
-    ruleDisplay.querySelector(".move-up-button").onclick = function() { moveRuleUp(ruleset, rule); }
-    ruleDisplay.querySelector(".move-down-button").onclick = function() { moveRuleDown(ruleset, rule); }
+    ruleDisplay.querySelector(".edit-button").onclick = function() { editRule(ruleset, rule); };
+    ruleDisplay.querySelector(".delete-button").onclick = function() { deleteRule(ruleset, rule); };
+    ruleDisplay.querySelector(".move-up-button").onclick = function() { moveRuleUp(ruleset, rule); };
+    ruleDisplay.querySelector(".move-down-button").onclick = function() { moveRuleDown(ruleset, rule); };
     
     rulesetRulesDisplay.appendChild(ruleDisplay);
 }
@@ -1047,10 +1052,10 @@ function displaySecondaryTieredRateRule(rulesetRulesDisplay, ruleset, rule) {
     primaryRuleDisplay.innerHTML = rule.primary_rule.name;
 
     // Set event handlers on buttons
-    ruleDisplay.querySelector(".edit-button").onclick = function() { editRule(ruleset, rule); }
-    ruleDisplay.querySelector(".delete-button").onclick = function() { deleteRule(ruleset, rule); }
-    ruleDisplay.querySelector(".move-up-button").onclick = function() { moveRuleUp(ruleset, rule); }
-    ruleDisplay.querySelector(".move-down-button").onclick = function() { moveRuleDown(ruleset, rule); }
+    ruleDisplay.querySelector(".edit-button").onclick = function() { editRule(ruleset, rule); };
+    ruleDisplay.querySelector(".delete-button").onclick = function() { deleteRule(ruleset, rule); };
+    ruleDisplay.querySelector(".move-up-button").onclick = function() { moveRuleUp(ruleset, rule); };
+    ruleDisplay.querySelector(".move-down-button").onclick = function() { moveRuleDown(ruleset, rule); };
     
     rulesetRulesDisplay.appendChild(ruleDisplay);
 }
@@ -1070,10 +1075,10 @@ function displayRuleset(ruleset) {
     document.getElementById(rulesetsDisplayContainer.id).appendChild(display);
 
     // Set event handlers on buttons
-    display.querySelector(".add-rule-button").onclick = function() { addRule(ruleset); }
-    display.querySelector(".delete-ruleset-button").onclick = function() { deleteRuleset(ruleset); }
-    display.querySelector(".move-ruleset-up-button").onclick = function() { moveRulesetUp(ruleset); }
-    display.querySelector(".move-ruleset-down-button").onclick = function() { moveRulesetDown(ruleset); }
+    display.querySelector(".add-rule-button").onclick = function() { addRule(ruleset); };
+    display.querySelector(".delete-ruleset-button").onclick = function() { deleteRuleset(ruleset); };
+    display.querySelector(".move-ruleset-up-button").onclick = function() { moveRulesetUp(ruleset); };
+    display.querySelector(".move-ruleset-down-button").onclick = function() { moveRulesetDown(ruleset); };
 
     // Display rules
     ruleset.rules.forEach(rule => {
