@@ -34,78 +34,48 @@
         </div>
         <!-- Begin validation error modal -->
 
-        <!-- Code from https://getbootstrap.com/docs/4.3/components/collapse/ -->
-        <!-- Begin jurisdictions forms -->
-        <form id="jurisdiction-forms" action="{% url 'display_calculation' %}" method="POST">
-            <input type="hidden" name="jurisdiction_ids" value="{{ jurisdiction_ids }}">
-            {% csrf_token %}
+        {% if question_count == 0 %}
             <div class="row">
-                <div class="col">
-                    <!-- Begin jurisdictions accordion -->
-                    <div class="accordion" id="jurisdictions-accordion">
-                        {% for jurisdiction in jurisdictions %}
-                            {% with form=forms|get_item:jurisdiction.id %}
-                                {% if form.questions|length > 0 %}
-                                    <!-- Begin jurisdiction question set -->
-                                        <div class="card">
-                                            <!-- Jurisdiction question set header -->
-                                            <div class="card-header" id="heading-{{ jurisdiction.id }}">
-                                                <h2 class="mb-0">
-                                                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse-{{ jurisdiction.id }}"
-                                                        aria-expanded="true" aria-controls="collapse-{{ jurisdiction.id }}">
-                                                        {{ jurisdiction.name }}
-                                                    </button>
-                                                </h2>
-                                            </div>
-                                            <!-- End jurisdiction question set header -->
-                                        
-                                            <!-- Jurisdiction question set body -->
-                                            <div id="collapse-{{ jurisdiction.id }}" class="collapse show" aria-labelledby="heading-{{ jurisdiction.id }}"
-                                                data-parent="#jurisdictions-accordion">
-                                                <div class="card-body text-center">
-                                                    {% for question in form.questions %}
-                                                        {% with type=question.type %}
-                                                        {% if type == 'boolean' %}
-                                                            <!-- Boolean question -->
-                                                                <div class="card">
-                                                                    <div class="card-body">
-                                                                        <h5 class="card-title" id="{{ question.variable_name}}-title">
-                                                                            {{ question.text }}
-                                                                        </h5>
-                                                                        <h6 class="card-subtitle mb-2 text-muted">
-                                                                            {{ question.explainer }}
-                                                                        </h6>
-                                                                        <div class="form-check">
-                                                                            <input
-                                                                                class="form-check-input boolean"
-                                                                                type="radio"
-                                                                                name="{{ question.variable_name }}"
-                                                                                id="{{ question.variable_name }}Yes"
-                                                                                value="True"
-                                                                                checked>
-                                                                            <label class="form-check-label" for="{{ question.variable_name }}Yes">
-                                                                                Yes
-                                                                            </label>
-                                                                        </div>
-                                        
-                                                                        <div class="form-check">
-                                                                            <input
-                                                                                class="form-check-input boolean"
-                                                                                type="radio"
-                                                                                name="{{ question.variable_name }}"
-                                                                                id="{{ question.variable_name }}No"
-                                                                                value="False">
-                                                                            <label class="form-check-label" for="{{ question.variable_name }}No">
-                                                                                No
-                                                                            </label>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            <!-- End boolean question -->
-                                                        {% elif type == 'numeric' %}
-                                                            {% if question.is_integer %}
-                                                                <!-- Integer question -->
-                                                                    <div class="card" style="width: 18rem;">
+                <div class="col lead text-center">
+                    <p>No questions were found for any of the selected jurisdictions. Therefore, no calculation can be provided.</p>
+                    <p>Please try <a href="{% url 'select_jurisdictions' %}">selecting alternative jurisdictions</a>.</p>
+                </div>
+            </div>
+        {% else %}
+            <!-- Code from https://getbootstrap.com/docs/4.3/components/collapse/ -->
+            <!-- Begin jurisdictions forms -->
+            <form id="jurisdiction-forms" action="{% url 'display_calculation' %}" method="POST">
+                <input type="hidden" name="jurisdiction_ids" value="{{ jurisdiction_ids }}">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col">
+                        <!-- Begin jurisdictions accordion -->
+                        <div class="accordion" id="jurisdictions-accordion">
+                            {% for jurisdiction in jurisdictions %}
+                                {% with form=forms|get_item:jurisdiction.id %}
+                                    {% if form.questions|length > 0 %}
+                                        <!-- Begin jurisdiction question set -->
+                                            <div class="card">
+                                                <!-- Jurisdiction question set header -->
+                                                <div class="card-header" id="heading-{{ jurisdiction.id }}">
+                                                    <h2 class="mb-0">
+                                                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse-{{ jurisdiction.id }}"
+                                                            aria-expanded="true" aria-controls="collapse-{{ jurisdiction.id }}">
+                                                            {{ jurisdiction.name }}
+                                                        </button>
+                                                    </h2>
+                                                </div>
+                                                <!-- End jurisdiction question set header -->
+                                            
+                                                <!-- Jurisdiction question set body -->
+                                                <div id="collapse-{{ jurisdiction.id }}" class="collapse show" aria-labelledby="heading-{{ jurisdiction.id }}"
+                                                    data-parent="#jurisdictions-accordion">
+                                                    <div class="card-body text-center">
+                                                        {% for question in form.questions %}
+                                                            {% with type=question.type %}
+                                                            {% if type == 'boolean' %}
+                                                                <!-- Boolean question -->
+                                                                    <div class="card">
                                                                         <div class="card-body">
                                                                             <h5 class="card-title" id="{{ question.variable_name}}-title">
                                                                                 {{ question.text }}
@@ -113,90 +83,96 @@
                                                                             <h6 class="card-subtitle mb-2 text-muted">
                                                                                 {{ question.explainer }}
                                                                             </h6>
-                                                                            <div class="form-outline">
+                                                                            <div class="form-check">
                                                                                 <input
-                                                                                    type="number"
-                                                                                    id="{{ question.variable_name }}"
+                                                                                    class="form-check-input boolean"
+                                                                                    type="radio"
                                                                                     name="{{ question.variable_name }}"
-                                                                                    class="form-control integer" />
+                                                                                    id="{{ question.variable_name }}Yes"
+                                                                                    value="True"
+                                                                                    checked>
+                                                                                <label class="form-check-label" for="{{ question.variable_name }}Yes">
+                                                                                    Yes
+                                                                                </label>
+                                                                            </div>
+                                            
+                                                                            <div class="form-check">
+                                                                                <input
+                                                                                    class="form-check-input boolean"
+                                                                                    type="radio"
+                                                                                    name="{{ question.variable_name }}"
+                                                                                    id="{{ question.variable_name }}No"
+                                                                                    value="False">
+                                                                                <label class="form-check-label" for="{{ question.variable_name }}No">
+                                                                                    No
+                                                                                </label>
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                <!-- End integer question -->
-                                                            {% else %}
-                                                                <!-- Floating point question -->
-                                                                    <div class="card" style="width: 18rem;">
-                                                                        <div class="card-body">
-                                                                            <h5 class="card-title" id="{{ question.variable_name}}-title">
-                                                                                {{ question.text }}
-                                                                            </h5>
-                                                                            <h6 class="card-subtitle mb-2 text-muted">
-                                                                                {{ question.explainer }}</h6>
-                                                                            <div class="form-outline">
-                                                                                <input
-                                                                                    type="number"
-                                                                                    id="{{ question.variable_name }}"
-                                                                                    name="{{ question.variable_name }}"
-                                                                                    class="form-control float"
-                                                                                    step="0.1">
+                                                                <!-- End boolean question -->
+                                                            {% elif type == 'numeric' %}
+                                                                {% if question.is_integer %}
+                                                                    <!-- Integer question -->
+                                                                        <div class="card" style="width: 18rem;">
+                                                                            <div class="card-body">
+                                                                                <h5 class="card-title" id="{{ question.variable_name}}-title">
+                                                                                    {{ question.text }}
+                                                                                </h5>
+                                                                                <h6 class="card-subtitle mb-2 text-muted">
+                                                                                    {{ question.explainer }}
+                                                                                </h6>
+                                                                                <div class="form-outline">
+                                                                                    <input
+                                                                                        type="number"
+                                                                                        id="{{ question.variable_name }}"
+                                                                                        name="{{ question.variable_name }}"
+                                                                                        class="form-control integer" />
+                                                                                </div>
                                                                             </div>
                                                                         </div>
-                                                                    </div>
-                                                                <!-- End floating point question -->
-                                                            {% endif %}
-                                                        {% elif type == 'multiple_choice' %}
-                                                            {% if question.is_multiselect %}
-                                                                <!-- Multiselect question -->
-                                                                    <div class="card" style="width: 18rem;">
-                                                                        <div class="card-body">
-                                                                            <h5 class="card-title" id="{{ question.variable_name}}-title">
-                                                                                {{ question.text }}
-                                                                            </h5>
-                                                                            <h6 class="card-subtitle mb-2 text-muted">
-                                                                                {{ question.explainer }}
-                                                                            </h6>
-                                                                            {% for option in question.options %}
-                                                                                {% with option_name='option'|add:question.id|add:'_'|add:option.id %}
-                                                                                <!-- Multiple choice option -->
-                                                                                    <div class="form-check">
-                                                                                        <input
-                                                                                            class="form-check-input multi-select"
-                                                                                            type="checkbox"
-                                                                                            value="{{ option.id }}"
-                                                                                            id="{{ option.id }}"
-                                                                                            name="{{ question.variable_name }}">
-                                                                                        <label
-                                                                                            class="form-check-label"
-                                                                                            for="{{ option.id }}">
-                                                                                            {{ option.text }}
-                                                                                        </label>
-                                                                                    </div>
-                                                                                <!-- End multiple choice option -->
-                                                                                {% endwith %}
-                                                                            {% endfor %}
+                                                                    <!-- End integer question -->
+                                                                {% else %}
+                                                                    <!-- Floating point question -->
+                                                                        <div class="card" style="width: 18rem;">
+                                                                            <div class="card-body">
+                                                                                <h5 class="card-title" id="{{ question.variable_name}}-title">
+                                                                                    {{ question.text }}
+                                                                                </h5>
+                                                                                <h6 class="card-subtitle mb-2 text-muted">
+                                                                                    {{ question.explainer }}</h6>
+                                                                                <div class="form-outline">
+                                                                                    <input
+                                                                                        type="number"
+                                                                                        id="{{ question.variable_name }}"
+                                                                                        name="{{ question.variable_name }}"
+                                                                                        class="form-control float"
+                                                                                        step="0.1">
+                                                                                </div>
+                                                                            </div>
                                                                         </div>
-                                                                    </div>
-                                                                <!-- End multiselect question -->
-                                                            {% else %}
-                                                                <!-- Single choice question -->
-                                                                    <div class="card" style="width: 18rem;">
-                                                                        <div class="card-body">
-                                                                            <h5 class="card-title" id="{{ question.variable_name}}-title">
-                                                                                {{ question.text }}
-                                                                            </h5>
-                                                                            <h6 class="card-subtitle mb-2 text-muted">
-                                                                                {{ question.explainer }}
-                                                                            </h6>
-                                                                            {% for option in question.options %}
-                                                                                {% with option_name='option'|add:question.id|add:'_'|add:option.id %}
+                                                                    <!-- End floating point question -->
+                                                                {% endif %}
+                                                            {% elif type == 'multiple_choice' %}
+                                                                {% if question.is_multiselect %}
+                                                                    <!-- Multiselect question -->
+                                                                        <div class="card" style="width: 18rem;">
+                                                                            <div class="card-body">
+                                                                                <h5 class="card-title" id="{{ question.variable_name}}-title">
+                                                                                    {{ question.text }}
+                                                                                </h5>
+                                                                                <h6 class="card-subtitle mb-2 text-muted">
+                                                                                    {{ question.explainer }}
+                                                                                </h6>
+                                                                                {% for option in question.options %}
+                                                                                    {% with option_name='option'|add:question.id|add:'_'|add:option.id %}
                                                                                     <!-- Multiple choice option -->
                                                                                         <div class="form-check">
                                                                                             <input
-                                                                                                class="form-check-input single-select"
-                                                                                                type="radio"
-                                                                                                name="{{ question.variable_name }}"
+                                                                                                class="form-check-input multi-select"
+                                                                                                type="checkbox"
                                                                                                 value="{{ option.id }}"
-                                                                                                id="{{ option.id }}">
+                                                                                                id="{{ option.id }}"
+                                                                                                name="{{ question.variable_name }}">
                                                                                             <label
                                                                                                 class="form-check-label"
                                                                                                 for="{{ option.id }}">
@@ -204,33 +180,66 @@
                                                                                             </label>
                                                                                         </div>
                                                                                     <!-- End multiple choice option -->
-                                                                                {% endwith %}
-                                                                            {% endfor %}
+                                                                                    {% endwith %}
+                                                                                {% endfor %}
+                                                                            </div>
                                                                         </div>
-                                                                    </div>
-                                                                <!-- End single choice question -->
+                                                                    <!-- End multiselect question -->
+                                                                {% else %}
+                                                                    <!-- Single choice question -->
+                                                                        <div class="card" style="width: 18rem;">
+                                                                            <div class="card-body">
+                                                                                <h5 class="card-title" id="{{ question.variable_name}}-title">
+                                                                                    {{ question.text }}
+                                                                                </h5>
+                                                                                <h6 class="card-subtitle mb-2 text-muted">
+                                                                                    {{ question.explainer }}
+                                                                                </h6>
+                                                                                {% for option in question.options %}
+                                                                                    {% with option_name='option'|add:question.id|add:'_'|add:option.id %}
+                                                                                        <!-- Multiple choice option -->
+                                                                                            <div class="form-check">
+                                                                                                <input
+                                                                                                    class="form-check-input single-select"
+                                                                                                    type="radio"
+                                                                                                    name="{{ question.variable_name }}"
+                                                                                                    value="{{ option.id }}"
+                                                                                                    id="{{ option.id }}">
+                                                                                                <label
+                                                                                                    class="form-check-label"
+                                                                                                    for="{{ option.id }}">
+                                                                                                    {{ option.text }}
+                                                                                                </label>
+                                                                                            </div>
+                                                                                        <!-- End multiple choice option -->
+                                                                                    {% endwith %}
+                                                                                {% endfor %}
+                                                                            </div>
+                                                                        </div>
+                                                                    <!-- End single choice question -->
+                                                                {% endif %}
                                                             {% endif %}
-                                                        {% endif %}
-                                                        {% endwith %}
-                                                    {% endfor %}
+                                                            {% endwith %}
+                                                        {% endfor %}
+                                                    </div>
                                                 </div>
+                                                <!-- Jurisdiction question set body -->
                                             </div>
-                                            <!-- Jurisdiction question set body -->
-                                        </div>
-                                    <!-- Begin jurisdiction question set -->
-                                {% endif %}
-                            {% endwith %}
-                        {% endfor %}
+                                        <!-- Begin jurisdiction question set -->
+                                    {% endif %}
+                                {% endwith %}
+                            {% endfor %}
+                        </div>
+                        <!-- End jurisdictions accordion -->
                     </div>
-                    <!-- End jurisdictions accordion -->
                 </div>
-            </div>
-            <div class="row">
-                <div class="col text-center">
-                    <button type="button" id="next-button" class="btn btn-primary" onclick="validateForm()">Next</button>
+                <div class="row">
+                    <div class="col text-center">
+                        <button type="button" id="next-button" class="btn btn-primary" onclick="validateForm()">Next</button>
+                    </div>
                 </div>
-            </div>
-        </form>
-        <!-- End jurisdictions forms -->
+            </form>
+            <!-- End jurisdictions forms -->
+        {% endif %}
     {% endif %}
 {% endblock %}

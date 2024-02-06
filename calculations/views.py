@@ -88,11 +88,17 @@ def display_form(request):
         return render(request, template, { 'error': str(e)})
 
     print('Forms data: ' + str(forms))
+    # Count the number of questions retrieved
+    question_count = 0
+    for jurisdiction_id, form in forms.items():
+        question_count = question_count + len(forms[jurisdiction_id]['questions'])
+
     # Context is used to pass data into the template 
     context = {
         'jurisdiction_ids': ",".join(selected_jurisdictions_ids),
         'jurisdictions': jurisdictions,
         'forms': forms,
+        "question_count": question_count
     }
     return render(request, template, context)
 
