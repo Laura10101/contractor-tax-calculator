@@ -34,11 +34,6 @@ from jurisdictions_api.services import create_jurisdiction
 jurisdiction_id = create_jurisdiction("Test Jurisdiction")
 print("Created jurisdiction with id = " + str(jurisdiction_id))
 
-print("Setting up test data - form for jurisdiction")
-from forms_api.services import create_form
-form_id = create_form(jurisdiction_id)
-print("Created form with id = " + str(form_id))
-
 print("Setting up test data - tax categories")
 from rules_api.services import create_tax_category
 names = ['Income Tax', 'Dividend Tax', 'Corporation Tax', 'VAT']
