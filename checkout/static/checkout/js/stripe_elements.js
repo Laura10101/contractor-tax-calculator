@@ -1,3 +1,4 @@
+/* jshint esversion: 8 */
 var stripe_public_key = $('#id_stripe_public_key').text().slice(1, -1);
 var client_secret = $('#id_client_secret').text().slice(1, -1);
 var stripe = Stripe(stripe_public_key);
@@ -20,7 +21,7 @@ function elementsAreValid()  {
   let cardELementDiv = document.getElementById("card-element");
 
   return addressELementDiv.classList.contains("StripeElement") && cardELementDiv.classList.contains("StripeElement--complete");
-};
+}
 
 // Enable/disable the submit button
 address.addEventListener('change', function (event) {
@@ -63,7 +64,7 @@ form.addEventListener('submit', function(ev) {
     // Build data object for Stripe
     let data = {
       elements
-    }
+    };
 
   // Create payment method in stripe
   // Modified from Stripe's documentation
