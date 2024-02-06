@@ -1,3 +1,4 @@
+/* jshint esversion: 8 */
 /*
  * service_clients.js
  * Provides wrapper functions for easy access to required API endpoints

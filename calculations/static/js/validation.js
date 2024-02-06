@@ -1,4 +1,4 @@
-
+/* jshint esversion: 8 */
 // A booelan field is valid if exactly one response has been checked
 function isBooleanFieldValid(id) {
     return $('input:radio[name="' + id + '"]:checked').length == 1;
@@ -50,6 +50,7 @@ function deduplicate(arr) {
 function validateForm() {
     let errors = [];
 
+    // Call the appropriate validation function depending on the type of dialog
     $("input").each(function(i, el) {
         if (el.classList.contains("boolean")) {
             if (!isBooleanFieldValid(el.name)) {
@@ -70,8 +71,10 @@ function validateForm() {
         }
     });
 
+    // Display the accumulated errors
     showFormErrors(deduplicate(errors));
 
+    // If there are no errors, allow the form to be submitted
     if (errors == "") {
         document.getElementById("jurisdiction-forms").submit();
     }
