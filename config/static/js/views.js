@@ -7,7 +7,7 @@ if (typeof require !== "undefined") {
     const viewConsts = require("./view_consts.js");
     const serviceClients = require("./service_clients.js");
     const viewModels = require("./view_models.js");
-    const viewUtils = require("./view_utils.js")
+    const viewUtils = require("./view_utils.js");
 
     // View consts
     dialogStates = viewConsts.dialogStates;
@@ -147,6 +147,7 @@ function doNothing() { }
 /*
  * Dialog Actions
  */
+// Appropriately manage app state when a dialog is cancelled
 function cancelDialog(dialogId, shouldClearDialogState, shouldClearParentState) {
     hideDialog(dialogId);
     if (shouldClearDialogState) {
@@ -159,11 +160,15 @@ function cancelDialog(dialogId, shouldClearDialogState, shouldClearParentState) 
     }
 }
 
+// Appropriately handle app state when a child dialog is cancelled
+// A child dialog is one which is accessed exclusively via a parent dialog
+// This includes option and rule tier dialogs
 function cancelChildDialog(dialogId) {
     hideDialog(dialogId);
     moveParentStateToAppState();
 }
 
+// Appropriately handle app state when a confirmation dialog is cancelled
 function cancelConfirmationDialog() {
     hideDialog(confirmationDialog.dialog.id);
     switch (app.dialogState.entityType) {
@@ -194,6 +199,8 @@ function cancelConfirmationDialog() {
 /*
  * Forms Views
  */
+// Update the app state and refresh the questions display when
+// question data is successfully loaded
 function displayQuestions(data) {
     app.jurisdictionForm = data;
     if (isAllJurisdictionsForm(app.jurisdictionForm)) {
@@ -204,6 +211,7 @@ function displayQuestions(data) {
     updateQuestionDisplay(app.jurisdictionForm.forms[Object.keys(app.jurisdictionForm.forms)[0]].questions);
 }
 
+// Display an error when an attempt to load question data fails
 function displayQuestionsLoadError() {
     error("An error occurred while loading questions for selected jurisdiction.");
 }
@@ -211,12 +219,15 @@ function displayQuestionsLoadError() {
 /*
  * Jurisdiction Views
  */
+// Event handler to be called when the selection in the jurisdiction select changes
 function jurisdictionSelected() {
     jurisdictionId = getSelectedJurisdictionId();
     getFormForJurisdiction(jurisdictionId, displayQuestions, displayQuestionsLoadError);
     getRulesetsForJurisdiction(jurisdictionId, displayRulesets, displayRulesetsLoadError);
 }
 
+// Callback to initialise the jurisdiction select box
+// when jurisdiction data is successfully loaded
 function loadJurisdictionSelect(data) {
     app.jurisdictions = data.jurisdictions;
 
@@ -224,6 +235,7 @@ function loadJurisdictionSelect(data) {
     jurisdictionSelected();
 }
 
+// Display an error in the event that jurisdiction data fails to load
 function displayJurisdictionLoadError() {
     error("An error occurred while loading jurisdictions.");
 }
@@ -231,10 +243,13 @@ function displayJurisdictionLoadError() {
 /*
  * Tax Category Views
  */
+// Update the app state with tax category data when
+// tax category data is loaded from the API
 function loadTaxCategorySelect(data) {
     app.taxCategories = data;
 }
 
+// Display an error when tax category data fails to load correctly
 function displayTaxCategoryLoadError() {
     error("An error occurred while loading tax categories.");
 }
@@ -242,11 +257,15 @@ function displayTaxCategoryLoadError() {
 /*
  * Question Views
  */
+// Trigger the call to reload question data from the forms API
 function refreshQuestionsDisplay(refresher=getFormForJurisdiction) {
     jurisdictionId = getSelectedJurisdictionId();
     refresher(jurisdictionId, displayQuestions, displayQuestionsLoadError);
 }
 
+
+// When a question type is selected via the question type dialog,
+// display the correct question dialog to add or edit questions
 function questionTypeSelected() {
     // Hide question type dialog
     hideDialog(questionTypeDialog.dialog.id);
@@ -271,6 +290,8 @@ function questionTypeSelected() {
     }
 }
 
+// Display the appropriate question dialog to edit questions
+// depending on the type of question to be edited
 function editQuestion(question) {
     switch (question.type) {
         case "boolean":
@@ -288,12 +309,15 @@ function editQuestion(question) {
     }
 }
 
+// When the call to save a question via the forms API successes, display a message
+// and refresh the questions display
 function saveQuestionSucceeded(data, textStatus, request, refresher=refreshQuestionsDisplay) {
     success("The question was successfully saved.");
     clearDialogState();
     refresher();
 }
 
+// Display an appropriate error message when saving a question fails
 function saveQuestionFailed(request, status, message) {
     try {
         errorMsg = request.responseJSON.error;
@@ -303,6 +327,9 @@ function saveQuestionFailed(request, status, message) {
     }
 }
 
+// Save a question using the specified creators and updaters
+// The appropriate creator or updater is used depending on the dialog mode (edit or create)
+// and depending on the question type
 function saveQuestion(booleanQuestionCreator=createBooleanQuestion, numericQuestionCreator=createNumericQuestion,
     multipleChoiceQuestionCreator=createMultipleChoiceQuestion, booleanQuestionUpdater=updateBooleanQuestion, numericQuestionUpdater=updateNumericQuestion,
     multipleChoiceQuestionUpdater=updateMultipleChoiceQuestion) {
@@ -366,7 +393,7 @@ function saveQuestion(booleanQuestionCreator=createBooleanQuestion, numericQuest
                             document.getElementById(multipleChoiceQuestionDialog.isMandatory.input.id).checked,
                             saveQuestionSucceeded,
                             saveQuestionFailed
-                        )
+                        );
                     } else {
                         displayValidationErrors(multipleChoiceQuestionDialog.errors.id, errors);
                     }
@@ -443,6 +470,7 @@ function saveQuestion(booleanQuestionCreator=createBooleanQuestion, numericQuest
     }
 }
 
+// When
 function deleteQuestionSucceeded(request, status, message, ordinalUpdater=updateQuestion, displayRefresher=refreshQuestionsDisplay) {
     success("The selected question was successfully deleted.");
     questions = resequenceQuestionOrdinals(app.dialogState.entity);
@@ -452,7 +480,7 @@ function deleteQuestionSucceeded(request, status, message, ordinalUpdater=update
             requestQueue.push(question);
             //ordinalUpdater(question, doNothing, saveQuestionFailed);
         }
-    })
+    });
 
     processBatch(
         requestQueue,
