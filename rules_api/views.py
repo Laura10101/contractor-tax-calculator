@@ -3,6 +3,16 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from django.core.exceptions import ValidationError
+from .models import (
+    TaxCategory,
+    RuleSet,
+    FlatRateRule,
+    TieredRateRule,
+    RuleTier,
+    SecondaryTieredRateRule,
+    SecondaryRuleTier
+)
 from .services import (
     get_rulesets_by_jurisdiction_id,
     create_ruleset,
@@ -178,7 +188,8 @@ class RuleSetsList(APIView):
             )
         except ValidationError as e:
             conflict_message = 'A ruleset already exists for this tax category'
-            conflict_message = conflict_message + ' in this jurisdiction'
+            conflict_message = conflict_message + ' and jurisdiction'
+            print(str(e.messages[0]))
             if e.messages[0] == conflict_message:
                 return Response(
                     {
@@ -302,6 +313,7 @@ class TaxCategoriesList(APIView):
         try:
             tax_category_id = create_tax_category(name)
         except ValidationError as e:
+            print(str(e))
             conflict_message = "{'name': ['Tax category with this "
             conflict_message = conflict_message + "Name already exists.']}"
             if str(e) == conflict_message:
