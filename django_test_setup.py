@@ -33,4 +33,5 @@ def setup():
     execute_from_command_line(['manage.py', 'migrate'])
     print("Migrated")
 
+
 setup()
