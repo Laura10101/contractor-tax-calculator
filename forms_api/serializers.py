@@ -5,10 +5,10 @@ from .models import Form
 
 
 class FormSerializer(serializers.ModelSerializer):
-    """Serialiser for Form model"""
+    """Serialiser for Form model."""
 
     class Meta:
-        """Metadata for Form serialiser"""
+        """Metadata for Form serialiser."""
 
         model = Form
         fields = '__all__'
