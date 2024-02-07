@@ -1,5 +1,10 @@
+"""Define urls for the subscription API."""
 from django.urls import path, re_path
-from .autocompletes import SubscriptionAutocomplete, SubscriptionOptionAutocomplete, UserAutocomplete
+from .autocompletes import (
+    SubscriptionAutocomplete,
+    SubscriptionOptionAutocomplete,
+    UserAutocomplete
+)
 from .views import *
 
 urlpatterns = [
