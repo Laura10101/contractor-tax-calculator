@@ -95,7 +95,7 @@ def test_get_multiple_forms():
 
     id2 = create_form(2)
     assert id2 is not None
-    jurisdiction_ids = [1,2]
+    jurisdiction_ids = [1, 2]
 
     forms = get_forms_by_jurisdiction_ids(jurisdiction_ids)
     assert forms is not None
@@ -136,7 +136,14 @@ def get_mock_multiple_choice_question():
     variable_name = 'fake_var_name'
     is_mandatory = True
 
-    id = create_multiple_choice_question(form_id, question_text, ordinal, explainer, variable_name, is_mandatory)
+    id = create_multiple_choice_question(
+        form_id,
+        question_text,
+        ordinal,
+        explainer,
+        variable_name,
+        is_mandatory
+    )
     return id
 
 
@@ -170,7 +177,14 @@ def test_create_boolean_question_with_null_form_id():
     is_mandatory = True
 
     with pytest.raises(ValidationError):
-        id = create_boolean_question(form_id, question_text, ordinal, explainer, variable_name, is_mandatory)
+        id = create_boolean_question(
+            form_id,
+            question_text,
+            ordinal,
+            explainer,
+            variable_name,
+            is_mandatory
+        )
 
 
 @pytest.mark.django_db
@@ -183,7 +197,14 @@ def test_create_boolean_question_with_non_existent_form_id():
     is_mandatory = True
 
     with pytest.raises(Form.DoesNotExist):
-        id = create_boolean_question(form_id, question_text, ordinal, explainer, variable_name, is_mandatory)
+        id = create_boolean_question(
+            form_id,
+            question_text,
+            ordinal,
+            explainer,
+            variable_name,
+            is_mandatory
+        )
 
 
 @pytest.mark.django_db
@@ -196,7 +217,14 @@ def test_create_boolean_question_with_non_numeric_form_id():
     is_mandatory = True
 
     with pytest.raises(ValidationError):
-        id = create_boolean_question(form_id, question_text, ordinal, explainer, variable_name, is_mandatory)
+        id = create_boolean_question(
+            form_id,
+            question_text,
+            ordinal,
+            explainer,
+            variable_name,
+            is_mandatory
+        )
 
 
 @pytest.mark.django_db
@@ -209,7 +237,14 @@ def test_create_boolean_question_with_null_text():
     is_mandatory = True
 
     with pytest.raises(ValidationError):
-        id = create_boolean_question(form_id, question_text, ordinal, explainer, variable_name, is_mandatory)
+        id = create_boolean_question(
+            form_id,
+            question_text,
+            ordinal,
+            explainer,
+            variable_name,
+            is_mandatory
+        )
 
 
 @pytest.mark.django_db
@@ -222,7 +257,14 @@ def test_create_boolean_question_with_null_ordinal():
     is_mandatory = True
 
     with pytest.raises(ValidationError):
-        id = create_boolean_question(form_id, question_text, ordinal, explainer, variable_name, is_mandatory)
+        id = create_boolean_question(
+            form_id,
+            question_text,
+            ordinal,
+            explainer,
+            variable_name,
+            is_mandatory
+        )
 
 
 @pytest.mark.django_db
@@ -235,7 +277,14 @@ def test_create_boolean_question_with_non_numeric_ordinal():
     is_mandatory = True
 
     with pytest.raises(ValidationError):
-        id = create_boolean_question(form_id, question_text, ordinal, explainer, variable_name, is_mandatory)
+        id = create_boolean_question(
+            form_id,
+            question_text,
+            ordinal,
+            explainer,
+            variable_name,
+            is_mandatory
+        )
 
 
 @pytest.mark.django_db
@@ -248,7 +297,14 @@ def test_create_boolean_question_with_null_explainer():
     is_mandatory = True
 
     with pytest.raises(ValidationError):
-        id = create_boolean_question(form_id, question_text, ordinal, explainer, variable_name, is_mandatory)
+        id = create_boolean_question(
+            form_id,
+            question_text,
+            ordinal,
+            explainer,
+            variable_name,
+            is_mandatory
+        )
 
 
 @pytest.mark.django_db
@@ -261,7 +317,14 @@ def test_create_boolean_question_with_null_variable_name():
     is_mandatory = True
 
     with pytest.raises(ValidationError):
-        id = create_boolean_question(form_id, question_text, ordinal, explainer, variable_name, is_mandatory)
+        id = create_boolean_question(
+            form_id,
+            question_text,
+            ordinal,
+            explainer,
+            variable_name,
+            is_mandatory
+        )
 
 
 @pytest.mark.django_db
@@ -274,7 +337,14 @@ def test_create_boolean_question_with_blank_variable_name():
     is_mandatory = True
 
     with pytest.raises(ValidationError):
-        id = create_boolean_question(form_id, question_text, ordinal, explainer, variable_name, is_mandatory)
+        id = create_boolean_question(
+            form_id,
+            question_text,
+            ordinal,
+            explainer,
+            variable_name,
+            is_mandatory
+        )
 
 
 @pytest.mark.django_db
@@ -306,7 +376,14 @@ def test_create_boolean_question():
     variable_name = 'fake_var_name'
     is_mandatory = True
 
-    id = create_boolean_question(form_id, question_text, ordinal, explainer, variable_name, is_mandatory)
+    id = create_boolean_question(
+        form_id,
+        question_text,
+        ordinal,
+        explainer,
+        variable_name,
+        is_mandatory
+    )
     assert id is not None
     question = BooleanQuestion.objects.get(pk=id)
     assert question.text == question_text
@@ -323,9 +400,15 @@ def test_update_boolean_question_with_null_data():
     explainer = 'A very serious tax-related question'
     variable_name = 'fake_var_name'
     is_mandatory = True
-    
-    id = create_boolean_question(form_id, question_text, ordinal, explainer, variable_name, is_mandatory)
 
+    id = create_boolean_question(
+        form_id,
+        question_text,
+        ordinal,
+        explainer,
+        variable_name,
+        is_mandatory
+    )
     new_text = None
     new_ordinal = None
     new_explainer = None
@@ -349,12 +432,19 @@ def test_update_boolean_question_with_null_text():
     explainer = 'A very serious tax-related question'
     variable_name = 'fake_var_name'
     is_mandatory = True
-    
-    id = create_boolean_question(form_id, question_text, ordinal, explainer, variable_name, is_mandatory)
+
+    id = create_boolean_question(
+        form_id,
+        question_text,
+        ordinal,
+        explainer,
+        variable_name,
+        is_mandatory
+    )
 
     new_text = None
     new_ordinal = 2
-    new_explainer = 'Boiled or fried and whether or not you are satisfied by eggs alone.'
+    new_explainer = 'Boiled or fried and whether or not you are satisfied.'
     new_is_mandatory = False
 
     with pytest.raises(ValidationError):
@@ -375,7 +465,7 @@ def test_update_boolean_question_with_null_ordinal():
     explainer = 'A very serious tax-related question'
     variable_name = 'fake_var_name'
     is_mandatory = True
-    
+
     id = create_boolean_question(
         form_id,
         question_text,
@@ -387,11 +477,17 @@ def test_update_boolean_question_with_null_ordinal():
 
     new_text = 'Please describe how you like your eggs in the morning.'
     new_ordinal = None
-    new_explainer = 'Boiled or fried and whether or not you are satisfied by eggs alone.'
+    new_explainer = 'Boiled or fried and whether or not you are satisfied.'
     new_is_mandatory = False
 
     with pytest.raises(ValidationError):
-        update_boolean_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory)
+        update_boolean_question(
+            id,
+            new_text,
+            new_ordinal,
+            new_explainer,
+            new_is_mandatory
+        )
 
 
 @pytest.mark.django_db
@@ -402,7 +498,7 @@ def test_update_boolean_question_with_non_numeric_ordinal():
     explainer = 'A very serious tax-related question'
     variable_name = 'fake_var_name'
     is_mandatory = True
-    
+
     id = create_boolean_question(
         form_id,
         question_text,
@@ -414,11 +510,17 @@ def test_update_boolean_question_with_non_numeric_ordinal():
 
     new_text = 'Please describe how you like your eggs in the morning.'
     new_ordinal = 'Hmmm'
-    new_explainer = 'Boiled or fried and whether or not you are satisfied by eggs alone.'
+    new_explainer = 'Boiled or fried and whether or not you are satisfied.'
     new_is_mandatory = False
 
     with pytest.raises(ValidationError):
-        update_boolean_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory)
+        update_boolean_question(
+            id,
+            new_text,
+            new_ordinal,
+            new_explainer,
+            new_is_mandatory
+        )
 
 
 @pytest.mark.django_db
@@ -429,7 +531,7 @@ def test_update_boolean_question_with_null_explainer():
     explainer = 'A very serious tax-related question'
     variable_name = 'fake_var_name'
     is_mandatory = True
-    
+
     id = create_boolean_question(
         form_id,
         question_text,
@@ -453,6 +555,7 @@ def test_update_boolean_question_with_null_explainer():
             new_is_mandatory
         )
 
+
 @pytest.mark.django_db
 def test_update_boolean_question_with_null_is_mandatory():
     form_id = get_mock_form()
@@ -461,7 +564,7 @@ def test_update_boolean_question_with_null_is_mandatory():
     explainer = 'A very serious tax-related question'
     variable_name = 'fake_var_name'
     is_mandatory = True
-    
+
     id = create_boolean_question(
         form_id,
         question_text,
@@ -473,7 +576,7 @@ def test_update_boolean_question_with_null_is_mandatory():
 
     new_text = 'Please describe how you like your eggs in the morning.'
     new_ordinal = 2
-    new_explainer = 'Boiled or fried and whether or not you are satisfied by eggs alone.'
+    new_explainer = 'Boiled or fried and whether or not you are satisfied.'
     new_is_mandatory = None
 
     with pytest.raises(ValidationError):
@@ -485,6 +588,7 @@ def test_update_boolean_question_with_null_is_mandatory():
             new_is_mandatory
         )
 
+
 @pytest.mark.django_db
 def test_update_boolean_question():
     form_id = get_mock_form()
@@ -493,7 +597,7 @@ def test_update_boolean_question():
     explainer = 'A very serious tax-related question'
     variable_name = 'fake_var_name'
     is_mandatory = True
-    
+
     id = create_boolean_question(
         form_id,
         question_text,
@@ -505,7 +609,7 @@ def test_update_boolean_question():
 
     new_text = 'Please describe how you like your eggs in the morning.'
     new_ordinal = 2
-    new_explainer = 'Boiled or fried and whether or not you are satisfied by eggs alone.'
+    new_explainer = 'Boiled or fried and whether or not you are satisfied.'
     new_is_mandatory = False
 
     update_boolean_question(
@@ -522,6 +626,7 @@ def test_update_boolean_question():
     assert question.ordinal == new_ordinal
     assert question.explainer == new_explainer
     assert question.is_mandatory == new_is_mandatory
+
 
 @pytest.mark.django_db
 def test_update_boolean_question_with_non_existent_id():
@@ -543,7 +648,7 @@ def test_update_boolean_question_with_non_existent_id():
 
     new_text = 'Please describe how you like your eggs in the morning.'
     new_ordinal = 2
-    new_explainer = 'Boiled or fried and whether or not you are satisfied by eggs alone.'
+    new_explainer = 'Boiled or fried and whether or not you are satisfied.'
     new_is_mandatory = False
 
     with pytest.raises(ObjectDoesNotExist):
@@ -574,6 +679,7 @@ def test_create_multiple_choice_question_with_null_data():
             variable_name,
             is_mandatory
         )
+
 
 @pytest.mark.django_db
 def test_create_multiple_choice_question_with_null_form_id():
@@ -614,6 +720,7 @@ def test_create_multiple_choice_question_with_non_existent_form_id():
             is_mandatory
         )
 
+
 @pytest.mark.django_db
 def test_create_multiple_choice_question_with_non_numeric_form_id():
     form_id = 'Wrongo'
@@ -632,6 +739,7 @@ def test_create_multiple_choice_question_with_non_numeric_form_id():
             variable_name,
             is_mandatory
         )
+
 
 @pytest.mark.django_db
 def test_create_multiple_choice_question_with_null_text():
@@ -652,6 +760,7 @@ def test_create_multiple_choice_question_with_null_text():
             is_mandatory
         )
 
+
 @pytest.mark.django_db
 def test_create_multiple_choice_question_with_null_ordinal():
     form_id = get_mock_form()
@@ -670,6 +779,7 @@ def test_create_multiple_choice_question_with_null_ordinal():
             variable_name,
             is_mandatory
         )
+
 
 @pytest.mark.django_db
 def test_create_multiple_choice_question_with_non_numeric_ordinal():
@@ -690,6 +800,7 @@ def test_create_multiple_choice_question_with_non_numeric_ordinal():
             is_mandatory
         )
 
+
 @pytest.mark.django_db
 def test_create_multiple_choice_question_with_null_explainer():
     form_id = get_mock_form()
@@ -708,6 +819,7 @@ def test_create_multiple_choice_question_with_null_explainer():
             variable_name,
             is_mandatory
         )
+
 
 @pytest.mark.django_db
 def test_create_multiple_choice_question_with_null_variable_name():
@@ -728,6 +840,7 @@ def test_create_multiple_choice_question_with_null_variable_name():
             is_mandatory
         )
 
+
 @pytest.mark.django_db
 def test_create_multiple_choice_question_with_blank_variable_name():
     form_id = get_mock_form()
@@ -747,6 +860,7 @@ def test_create_multiple_choice_question_with_blank_variable_name():
             is_mandatory
         )
 
+
 @pytest.mark.django_db
 def test_create_multiple_choice_question_with_null_is_mandatory():
     form_id = get_mock_form()
@@ -765,6 +879,7 @@ def test_create_multiple_choice_question_with_null_is_mandatory():
             variable_name,
             is_mandatory
         )
+
 
 @pytest.mark.django_db
 def test_create_multiple_choice_question():
@@ -799,7 +914,7 @@ def test_update_multiple_choice_question_with_null_data():
     explainer = 'A very serious tax-related question'
     variable_name = 'fake_var_name'
     is_mandatory = True
-    
+
     id = create_multiple_choice_question(
         form_id,
         question_text,
@@ -832,7 +947,7 @@ def test_update_multiple_choice_question_with_null_text():
     explainer = 'A very serious tax-related question'
     variable_name = 'fake_var_name'
     is_mandatory = True
-    
+
     id = create_multiple_choice_question(
         form_id,
         question_text,
@@ -844,7 +959,7 @@ def test_update_multiple_choice_question_with_null_text():
 
     new_text = None
     new_ordinal = 2
-    new_explainer = 'Boiled or fried and whether or not you are satisfied by eggs alone.'
+    new_explainer = 'Boiled or fried and whether or not you are satisfied.'
     new_is_mandatory = False
 
     with pytest.raises(ValidationError):
@@ -865,7 +980,7 @@ def test_update_multiple_choice_question_with_null_ordinal():
     explainer = 'A very serious tax-related question'
     variable_name = 'fake_var_name'
     is_mandatory = True
-    
+
     id = create_multiple_choice_question(
         form_id,
         question_text,
@@ -877,7 +992,7 @@ def test_update_multiple_choice_question_with_null_ordinal():
 
     new_text = 'Please describe how you like your eggs in the morning.'
     new_ordinal = None
-    new_explainer = 'Boiled or fried and whether or not you are satisfied by eggs alone.'
+    new_explainer = 'Boiled or fried and whether or not you are satisfied.'
     new_is_mandatory = False
 
     with pytest.raises(ValidationError):
@@ -898,7 +1013,7 @@ def test_update_multiple_choice_question_with_non_numeric_ordinal():
     explainer = 'A very serious tax-related question'
     variable_name = 'fake_var_name'
     is_mandatory = True
-    
+
     id = create_multiple_choice_question(
         form_id,
         question_text,
@@ -910,7 +1025,7 @@ def test_update_multiple_choice_question_with_non_numeric_ordinal():
 
     new_text = 'Please describe how you like your eggs in the morning.'
     new_ordinal = 'Hmmm'
-    new_explainer = 'Boiled or fried and whether or not you are satisfied by eggs alone.'
+    new_explainer = 'Boiled or fried and whether or not you are satisfied.'
     new_is_mandatory = False
 
     with pytest.raises(ValidationError):
@@ -931,7 +1046,7 @@ def test_update_multiple_choice_question_with_null_explainer():
     explainer = 'A very serious tax-related question'
     variable_name = 'fake_var_name'
     is_mandatory = True
-    
+
     id = create_multiple_choice_question(
         form_id,
         question_text,
@@ -964,7 +1079,7 @@ def test_update_multiple_choice_question_with_null_is_mandatory():
     explainer = 'A very serious tax-related question'
     variable_name = 'fake_var_name'
     is_mandatory = True
-    
+
     id = create_multiple_choice_question(
         form_id,
         question_text,
@@ -976,7 +1091,7 @@ def test_update_multiple_choice_question_with_null_is_mandatory():
 
     new_text = 'Please describe how you like your eggs in the morning.'
     new_ordinal = 2
-    new_explainer = 'Boiled or fried and whether or not you are satisfied by eggs alone.'
+    new_explainer = 'Boiled or fried and whether or not you are satisfied.'
     new_is_mandatory = None
 
     with pytest.raises(ValidationError):
@@ -997,7 +1112,7 @@ def test_update_multiple_choice_question():
     explainer = 'A very serious tax-related question'
     variable_name = 'fake_var_name'
     is_mandatory = True
-    
+
     id = create_multiple_choice_question(
         form_id,
         question_text,
@@ -1009,7 +1124,7 @@ def test_update_multiple_choice_question():
 
     new_text = 'Please describe how you like your eggs in the morning.'
     new_ordinal = 2
-    new_explainer = 'Boiled or fried and whether or not you are satisfied by eggs alone.'
+    new_explainer = 'Boiled or fried and whether or not you are satisfied.'
     new_is_mandatory = False
 
     update_multiple_choice_question(
@@ -1036,7 +1151,7 @@ def test_update_multiple_choice_question_with_non_existent_id():
     explainer = 'A very serious tax-related question'
     variable_name = 'fake_var_name'
     is_mandatory = True
-    
+
     id = create_multiple_choice_question(
         form_id,
         question_text,
@@ -1048,7 +1163,7 @@ def test_update_multiple_choice_question_with_non_existent_id():
 
     new_text = 'Please describe how you like your eggs in the morning.'
     new_ordinal = 2
-    new_explainer = 'Boiled or fried and whether or not you are satisfied by eggs alone.'
+    new_explainer = 'Boiled or fried and whether or not you are satisfied.'
     new_is_mandatory = False
 
     with pytest.raises(ObjectDoesNotExist):
@@ -1190,6 +1305,7 @@ def test_create_numeric_question_with_null_text():
             max_value
         )
 
+
 @pytest.mark.django_db
 def test_create_numeric_question_with_null_ordinal():
     form_id = get_mock_form()
@@ -1229,7 +1345,18 @@ def test_create_numeric_question_with_non_numeric_ordinal():
     max_value = 100
 
     with pytest.raises(ValidationError):
-        id = create_numeric_question(form_id, question_text, ordinal, explainer, variable_name, is_mandatory, is_integer, min_value, max_value)
+        id = create_numeric_question(
+            form_id,
+            question_text,
+            ordinal,
+            explainer,
+            variable_name,
+            is_mandatory,
+            is_integer,
+            min_value,
+            max_value
+        )
+
 
 @pytest.mark.django_db
 def test_create_numeric_question_with_null_explainer():
@@ -1244,7 +1371,18 @@ def test_create_numeric_question_with_null_explainer():
     max_value = 100
 
     with pytest.raises(ValidationError):
-        id = create_numeric_question(form_id, question_text, ordinal, explainer, variable_name, is_mandatory, is_integer, min_value, max_value)
+        id = create_numeric_question(
+            form_id,
+            question_text,
+            ordinal,
+            explainer,
+            variable_name,
+            is_mandatory,
+            is_integer,
+            min_value,
+            max_value
+        )
+
 
 @pytest.mark.django_db
 def test_create_numeric_question_with_null_variable_name():
@@ -1259,7 +1397,18 @@ def test_create_numeric_question_with_null_variable_name():
     max_value = 100
 
     with pytest.raises(ValidationError):
-        id = create_numeric_question(form_id, question_text, ordinal, explainer, variable_name, is_mandatory, is_integer, min_value, max_value)
+        id = create_numeric_question(
+            form_id,
+            question_text,
+            ordinal,
+            explainer,
+            variable_name,
+            is_mandatory,
+            is_integer,
+            min_value,
+            max_value
+        )
+
 
 @pytest.mark.django_db
 def test_create_numeric_question_with_blank_variable_name():
@@ -1274,7 +1423,18 @@ def test_create_numeric_question_with_blank_variable_name():
     max_value = 100
 
     with pytest.raises(ValidationError):
-        id = create_numeric_question(form_id, question_text, ordinal, explainer, variable_name, is_mandatory, is_integer, min_value, max_value)
+        id = create_numeric_question(
+            form_id,
+            question_text,
+            ordinal,
+            explainer,
+            variable_name,
+            is_mandatory,
+            is_integer,
+            min_value,
+            max_value
+        )
+
 
 @pytest.mark.django_db
 def test_create_numeric_question_with_null_is_mandatory():
@@ -1289,7 +1449,18 @@ def test_create_numeric_question_with_null_is_mandatory():
     max_value = 100
 
     with pytest.raises(ValidationError):
-        id = create_numeric_question(form_id, question_text, ordinal, explainer, variable_name, is_mandatory, is_integer, min_value, max_value)
+        id = create_numeric_question(
+            form_id,
+            question_text,
+            ordinal,
+            explainer,
+            variable_name,
+            is_mandatory,
+            is_integer,
+            min_value,
+            max_value
+        )
+
 
 @pytest.mark.django_db
 def test_create_numeric_question():
@@ -1303,7 +1474,17 @@ def test_create_numeric_question():
     min_value = 0
     max_value = 100
 
-    id = create_numeric_question(form_id, question_text, ordinal, explainer, variable_name, is_mandatory, is_integer, min_value, max_value)
+    id = create_numeric_question(
+        form_id,
+        question_text,
+        ordinal,
+        explainer,
+        variable_name,
+        is_mandatory,
+        is_integer,
+        min_value,
+        max_value
+    )
     assert id is not None
     question = NumericQuestion.objects.get(pk=id)
     assert question.text == question_text
@@ -1311,7 +1492,7 @@ def test_create_numeric_question():
     assert question.explainer == explainer
     assert question.is_mandatory == is_mandatory
 
-# Test updates to numeric questions
+
 @pytest.mark.django_db
 def test_update_numeric_question_with_null_data():
     form_id = get_mock_form()
@@ -1324,7 +1505,17 @@ def test_update_numeric_question_with_null_data():
     min_value = 0
     max_value = 100
 
-    id = create_numeric_question(form_id, question_text, ordinal, explainer, variable_name, is_mandatory, is_integer, min_value, max_value)
+    id = create_numeric_question(
+        form_id,
+        question_text,
+        ordinal,
+        explainer,
+        variable_name,
+        is_mandatory,
+        is_integer,
+        min_value,
+        max_value
+    )
 
     new_text = None
     new_ordinal = None
@@ -1335,7 +1526,17 @@ def test_update_numeric_question_with_null_data():
     new_max_val = None
 
     with pytest.raises(ValidationError):
-        update_numeric_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory, new_is_integer, new_min_val, new_max_val)
+        update_numeric_question(
+            id,
+            new_text,
+            new_ordinal,
+            new_explainer,
+            new_is_mandatory,
+            new_is_integer,
+            new_min_val,
+            new_max_val
+        )
+
 
 @pytest.mark.django_db
 def test_update_numeric_question_with_null_text():
@@ -1349,18 +1550,38 @@ def test_update_numeric_question_with_null_text():
     min_value = 0
     max_value = 100
 
-    id = create_numeric_question(form_id, question_text, ordinal, explainer, variable_name, is_mandatory, is_integer, min_value, max_value)
+    id = create_numeric_question(
+        form_id,
+        question_text,
+        ordinal,
+        explainer,
+        variable_name,
+        is_mandatory,
+        is_integer,
+        min_value,
+        max_value
+    )
 
     new_text = None
     new_ordinal = 2
-    new_explainer = 'Boiled or fried and whether or not you are satisfied by eggs alone.'
+    new_explainer = 'Boiled or fried and whether or not you are satisfied.'
     new_is_mandatory = False
     new_is_integer = True
     new_min_val = -10
     new_max_val = 10
 
     with pytest.raises(ValidationError):
-        update_numeric_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory, new_is_integer, new_min_val, new_max_val)
+        update_numeric_question(
+            id,
+            new_text,
+            new_ordinal,
+            new_explainer,
+            new_is_mandatory,
+            new_is_integer,
+            new_min_val,
+            new_max_val
+        )
+
 
 @pytest.mark.django_db
 def test_update_numeric_question_with_null_ordinal():
@@ -1374,18 +1595,38 @@ def test_update_numeric_question_with_null_ordinal():
     min_value = 0
     max_value = 100
 
-    id = create_numeric_question(form_id, question_text, ordinal, explainer, variable_name, is_mandatory, is_integer, min_value, max_value)
+    id = create_numeric_question(
+        form_id,
+        question_text,
+        ordinal,
+        explainer,
+        variable_name,
+        is_mandatory,
+        is_integer,
+        min_value,
+        max_value
+    )
 
     new_text = 'Please describe how you like your eggs in the morning.'
     new_ordinal = None
-    new_explainer = 'Boiled or fried and whether or not you are satisfied by eggs alone.'
+    new_explainer = 'Boiled or fried and whether or not you are satisfied.'
     new_is_mandatory = False
     new_is_integer = True
     new_min_val = -10
     new_max_val = 10
 
     with pytest.raises(ValidationError):
-        update_numeric_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory, new_is_integer, new_min_val, new_max_val)
+        update_numeric_question(
+            id,
+            new_text,
+            new_ordinal,
+            new_explainer,
+            new_is_mandatory,
+            new_is_integer,
+            new_min_val,
+            new_max_val
+        )
+
 
 @pytest.mark.django_db
 def test_update_numeric_question_with_non_numeric_ordinal():
@@ -1399,18 +1640,38 @@ def test_update_numeric_question_with_non_numeric_ordinal():
     min_value = 0
     max_value = 100
 
-    id = create_numeric_question(form_id, question_text, ordinal, explainer, variable_name, is_mandatory, is_integer, min_value, max_value)
+    id = create_numeric_question(
+        form_id,
+        question_text,
+        ordinal,
+        explainer,
+        variable_name,
+        is_mandatory,
+        is_integer,
+        min_value,
+        max_value
+    )
 
     new_text = 'Please describe how you like your eggs in the morning.'
     new_ordinal = 'Hmmm'
-    new_explainer = 'Boiled or fried and whether or not you are satisfied by eggs alone.'
+    new_explainer = 'Boiled or fried and whether or not you are satisfied.'
     new_is_mandatory = False
     new_is_integer = True
     new_min_val = -10
     new_max_val = 10
 
     with pytest.raises(ValidationError):
-        update_numeric_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory, new_is_integer, new_min_val, new_max_val)
+        update_numeric_question(
+            id,
+            new_text,
+            new_ordinal,
+            new_explainer,
+            new_is_mandatory,
+            new_is_integer,
+            new_min_val,
+            new_max_val
+        )
+
 
 @pytest.mark.django_db
 def test_update_numeric_question_with_null_explainer():
@@ -1424,7 +1685,17 @@ def test_update_numeric_question_with_null_explainer():
     min_value = 0
     max_value = 100
 
-    id = create_numeric_question(form_id, question_text, ordinal, explainer, variable_name, is_mandatory, is_integer, min_value, max_value)
+    id = create_numeric_question(
+        form_id,
+        question_text,
+        ordinal,
+        explainer,
+        variable_name,
+        is_mandatory,
+        is_integer,
+        min_value,
+        max_value
+    )
 
     new_text = 'Please describe how you like your eggs in the morning.'
     new_ordinal = 2
@@ -1435,7 +1706,17 @@ def test_update_numeric_question_with_null_explainer():
     new_max_val = 10
 
     with pytest.raises(ValidationError):
-        update_numeric_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory, new_is_integer, new_min_val, new_max_val)
+        update_numeric_question(
+            id,
+            new_text,
+            new_ordinal,
+            new_explainer,
+            new_is_mandatory,
+            new_is_integer,
+            new_min_val,
+            new_max_val
+        )
+
 
 @pytest.mark.django_db
 def test_update_numeric_question_with_null_is_mandatory():
@@ -1449,18 +1730,38 @@ def test_update_numeric_question_with_null_is_mandatory():
     min_value = 0
     max_value = 100
 
-    id = create_numeric_question(form_id, question_text, ordinal, explainer, variable_name, is_mandatory, is_integer, min_value, max_value)
+    id = create_numeric_question(
+        form_id,
+        question_text,
+        ordinal,
+        explainer,
+        variable_name,
+        is_mandatory,
+        is_integer,
+        min_value,
+        max_value
+    )
 
     new_text = 'Please describe how you like your eggs in the morning.'
     new_ordinal = 2
-    new_explainer = 'Boiled or fried and whether or not you are satisfied by eggs alone.'
+    new_explainer = 'Boiled or fried and whether or not you are satisfied.'
     new_is_mandatory = None
     new_is_integer = True
     new_min_val = -10
     new_max_val = 10
 
     with pytest.raises(ValidationError):
-        update_numeric_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory, new_is_integer, new_min_val, new_max_val)
+        update_numeric_question(
+            id,
+            new_text,
+            new_ordinal,
+            new_explainer,
+            new_is_mandatory,
+            new_is_integer,
+            new_min_val,
+            new_max_val
+        )
+
 
 @pytest.mark.django_db
 def test_update_numeric_question():
@@ -1474,17 +1775,36 @@ def test_update_numeric_question():
     min_value = 0
     max_value = 100
 
-    id = create_numeric_question(form_id, question_text, ordinal, explainer, variable_name, is_mandatory, is_integer, min_value, max_value)
+    id = create_numeric_question(
+        form_id,
+        question_text,
+        ordinal,
+        explainer,
+        variable_name,
+        is_mandatory,
+        is_integer,
+        min_value,
+        max_value
+    )
 
     new_text = 'Please describe how you like your eggs in the morning.'
     new_ordinal = 2
-    new_explainer = 'Boiled or fried and whether or not you are satisfied by eggs alone.'
+    new_explainer = 'Boiled or fried and whether or not you are satisfied.'
     new_is_mandatory = False
     new_is_integer = True
     new_min_val = -10
     new_max_val = 10
 
-    update_numeric_question(id, new_text, new_ordinal, new_explainer, new_is_mandatory, new_is_integer, new_min_val, new_max_val)
+    update_numeric_question(
+        id,
+        new_text,
+        new_ordinal,
+        new_explainer,
+        new_is_mandatory,
+        new_is_integer,
+        new_min_val,
+        new_max_val
+    )
 
     question = NumericQuestion.objects.get(pk=id)
     assert question is not None
@@ -1495,6 +1815,7 @@ def test_update_numeric_question():
     assert question.is_integer == new_is_integer
     assert question.min_value == new_min_val
     assert question.max_value == new_max_val
+
 
 @pytest.mark.django_db
 def test_update_numeric_question_with_non_existent_id():
@@ -1508,20 +1829,39 @@ def test_update_numeric_question_with_non_existent_id():
     min_value = 0
     max_value = 100
 
-    id = create_numeric_question(form_id, question_text, ordinal, explainer, variable_name, is_mandatory, is_integer, min_value, max_value)
+    id = create_numeric_question(
+        form_id,
+        question_text,
+        ordinal,
+        explainer,
+        variable_name,
+        is_mandatory,
+        is_integer,
+        min_value,
+        max_value
+    )
 
     new_text = 'Please describe how you like your eggs in the morning.'
     new_ordinal = 2
-    new_explainer = 'Boiled or fried and whether or not you are satisfied by eggs alone.'
+    new_explainer = 'Boiled or fried and whether or not you are satisfied.'
     new_is_mandatory = False
     new_is_integer = True
     new_min_val = -10
     new_max_val = 10
 
     with pytest.raises(ObjectDoesNotExist):
-        update_numeric_question(4894, new_text, new_ordinal, new_explainer, new_is_mandatory, new_is_integer, new_min_val, new_max_val)
+        update_numeric_question(
+            4894,
+            new_text,
+            new_ordinal,
+            new_explainer,
+            new_is_mandatory,
+            new_is_integer,
+            new_min_val,
+            new_max_val
+        )
 
-# Test deleting questions
+
 @pytest.mark.django_db
 def test_delete_question():
     form_id = create_form(1)
@@ -1539,19 +1879,24 @@ def test_delete_question():
     delete_question(id)
     assert Question.objects.all().count() == 0
 
+
 @pytest.mark.django_db
 def test_delete_question_with_non_existent_id():
     with pytest.raises(ObjectDoesNotExist):
         delete_question(729)
 
-# Test creation of multiple choice options
+
 @pytest.mark.django_db
 def test_create_option_with_null_text():
     question_id = get_mock_multiple_choice_question()
     text = None
     explainer = None
     with pytest.raises(ValidationError):
-        id = create_multiple_choice_option(question_id, text, explainer)
+        id = create_multiple_choice_option(
+            question_id,
+            text, explainer
+        )
+
 
 @pytest.mark.django_db
 def test_create_option():
@@ -1564,6 +1909,7 @@ def test_create_option():
     assert option.question.id == question_id
     assert option.text == text
     assert option.explainer == explainer
+
 
 # Test deletion of multiple choice options
 @pytest.mark.django_db
@@ -1579,9 +1925,8 @@ def test_delete_option():
     delete_multiple_choice_option(id)
     assert MultipleChoiceOption.objects.all().count() == 0
 
+
 @pytest.mark.django_db
 def test_delete_option_with_non_existent_id():
     with pytest.raises(MultipleChoiceOption.DoesNotExist):
         delete_multiple_choice_option(7496854)
-
-        
