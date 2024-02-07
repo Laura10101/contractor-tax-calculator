@@ -25,6 +25,7 @@ url = '/api/payments/'
 # Test creating a subscription
 # Helper functions
 
+
 def create_mock_subscription_option():
     return SubscriptionOption.objects.create(
         subscription_months=1,
@@ -32,11 +33,12 @@ def create_mock_subscription_option():
         is_active=True
     )
 
+
 def create_mock_subscription(subscription_option):
     return Subscription.objects.create(
-        subscription_option = subscription_option,
-        user_id = 479,
-        start_date = datetime.now() - relativedelta(months=2)
+        subscription_option=subscription_option,
+        user_id=479,
+        start_date=datetime.now() - relativedelta(months=2)
     )
 
 # Test creating a payment
@@ -47,6 +49,8 @@ def create_mock_subscription(subscription_option):
 #   'total': x.y,
 #   'currency': 'ZZZ'
 # }
+
+
 @pytest.mark.django_db
 def test_post_payment_with_null_data():
     user_id = None
@@ -62,6 +66,7 @@ def test_post_payment_with_null_data():
     }
     response = client.post(url, data, format='json')
     assert response.status_code == 404
+
 
 @pytest.mark.django_db
 def test_post_payment_with_null_user_id():
@@ -79,13 +84,14 @@ def test_post_payment_with_null_user_id():
     response = client.post(url, data, format='json')
     assert response.status_code == 404
 
+
 @pytest.mark.django_db
 def test_post_payment_with_null_subscription_option_id():
     user_id = create_mock_subscription(create_mock_subscription_option()).id
     subscription_option_id = None
     total = 42.30
     currency = 'GBP'
-    
+
     data = {
         'user_id': user_id,
         'subscription_option_id': subscription_option_id,
@@ -94,6 +100,7 @@ def test_post_payment_with_null_subscription_option_id():
     }
     response = client.post(url, data, format='json')
     assert response.status_code == 404
+
 
 @pytest.mark.django_db
 def test_post_payment_with_negative_subscription_option_id():
@@ -101,7 +108,7 @@ def test_post_payment_with_negative_subscription_option_id():
     subscription_option_id = -6
     total = 42.30
     currency = 'GBP'
-    
+
     data = {
         'user_id': user_id,
         'subscription_option_id': subscription_option_id,
@@ -111,13 +118,14 @@ def test_post_payment_with_negative_subscription_option_id():
     response = client.post(url, data, format='json')
     assert response.status_code == 404
 
+
 @pytest.mark.django_db
 def test_post_payment_with_null_total():
     user_id = create_mock_subscription(create_mock_subscription_option()).id
     subscription_option_id = create_mock_subscription_option().id
     total = None
     currency = 'GBP'
-    
+
     data = {
         'user_id': user_id,
         'subscription_option_id': subscription_option_id,
@@ -126,6 +134,7 @@ def test_post_payment_with_null_total():
     }
     response = client.post(url, data, format='json')
     assert response.status_code == 400
+
 
 @pytest.mark.django_db
 def test_post_payment_with_negative_total():
@@ -133,7 +142,7 @@ def test_post_payment_with_negative_total():
     subscription_option_id = create_mock_subscription_option().id
     total = -42.30
     currency = 'GBP'
-    
+
     data = {
         'user_id': user_id,
         'subscription_option_id': subscription_option_id,
@@ -142,6 +151,7 @@ def test_post_payment_with_negative_total():
     }
     response = client.post(url, data, format='json')
     assert response.status_code == 400
+
 
 @pytest.mark.django_db
 def test_post_payment_with_invalid_currency_code():
@@ -149,7 +159,7 @@ def test_post_payment_with_invalid_currency_code():
     subscription_option_id = create_mock_subscription_option().id
     total = 42.30
     currency = 'G'
-    
+
     data = {
         'user_id': user_id,
         'subscription_option_id': subscription_option_id,
@@ -159,13 +169,14 @@ def test_post_payment_with_invalid_currency_code():
     response = client.post(url, data, format='json')
     assert response.status_code == 400
 
+
 @pytest.mark.django_db
 def test_post_valid_payment():
     user_id = create_mock_subscription(create_mock_subscription_option()).id
     subscription_option_id = create_mock_subscription_option().id
     total = 42.30
     currency = 'GBP'
-    
+
     data = {
         'user_id': user_id,
         'subscription_option_id': subscription_option_id,
@@ -202,6 +213,8 @@ def test_post_valid_payment():
 #       'ccv2': x
 #   }
 # }
+
+
 @pytest.mark.django_db
 def test_patch_payment_with_null_payment_data():
     user_id = create_mock_subscription(create_mock_subscription_option()).id
@@ -209,12 +222,13 @@ def test_patch_payment_with_null_payment_data():
     total = 42.30
     currency = 'GBP'
     id, _ = create_payment(user_id, subscription_option_id, total, currency)
-    
+
     data = {
         'stripe_card_id': None
     }
     response = client.patch(url + str(None) + '/', data, format='json')
     assert response.status_code == 404
+
 
 @pytest.mark.django_db
 def test_patch_payment_with_null_payment_id():
@@ -223,12 +237,13 @@ def test_patch_payment_with_null_payment_id():
     total = 42.30
     currency = 'GBP'
     id, _ = create_payment(user_id, subscription_option_id, total, currency)
-    
+
     data = {
         'stripe_card_id': 'pm_card_gb'
     }
     response = client.patch(url + str(None) + '/', data, format='json')
     assert response.status_code == 404
+
 
 @pytest.mark.django_db
 def test_patch_payment_with_null_stripe_card_id():
@@ -237,12 +252,13 @@ def test_patch_payment_with_null_stripe_card_id():
     total = 42.30
     currency = 'GBP'
     id, _ = create_payment(user_id, subscription_option_id, total, currency)
-    
+
     data = {
         'stripe_card_id': None
     }
     response = client.patch(url + str(id) + '/', data, format='json')
     assert response.status_code == 400
+
 
 @pytest.mark.django_db
 def test_patch_payment_with_non_string_stripe_card_id():
@@ -251,12 +267,13 @@ def test_patch_payment_with_non_string_stripe_card_id():
     total = 42.30
     currency = 'GBP'
     id, _ = create_payment(user_id, subscription_option_id, total, currency)
-    
+
     data = {
         'stripe_card_id': 1234
     }
     response = client.patch(url + str(id) + '/', data, format='json')
     assert response.status_code == 400
+
 
 @pytest.mark.django_db
 def test_patch_valid_payment():
@@ -265,7 +282,7 @@ def test_patch_valid_payment():
     total = 42.30
     currency = 'GBP'
     id, _ = create_payment(user_id, subscription_option_id, total, currency)
-    
+
     data = {
         'stripe_card_id': 'pm_card_gb'
     }
@@ -285,6 +302,7 @@ def test_patch_valid_payment():
 # wrapped in an event object
 # Event objects: https://stripe.com/docs/api/events/object
 # Payment intent objects: https://stripe.com/docs/api/payment_intents
+
 
 webhook_payload = {
     "id": "evt_1NGObyFkVBiDxSnkSOAnG6mj",
@@ -307,7 +325,8 @@ webhook_payload = {
             "canceled_at": None,
             "cancellation_reason": None,
             "capture_method": "automatic",
-            "client_secret": "pi_1JKS5I2x6R10KRrhk9GzY4BM_secret_N1kiKaTvicujcDGMskLXGasty",
+            "client_secret":
+            "pi_1JKS5I2x6R10KRrhk9GzY4BM_secret_N1kiKaTvicujcDGMskLXGasty",
             "confirmation_method": "automatic",
             "created": 1628014284,
             "currency": "usd",
@@ -356,6 +375,8 @@ webhook_payload = {
 # This function generates the signature header required when testing webhooks
 # The code is lifted from the Stripe Python library's webhook tests
 # https://github.com/stripe/stripe-python/blob/master/tests/test_webhook.py
+
+
 def generate_stripe_webhook_signature(**kwargs):
     timestamp = kwargs.get("timestamp", int(time.time()))
     payload = kwargs.get("payload", webhook_payload)
@@ -369,6 +390,7 @@ def generate_stripe_webhook_signature(**kwargs):
         )
     header = "t=%d,%s=%s" % (timestamp, scheme, signature)
     return header
+
 
 @pytest.mark.django_db
 def test_process_payment_success_webhook():
@@ -398,9 +420,11 @@ def test_process_payment_success_webhook():
     assert payment.status == 4
 
     subscription = Subscription.objects.get(pk=subscription_id)
-    assert subscription.is_active() == True
+    assert subscription.is_active() is True
     assert subscription_option_id == payment.subscription_option_id
-    assert subscription.start_date.date() == payment.completed_or_failed_date.date()
+    pcofd = payment.completed_or_failed_date.date()
+    assert subscription.start_date.date() == pcofd
+
 
 @pytest.mark.django_db
 def test_process_payment_success_webhook_with_unknown_stripe_pid():
@@ -417,6 +441,7 @@ def test_process_payment_success_webhook_with_unknown_stripe_pid():
     )
     response = client.post(request_url, webhook_payload, format='json')
     assert response.status_code == 404
+
 
 @pytest.mark.django_db
 def test_process_payment_failure_webhook():
@@ -442,6 +467,7 @@ def test_process_payment_failure_webhook():
 
     payment = Payment.objects.get(pk=id)
     assert payment.status == -1
+
 
 @pytest.mark.django_db
 def test_process_payment_failure_webhook_with_unknown_stripe_pid():
