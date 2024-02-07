@@ -117,14 +117,9 @@ def test_delete_form():
     assert forms.count() == len(jurisdiction_ids)
     assert forms.first().id == id
 
-    delete_form(id)
+    for jurisdiction_id in jurisdiction_ids:
+        delete_form_for_jurisdiction(jurisdiction_id)
     assert Form.objects.all().count() == 0
-
-
-@pytest.mark.django_db
-def test_delete_form_with_non_existent_id():
-    with pytest.raises(Form.DoesNotExist):
-        delete_form(78)
 
 
 def get_mock_form():

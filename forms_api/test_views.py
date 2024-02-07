@@ -114,28 +114,6 @@ def test_get_multiple_forms():
     assert forms[id1]['id'] == id1
     assert forms[id2]['id'] == id2
 
-# Test deletion of forms
-@pytest.mark.django_db
-def test_delete_form():
-    assert Form.objects.all().count() == 0
-    id = create_form(1)
-    assert id is not None
-    jurisdiction_ids = [1]
-    
-    assert Form.objects.all().count() == 1
-
-    request_url = url + str(id) + '/'
-    response = client.delete(request_url)
-    assert response.status_code == 200
-
-    assert Form.objects.all().count() == 0
-
-@pytest.mark.django_db
-def test_delete_form_with_non_existent_id():
-    request_url = url + '456945/'
-    response = client.delete(request_url)
-    assert response.status_code == 404
-
 # Test creation of boolean questions
 # Helper function to create a mock form
 def get_mock_form():
@@ -1682,16 +1660,19 @@ def test_delete_question():
         'some_var_name',
         False
     )
-    assert Form.objects.all().count() == 1
-    request_url = url + str(id) + '/'
+    assert Question.objects.all().count() == 1
+    request_url = url + str(form_id) + '/questions/' + str(id) + '/'
+    print(request_url)
     response = client.delete(request_url)
     assert response.status_code == 200
-    assert Form.objects.all().count() == 0
+    assert BooleanQuestion.objects.all().count() == 0
 
 @pytest.mark.django_db
 def test_delete_question_with_non_existent_id():
+    form_id = create_form(1)
+    assert form_id is not None
     id = 1561651
-    request_url = url + str(id) + '/'
+    request_url = url + str(form_id) + '/questions/' + str(id) + '/'
     response = client.delete(request_url)
     assert response.status_code == 404
 
