@@ -17,7 +17,12 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from home.views import *
 from jurisdictions_api.views import JurisdictionList
-from forms_api.views import FormDetail, FormsList, FormQuestionList, FormQuestionsDetail
+from forms_api.views import (
+    FormDetail,
+    FormsList,
+    FormQuestionList,
+    FormQuestionsDetail
+)
 from rules_api.views import *
 from subscriptions_api.views import *
 from payments_api.views import *
