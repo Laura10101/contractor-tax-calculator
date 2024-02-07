@@ -1,33 +1,46 @@
+"""Define views for the home app."""
+
 from django.shortcuts import render
 from django.contrib import admin
 from django.contrib.auth.decorators import login_required
 from .helpers import *
 
-# Create your views here
+
 def index(request):
+    """Display the main index page for the site."""
+
     template = 'home/index.html'
     context = {
     }
 
     return render(request, template, context)
 
+
 def contractor_index(request):
+    """Display the index page for contractors."""
+
     template = 'home/contractor_index.html'
     context = {
     }
 
     return render(request, template, context)
 
+
 @admin.site.admin_view
 def admin_index(request):
+    """Display the index page for admin users."""
+
     template = 'home/admin_index.html'
     context = {
     }
 
     return render(request, template, context)
 
+
 @login_required
 def home(request):
+    """Display the contractor home page and dashboard."""
+
     template = 'home/home.html'
     base_url = request.scheme + '://' + request.get_host()
 
