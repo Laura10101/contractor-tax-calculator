@@ -11,5 +11,5 @@ class SubscriptionsApiConfig(AppConfig):
 
     def ready(self):
         """Set up signals when app is ready."""
-        
+
         import subscriptions_api.signals
