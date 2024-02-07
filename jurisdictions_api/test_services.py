@@ -5,8 +5,6 @@ from .services import *
 import pytest
 
 
-# Create your tests here.
-# Test creation of jurisdictions
 @pytest.mark.django_db
 def test_create_valid_jurisdiction():
     name = 'United Kingdom'
@@ -16,11 +14,13 @@ def test_create_valid_jurisdiction():
     jurisdiction = Jurisdiction.objects.get(pk=id)
     assert jurisdiction.name == name
 
+
 @pytest.mark.django_db
 def test_create_jurisdiction_with_null_name():
     name = None
     with pytest.raises(ValidationError):
         id = create_jurisdiction(name=name)
+
 
 @pytest.mark.django_db
 def test_create_jurisdiction_with_integer_name():
@@ -28,17 +28,20 @@ def test_create_jurisdiction_with_integer_name():
     with pytest.raises(ValidationError):
         id = create_jurisdiction(name=name)
 
+
 @pytest.mark.django_db
 def test_create_jurisdiction_with_short_name():
     name = 'A'
     with pytest.raises(ValidationError):
         id = create_jurisdiction(name=name)
 
+
 @pytest.mark.django_db
 def test_create_jurisdiction_with_long_name():
     name = '012345678901234567890123456789012345678901234567890123456789'
     with pytest.raises(ValidationError):
         id = create_jurisdiction(name=name)
+
 
 @pytest.mark.django_db
 def test_create_duplicate_jurisdiction():
@@ -47,12 +50,13 @@ def test_create_duplicate_jurisdiction():
     with pytest.raises(ValidationError):
         id = create_jurisdiction(name=name)
 
-# Test deletion of jurisdictions
+
 @pytest.mark.django_db
 def test_delete_jurisdiction_with_null_dictionary():
     ids = None
     with pytest.raises(TypeError):
         delete_jurisdictions_by_id(ids)
+
 
 @pytest.mark.django_db
 def test_delete_jurisdiction_with_empty_list():
@@ -63,9 +67,10 @@ def test_delete_jurisdiction_with_empty_list():
 
 @pytest.mark.django_db
 def test_delete_jurisdiction_with_non_existent_id():
-    ids = [47,372]
+    ids = [47, 372]
     delete_jurisdictions_by_id(ids)
     assert Jurisdiction.objects.filter(pk__in=ids).count() == 0
+
 
 @pytest.mark.django_db
 def test_delete_valid_jurisdiction():
@@ -75,14 +80,14 @@ def test_delete_valid_jurisdiction():
     assert jurisdiction.name == name
     ids = [id]
     delete_jurisdictions_by_id(ids)
-    assert Jurisdiction.objects.filter(pk__in=ids).count() == 0 
+    assert Jurisdiction.objects.filter(pk__in=ids).count() == 0
 
 
-# Test retrieval of multiple jurisdictions
 @pytest.mark.django_db
 def test_retrieve_empty_jurisdictions_list():
     jurisdictions = get_all_jurisdictions()
     assert jurisdictions.count() == 0
+
 
 @pytest.mark.django_db
 def test_retrieve_list_with_single_jurisdiction():
@@ -92,6 +97,7 @@ def test_retrieve_list_with_single_jurisdiction():
     assert jurisdictions.count() == 1
     assert jurisdictions.first().name == name
     assert jurisdictions.first().pk == id
+
 
 @pytest.mark.django_db
 def test_retrieve_list_with_multiple_jurisdictions():
