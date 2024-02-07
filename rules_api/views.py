@@ -1,22 +1,51 @@
+"""Define view methods for rules API."""
+
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .services import *
+from .services import (
+    get_rulesets_by_jurisdiction_id,
+    create_ruleset,
+    update_ruleset_ordinal,
+    delete_ruleset,
+    delete_rulesets_for_jurisdiction,
+    get_tax_categories,
+    create_tax_category,
+    delete_tax_category,
+    delete_rule,
+    create_flat_rate_rule,
+    update_flat_rate_rule,
+    create_tiered_rate_rule,
+    update_tiered_rate_rule,
+    create_rule_tier,
+    update_rule_tier,
+    delete_rule_tier,
+    create_secondary_tiered_rate_rule,
+    update_secondary_tiered_rate_rule,
+    create_secondary_rule_tier,
+    update_secondary_rule_tier,
+    delete_secondary_rule_tier,
+    create_calculation,
+    get_calculations_for_user,
+    get_calculation_by_id
+)
 
-# Create a function to validate that a request contains
-# the required attributes, so the API views can use it
+
 def contains_required_attributes(request, required_attributes):
-    for attribute in required_attributes:
-            if attribute not in request.data.keys():
-                return False
-    return True
-    
-# Create your views here.
+    """Check that the request contains the expected attributes."""
 
-# Create django rest rule sets list view 
-# Django rest views are classes inheriting APIView 
+    for attribute in required_attributes:
+        if attribute not in request.data.keys():
+            return False
+    return True
+
+
 class RuleSetsList(APIView):
+    """Create Rulesets List view."""
+
     def __serialise_rule_tier(self, tier):
+        """Serialise a rule tier to JSON."""
+
         return {
             'id': tier.id,
             'min_value': tier.min_value,
@@ -26,6 +55,8 @@ class RuleSetsList(APIView):
         }
 
     def __serialise_secondary_rule_tier(self, tier):
+        """Serialise a secondary rule tier to JSON."""
+
         return {
             'id': tier.id,
             'tier_rate': tier.tier_rate,
@@ -34,6 +65,9 @@ class RuleSetsList(APIView):
         }
 
     def __serialise_rule(self, rule):
+        """Serialise a rule to JSON."""
+
+        # Serialise the generic attributes
         serialised_rule = {
             'id': rule.id,
             'name': rule.name,
@@ -41,6 +75,9 @@ class RuleSetsList(APIView):
             'ordinal': rule.ordinal,
             'variable_name': rule.variable_name
         }
+
+        # Serialise the specific attributes for the given
+        # rule type
         if isinstance(rule, FlatRateRule):
             serialised_rule['type'] = 'flat_rate'
             serialised_rule['tax_rate'] = rule.flat_rate
@@ -48,38 +85,54 @@ class RuleSetsList(APIView):
             if isinstance(rule, TieredRateRule):
                 serialised_rule['type'] = 'tiered_rate'
             elif isinstance(rule, SecondaryTieredRateRule):
-                serialised_rule['primary_rule'] = self.__serialise_rule(rule.primary_rule)
+                serialised_rule['primary_rule'] = self.__serialise_rule(
+                    rule.primary_rule
+                )
                 serialised_rule['type'] = 'secondary_tiered_rate'
 
             serialised_rule['tiers'] = []
             for tier in rule.tiers.order_by('ordinal').all():
-                if isinstance(rule, TieredRateRule):    
-                    serialised_rule['tiers'].append(self.__serialise_rule_tier(tier))
+                if isinstance(rule, TieredRateRule):
+                    serialised_rule['tiers'].append(
+                        self.__serialise_rule_tier(tier)
+                    )
                 else:
-                    serialised_rule['tiers'].append(self.__serialise_secondary_rule_tier(tier))
+                    serialised_rule['tiers'].append(
+                        self.__serialise_secondary_rule_tier(tier)
+                    )
 
         if isinstance(rule, SecondaryTieredRateRule):
             serialised_rule['primary_rule_id'] = rule.primary_rule.id
 
         return serialised_rule
 
-
     def get(self, request):
+        """Return the list of rules for a given jurisdiction."""
+
+        # Validate the request data
         if 'jurisdiction_id' not in request.GET.keys():
             # Code to return an HTTP 400 error
-            # From: https://stackoverflow.com/questions/23492000/how-to-return-http-400-response-in-django
+            # https://stackoverflow.com/questions/23492000/how-to-return-http-400-response-in-django
             return Response(
-                { 'error' : 'Invalid request. Please specify jurisdiction ID' },
+                {
+                    'error': 'Invalid request. Please specify jurisdiction ID'
+                },
                 status=status.HTTP_400_BAD_REQUEST
-                )
+            )
         try:
             jurisdiction_id = int(request.GET['jurisdiction_id'])
-        except:
+        except Exception:
             return Response(
-                { 'error' : 'Invalid request. Jurisdiction ID must be a valid integer' },
+                {
+                    'error': 'Invalid request. Jurisdiction ID must be an ' +
+                    'integer'
+                },
                 status=status.HTTP_400_BAD_REQUEST
-                )
+            )
+
+        # Invoke the service method
         rulesets = get_rulesets_by_jurisdiction_id(jurisdiction_id)
+        # Serialise the retrieved rulesets
         serialised_rulesets = []
         for ruleset in rulesets:
             serialised_ruleset = {
@@ -92,98 +145,131 @@ class RuleSetsList(APIView):
             for rule in ruleset.rules.order_by('ordinal').all():
                 serialised_ruleset['rules'].append(self.__serialise_rule(rule))
             serialised_rulesets.append(serialised_ruleset)
-        
+
+        # Return a response
         return Response(serialised_rulesets)
 
     def post(self, request):
-        # Define the list of required attributes 
+        """Create a new ruleset."""
+
+        # Define the list of required attributes
         required_attributes = [
             'jurisdiction_id',
             'tax_category_id',
             'ordinal',
         ]
-        # Validate data 
+        # Validate data
         if not contains_required_attributes(request, required_attributes):
             return Response(
-                { 'error' : 'Invalid request. Please supply all required attributes.' },
+                {
+                    'error': 'Invalid request. Please supply all required ' +
+                    'attributes.'
+                },
                 status=status.HTTP_400_BAD_REQUEST
-                )
-        # Extract data required for service method 
+            )
+        # Extract data required for service method
         jurisdiction_id = request.data['jurisdiction_id']
         tax_category_id = request.data['tax_category_id']
         ordinal = request.data['ordinal']
-        # Invoke service method 
+        # Invoke service method
         try:
-            ruleset_id = create_ruleset(jurisdiction_id, tax_category_id, ordinal)
+            ruleset_id = create_ruleset(
+                jurisdiction_id, tax_category_id, ordinal
+            )
         except ValidationError as e:
-            if e.messages[0] == 'A ruleset already exists for this tax category in this jurisdiction':
+            conflict_message = 'A ruleset already exists for this tax category'
+            conflict_message = conflict_message + ' in this jurisdiction'
+            if e.messages[0] == conflict_message:
                 return Response(
-                    { 'error': str(e) },
+                    {
+                        'error': str(e)
+                    },
                     status=status.HTTP_409_CONFLICT
                 )
             else:
                 return Response(
-                    { 'error' : str(e) },
+                    {
+                        'error': str(e)
+                    },
                     status=status.HTTP_400_BAD_REQUEST
-                    )
+                )
         except TaxCategory.DoesNotExist:
             return Response(
                 status=status.HTTP_404_NOT_FOUND
                 )
-        # Create response 
-        response = { 'ruleset_id' : ruleset_id }
-        # Return response 
+        # Create response
+        response = {
+            'ruleset_id': ruleset_id
+        }
+        # Return response
         return Response(response)
 
-# Create django rest rule set detail view 
-# Django rest views are classes inheriting APIView 
+
 class RuleSetDetail(APIView):
+    """Create django rest rule set detail view."""
+
     def delete(self, request, pk):
+        """Delete a ruleset based on its ID."""
+
         # Call apropriate services method
         try:
             delete_ruleset(pk)
         except RuleSet.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
         # Create response via empty JSON object
-        response = { }
-        # Return response 
+        response = {}
+        # Return response
         return Response(response)
 
     def patch(self, request, pk):
-        # Define the list of required attributes 
+        """Update an existing ruleset."""
+
+        # Define the list of required attributes
         required_attributes = [
             'ordinal',
         ]
-        # Validate data 
+        # Validate data
         if not contains_required_attributes(request, required_attributes):
             return Response(
-                { 'error' : 'Invalid request. Please supply all required attributes.' },
+                {
+                    'error': 'Invalid request. Please supply all required ' +
+                    'attributes.'
+                },
                 status=status.HTTP_400_BAD_REQUEST
-                )
-        # Extract data required for service method 
+            )
+        # Extract data required for service method
         ordinal = request.data['ordinal']
-        # Invoke service method 
+        # Invoke service method
         try:
             update_ruleset_ordinal(pk, ordinal)
         except ValidationError as e:
             return Response(
-                { 'error' : str(e) },
+                {
+                    'error': str(e)
+                },
                 status=status.HTTP_400_BAD_REQUEST
-                )
+            )
         except RuleSet.DoesNotExist:
             return Response(
-                { 'error' : 'Ruleset with id ' + str(pk) + ' was not found.' },
+                {
+                    'error': 'Ruleset with id ' + str(pk) + ' was not found.'
+                },
                 status=status.HTTP_404_NOT_FOUND
-                )
-        # Create response 
-        response = { 'ruleset_id' : pk }
-        # Return response 
+            )
+        # Create response
+        response = {
+            'ruleset_id': pk
+        }
+        # Return response
         return Response(response)
 
-# Create django rest tax categories list view 
-# Django rest views are classes inheriting APIView 
+
 class TaxCategoriesList(APIView):
+    """Create django rest tax categories list view."""
+
     def get(self, request):
+        """Get a list of all tax categories."""
+
         tax_categories = get_tax_categories()
         serialised_categories = []
         for category in tax_categories:
@@ -195,52 +281,68 @@ class TaxCategoriesList(APIView):
         return Response(serialised_categories)
 
     def post(self, request):
-        # Define the list of required attributes 
+        """Create a new tax category."""
+
+        # Define the list of required attributes
         required_attributes = [
             'name'
         ]
-        # Validate data 
+        # Validate data
         if not contains_required_attributes(request, required_attributes):
             return Response(
-                { 'error' : 'Invalid request. Please supply all required attributes.' },
+                {
+                    'error': 'Invalid request. Please supply all required ' +
+                    'attributes.'
+                },
                 status=status.HTTP_400_BAD_REQUEST
-                )
-        # Extract data required for service method 
+            )
+        # Extract data required for service method
         name = request.data['name']
-        # Invoke service method 
+        # Invoke service method
         try:
             tax_category_id = create_tax_category(name)
         except ValidationError as e:
-            if str(e) == "{'name': ['Tax category with this Name already exists.']}":
+            conflict_message = "{'name': ['Tax category with this "
+            conflict_message = conflict_message + "Name already exists.']}"
+            if str(e) == conflict_message:
                 return Response(status=status.HTTP_409_CONFLICT)
             else:
                 return Response(
-                    { 'error' : str(e) },
+                    {
+                        'error': str(e)
+                    },
                     status=status.HTTP_400_BAD_REQUEST
-                    )
-        # Create response 
-        response = { 'tax_category_id' : tax_category_id }
-        # Return response 
+                )
+        # Create response
+        response = {
+            'tax_category_id': tax_category_id
+        }
+        # Return response
         return Response(response)
 
-# Create django rest tax categories detail view 
-# Django rest views are classes inheriting APIView 
+
 class TaxCategoryDetail(APIView):
+    """Create django rest tax categories detail view."""
+
     def delete(self, request, pk):
+        """Delete a tax category based on its ID."""
         # Call apropriate services method
         try:
             delete_tax_category(pk)
         except TaxCategory.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
         # Create response via empty JSON object
-        response = { }
-        # Return response 
+        response = {}
+        # Return response
         return Response(response)
 
-# Create Django REST rules list view
+
 class RuleList(APIView):
+    """Create Django REST rules list view."""
+
     def post(self, request, ruleset_pk):
-        # Define the list of required attributes 
+        """Create a new rule."""
+        # Define the list of required attributes
         required_attributes = [
             'type',
             'name',
@@ -248,90 +350,166 @@ class RuleList(APIView):
             'variable_name',
             'explainer'
         ]
-        # Validate data 
+        # Validate data
         if not contains_required_attributes(request, required_attributes):
             return Response(
-                { 'error' : 'Invalid request. Please supply all required attributes.' },
+                {
+                    'error': 'Invalid request. Please supply all required '
+                    + 'attributes.'
+                },
                 status=status.HTTP_400_BAD_REQUEST
-                )
-        # Extract data required for service method 
+            )
+        # Extract data required for service method
         rule_type = request.data['type']
         name = request.data['name']
         ordinal = request.data['ordinal']
         variable_name = request.data['variable_name']
         explainer = request.data['explainer']
         # Invoke service method
-        if rule_type not in ['flat_rate', 'tiered_rate', 'secondary_tiered_rate']:
+        rule_types = ['flat_rate', 'tiered_rate', 'secondary_tiered_rate']
+        if rule_type not in rule_types:
             return Response(
-                { 'error' : 'Invalid request. Please provide a valid rule type.' },
+                {
+                    'error': 'Invalid request. Please provide a valid rule ' +
+                    'type.'
+                },
                 status=status.HTTP_400_BAD_REQUEST
-                )
+            )
         try:
             if rule_type == 'flat_rate':
-                rule_id = self.__post_flat_rate_rule(ruleset_pk, name, ordinal, explainer, variable_name, request)
+                rule_id = self.__post_flat_rate_rule(
+                    ruleset_pk,
+                    name,
+                    ordinal,
+                    explainer,
+                    variable_name,
+                    request
+                )
             elif rule_type == 'tiered_rate':
-                rule_id = create_tiered_rate_rule(ruleset_pk, name, ordinal, explainer, variable_name)
+                rule_id = create_tiered_rate_rule(
+                    ruleset_pk,
+                    name,
+                    ordinal,
+                    explainer,
+                    variable_name
+                )
             elif rule_type == 'secondary_tiered_rate':
-                rule_id = self.__post_secondary_tiered_rate_rule(ruleset_pk, name, ordinal, explainer, variable_name, request)
+                rule_id = self.__post_secondary_tiered_rate_rule(
+                    ruleset_pk,
+                    name,
+                    ordinal,
+                    explainer,
+                    variable_name,
+                    request
+                )
         except ValidationError as e:
-            print(str(e))
             return Response(
-                { 'error': str(e) },
+                {
+                    'error': str(e)
+                },
                 status=status.HTTP_400_BAD_REQUEST
             )
         except RuleSet.DoesNotExist:
             return Response(
-                { 'error': 'Ruleset with id=' + str(ruleset_pk) + ' was not found.' },
+                {
+                    'error': 'Ruleset with id=' + str(ruleset_pk) +
+                    ' was not found.'
+                },
                 status=status.HTTP_404_NOT_FOUND
             )
         except TieredRateRule.DoesNotExist:
             return Response(
-                { 'error': 'Tiered rate rule with id=' + str(request.data['primary_rule_id']) + ' was not found.' },
+                {
+                    'error': 'Tiered rate rule with id=' +
+                    str(request.data['primary_rule_id']) +
+                    ' was not found.'
+                },
                 status=status.HTTP_404_NOT_FOUND
             )
-        
-        # Generate and return response         
-        response = { 'rule_id': rule_id }
+
+        # Generate and return response
+        response = {
+            'rule_id': rule_id
+        }
         return Response(response)
-    
-    def __post_flat_rate_rule(self, ruleset_pk, name, ordinal, explainer, variable_name, request):
+
+    def __post_flat_rate_rule(
+        self,
+        ruleset_pk,
+        name,
+        ordinal,
+        explainer,
+        variable_name,
+        request
+    ):
+        """Create a new flat rate rule."""
+
         # Valid that request contains additional required attributes
         required_attributes = ['tax_rate']
         if not contains_required_attributes(request, required_attributes):
             raise ValidationError('tax_rate is a required attribute')
-        
+
         # Extract additional variables from request
         tax_rate = request.data['tax_rate']
         # Invoke service method
-        rule_id = create_flat_rate_rule(ruleset_pk, name, ordinal, explainer, variable_name, tax_rate)
+        rule_id = create_flat_rate_rule(
+            ruleset_pk,
+            name, ordinal,
+            explainer,
+            variable_name,
+            tax_rate
+        )
         # Return ID
         return rule_id
 
-    def __post_secondary_tiered_rate_rule(self, ruleset_pk, name, ordinal, explainer, variable_name, request):
+    def __post_secondary_tiered_rate_rule(
+        self,
+        ruleset_pk,
+        name,
+        ordinal,
+        explainer,
+        variable_name,
+        request
+    ):
+        """Create a new secondary tiered rate rule."""
+
         # Valid that request contains additional required attributes
         required_attributes = ['primary_rule_id']
         if not contains_required_attributes(request, required_attributes):
             raise ValidationError('primary_rule_id is a required attribute')
-        
+
         # Extract additional variables from request
         primary_rule_id = request.data['primary_rule_id']
         # Invoke service method
-        rule_id = create_secondary_tiered_rate_rule(ruleset_pk, primary_rule_id, name, ordinal, explainer, variable_name)
+        rule_id = create_secondary_tiered_rate_rule(
+            ruleset_pk,
+            primary_rule_id,
+            name,
+            ordinal,
+            explainer,
+            variable_name
+        )
         # Return ID
         return rule_id
 
-# Create Django REST rule detail view
+
 class RuleDetail(APIView):
+    """Create Django REST rule detail view."""
+
     def delete(self, request, ruleset_pk, pk):
+        """Delete a rule based on its ID."""
+
         # Call apropriate services method
         delete_rule(pk)
         # Create response via empty JSON object
-        response = { }
-        # Return response 
+        response = {}
+        # Return response
         return Response(response)
 
     def put(self, request, ruleset_pk, pk):
-        # Define the list of required attributes 
+        """Update a rule based on its ID."""
+
+        # Define the list of required attributes
         required_attributes = [
             'type',
             'name',
@@ -339,55 +517,92 @@ class RuleDetail(APIView):
             'variable_name',
             'explainer'
         ]
-        # Validate data 
+        # Validate data
         if not contains_required_attributes(request, required_attributes):
             return Response(
-                { 'error' : 'Invalid request. Please supply all required attributes.' },
+                {
+                    'error': 'Invalid request. Please supply all required ' +
+                    'attributes.'
+                },
                 status=status.HTTP_400_BAD_REQUEST
-                )
-        # Extract data required for service method 
+            )
+        # Extract data required for service method
         rule_type = request.data['type']
         name = request.data['name']
         ordinal = request.data['ordinal']
         variable_name = request.data['variable_name']
         explainer = request.data['explainer']
         # Invoke service method
-        if rule_type not in ['flat_rate', 'tiered_rate', 'secondary_tiered_rate']:
+        rule_types = ['flat_rate', 'tiered_rate', 'secondary_tiered_rate']
+        if rule_type not in rule_types:
             return Response(
-                { 'error' : 'Invalid request. Please provide a valid rule type.' },
+                {
+                    'error': 'Invalid request. Please provide a valid rule ' +
+                    'type.'
+                },
                 status=status.HTTP_400_BAD_REQUEST
-                )
+            )
         try:
             if rule_type == 'flat_rate':
-                self.___put_flat_rate_rule(request, pk, name, ordinal, explainer, variable_name)
-            elif rule_type == 'tiered_rate':
-                update_tiered_rate_rule(pk, name, ordinal, explainer, variable_name)
-            elif rule_type == 'secondary_tiered_rate':
-                update_secondary_tiered_rate_rule(pk, name, ordinal, explainer, variable_name)
-        except ValidationError as e:
-            print(str(e))
-            return Response(
-                { 'error' : str(e) },
-                status=status.HTTP_400_BAD_REQUEST
+                self.___put_flat_rate_rule(
+                    request,
+                    pk,
+                    name,
+                    ordinal,
+                    explainer,
+                    variable_name
                 )
+            elif rule_type == 'tiered_rate':
+                update_tiered_rate_rule(
+                    pk,
+                    name,
+                    ordinal,
+                    explainer,
+                    variable_name
+                )
+            elif rule_type == 'secondary_tiered_rate':
+                update_secondary_tiered_rate_rule(
+                    pk,
+                    name,
+                    ordinal,
+                    explainer,
+                    variable_name
+                )
+        except ValidationError as e:
+            return Response(
+                {
+                    'error': str(e)
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
         except FlatRateRule.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
         except TieredRateRule.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
         except SecondaryTieredRateRule.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
-        
-        # Generate and return response 
-        response = { }
-        # Return response 
+
+        # Generate and return response
+        response = {}
+        # Return response
         return Response(response)
 
-    def ___put_flat_rate_rule(self, request, pk, name, ordinal, explainer, variable_name):
+    def ___put_flat_rate_rule(
+        self,
+        request,
+        pk,
+        name,
+        ordinal,
+        explainer,
+        variable_name
+    ):
+        """Update an existing flat rate rule."""
+
         # Valid that request contains additional required attributes
         required_attributes = ['tax_rate']
         if not contains_required_attributes(request, required_attributes):
             raise ValidationError('tax_rate is a required attribute')
-        
+
         # Extract additional variables from request
         tax_rate = request.data['tax_rate']
         update_flat_rate_rule(
@@ -399,28 +614,34 @@ class RuleDetail(APIView):
             tax_rate
         )
 
-# Create django rest rule tiers list view 
-# Django rest views are classes inheriting APIView 
+
 class RuleTiersList(APIView):
+    """Create django rest rule tiers list view."""
+
     def post(self, request, ruleset_pk, rule_pk):
-        # Define the list of required attributes 
+        """Create a new rule tier."""
+
+        # Define the list of required attributes
         required_attributes = [
             'min_value',
             'max_value',
             'ordinal',
             'tax_rate',
         ]
-        # Validate data 
+        # Validate data
         if not contains_required_attributes(request, required_attributes):
             return Response(
-                { 'error' : 'Invalid request. Please supply all required attributes.' },
+                {
+                    'error': 'Invalid request. Please supply all required ' +
+                    'attributes.'
+                },
                 status=status.HTTP_400_BAD_REQUEST
-                )
+            )
         # Extract data required for service method
         min_value = request.data['min_value']
         max_value = request.data['max_value']
         ordinal = request.data['ordinal']
-        tax_rate = request.data['tax_rate'] 
+        tax_rate = request.data['tax_rate']
         # Invoke service method
         try:
             rule_tier_id = create_rule_tier(
@@ -432,79 +653,99 @@ class RuleTiersList(APIView):
             )
         except ValidationError as e:
             return Response(
-                { 'error' : str(e) },
+                {
+                    'error': str(e)
+                },
                 status=status.HTTP_400_BAD_REQUEST
-                )
+            )
         except TieredRateRule.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-        # Create response 
-        response = { 'tier_id' : rule_tier_id }
-        # Return response 
+        # Create response
+        response = {
+            'tier_id': rule_tier_id
+        }
+        # Return response
         return Response(response)
 
-# Create django rest rule tier detail view 
-# Django rest views are classes inheriting APIView 
+
 class RuleTierDetail(APIView):
+    """Create django rest rule tier detail view."""
+
     def delete(self, request, ruleset_pk, rule_pk, pk):
+        """Delete a rule tier based on its ID."""
+
         # Call apropriate services method
         delete_rule_tier(pk)
         # Create response via empty JSON object
-        response = { }
-        # Return response 
+        response = {}
+        # Return response
         return Response(response)
 
     def put(self, request, ruleset_pk, rule_pk, pk):
-        # Define the list of required attributes 
+        """Update a rule tier based on its ID."""
+
+        # Define the list of required attributes
         required_attributes = [
             'min_value',
             'max_value',
             'ordinal',
             'tax_rate',
         ]
-        # Validate data 
+        # Validate data
         if not contains_required_attributes(request, required_attributes):
             return Response(
-                { 'error' : 'Invalid request. Please supply all required attributes.' },
+                {
+                    'error': 'Invalid request. Please supply all required ' +
+                    'attributes.'
+                },
                 status=status.HTTP_400_BAD_REQUEST
-                )
-        # Extract data required for service method 
+            )
+        # Extract data required for service method
         min_value = request.data['min_value']
         max_value = request.data['max_value']
         ordinal = request.data['ordinal']
         tax_rate = request.data['tax_rate']
-        # Invoke service method 
+        # Invoke service method
         try:
             update_rule_tier(pk, min_value, max_value, ordinal, tax_rate)
         except ValidationError as e:
             return Response(
-                { 'error' : str(e) },
+                {
+                    'error': str(e)
+                },
                 status=status.HTTP_400_BAD_REQUEST
-                )
+            )
         except RuleTier.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
-        # Generate and return response 
-        response = { }
-        # Return response 
+        # Generate and return response
+        response = {}
+        # Return response
         return Response(response)
 
-# Create django rest secondary rule tiers list view 
-# Django rest views are classes inheriting APIView 
+
 class SecondaryRuleTiersList(APIView):
+    """Create django rest secondary rule tiers list view."""
+
     def post(self, request, ruleset_pk, rule_pk):
-        # Define the list of required attributes 
+        """Create a new secondary rule tier."""
+
+        # Define the list of required attributes
         required_attributes = [
             'primary_tier_id',
             'ordinal',
             'tax_rate'
         ]
-        # Validate data 
+        # Validate data
         if not contains_required_attributes(request, required_attributes):
             return Response(
-                { 'error' : 'Invalid request. Please supply all required attributes.' },
+                {
+                    'error': 'Invalid request. Please supply all required ' +
+                    'attributes.'
+                },
                 status=status.HTTP_400_BAD_REQUEST
-                )
-        # Extract data required for service method 
+            )
+        # Extract data required for service method
         primary_tier_id = request.data['primary_tier_id']
         ordinal = request.data['ordinal']
         tax_rate = request.data['tax_rate']
@@ -519,48 +760,65 @@ class SecondaryRuleTiersList(APIView):
             )
         except ValidationError as e:
             return Response(
-                { 'error' : str(e) },
+                {
+                    'error': str(e)
+                },
                 status=status.HTTP_400_BAD_REQUEST
-                )
+            )
         except SecondaryTieredRateRule.DoesNotExist:
             return Response(
-                { 'error' : 'No rule found with id=' + str(rule_pk) },
+                {
+                    'error': 'No rule found with id=' + str(rule_pk)
+                },
                 status=status.HTTP_404_NOT_FOUND
-                )
+            )
         except RuleTier.DoesNotExist:
             return Response(
-                { 'error' : 'No rule tier found with id=' + str(primary_tier_id) },
+                {
+                    'error': 'No rule tier found with id=' +
+                    str(primary_tier_id)
+                },
                 status=status.HTTP_404_NOT_FOUND
-                )
-        # Generate and return response 
-        response = { 'secondary_tier_id' : secondary_tier_id }
-        # Return response 
+            )
+        # Generate and return response
+        response = {
+            'secondary_tier_id': secondary_tier_id
+        }
+        # Return response
         return Response(response)
 
-# Create django rest secondary rule tier detail view 
-# Django rest views are classes inheriting APIView 
+
 class SecondaryRuleTierDetail(APIView):
+    """Create django rest secondary rule tier detail view."""
+
     def delete(self, request, ruleset_pk, rule_pk, pk):
+        """Delete a secondary rule tier based on its ID."""
+
         # Call apropriate services method
         delete_secondary_rule_tier(pk)
         # Create response via empty JSON object
-        response = { }
-        # Return response 
+        response = {}
+        # Return response
         return Response(response)
 
     def put(self, request, ruleset_pk, rule_pk, pk):
-        # Define the list of required attributes 
+        """Update a secondary rule tier."""
+
+        # Define the list of required attributes
         required_attributes = [
             'ordinal',
             'tax_rate'
         ]
-        # Validate data 
+        # Validate data
         if not contains_required_attributes(request, required_attributes):
             return Response(
-                { 'error' : 'Invalid request. Please supply all required attributes.' },
+                {
+                    'error': 'Invalid request. Please supply all required ' +
+                    'attributes.'
+                },
                 status=status.HTTP_400_BAD_REQUEST
-                )
-        # Extract data required for service method 
+            )
+        # Extract data required for service method
         ordinal = request.data['ordinal']
         tax_rate = request.data['tax_rate']
         # Invoke service method
@@ -568,23 +826,23 @@ class SecondaryRuleTierDetail(APIView):
             update_secondary_rule_tier(pk, ordinal, tax_rate)
         except ValidationError as e:
             return Response(
-                { 'error' : str(e) },
+                {
+                    'error': str(e)
+                },
                 status=status.HTTP_400_BAD_REQUEST
-                )
+            )
         except SecondaryRuleTier.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
         except RuleTier.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
-        # Generate and return response 
-        response = { }
-        # Return response 
+        # Generate and return response
+        response = {}
+        # Return response
         return Response(response)
 
-# Helper to convert tax calculation result to dictionary
+
 def serialise_tax_calculation_result(result):
-    print('Serialising tax calculation')
-    print('type of excluded jurisdiction ids: ' + str(type(result.excluded_jurisdiction_ids)))
-    print('excluded jurisdiction ids (api): ' + result.excluded_jurisdiction_ids)
+    """Serialise a tax calculation result to a dictionary."""
     serialised_result = {
         'calculation_id': result.id,
         'username': result.username,
@@ -595,8 +853,9 @@ def serialise_tax_calculation_result(result):
 
     for ruleset_result in result.results.all():
         for tier_result in ruleset_result.results.all():
-            if not ruleset_result.jurisdiction_id in serialised_result['jurisdictions']:
-                serialised_result['jurisdictions'][ruleset_result.jurisdiction_id] = []
+            jurisdiction_id = ruleset_result.jurisdiction_id
+            if jurisdiction_id not in serialised_result['jurisdictions']:
+                serialised_result['jurisdictions'][jurisdiction_id] = []
 
             serialised_tier_result = {
                 'tax_category': ruleset_result.tax_category_name,
@@ -612,26 +871,34 @@ def serialise_tax_calculation_result(result):
                 'tax_payable': tier_result.tax_payable,
             }
 
-            serialised_result['jurisdictions'][ruleset_result.jurisdiction_id].append(serialised_tier_result)
+            serialised_result['jurisdictions'][jurisdiction_id].append(
+                serialised_tier_result
+            )
 
     return serialised_result
 
-# Create django rest tax calculation list view 
-# Django rest views are classes inheriting APIView 
+
 class TaxCalculationsList(APIView):
+    """Create django rest tax calculation list view."""
+
     def post(self, request):
-        # Define the list of required attributes 
+        """Create a new tax calculation."""
+
+        # Define the list of required attributes
         required_attributes = [
             'username',
             'jurisdiction_ids',
             'variables',
         ]
-        # Validate data 
+        # Validate data
         if not contains_required_attributes(request, required_attributes):
             return Response(
-                { 'error' : 'Invalid request. Please supply all required attributes.' },
+                {
+                    'error': 'Invalid request. Please supply all required ' +
+                    'attributes.'
+                },
                 status=status.HTTP_400_BAD_REQUEST
-                )
+            )
 
         # Extract required data from request
         username = request.data['username']
@@ -644,40 +911,52 @@ class TaxCalculationsList(APIView):
         except Exception as e:
             print(e)
             return Response(
-                { 'error' : str(e) },
+                {
+                    'error': str(e)
+                },
                 status=status.HTTP_400_BAD_REQUEST
-                )
+            )
 
         # Generate response
         response = serialise_tax_calculation_result(result)
 
         return Response(response)
 
-
     def get(self, request):
-        # Validate data 
-        if not 'username' in request.GET:
+        """Get a list of tax calculations for the specified user."""
+
+        # Validate data
+        if 'username' not in request.GET:
             return Response(
-                { 'error' : 'Invalid request. Please supply all required attributes.' },
+                {
+                    'error': 'Invalid request. Please supply all required ' +
+                    'attributes.'
+                },
                 status=status.HTTP_400_BAD_REQUEST
-                )
+            )
 
         # Extract data
         username = request.GET['username']
 
         if username is None or username == '' or username == 'None':
             return Response(
-                { 'error' : 'No tax calculations found for null or blank username.' },
+                {
+                    'error': 'No tax calculations found for null or blank ' +
+                    'username.'
+                },
                 status=status.HTTP_404_NOT_FOUND
-                )
+            )
 
         results = get_calculations_for_user(username)
 
         if results.count() == 0:
             return Response(
-                { 'error' : 'No tax calculations found for user ' + username + '.' },
+                {
+                    'error': 'No tax calculations found for user ' +
+                    username + '.'
+                },
                 status=status.HTTP_404_NOT_FOUND
-                )
+            )
 
         response = []
         for result in results:
@@ -686,16 +965,23 @@ class TaxCalculationsList(APIView):
 
         return Response(response)
 
-# Create django rest tax calculation detail view 
+
 class TaxCalculationDetail(APIView):
+    """Create django rest tax calculation detail view."""
+
     def get(self, request, pk):
+        """Retrieve a specific tax calculation based on its ID."""
+
         try:
             calculation = get_calculation_by_id(pk)
         except TaxCalculationResult.DoesNotExist:
             return Response(
-                { 'error' : 'No tax calculations found for id' + str(id) + '.' },
+                {
+                    'error': 'No tax calculations found for id' +
+                    str(id) + '.'
+                },
                 status=status.HTTP_404_NOT_FOUND
-                )
+            )
 
         serialised_calculation = serialise_tax_calculation_result(calculation)
         print(str(serialised_calculation))
