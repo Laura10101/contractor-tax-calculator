@@ -470,7 +470,9 @@ function saveQuestion(booleanQuestionCreator=createBooleanQuestion, numericQuest
     }
 }
 
-// When
+// Callback to handle the successful deletion of a question
+// When a question has been successfully deleted, then display a success message
+// and resequence question ordinals
 function deleteQuestionSucceeded(request, status, message, ordinalUpdater=updateQuestion, displayRefresher=refreshQuestionsDisplay) {
     success("The selected question was successfully deleted.");
     questions = resequenceQuestionOrdinals(app.dialogState.entity);
@@ -492,6 +494,7 @@ function deleteQuestionSucceeded(request, status, message, ordinalUpdater=update
     );
 }
 
+// Callback to handle the case where a question fails to be deleted for any reason
 function deleteQuestionFailed(request, status, message) {
     try {
         errorMsg = request.responseJSON.error;
@@ -501,6 +504,8 @@ function deleteQuestionFailed(request, status, message) {
     }
 }
 
+// Action to confirm the deletion of a question
+// Hide the confirmation dialog and trigger the API call
 function confirmDeleteQuestion(event, remover=removeQuestion) {
     hideDialog(confirmationDialog.dialog.id);
     formId = getFormId();
@@ -508,6 +513,10 @@ function confirmDeleteQuestion(event, remover=removeQuestion) {
     remover(formId, question.id, deleteQuestionSucceeded, deleteQuestionFailed);
 }
 
+// Event handler to handle the user clicking on the delete question button
+// Check to make sure the question doesn't have any dependent rules
+// A rule is dependent if it lists the question's variable as its variable name
+// If so, display an error. Otherwise, set the app state and display the confirmation dialog
 function deleteQuestion(question) {
     if (!questionHasDependentRules(question.id)) {
         setDialogState(dialogStates.modes.delete, dialogStates.entityTypes.question, question);
@@ -517,6 +526,11 @@ function deleteQuestion(question) {
     }
 }
 
+// Swap the ordinals of two questions
+// The first question is specified while the second question is determined
+// by the given findNewPosition function which should return the question
+// to swap with
+// Save the ordinal changes via the API
 function swapQuestionOrdinals(question, findNewPosition, updater, refresher) {
     // Find the question that needs to be swapped
     let questionToSwap = findNewPosition(question);
@@ -539,10 +553,14 @@ function swapQuestionOrdinals(question, findNewPosition, updater, refresher) {
     }
 }
 
+// Swap the selected question's ordinal with the question whose ordinal immediately precedes
+// that of the selected question
 function moveQuestionUp(question, updater=updateQuestion, refresher=refreshQuestionsDisplay) {
     swapQuestionOrdinals(question, findPreviousQuestion, updater, refresher);
 }
 
+// Swap the selected question's ordinal with the question whose ordinal immediately follows
+// that of the selected question
 function moveQuestionDown(question, updater=updateQuestion, refresher=refreshQuestionsDisplay) {
     swapQuestionOrdinals(question, findNextQuestion, updater, refresher);
 }
@@ -550,6 +568,13 @@ function moveQuestionDown(question, updater=updateQuestion, refresher=refreshQue
 /*
  * Multiple Choice Option Views
  */
+// Callback to handle the successful retrieval of multiple choice options
+// data for a given question
+// When multiple choice options data is successfully loaded, update the
+// app state and display the data in the question dialog
+// App state is updating by saving the latest data to the app state
+// and, since the multiple choice options are a child state of questions,
+// move the question state back into the currently-active dialog state
 function displayMultipleChoiceOptions(data) {
     app.jurisdictionForm = data;
     refreshAppState();
@@ -565,21 +590,27 @@ function displayMultipleChoiceOptions(data) {
     updateMultipleChoiceQuestionDialogOptionsDisplay(options);    
 }
 
+// Display an error if multiple choice options data fails to load
 function displayMultipleChoiceOptionsError(request, status, message) {
     error("An error occurred while refreshing multiple choice options for question " + app.dialogState.entity.name);
 }
 
+// Trigger the API call to get the latest multiple choice options data
 function refreshMultipleChoiceOptionsDisplay(refresher=getFormForJurisdiction) {
     jurisdictionId = getSelectedJurisdictionId();
     refresher(jurisdictionId, displayMultipleChoiceOptions, displayMultipleChoiceOptionsError);
 }
 
+// Callback to handle successful saves of multiple choice option data
+// Display a success message, update the app state and then refresh the display
 function saveMultipleChoiceOptionSucceeded(data, textStatus, request, refresher=refreshMultipleChoiceOptionsDisplay) {
     success("The option was successfully saved.");
     moveParentStateToAppState();
     refresher();
 }
 
+// Callback to handle failed saves of multiple choice options data
+// Display an error message
 function saveMultipleChoiceOptionFailed(request, status, message) {
     try {
         errorMsg = request.responseJSON.error;
@@ -589,6 +620,10 @@ function saveMultipleChoiceOptionFailed(request, status, message) {
     }
 }
 
+// Save a multiple choice option
+// Hide the create/edit multiple choice options dialog,
+// get the required data from the app state and dialog
+// validate the data and then trigger the API call
 function saveMultipleChoiceOption(creator=postMultipleChoiceOption) {
     let errors = validateMultipleChoiceOptionDialog();
     if (errors.length == 0) {
@@ -607,17 +642,22 @@ function saveMultipleChoiceOption(creator=postMultipleChoiceOption) {
     }
 }
 
+// Event handler for the create multiple choice option button clicked event
+// Set app state and display the create dialog
 function createMultipleChoiceOption() {
     moveAppStateToParentState();
     setDialogState(dialogStates.modes.create, dialogStates.entityTypes.multipleChoiceOption, null);
     displayCreateMultipleChoiceOptionDialog();
 }
 
+// Handle delete multiple choice option success events
 function deleteMultipleChoiceOptionSucceeded(request, status, message, displayRefresher=refreshMultipleChoiceOptionsDisplay) {
     showDialog(multipleChoiceQuestionDialog.dialog.id);
     displayRefresher();
 }
 
+// Handle delete multiple choice option failure events
+// Show an appropriate error message
 function deleteMultipleChoiceOptionFailed(request, status, message) {
     try {
         errorMsg = request.responseJSON.error;
@@ -631,6 +671,9 @@ function deleteMultipleChoiceOptionFailed(request, status, message) {
     showDialog(multipleChoiceQuestionDialog.dialog.id);
 }
 
+// Action to confirm delete multiple choice option
+// Hide the confirmation dialog and then trigger the API call to remove
+// the selected option
 function confirmDeleteMultipleChoiceOption(event, remover=removeMultipleChoiceOption) {
     hideDialog(confirmationDialog.dialog.id);
     formId = getFormId();
@@ -639,6 +682,8 @@ function confirmDeleteMultipleChoiceOption(event, remover=removeMultipleChoiceOp
     remover(formId, question.id, option.id, deleteMultipleChoiceOptionSucceeded, deleteMultipleChoiceOptionFailed);
 }
 
+// Action to handle the user choosing to delete a multiple choice option
+// Set the app state and display the confirmation dialog
 function deleteMultipleChoiceOption(option) {
     moveAppStateToParentState();
     setDialogState(dialogStates.modes.delete, dialogStates.entityTypes.multipleChoiceOption, option);
@@ -648,6 +693,8 @@ function deleteMultipleChoiceOption(option) {
 /*
  * Ruleset Views
  */
+// Handle the successful load of rulesets and rule data
+// Update both the app state and then refresh the rulesets display
 function displayRulesets(data) {
     app.jurisdictionRules = data;
     refreshAppState();
@@ -655,21 +702,29 @@ function displayRulesets(data) {
     updateRulesetsDisplay(app.jurisdictionRules);
 }
 
+// Handle failures to load rulesets and rule data
+// Display an appropriate error message
 function displayRulesetsLoadError() {
     error("An error occurred while loading rulesets for selected jurisdiction.");
 }
 
+// Helper function to trigger the refresh of rulesets and rule data
+// Get the selected jurisdiction and then refresh the data
 function refreshRulesetsDisplay(refresher=getRulesetsForJurisdiction) {
     jurisdictionId = getSelectedJurisdictionId();
     refresher(jurisdictionId, displayRulesets, displayRulesetsLoadError);
 }
 
+// Handler for successful saves of ruleset data
+// Display a success message, clear the dialog state and refresh the display
 function saveRulesetSucceeded(data, textStatus, request, refresher=refreshRulesetsDisplay) {
     success("The ruleset was successfully saved.");
     clearDialogState();
     refresher();
 }
 
+// Handler for failures to save ruleset data
+// Display an appropriate error message
 function saveRulesetFailed(request, status, message) {
     try {
         errorMsg = request.responseJSON.error;
@@ -679,6 +734,9 @@ function saveRulesetFailed(request, status, message) {
     }
 }
 
+// Action to save ruleset
+// Validate the data and if all is clear, hide the dialog and trigger the call to the API
+// Otherwise display validation errors
 function saveRuleset(creator=postRuleset) {
     let errors = validateRulesetDialog();
     if (errors.length == 0) {
@@ -696,11 +754,16 @@ function saveRuleset(creator=postRuleset) {
     }
 }
 
+// Action to create a new ruleset
+// Set the app state and display the create ruleset dialog
 function createRuleset() {
     setDialogState(dialogStates.modes.create, dialogStates.entityTypes.ruleset, null);
     displayCreateRulesetDialog();
 }
 
+// Event handler for successful deletion of rulesets
+// Display a success message and then resequence ordinals, saving refreshed ordinals via
+// the API
 function deleteRulesetSucceeded(data, textStatus, request, ordinalUpdater=patchRuleset, displayRefresher=refreshRulesetsDisplay) {
     success("The selected ruleset was successfully deleted.");
     rulesets = resequenceRulesetOrdinals(app.dialogState.entity);
@@ -708,11 +771,6 @@ function deleteRulesetSucceeded(data, textStatus, request, ordinalUpdater=patchR
     rulesets.forEach(ruleset => {
         if (ruleset.id != app.dialogState.entity.id) {
             requestQueue.push(ruleset);
-            /*ordinalUpdater(
-                ruleset.id,
-                ruleset.ordinal,
-                doNothing,
-                saveRulesetFailed);*/
         }
     });
 
@@ -725,6 +783,8 @@ function deleteRulesetSucceeded(data, textStatus, request, ordinalUpdater=patchR
         });
 }
 
+// Event handler for failed deletion of rulesets
+// Display an appropriate error message
 function deleteRulesetFailed() {
     try {
         errorMsg = request.responseJSON.error;
@@ -734,16 +794,23 @@ function deleteRulesetFailed() {
     }
 }
 
+// Action to confirm deletion of a ruleset
+// Hide the confirmation dialog and trigger deletion via the API
 function confirmDeleteRuleset(event, remover=removeRuleset) {
     hideDialog(confirmationDialog.dialog.id);
     remover(app.dialogState.entity.id, deleteRulesetSucceeded, deleteRulesetFailed);
 }
 
+// Action to trigger deletion of a ruleset
+// Set the app state and display the confirmation dialog
 function deleteRuleset(ruleset) {
     setDialogState(dialogStates.modes.delete, dialogStates.entityTypes.ruleset, ruleset);
     confirm("Please confirm you wish for the following ruleset to be deleted: " + ruleset.name + ".", confirmDeleteRuleset);
 }
 
+// Helper function to swap the ordinals of two rulesets
+// One ruleset is specified and the other is determined by the specified function
+// Once ordinals have been swapped, update the ordinals via the API and refresh the display
 function swapRulesetOrdinals(ruleset, findNewPosition, updater, refresher) {
     // Find the ruleset that needs to be swapped
     let rulesetToSwap = findNewPosition(ruleset);
@@ -766,10 +833,12 @@ function swapRulesetOrdinals(ruleset, findNewPosition, updater, refresher) {
     }
 }
 
+// Action to move a ruleset up by swapping its ordinal with that of the immediately preceding ruleset
 function moveRulesetUp(ruleset, updater=patchRuleset, refresher=refreshRulesetsDisplay) {
     swapRulesetOrdinals(ruleset, findPreviousRuleset, updater, refresher);
 }
 
+// Action to move a ruleset up by swapping its ordinal with that of the ruleset that immediately follows
 function moveRulesetDown(ruleset, updater=patchRuleset, refresher=refreshRulesetsDisplay) {
     swapRulesetOrdinals(ruleset, findNextRuleset, updater, refresher);
 }
@@ -777,11 +846,16 @@ function moveRulesetDown(ruleset, updater=patchRuleset, refresher=refreshRuleset
 /*
  * Rule Views
  */
+// Action to add a new rule
+// Set the parent ruleset and the show the dialog
 function addRule(ruleset) {
     setParentRuleset(ruleset);
     showDialog(ruleTypeDialog.dialog.id);
 }
 
+// Action to edit a rule
+// Set the parent ruleset and app state then display the appropriate
+// dialog for the type of rule to be edited
 function editRule(ruleset, rule) {
     setParentRuleset(ruleset);
     switch (rule.type) {
@@ -801,6 +875,10 @@ function editRule(ruleset, rule) {
     }
 }
 
+// Handle selection of a rule type via the rule type dialog
+// Used when creating a new rule
+// Hide the dialog, set the app state, and then display the appropriate dialog
+// for the selected type of rule
 function ruleTypeSelected() {
     // Hide rule type dialog
     hideDialog(ruleTypeDialog.dialog.id);
@@ -826,12 +904,16 @@ function ruleTypeSelected() {
     }
 }
 
+// Callback function to handle successful saves of rule data
+// Display a success message, clear the dialog state and then refresh the display
 function saveRuleSucceeded(data, textStatus, request, refresher=refreshRulesetsDisplay) {
     success("The rule was successfully saved.");
     clearDialogState();
     refresher();
 }
 
+// Callback to handle failed saves of rule data
+// Display an appropriate error message
 function saveRuleFailed(request, status, message) {
     try {
         errorMsg = request.responseJSON.error;
@@ -841,6 +923,10 @@ function saveRuleFailed(request, status, message) {
     }
 }
 
+// Action to save a rule
+// Depending on the type of rule to be saved, and on the dialog mode (create or edit):
+// validate the dialog data, and if there are errors display them.
+// Otherwise, hide the dialog and trigger the save via the appropriate API
 function saveRule(flatRateRuleCreator=createFlatRateRule, tieredRateRuleCreator=createTieredRateRule,
     secondaryTieredRateRuleCreator=createSecondaryTieredRateRule, flatRateRuleUpdater=updateFlatRateRule, tieredRateRuleUpdater=updateTieredRateRule,
     secondaryTieredRateRuleUpdater=updateSecondaryTieredRateRule) {
@@ -976,6 +1062,9 @@ function saveRule(flatRateRuleCreator=createFlatRateRule, tieredRateRuleCreator=
     }
 }
 
+// Event handler for successful deletion of a rule
+// Display a success message, resequence rule ordinals, and then save the resequenced ordinals
+// via the API
 function deleteRuleSucceeded(data, textStatus, request, flatRateRuleUpdater=updateFlatRateRule, tieredRateRuleUpdater=updateTieredRateRule,
     secondaryTieredRateRuleUpdater=updateSecondaryTieredRateRule, displayRefresher=refreshRulesetsDisplay) {
 
@@ -1008,6 +1097,8 @@ function deleteRuleSucceeded(data, textStatus, request, flatRateRuleUpdater=upda
     );
 }
 
+// Event handler for rule deletion failures
+// Display an appropriate message
 function deleteRuleFailed() {
     try {
         errorMsg = request.responseJSON.error;
@@ -1017,11 +1108,17 @@ function deleteRuleFailed() {
     }
 }
 
+// Action to confirm deletion of a rule
+// Hide the dialog and then remove the rule via the API
 function confirmDeleteRule(event, remover=removeRule) {
     hideDialog(confirmationDialog.dialog.id);
     remover(app.parentRuleset.id, app.dialogState.entity.id, deleteRuleSucceeded, deleteRuleFailed);
 }
 
+// Action to delete a rule
+// If the rule is a tiered rate rule, check whether or not the rule has dependent secondary rules
+// If so, display an error
+// Otherwise set the app state and display the confirmation dialog
 function deleteRule(ruleset, rule) {
     let proceed = true;
     if (rule.type == "tiered_rate") {
@@ -1037,6 +1134,9 @@ function deleteRule(ruleset, rule) {
     }
 }
 
+// Helper function to save the rule ordinals for a given rule
+// Allows a rule to be updated depending on its type without updating
+// the app state
 function updateRuleOrdinal(ruleset, rule) {
     switch(rule.type) {
         case "flat_rate":
@@ -1080,6 +1180,7 @@ function updateRuleOrdinal(ruleset, rule) {
     }
 }
 
+// Swap the ordinals for two rules within a ruleset
 function swapRuleOrdinals(ruleset, rule, findNewPosition, updater, refresher) {
     // Find the rule that needs to be swapped
     let ruleToSwap = findNewPosition(ruleset, rule);
@@ -1102,10 +1203,12 @@ function swapRuleOrdinals(ruleset, rule, findNewPosition, updater, refresher) {
     }
 }
 
+// Swap a rule with the one immediately preceding it based on ordinals
 function moveRuleUp(ruleset, rule, updater=updateRuleOrdinal, refresher=refreshRulesetsDisplay) {
     swapRuleOrdinals(ruleset, rule, findPreviousRule, updater, refresher);
 }
 
+// Swap a rule with the one immediately following it based on ordinals
 function moveRuleDown(ruleset, rule, updater=updateRuleOrdinal, refresher=refreshRulesetsDisplay) {
     swapRuleOrdinals(ruleset, rule, findNextRule, updater, refresher);
 }
