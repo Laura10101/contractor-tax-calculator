@@ -58,8 +58,9 @@ class Subscription(models.Model):
 
         subscription_months = self.subscription_option.subscription_months
 
-        expiry_date = self.start_date +
-        relativedelta(months=subscription_months)
+        expiry_date = self.start_date + relativedelta(
+            months=subscription_months
+        )
 
         return date.today() <= datetime.strptime(
             expiry_date.strftime('%Y-%m-%d'),
