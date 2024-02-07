@@ -4,10 +4,12 @@ from dal import autocomplete
 
 from .models import Form
 
+
 class FormForm(forms.ModelForm):
     """Configuration for the Form model admin form."""
 
     class Meta:
+        """Configuration for the Form model admin form metadata."""
         model = Form
         widgets = {
             'jurisdiction_id':
