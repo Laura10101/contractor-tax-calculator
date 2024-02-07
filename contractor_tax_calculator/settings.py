@@ -57,7 +57,6 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'allauth',
     'allauth.account',
-    #'allauth.socialaccount',
     'checkout',
     'crispy_bootstrap4',
     'crispy_forms',
@@ -94,7 +93,7 @@ TEMPLATES = [
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
-                'django.template.context_processors.request', # required by allauth
+                'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.media',
@@ -139,7 +138,10 @@ if 'DATABASE_URL' in os.environ and os.environ.get('USE_TEST_DB') == 'False':
     DATABASES = {
         # Reduce number of DB connections using conn_max_age parameter
         # https://medium.com/@nixon1333/reduce-no-of-db-connection-with-django-d21328b1bed4
-        'default': dj_database_url.parse(os.environ.get('DATABASE_URL'), conn_max_age=0)
+        'default': dj_database_url.parse(
+            os.environ.get('DATABASE_URL'),
+            conn_max_age=0
+        )
     }
 else:
     print('Using SQL Litle as database')
@@ -154,18 +156,23 @@ else:
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
+uas = 'django.contrib.auth.password_validation.'
+uas = uas + 'UserAttributeSimilarityValidator'
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'NAME': uas,
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'NAME':
+        'django.contrib.auth.password_validation.MinimumLengthValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        'NAME':
+        'django.contrib.auth.password_validation.CommonPasswordValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        'NAME':
+        'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
 
