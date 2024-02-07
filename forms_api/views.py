@@ -136,31 +136,6 @@ class FormsList(APIView):
         return Response(response)
 
 
-class FormDetail(APIView):
-    """Create django rest form detail view."""
-
-    def delete(self, request, pk):
-        """Delete a form via the API based on its ID"""
-
-        # Extract relevant data from http request
-        # Django automatically extracts the pk
-        # from the url pattern, so nothing to do here.
-
-        # Call apropriate services method
-        try:
-            delete_form(pk)
-        except Form.DoesNotExist:
-            return Response(
-                status=status.HTTP_404_NOT_FOUND
-                )
-        # Create response via empty JSON object
-        response = {
-
-        }
-        # Return response
-        return Response(response)
-
-
 # Create django rest form question list view
 class FormQuestionList(APIView):
     """Create django rest form question list view."""
