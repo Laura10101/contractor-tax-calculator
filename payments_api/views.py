@@ -113,8 +113,10 @@ class PaymentsList(APIView):
                 status=404
             )
 
-        if not isinstance(subscription_option_id, int)
-        or subscription_option_id < 0:
+        if not isinstance(
+            subscription_option_id,
+            int
+        ) or subscription_option_id < 0:
             return Response(
                 {
                     'error': 'Subscription option with id ' +

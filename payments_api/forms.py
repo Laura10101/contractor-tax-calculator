@@ -17,7 +17,7 @@ class PaymentForm(forms.ModelForm):
                 'subscription-autocomplete'
             ),
             'subscription_option_id': autocomplete.ListSelect2(
-                subscription-option-autocomplete'
+                'subscription-option-autocomplete'
             ),
         }
         exclude = []
