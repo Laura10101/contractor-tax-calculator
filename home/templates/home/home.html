@@ -45,7 +45,6 @@
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th scope="col" class="text-center">Created</th>
                                             <th scope="col" class="text-center">Completed</th>
                                             <th scope="col" class="text-center">Total</th>
                                             <th scope="col" class="text-center">Status</th>
@@ -54,7 +53,6 @@
                                     </thead>
                                     {% for payment in payments %}
                                         <tr>
-                                            <td class="text-center">{{ payment.created_date|datestring }}</td>
                                             <td class="text-center">{{ payment.completed_date|datestring }}</td>
                                             <td class="text-center">{{ payment.total }}</td>
                                             <td class="text-center">{{ payment.status }}</td>
