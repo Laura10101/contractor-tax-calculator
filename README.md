@@ -291,7 +291,7 @@ The following diagram provides an early high-level design for how these differen
 **The Jurisdictions Domain**
 The data model for the Jurisdiction domain is shown below:
 
-![The jurisdiction data model](https://laura10101.github.io/contractor-tax-calculator/documentation/data-models/jurisdictions-api-data.jpg)
+![The jurisdiction data model](https://laura10101.github.io/contractor-tax-calculator/documentation/data-models/jurisdictions-api-data.png)
 
 Arguably, this data model is too small to be considered a context in its own right. However, as noted above this data model is referenced by both the Forms and Rules context. Given that the Jurisdiction data model is shared in this way, it was not logical to place the Jurisdiction data model in either the Forms or Rules.
 
@@ -300,7 +300,7 @@ The alternative would have been to place Jurisdiction, Forms and Rules data in a
 **The Forms Domain**
 The data model for the Forms domain is shown below:
 
-![The forms data model](https://laura10101.github.io/contractor-tax-calculator/documentation/data-models/forms-api-data.jpg)
+![The forms data model](https://laura10101.github.io/contractor-tax-calculator/documentation/data-models/forms-api-data.png)
 
 In this data model, Questions for a single jurisdiction are grouped together into a Form. Given that the Form lives in a separate API, it holds the integer ID of the corresponding Jurisdiction rather than a Django foreign key. Holding the Foreign Key would have broken the microservices principle by allowing a model in one service to access the data inside another without going via the API.
 
@@ -313,7 +313,7 @@ The model allows the admin to configure three types of question:
 **The Rules Domain**
 The data model for the Rules domain is shown below:
 
-![The rules data model](https://laura10101.github.io/contractor-tax-calculator/documentation/data-models/rules-api-data.jpg)
+![The rules data model](https://laura10101.github.io/contractor-tax-calculator/documentation/data-models/rules-api-data.png)
 
 The Rules data model follows a similar pattern to the Questions data model. This is an implementation of the [Strategy Pattern](https://www.cs.up.ac.za/cs/lmarshall/TDP/Notes/_Chapter8_Strategy.pdf) which allows multiple implementations of the same function to be used interchangeably. In this case, the functions are the Validate and Calculate functions. This allows multiple rules of varying types to be defined for a jurisdiction and processed without complex conditional logic. Uncle Bob would like this!
 
@@ -338,12 +338,12 @@ It's worth noting that these models do not hold foreign keys to any of the RuleS
 **The Subscriptions Domain**
 The data model for the Subscriptions domain is shown below:
 
-![The subscriptions data model](https://laura10101.github.io/contractor-tax-calculator/documentation/data-models/subscriptions-api-data.jpg)
+![The subscriptions data model](https://laura10101.github.io/contractor-tax-calculator/documentation/data-models/subscriptions-api-data.png)
 
 **The Payments Domain**
 The data model for the Payments domain is shown below:
 
-![The payments data model](https://laura10101.github.io/contractor-tax-calculator/documentation/data-models/payments-api-data.jpg)
+![The payments data model](https://laura10101.github.io/contractor-tax-calculator/documentation/data-models/payments-api-data.png)
 
 One important factor to note is that the Payment model holds the payment ID that is returned by Stripe for the payment. This is required to properly handle webhooks that are returned by Stripe. By storing the stripe_pid on the Payment model, the API can correctly identify the Payment entity to which a given webhook coming in from Stripe corresponds. This is needed since Stripe cannot hold the API's Payment.id value and a common identifier is needed between the two systems to allow the matching to take place.
 
