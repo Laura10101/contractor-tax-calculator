@@ -46,6 +46,7 @@ The following table lists the services tests for the Forms API. These tests can 
 ### Subscription API Tests ###
 
 ## Bugs
+All bugs found during testing for this project were tracked using the Issues feature in Github.
 
 ### Resolved Bugs
 A total of 222 bugs were identified and resolved during testsing for this project.
