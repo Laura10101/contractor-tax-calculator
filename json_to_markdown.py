@@ -23,12 +23,10 @@ def issue_key(issue):
 
 def get_markdown(issues):
     issues.sort(key=issue_key)
-    print(str(issues))
-    #df = pandas.DataFrame.from_dict(data)
-    #return df.to_markdown(index=False)
+
+    # Add title lines
     md_lines = []
-    md_lines.append('# Bugs\r\n')
-    md_lines.append('## Resolved Bugs\r\n')
+    md_lines.append('# Resolved Bugs\r\n')
     md_lines.append(
         'The folllowings bugs have been resolved '
         + ' and retested.\r\n'
@@ -44,7 +42,6 @@ def get_markdown(issues):
 
         md_lines.append(md_line)
     return md_lines
-
 
 
 # Generate issues dictionary from raw data

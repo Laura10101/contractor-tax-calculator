@@ -1,6 +1,4 @@
-# Bugs
-
-## Resolved Bugs
+# Resolved Bugs
 
 The folllowings bugs have been resolved  and retested.
 
