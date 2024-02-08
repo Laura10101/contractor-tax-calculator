@@ -44,7 +44,7 @@ There are a number of undefined and unused variables in each of the files. These
 
 **Config app - views.test.js**
 
-![JSHint validation for views.test.js](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/js/views-test-validation.png)
+![JSHint validation for views.test.js](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/js/views-test-js-validation.png)
 
 **Config app - view_utils.js**
 
@@ -52,7 +52,7 @@ There are a number of undefined and unused variables in each of the files. These
 
 **Config app - view_utils.test.js**
 
-![JSHint validation for view_utils.test.js](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/js/view-utils-test-js-validation.png)
+![JSHint validation for view_utils.test.js](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/js/views-utils-test-js-validation.png)
 
 **Config app - view_models.js**
 
@@ -60,7 +60,7 @@ There are a number of undefined and unused variables in each of the files. These
 
 **Config app - view_models.test.js**
 
-![JSHint validation for view_models.test.js](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/js/view-models-test-js-validation.png)
+![JSHint validation for view_models.test.js](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/js/views-models-test-js-validation.png)
 
 **Config app - view_models.mocks.js**
 
