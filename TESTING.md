@@ -7,6 +7,9 @@
 ### HTML Validation
 
 ### CSS Validation
+All custom CSS is contained within my base.css file as part of the base template. This file validates successfully as shown below:
+
+![CSS validation for base.css](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/css/css-validation.png)
 
 ### JavaScript Validation
 
@@ -33,11 +36,11 @@ To achieve this, I decided to test each layer of this architecture individually 
 - **Model Tests** which focus on testing individual model methods where these are sufficiently complex to justify this level of testing (for exmaple, in the case of the calculations functionality).
 
 In total, I developed 600 tests covering each of the five APIs which are all passing as shown below:
-![Pytest results for API tests](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/api-test-results.jpg)
+![Pytest results for API tests](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/api-testing/api-test-results.jpg)
 
 These 600 tests provide 83% coverage across the five APIs as shown below. The following coverage report was generated using the Python coverage library:
 
-![Test coverage report for API tests](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/api-test-coverage.jpg)
+![Test coverage report for API tests](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/api-testing/api-test-coverage.jpg)
 
 ### Forms API Tests ###
 
