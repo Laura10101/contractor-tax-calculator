@@ -1111,7 +1111,7 @@ describe("Question views", () => {
 
                 function numericQuestionUpdater(_formId, _questionId, _text, _ordinal, _explainer, _isMandatory, _isInteger,
                     _minValue, _maxValue, success, failure) {
-                    exoect(true).toBe(false);
+                    expect(true).toBe(false);
                 }
 
                 function multipleChoiceQuestionUpdater(_formId, _questionId, _text, _ordinal, _explainer, _isMandatory, success, failure) {

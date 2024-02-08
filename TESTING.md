@@ -12,7 +12,7 @@ All custom CSS is contained within my base.css file as part of the base template
 ![CSS validation for base.css](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/css/css-validation.png)
 
 ### JavaScript Validation
-For this project, I developed custom JavaScript to provide enhanced user experiences in three areas:
+For this project, I developed custom JavaScript to provide enhanced user experiences in four areas:
 
 - To validate user input on the financial information form when creating a tax calculation.
 - To provide Stripe integration through the card and address elements on the checkout page.
@@ -22,6 +22,7 @@ For this project, I developed custom JavaScript to provide enhanced user experie
    - **view_models.js** provide a set of functions used for managing application state. This includes storing and refreshing referential data (Jurisdictions and Tax Categories), query methods to retrieve objects from the app state by ID or other attributes, and commands for managing entity ordinals.
    - **view_consts.js** define constants used by the other layers of JavaScript. These constants include API endpoints for different actions and IDs of important DOM elements.
    - **service_clients.js** define a set of functions that provide easier access to the APIs via a set of JQuery AJAX requests.
+- To test the various layers of the config app's JavaScript. There is a test file for each layer (except view_consts.js, which contains no functionality). There is also a file containing mock data.
 
 Additionally, custom JavaScript is used to implement the Jest testing for the config app.
 
@@ -41,13 +42,29 @@ There are a number of undefined and unused variables in each of the files. These
 
 ![JSHint validation for views.js](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/js/views-validation.png)
 
+**Config app - views.test.js**
+
+![JSHint validation for views.test.js](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/js/views-test-validation.png)
+
 **Config app - view_utils.js**
 
 ![JSHint validation for view_utils.js](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/js/view-utils-js-validation.png)
 
+**Config app - view_utils.test.js**
+
+![JSHint validation for view_utils.test.js](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/js/view-utils-test-js-validation.png)
+
 **Config app - view_models.js**
 
 ![JSHint validation for view_models.js](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/js/view-models-js-validation.png)
+
+**Config app - view_models.test.js**
+
+![JSHint validation for view_models.test.js](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/js/view-models-test-js-validation.png)
+
+**Config app - view_models.mocks.js**
+
+![JSHint validation for view_models.mocks.js](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/js/view-models-mocks-js-validation.png)
 
 **Config app - view_consts.js**
 
@@ -56,6 +73,10 @@ There are a number of undefined and unused variables in each of the files. These
 **Config app - service_clients.js**
 
 ![JSHint validation for service_clients.js](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/js/service-clients-js-validation.png)
+
+**Config app - service_clients.test.js**
+
+![JSHint validation for service_clients.test.js](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/js/service-clients-test-js-validation.png)
 
 ## Responsiveness
 
