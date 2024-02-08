@@ -42,6 +42,8 @@ There are a number of undefined and unused variables in each of the files. These
 
 ![JSHint validation for views.js](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/js/views-validation.png)
 
+One warning is highlighted here. This calls out the fact that the confirm() function is overridden by a custom confirm() function. I decided to ignore this warning since the custom confirm() function fulfills the same purpose as JavaScript's built-in confirm() function which is to display a dialog asking a user to confirm an action.
+
 **Config app - views.test.js**
 
 ![JSHint validation for views.test.js](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/js/views-test-js-validation.png)
@@ -53,6 +55,10 @@ There are a number of undefined and unused variables in each of the files. These
 **Config app - view_utils.test.js**
 
 ![JSHint validation for view_utils.test.js](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/js/views-utils-test-js-validation.png)
+
+Two warnings are highlighted here. The first calls out the fact that the confirm() function is overridden by a custom confirm() function. I decided to ignore this warning since the custom confirm() function fulfills the same purpose as JavaScript's built-in confirm() function which is to display a dialog asking a user to confirm an action.
+
+The second warning relates to the use of document.write() to populate the DOM when setting up a mock DOM for Jest testing. The code to do this was taken from the Code Institute's videos on testing with Jest, and so I decided not to look for an alternative solution.
 
 **Config app - view_models.js**
 
