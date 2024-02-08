@@ -180,10 +180,111 @@ For this project I had to be very careful to keep the scope as tight as possible
 - Broaden it out beyond just IT contractors by including additional types of tax
 - Include tax reliefs and allowances 
 
-## Technical Design and Rationale
+## Technical Design
 
-### High Level Architecture
-Diagram and brief explanation
+### The Technical Challenges
+The fundamental problem for the Tax Calculator is to gather financial information from the user and then apply a series of calculations to work out, based on that info, how the user will be taxed. The problem is that the structure of the calculations, and the calculations themselves, and the info on which they are based, varies from country to country. 
+
+The forms will be different for each country - different questions for each country, and the calculations are going to be different for each country. Given this, I needed to come up with a piece of software that can gather the right info from the user for all of the countries, and then apply the right calculation for all of the countries.
+
+The problem is this: how do I get info from users when the info needed is dependent on the particular country and the calculation needed is also dependent on the particular country?
+
+I wanted to architect this in a way that means other countries can be added in the future without needing to change the software itself. This will make the project more extensible and future-proof, and is in line with the principles of Uncle Bob’s ‘Clean Code’ - reducing the time and expense needed to update the project in the future. 
+
+There were three options:
+
+1. To use lots of if statement, with hard coded calculations for each country, and then the algorithm selects the calculations based on the country. But with this design, software engineers would have to change it every time a new country is added, requiring a release of code every time. This is because all of the logic is hard coded. Additionally, Uncle Bob doesn’t like if statements!
+
+2. Enable additional countries to be added by extension. Create a software module for each country and each will have hard coded questions and answers. A plug-in would effectively be created for each country. This doesn’t require a redeployment of the whole application code if changes are made, but you need a software engineer to create a new plugin and maintain the logic for each country. 
+
+3. Enable administrators to configure each country. This approach would come up with a generic algorithm that is data driven and store all of the knowledge in a database. The algorithm uses the knowledge in the database to work out what questions to ask and what calculations to apply. This would enable an admin user to update the database with a new country, and no software engineering is needed. This makes the project much more accessible, usable and updateable.
+
+I selected the third option to make it as easy as possible for tax experts to rapidly expand the range of countries supported by the Tax Calculator. The issue with this option is that if a new country has totally different tax rules than those in the existing database, then a software engineer would need to update the system to provide new types of tax rate but this is much less common than having to change the tax rates themselves. This option can lead a developer down a rabbit hole, trying to anticipate every single tax rule set that might possibly come up. But all tax systems I have studied so far have had similar rules, so this still remains the best option. In the event that a new country was added with drastically different rules, software engineering would be required to ensure the overall logic still worked.
+
+This project is about striking a balance between ensuring the application is useful to the end user (IT contractors) whilst also being easily updatable by an admin user as far as that is reasonably practicable. There may be outlying cases where a software engineer would be required to add a new country, but I am limiting the scope where possible to minimise this risk.
+
+### Monolith versus Microservices
+Given the user stories and analysis of the Tax Calculator problem above, it is clear that the backend of the Tax Calculator will be very complicated with a need to support several different areas of functionality:
+
+- User-related functionality including login, logout and registration
+- Subscription-related functionality including checking for subscriptions, extending subscriptions, and defining subscription options
+- Taking payments from the user for a subscription
+- Adding and editing jurisdictions
+- Adding and editing categories of tax
+- Gathering the financial information for users and defining the questions required to do this for each jurisdiction and tax category
+- Calculating the tax payable for a set of jurisdictions based on a user's financial information
+- Defining the tax rates in order to allow the application to do this
+
+Given these different types of functionality that the backend of the Tax Calculator will need to support, I had to decide how best to architect the solution. One option would be to adopt a [monolithic style](https://microservices.io/patterns/monolithic.html) similar to that used on the Boutique ADO project. In this approach, the code for the user interface (templates and views) lives in the same module (in our case, Django app) as the models and data access logic which that user interface relates to. This works well for small scale applications. However, as the application grows [it becomes harder to maintain clean separation of concerns](https://martinfowler.com/articles/microservices.html) between modules.
+
+The Tax Calculator has already reached this point. For example, there will be need to be two different applications at least - one for admins and one for IT contractors. Both applications, however, will need access to both the question and rules data. The admin will need to be able to view lists of questions and rules so they can edit that data. The IT contractor will need to access the same data to generate the financial information form and their tax calculation. Similarly, administrators need to be able to view subscriptions and create subscription options. Users need to choose subscription options and update subscriptions.
+
+This raises the problem as to which Django app should *own* each piece of data. Using the conventional monolithic approach, there are many scenarios where one app would need to access the data provided by another app. Furthermore, this is likely to lead to duplicated code in many places.
+
+To avoid this problem, an alternative architectural style is the [microservices architecture](https://martinfowler.com/articles/microservices.html). Using this style involves hiding data and functionality microservices which are accessed via [RESTful APIs](https://martinfowler.com/articles/richardsonMaturityModel.html). Each API manages the data and provides the functionality for a specific, closely-related set of data models. This allows the functions that process data to be decoupled from the user interfaces which allow users to view and input data. Because the functionality provided by each microservice is accessed via a RESTful API, this means that many Django apps could access the same functionality and data without replicating too much code. This also allows for consistent validation of data where multiple apps can edit the same data.
+
+I therefore decided to opt for the microservices style.
+
+### Domain-Driven Design
+Having decided to adopt a microservice approach, the next question I had to answer is what are the microservices that I need?
+
+Microservices are closely related to the concept of domain-driven design. Each microservice should manage the data for exactly one domain. [Domain-driven design](https://martinfowler.com/bliki/DomainDrivenDesign.html) involves designing data models in the software that closely resembles the terminology used by real users of the application. An important aspect of domain design is:
+
+>  [How to organize large domains into a network of Bounded Contexts](https://martinfowler.com/bliki/DomainDrivenDesign.html).
+
+This involves separating complex data models into separate [bounded contexts](https://martinfowler.com/bliki/BoundedContext.html). The guidance is that the context changes when the language changes, and that different contexts have unrelated concepts - but also some overlapping concepts.
+
+Using this approach I was able to identify five bounded contexts. To do this, I worked out from the list of all of the data that the Tax Calculator would need, which bits of data belonged together.
+
+The five contexts are:
+
+1. **The Jurisdictions context** which holds and manages the list of tax jurisdictions.
+2. **The Forms context** which holds and manages all of the data needed to generate the forms required to capture the correct financial information from IT contractors.
+3. **The Rules context** which holds and manages all of the data needed to generate the tax calculations for a user based on the provided financial information.
+4. **The Subscription context** which holds and manages data relating to user subscriptions and options.
+5. **The Payments context** which takes payments from users and stores a record of these.
+
+Originally, I had intended to separate out a sixth context - the Calculations context - from the Rules context. However, it became clear that this was not sensible or feasible since the Calculations context would need all of the data contained within the Rules context to do its job. The calculation algorithms are in fact just the functionality associated with the Rules context.
+
+I also considered holding Forms and Rules data as part of the Jurisdiction context. However, Forms and Rules data are not very closely related and this would have felt like too much data and functionality in a single microservice.
+
+### High-Level Architecture
+Having identified the bounded contexts for the Tax Calculator, I was able to design my high-level architecture as shown below:
+
+![High-level architecture](https://laura10101.github.io/contractor-tax-calculator/documentation/architecture/high-level-architecture.jpg)
+
+In this diagram, there is an API for each bounded context identified above. Each API is intended to fully own and manage the data and functionality associated with that bounded context.
+
+Additionally, there are a number of Django applications. Each application is intended to contain a complete set of end-to-end user journeys as follows:
+
+- **The Home app** will contain the index pages and home page for admins and IT contractors, including the contractor dashboard.
+- **The Calculations app** will provide the end-to-end user journey for generating tax calculations, from selecting jurisdictions to viewing calculations.
+- **The Subscription app** will provide the end-to-end user journey for viewing and selecting a subscription option.
+- **The Checkout app** will provide the end-to-end journey for paying for a subscription.
+- **The Config app** provides the end-to-end journey for managing forms and rules data.
+
+### API Code Design
+An API needs to do a number of things:
+
+- Receive and return HTTP requests and responses and serialise/deserialise these to and from Django models.
+- Validate HTTP requests to ensure they contain all of the required data.
+- Read and/or write data from and/or to the database.
+- Any data processing that may be required.
+
+Following the single-responsibility principle, and loosely based on the [Model-View-Controller pattern](https://www.oreilly.com/library/view/hands-on-software-architecture/9781788622592/2310cf5c-3faa-409a-9c52-7e4ccf1e382a.xhtml), I decided to separate out my API code into several layers as shown in the diagram below:
+
+![API architecture](https://laura10101.github.io/contractor-tax-calculator/documentation/architecture/api-design.jpg)
+
+The layers are:
+
+- **Views** which receive HTTP requests, deserialise them into in-memory data, validate the data, and serialise and return responses.
+- **Services** which encapsulate the individual business functions required to deliver the user stories.
+- **Models** which define the data models for the bounded context, provide data access, and provide atomic methods that operate on the models.
+
+### High Level System Flow
+The following diagram provides an early high-level design for how these different components will collaborate to provide the end-to-end calculation journey:
+
+![The calculation process](https://laura10101.github.io/contractor-tax-calculator/documentation/architecture/calculation-process.jpg)
 
 ### Data Model
 
@@ -196,33 +297,6 @@ Diagram and brief explanation
 **The Subscriptions Domain**
 
 **The Payments Domain**
-
-
-### Technical Challenges
-The fundamental problem is that you need to gather info from the user and then apply a series of calculations to work out, based on that info, how the user will be taxed. The problem is that the structure of the calculations, and the calculations themselves, and the info on which they are based, varies from country to country. 
-
-The forms will be different for each country - different questions for each country, and the calculations are going to be different for each country. so …. How do we come up with a piece of software that can gather the right info from the user for all of the countries, and then apply the right calculation for all of the countries. 
-
-We will focus on IT contractors and then expand with more time. 
-
-The problem is this: how do I get info from users when the info needed is dependent on the particular country and the calculation needed is also dependent on the particular country?
-
-I want to architect this in a way that means other countries can be added in the future without needing to change the software itself. This will make the project more extensible and future-proof, and is in line with the principles of Uncle Bob’s ‘Clean Code’ - reducing the time and expense needed to update the project in the future. 
-
-Solution A = use a big if statement, with hard coded calculations for each country, and then the algorithm selects if country A, use set of rules B etc. But software engineers have to change it all every time a new country added, and it requires a release of code every time a new country is added because all of the logic is hard coded. Uncle Bob doesn’t like if statements! 
-
-Solution B = extension. Create a software module for each country and each will have hard coded questions and answers. So each country would be like a plug in, so that doesn’t require a redeployment of code if changes made, but you need a software engineer to create a new plugin and maintain the logic for each country. 
-
-Solution C: configuration. Come up with a generic algorithm that is data driven and store all of the knowledge in a database and have an algorithm that uses the knowledge in the database to work out what questions to ask and what calculations to apply. Benefit of this is that an admin user can update the database with a new country, and no software engineering is needed. This makes the project much more accessible, usable and updateable. Therefore this is the option I selected. The issue with this option is that if a new country has totally different tax rules than those in the existing database, then a software engineer would need to update the system. This option can lead a developer down a rabbit hole, trying to anticipate every single tax rule set that might possibly come up. But all tax systems I have studied so far have had similar rules, so this still remains the best option. In the event that a new country was added with drastically different rules, software engineering would be required to ensure the overall logic still worked.
-
-This project is about striking a balance between ensuring the application is useful to the end user (IT contractors) whilst also being easily updatable by an admin user as far as that is reasonably practicable. There may be outlying cases where a software engineer would be required to add a new country, but I am limiting the scope where possible to minimise this risk.  
-
-### Important Technical Decisions
-When implementing DELETE methods on APIs, I had to decide whether to put filters in the HTTP request body or in the query string. After some research, the following article recommended putting the filters in the query string for DELETEs as request bodies are not widely supported for DELETE:
-REST/HTTP - Should you use a body for your DELETE requests? (peterdaugaardrasmussen.com)
-Initially I used ordinals to order the questions and rules, but I later decided to use linked lists instead. Linked lists allowed me to ………………………………………..
-When loading objects out of the database using ordinals, there is no guarantee that the objects will be retrieved in the order of the ordinal, so then I would need to create a sorting function. 
-With linked lists, the objects would be accessed in the correct sorted order, as the first object in the list will be accessed first and then from the first object the pointers control the order in which the subsequent objects are accessed.
 
 ## Testing
 For all testing, please refer to the [TESTING.md](TESTING.md) file.
@@ -317,7 +391,12 @@ Alternatively, if using Gitpod, you can click below to create your own workspace
 I would like to thank the Code Institute for all of the support through all four of my projects. Special thanks goes to Tim Nelson who was my personal tutor. He is a remarkable software professional and has a natural ability to teach and inspire. 
 
 ### Educational Resources
-- [Uncle Bob’s Clean Code]()
+- Uncle Bob’s Clean Code
+- [Fowler on domain-driven design](https://martinfowler.com/bliki/DomainDrivenDesign.html)
+- [Fowler on microservices](https://martinfowler.com/articles/microservices.html)
+- [Monolithic architecture](https://microservices.io/patterns/monolithic.html)
+- [Fowler on RESTful APIs](https://martinfowler.com/articles/richardsonMaturityModel.html)
+- [Fowler on bounded contexts](https://martinfowler.com/bliki/BoundedContext.html)
 - Government tax websites/legal resources
 - [Canva pallet picker (with colours amended by me)](https://www.canva.com/colors/color-palette-generator/)
 - [Gang of Four Design Patterns](https://en.wikipedia.org/wiki/Design_Patterns)
