@@ -367,21 +367,16 @@ Deployment steps are as follows, after account setup:
 - Select *New* in the top-right corner of your Heroku Dashboard, and select *Create new app* from the dropdown menu.
 - Your app name must be unique, and then choose a region closest to you (EU or USA), and finally, select *Create App*.
 - From the new app *Settings*, click *Reveal Config Vars*, and set the following key/value pairs:
-  - `IP` 0.0.0.0
-  - `PORT` 5000
-  - `MONGO_URI` mongodb+srv://service:MpWP0OA5n4AMQbop@catidentifier.1ncucur.mongodb.net/?retryWrites=true&w=majority. To get the `MONGO_URI`, follow the steps outlined in the `MongoDB` section below.
-  - `API_BASE_URL` https://cat-identifier.herokuapp.com/api
-  - `CONFIG_FILE` ./config/config.production.json
-  - `DATABASE_URL` postgres://ckqznidqkqgwsd:ee305d223a8b55f882c85661ee97a51edebf35f2dbbe67e69f3ee945a0dcfd17@ec2-46-51-187-237.eu-west-1.compute.amazonaws.com:5432/decv568a62lsdl. To get the `DATABASE_URL`, follow the steps outlined in the `Postgres DB` section below.
-  - `DEBUG` False
-  - `MONGO_DB` cat_identifier_db
-  - `MONGO_PREDICTION_MODELS` prediction_models
-  - `MONGO_PREDICTIONS` predictions
-  - `MONGO_TRAINING_IMAGES` training_images
-  - `MONGO_TRAINING_LOG` training_log_entries
-  - `MONGO_USERS` users
-  - `REDIS_URL` redis://:p8c4e2560b7ef8b787c0ff47764b61e7bf661c867be93323b0a1b98c36f775ace@ec2-52-19-136-205.eu-west-1.compute.amazonaws.com:10839. To get the `REDIS_URL`, follow the steps outlined in the `Redis` section below.
-  - `SECRET_KEY` AYdrcRATjKGYa3LGGxvcm2nZ913DNTyC
+  - `AWS_ACCESS_KEY_ID` *Your AWS access key*
+  - `AWS_SECRET_ACCESS_KEY` *Your secret AWS access key*
+  - `DATABASE_URL` *Your database URL*
+  - `DEVELOPMENT` False
+  - `SECRET_KEY` *A randomly generated secret key*
+  - `STRIPE_PUBLIC_KEY` *Your Stripe public key*
+  - `STRIPE_SECRET_KEY` *Your Stripe secret key*
+  - `STRIPE_WH_SECRET` *Your Stripe webhook key*
+  - `USE_AWS` True
+  - `USE_TEST_DB` False
 
 Heroku needs two additional files in order to deploy properly.
 - requirements.txt
@@ -400,7 +395,7 @@ Either:
 
 Or:
 - In the Terminal/CLI, connect to Heroku using this command: `heroku login -i`
-- Set the remote for Heroku: `heroku git:remote -a cat-identifier`
+- Set the remote for Heroku: `heroku git:remote -a contractor-tax-calculator`
 - After performing the standard Git `add`, `commit`, and `push` to GitHub, you can now type: `git push heroku main`
 
 The frontend terminal should now be connected and deployed to Heroku.
@@ -409,13 +404,38 @@ The frontend terminal should now be connected and deployed to Heroku.
 
 This project uses ElephantSQL DB as the relational database for the application's data warehouse.
 
-Deployment steps to create the Postgres DB in Heroku are as follows:
+Deployment steps to create the database in ElephantSQL, after account setup, are as follows:
 
-- From your Heroku dashboard, select the `cat-identifier` app.
-- Select the *Resources* tab at the top.
-- Under the *Add-ons* section, search for `Postgres` and select *Heroku Postgres* from the drop-down box.
-- Leave the *Plan name* as `Hobby Dev - Free` and click *Submit Order Form*.
-- Heroku will automatically create the `DATABASE_URL` key and value in the config settings.
+- From your ElephantSQL `Instances` dashboard, select the `Create New Instance` button.
+- In the `Name` field, enter `contractor-tax-calculator`.
+- Set the `Plan` field to `Tiny Turtle (Free)`.
+- Click the `Select Region` button.
+- In the `Data Center` field, choose `EU-West-1 (Ireland)` and click `Review`.
+- On the next page, choose `Create Instance`.
+- This will send you back to the `Instances` dashboard. Now choose the `contractor-tax-calculator` instance.
+- On the `Details` page, select the eye icon next to the `URL` field. Choose the `Copy` icon next to the URL field.
+- Now return to the Heroku *Settings* page.
+- Click *Reveal Config Vars*, and paste the copied database URL as the value for the `DATABASE_URL` var.
+
+### Stripe
+
+This project uses Stripe as the payment provider to receive payments for subscriptions from the user.
+
+Deployment steps to set up Stripe integration, after account setup, are as follows:
+
+- From the `Home` page after signing in to Stripe, click the *Developers* link in the top right hand corner.
+- Select the *API Keys* tab
+- Copy the `Publishable Key` and paste this into the `Value` field for the `STRIPE_PUBLIC_KEY` var in the Heroku `Settings` page.
+- Click the *Reveal test key* button that is hiding the `Secret key` field in the Stripe *API keys* tab. Copy the revealed value.
+- Copy the `Secret Key` and paste this into the `Value` field for the `STRIPE_SECRET_KEY` var in the Heroku `Settings` page.
+- Select the *Webhooks* tab in the Stripe `Developers` page. Choose *Add Endpoint*
+- In the `Endpoint URL` field, enter the URL of your deployed Heroku app, followed by: `/api/payments/webhooks/`
+- Click the *Select Events* link and in the search box, enter `payment_intent`.
+- Selected the `payment_intent.canceled`, `payment_intent.payment_failed`, `payment_intent.requires_action` and `payment_intent.succeeded` events. Click *Add events*.
+- Choose *Add Endpoint*.
+- From the *Webhooks* tab in the Stripe `Developers` page, choose the newly-created endpoint.
+- At the top of the page, under `Signing Secret`, click *Reveal*. Copy the revealed webhook key.
+- Paste this key as the value of the `STRIPE_WH_SECRET` var in the Heroku `Settings` page.
 
 ### Local Deployment
 
@@ -431,12 +451,19 @@ Create an `env.py` file, and add the following environment variables:
 ```python
 import os
 
+os.environ['SECRET_KEY'] = "11)7m!ubta%^*^e68=^03k)ht^yyh@724#&%eyn6ihng9i+uim"
+os.environ['STRIPE_PUBLIC_KEY'] = 'pk_test_51NDoGHFkVBiDxSnkTY8frrULeHhmIUMQUtoAJPyqnRCV3xM7kgd1PNX4AkWOx7lWDuRdzXTXQCcvIqMvpGLJvUZR00gMGZRSEG'
+os.environ['STRIPE_SECRET_KEY'] = 'sk_test_51NDoGHFkVBiDxSnkgbUnGaJO53YUKEj8snA7eqrRYmgRzmzjV0JyOUv1dHF9VUAmgg9lfGOoORrnYT126SpgFk7m00HsjjFcmm'
+os.environ['STRIPE_WH_SECRET'] = 'whsec_PBvl6xDiaj1yrqG8dQ3mQLLyslnheCj0'
+os.environ['DATABASE_URL'] = 'postgres://mqrlkcwy:aAuiwNbWU-9KjIL1Vsrrxn8ju8ZZuSXl@tyke.db.elephantsql.com/mqrlkcwy'
+os.environ['DEVELOPMENT'] = 'True'
+os.environ['USE_TEST_DB'] = 'False'
 
 ```
 
 Alternatively, if using Gitpod, you can click below to create your own workspace using this repository.
 
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/Laura10101/cat-identifier)
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/Laura10101/contractor-tax-calculator)
 
 ## Credits
 
