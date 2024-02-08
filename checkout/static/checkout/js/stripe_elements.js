@@ -81,7 +81,7 @@ form.addEventListener('submit', function(ev) {
   .createPaymentMethod(data)
   .then(function(result) {
     // Handle result.error or result.paymentMethod
-    paymentMethodId = result.paymentMethod.id;
+    let paymentMethodId = result.paymentMethod.id;
     $("#payment_method_id").val(paymentMethodId);
 
     // Submit the form

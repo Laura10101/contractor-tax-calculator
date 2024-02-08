@@ -33,7 +33,7 @@ function getCSRFCookie() {
 
 // Generate a querystring from a JSON object
 function queryToString(query) {
-    queryString = "";
+    let queryString = "";
     for (const key in query) {
         if (query.hasOwnProperty(key)) {
             if (queryString == "") {
@@ -73,7 +73,7 @@ function processBatch(requestQueue, updater, onQueueEmpty) {
 // Retrieve data from an API by invoking an HTTP GET request
 // on an API endpoint with a query string added
 function query(endpoint, query, success, error) {
-    url = toUrl(endpoint);
+    let url = toUrl(endpoint);
     return $.ajax({
         type: "GET",
         url: query == null ? url: url + "?" + queryToString(query),
@@ -87,7 +87,7 @@ function query(endpoint, query, success, error) {
 // Retrieve data from an API by invoking an HTTP GET request
 // on an API endpoint without a query string added
 function get(endpoint, id, success, error) {
-    url = toUrl(endpoint);
+    let url = toUrl(endpoint);
     return $.ajax({
         type: "GET",
         url: url + id + "/",
@@ -101,7 +101,7 @@ function get(endpoint, id, success, error) {
 // Create a new entity via an API by triggering an
 // HTTP POST request
 function post(endpoint, data, success, error) {
-    url = toUrl(endpoint);
+    let url = toUrl(endpoint);
     return $.ajax({
         type: "POST",
         url: url,
@@ -117,7 +117,7 @@ function post(endpoint, data, success, error) {
 // Update an entity via an API by triggering an HTTP PUT
 // request
 function put(endpoint, id, data, success, error) {
-    url = toUrl(endpoint);
+    let url = toUrl(endpoint);
     return $.ajax({
         type: "PUT",
         url: url + id + "/",
@@ -133,7 +133,7 @@ function put(endpoint, id, data, success, error) {
 // Update an entity via an API by triggering an HTTP PATCH
 // request
 function patch(endpoint, id, data, success, error) {
-    url = toUrl(endpoint);
+    let url = toUrl(endpoint);
     return $.ajax({
         type: "PATCH",
         url: url + id + "/",
@@ -149,7 +149,7 @@ function patch(endpoint, id, data, success, error) {
 // Delete an entity via an API by triggering an HTTP DELETE
 // request
 function remove(endpoint, id, success, error) {
-    url = toUrl(endpoint);
+    let url = toUrl(endpoint);
     return $.ajax({
         type: "DELETE",
         url: url + id + "/",
@@ -185,7 +185,7 @@ function getTaxCategories(onSuccess, onFailure) {
 
 // Get all form and question data for a given jurisdiction via the forms API
 function getFormForJurisdiction(jurisdictionId, onSuccess, onFailure) {
-    queryParameters = {
+    let queryParameters = {
         jurisdiction_ids: jurisdictionId
     };
     return query(endpoints.forms.base, queryParameters, onSuccess, onFailure);
@@ -197,7 +197,7 @@ function getFormForJurisdiction(jurisdictionId, onSuccess, onFailure) {
 
 // Create a new boolean question entity via the forms API based on the given data
 function createBooleanQuestion(formId, text, ordinal, explainer, variableName, isMandatory, onSuccess, onFailure) {
-    data = {
+    let data = {
         text: text,
         ordinal: ordinal,
         explainer: explainer,
@@ -210,7 +210,7 @@ function createBooleanQuestion(formId, text, ordinal, explainer, variableName, i
 
 // Update an existing boolean question entity via the forms API based on the given data
 function updateBooleanQuestion(formId, questionId, text, ordinal, explainer, isMandatory, onSuccess, onFailure) {
-    data = {
+    let data = {
         text: text,
         ordinal: ordinal,
         explainer: explainer,
@@ -222,7 +222,7 @@ function updateBooleanQuestion(formId, questionId, text, ordinal, explainer, isM
 
 // Create a new numeric question entity via the forms API based on the given data
 function createNumericQuestion(formId, text, ordinal, explainer, variableName, isMandatory, isInteger, minValue, maxValue, onSuccess, onFailure) {
-    data = {
+    let data = {
         text: text,
         ordinal: ordinal,
         explainer: explainer,
@@ -238,7 +238,7 @@ function createNumericQuestion(formId, text, ordinal, explainer, variableName, i
 
 // Update an existing numeric question entity via the forms API based on the given data
 function updateNumericQuestion(formId, questionId, text, ordinal, explainer, isMandatory, isInteger, minValue, maxValue, onSuccess, onFailure) {
-    data = {
+    let data = {
         text: text,
         ordinal: ordinal,
         explainer: explainer,
@@ -253,7 +253,7 @@ function updateNumericQuestion(formId, questionId, text, ordinal, explainer, isM
 
 // Create a new multiple choice question entity via the forms API based on the given data
 function createMultipleChoiceQuestion(formId, text, ordinal, explainer, variableName, isMandatory, onSuccess, onFailure) {
-    data = {
+    let data = {
         text: text,
         ordinal: ordinal,
         explainer: explainer,
@@ -266,7 +266,7 @@ function createMultipleChoiceQuestion(formId, text, ordinal, explainer, variable
 
 // Update an existing multiple choice question entity via the forms API based on the given data
 function updateMultipleChoiceQuestion(formId, questionId, text, ordinal, explainer, isMandatory, onSuccess, onFailure) {
-    data = {
+    let data = {
         text: text,
         ordinal: ordinal,
         explainer: explainer,
@@ -280,7 +280,7 @@ function updateMultipleChoiceQuestion(formId, questionId, text, ordinal, explain
 // based on the provided question object
 // Invoke the appropriate API call based on the type of the given question object
 function updateQuestion(question, onSuccess, onFailure) {
-    formId = getFormId();
+    let formId = getFormId();
     switch (question.type) {
         case "boolean":
                 return updateBooleanQuestion(formId, question.id, question.text, question.ordinal, question.explainer, question.is_mandatory, onSuccess, onFailure);
@@ -313,7 +313,7 @@ function removeQuestion(formId, questionId, onSuccess, onFailure) {
 
 // Create a new multiple choice option entity via the forms API based on the given data
 function postMultipleChoiceOption(formId, questionId, text, explainer, onSuccess, onFailure) {
-    data = {
+    let data = {
         text: text,
         explainer: explainer
     };
@@ -331,7 +331,7 @@ function removeMultipleChoiceOption(formId, questionId, optionId, onSuccess, onF
 
 // Retrieve all rulesets and rules for a given jurisdiction
 function getRulesetsForJurisdiction(jurisdictionId, onSuccess, onFailure) {
-    queryParameters = {
+    let queryParameters = {
         jurisdiction_id: jurisdictionId
     };
     return query(endpoints.rules.rulesets, queryParameters, onSuccess, onFailure);
@@ -339,7 +339,7 @@ function getRulesetsForJurisdiction(jurisdictionId, onSuccess, onFailure) {
 
 // Create a new ruleset entity via the rules API based on the given data
 function postRuleset(jurisdictionId, taxCategoryId, ordinal, onSuccess, onFailure) {
-    data = {
+    let data = {
         jurisdiction_id: parseInt(jurisdictionId),
         tax_category_id: parseInt(taxCategoryId),
         ordinal: ordinal
@@ -349,7 +349,7 @@ function postRuleset(jurisdictionId, taxCategoryId, ordinal, onSuccess, onFailur
 
 // Update an existing ruleset entity via the rules API based on the given data
 function patchRuleset(rulesetId, ordinal, onSuccess, onFailure) {
-    data = {
+    let data = {
         ordinal: ordinal
     };
     return patch(endpoints.rules.rulesets, rulesetId, data, onSuccess, onFailure);
@@ -366,7 +366,7 @@ function removeRuleset(rulesetId, onSuccess, onFailure) {
 
 // Create a new flat rate rule entity via the rules API based on the given data
 function createFlatRateRule(rulesetId, name, explainer, variableName, ordinal, taxRate, onSuccess, onFailure) {
-    data = {
+    let data = {
         name: name,
         explainer: explainer,
         variable_name: variableName,
@@ -379,7 +379,7 @@ function createFlatRateRule(rulesetId, name, explainer, variableName, ordinal, t
 
 // Update an existing flat rate rule entity via the rules API based on the given data
 function updateFlatRateRule(rulesetId, ruleId, name, explainer, variableName, ordinal, taxRate, onSuccess, onFailure) {
-    data = {
+    let data = {
         name: name,
         explainer: explainer,
         variable_name: variableName,
@@ -392,7 +392,7 @@ function updateFlatRateRule(rulesetId, ruleId, name, explainer, variableName, or
 
 // Create a new tiered rate rule entity via the rules API based on the given data
 function createTieredRateRule(rulesetId, name, explainer, variableName, ordinal, onSuccess, onFailure) {
-    data = {
+    let data = {
         name: name,
         explainer: explainer,
         variable_name: variableName,
@@ -404,7 +404,7 @@ function createTieredRateRule(rulesetId, name, explainer, variableName, ordinal,
 
 // Update an existing tiered rate rule entity via the rules API based on the given data
 function updateTieredRateRule(rulesetId, ruleId, name, explainer, variableName, ordinal, onSuccess, onFailure) {
-    data = {
+    let data = {
         name: name,
         explainer: explainer,
         variable_name: variableName,
@@ -416,7 +416,7 @@ function updateTieredRateRule(rulesetId, ruleId, name, explainer, variableName, 
 
 // Create a new secondary tiered rate rule entity via the rules API based on the given data
 function createSecondaryTieredRateRule(rulesetId, name, explainer, variableName, ordinal, primaryRuleId, onSuccess, onFailure) {
-    data = {
+    let data = {
         name: name,
         explainer: explainer,
         variable_name: variableName,
@@ -429,7 +429,7 @@ function createSecondaryTieredRateRule(rulesetId, name, explainer, variableName,
 
 // Update an existing secondary tiered rate rule entity via the rules API based on the given data
 function updateSecondaryTieredRateRule(rulesetId, ruleId, name, explainer, variableName, ordinal, primaryRuleId, onSuccess, onFailure) {
-    data = {
+    let data = {
         name: name,
         explainer: explainer,
         variable_name: variableName,
@@ -496,7 +496,7 @@ function removeRule(rulesetId, ruleId, onSuccess, onFailure) {
 
 // Create a new rule tier entity via the rules API based on the given data
 function postRuleTier(rulesetId, ruleId, minValue, maxValue, ordinal, taxRate, onSuccess, onFailure) {
-    data = {
+    let data = {
         min_value: !isNaN(parseInt(minValue)) ? parseInt(minValue) : null,
         max_value: !isNaN(parseInt(maxValue)) ? parseInt(maxValue) : null,
         ordinal: ordinal,
@@ -507,7 +507,7 @@ function postRuleTier(rulesetId, ruleId, minValue, maxValue, ordinal, taxRate, o
 
 // Update an existing rule tier entity via the rules API based on the given data
 function updateRuleTier(rulesetId, ruleId, tierId, minValue, maxValue, ordinal, taxRate, onSuccess, onFailure) {
-    data = {
+    let data = {
         min_value: !isNaN(parseInt(minValue)) ? parseInt(minValue) : null,
         max_value: !isNaN(parseInt(maxValue)) ? parseInt(maxValue) : null,
         ordinal: ordinal,
@@ -527,7 +527,7 @@ function removeRuleTier(rulesetId, ruleId, tierId, onSuccess, onFailure) {
 
 // Create a new secondary rule tier entity via the rules API based on the given data
 function postSecondaryRuleTier(rulesetId, ruleId, primaryTierId, ordinal, taxRate, onSuccess, onFailure) {
-    data = {
+    let data = {
         primary_tier_id: parseInt(primaryTierId),
         ordinal: ordinal,
         tax_rate: !isNaN(parseFloat(taxRate)) ? parseFloat(taxRate) : null
@@ -537,7 +537,7 @@ function postSecondaryRuleTier(rulesetId, ruleId, primaryTierId, ordinal, taxRat
 
 // Update an existing secondary rule tier entity via the rules API based on the given data
 function updateSecondaryRuleTier(rulesetId, ruleId, tierId, primaryTierId, ordinal, taxRate, onSuccess, onFailure) {
-    data = {
+    let data = {
         primary_tier_id: primaryTierId,
         ordinal: ordinal,
         tax_rate: !isNaN(parseFloat(taxRate)) ? parseFloat(taxRate) : null

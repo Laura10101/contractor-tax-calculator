@@ -442,7 +442,7 @@ function getTieredRateRulesForJurisdiction() {
 
 // Get all of the currently loaded rules for the specified type
 function getRulesByTypeForJurisdiction(type) {
-    rules = [];
+    let rules = [];
     app.jurisdictionRules.forEach(ruleset => {
         ruleset.rules.forEach(rule => {
             if (rule.type == type) {
