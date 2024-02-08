@@ -17,9 +17,34 @@ def remove_multiple_blank_lines(string):
     return string
 
 
-def get_markdown(data):
-    df = pandas.DataFrame.from_dict(data)
-    return df.to_markdown(index=False)
+def issue_key(issue):
+    return issue['Number']
+
+
+def get_markdown(issues):
+    issues.sort(key=issue_key)
+    print(str(issues))
+    #df = pandas.DataFrame.from_dict(data)
+    #return df.to_markdown(index=False)
+    md_lines = []
+    md_lines.append('# Bugs\r\n')
+    md_lines.append('## Resolved Bugs\r\n')
+    md_lines.append(
+        'The folllowings bugs have been resolved '
+        + ' and retested.\r\n'
+    )
+
+    # Add issue lines
+    for issue in issues:
+        md_line = str(issue['Number'])
+        md_line += '. **' + issue['Title'] + '**<br/>'
+        md_line += issue['Description'] + '<br/>'
+        md_line += '**Resolution**<br/>' + issue['Resolution']
+        md_line += '\r\n'
+
+        md_lines.append(md_line)
+    return md_lines
+
 
 
 # Generate issues dictionary from raw data
@@ -46,6 +71,10 @@ for gh_issue in raw:
     print(str(issue))
     issues.append(issue)
 
+md = get_markdown(issues)
+print(md)
+
 f = open("BUGS.MD", "w")
-f.write(get_markdown(issues))
+for line in md:
+    f.write(line + '\r\n')
 f.close()
