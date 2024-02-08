@@ -53,6 +53,6 @@ A total of 222 bugs were identified and resolved during testsing for this projec
 For a complete list of these resolved bugs, please see [BUGS.MD](BUGS.MD).
 
 Alternatively, you can view the original list of resolved Github Bugs
-<a href="https://github.com/Laura10101/contractor-tax-calculator/issues?q=is%3Aissue+is%3Aclosed" target="_blank">here</a>.
+<a href="https://github.com/Laura10101/contractor-tax-calculator/issues?q=is%3Aissue+is%3Aclosed+label%3Abug" target="_blank">here</a>.
 
 ### Unresolved Bugs
