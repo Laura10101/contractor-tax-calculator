@@ -14,17 +14,30 @@
 
 ## User Story Tests
 
+## JavaScript Tests
+
 ## API Tests
 
-The main functionality for the tax calculator has been implemented across five different APIs. Collectively, these APIs comprise X complex model methods and more than 35 services. Each service is also exposed through a single API endpoint. While the API endpoints and services mostly provide basic CRUD functionality for different models, the rule calculations endpoint and service comprises more complex algorithms.
+The main functionality for the tax calculator has been implemented across five different APIs, each managing the data and services associated with a different data domain. Each API was separated into a number of logical layers as described in the [README](README.md):
+
+- **Views** which handle validation and serialisation of HTTP requests and responses.
+- **Services** which orchestrate the functionality needed for specific actions.
+- **Models** which define the data models that the API manages and provides atomic methods to manipulate those data models.
 
 Given the scope of this project, comprehensively verifying the correctness of these services and methods through manual testing would not be feasible within a realistic timescale. I therefore opted to implement good automated test coverage across the APIs. 
 
-To achieve this, testing was implemented at three levels:
+To achieve this, I decided to test each layer of this architecture individually as follows:
 
-1. **Model Tests** focus on testing the correctness of complex model methods. These tests assume that the model data has been validated by services and views and so aim to test whether the methods produce the correct output given valid input data.
-2. **Services Tests** focus on testing the correctness of the services exposed by any API. These tests ensure that services are properly validating the input data they receive, that the database is correctly updated or read depending, and that any necessary model or third-party functionality is correctly called.
-3. **Views Tests** focus on testing the correctness of the APIView methods to ensure that the incoming request is appropriately validated, that the appropriate service is invoked and completes as expected, that any response data is appropriately serialised and that the expected response and status code is therefore returned by the API.
+- **Views Tests** which focus on the validation and serialisation logic provided by each view in the API.
+- **Service Tests** which focus on ensuring that each service correctly delivers the expected behaviour of the particular API method (for example, payments are confirmed with Stripe providing the card details are valid).
+- **Model Tests** which focus on testing individual model methods where these are sufficiently complex to justify this level of testing (for exmaple, in the case of the calculations functionality).
+
+In total, I developed 600 tests covering each of the five APIs which are all passing as shown below:
+![Pytest results for API tests](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/api-test-results.jpg)
+
+These 600 tests provide 83% coverage across the five APIs as shown below. The following coverage report was generated using the Python coverage library:
+
+![Test coverage report for API tests](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/api-test-coverage.jpg)
 
 ### Forms API Tests ###
 
