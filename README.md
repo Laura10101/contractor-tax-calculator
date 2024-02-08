@@ -1,5 +1,3 @@
-Note to marker: the admin user site has been designed for a sophisticated professional tax adviser who has commissioned the project. As a result, and to keep the user experience streamlined, it does not explain tax concepts, rules, or basic instructions as the user would have in-depth knowledge of these. 
-
 # Tax Calculator
 The aim of this project was to create a tax calculator for IT contractors to compare take home pay across different jurisdictions. 
 
@@ -11,35 +9,50 @@ The goal of this calculator is to allow them to see an indicative calculation of
 
 The tax calculator could be expanded in the future to be of use to a wider demographic than just IT contractors. The software architecture of this project has been designed with scalability/xxxx? in mind, to ensure that additional jurisdictions and demographics can be added easily.
 
+![Am I responsive?](https://laura10101.github.io/kitten-calculator/documentation/screenshots/responsive-overview.jpg)
+
+## Notes to Assessors
+The admin user site has been designed for a sophisticated professional tax adviser who has commissioned the project. As a result, and to keep the user experience streamlined, it does not explain tax concepts, rules, or basic instructions as the user would have in-depth knowledge of these. 
+
 ## Users
 The users of this site will be any IT contractor working outside IR35 and considering moving to another tax jurisdiction. The site may also be suitable for any other type of contractor working through a limited company in the same way.  
 
-Finding accurate demographics for this group was not easy, and as this is a new application I have no existing business data to draw on. The most accurate data I found related to the IT contractor market in the USA, so it was not ideal, but it does give a clear view of the typical demographic: 
-86.3% male, 13.7% female 
-Average age is 42 years old
-11% identified as LGBT 
-
-Source: Information Technology Contractor Demographics and Statistics [2023]: Number Of Information Technology Contractors In The US (zippia.com)
+Finding accurate demographics for this group was not easy, and as this is a new application I have no existing business data to draw on. The most accurate data I found related to the [IT contractor market in the USA](https://www.zippia.com/information-technology-contractor-jobs/demographics/), so it was not ideal, but it does give a clear view of the typical demographic: 
+- 86.3% male, 13.7% female
+- Average age is 42 years old
+- 11% identified as LGBT
 
 Since most IT contractors work through limited companies and submit tax returns each year I would expect the users to be reasonably sophisticated, possibly with multiple sources of income, and a reasonable understanding of tax language. I therefore did not define terms like ‘corporation tax’ as the average user of this site would more likely than not already be familiar with them. I do not have any data to test this assumption, as this is a new site. As it is used, data will be collected and if my assumptions are incorrect the user experience can be modified. For example the terms could be clarified in some additional notes. For the sake of a clean user experience those notes have not been included at this stage. 
 
 Additionally, there will also be one admin user who will be able to log in, add new jurisdictions and update tax rates for existing jurisdictions. It is critical to note that the admin user is a sophisticated professional tax adviser who has commissioned the project. As a result, and to keep the user experience streamlined, the admin user section does not explain tax concepts, rules, or basic instructions as the user would have in-depth knowledge of these. 
 
 ## User stories 
+All user stories were documented, and progress towards delivering them, was [tracked in Github](https://github.com/Laura10101/contractor-tax-calculator/issues?q=is%3Aissue+label%3Aenhancement).
 
 ### As an IT contractor  I want to…..
-- Be able to enter my income details in an easy-to understand way 
-- See how much progress i am making while using the application 
-- See a clear result that is accurate and easy to understand
-- Be able to compare how much tax i would pay in multiple jurisdictions
-- Be able to log in easily and securely 
-- Be able to purchase………………
+1. [Select the jurisdictions to compare tax calculations for, so that I only see jurisdictions I am interested in](https://github.com/Laura10101/contractor-tax-calculator/issues/1)
+2. [Easily enter my income details, so that my tax can be calculated for each jurisdiction I have selected](https://github.com/Laura10101/contractor-tax-calculator/issues/2)
+3. [See how much progress I am making while using the application, so that I can easily see where I am in the process](https://github.com/Laura10101/contractor-tax-calculator/issues/3)
+4. [See a clear tax calculation for each jurisdiction I have selected that is easy to understand, so that I can easily decide which jurisdiction is most favourable](https://github.com/Laura10101/contractor-tax-calculator/issues/4)
+5. [Have my data be protected by login and appropriate security measures, so that I have confidence only I can access the data](https://github.com/Laura10101/contractor-tax-calculator/issues/5)
+6. [Purchase subscriptions for the tax calculator, so that I can begin comparing my tax calculations right away](https://github.com/Laura10101/contractor-tax-calculator/issues/6)
+
+### As the Contractor Tax Calculator team, I want...
+7. [Non-admin users to be prevented from creating tax calculations without an active subscription, so that I can generate an income](https://github.com/Laura10101/contractor-tax-calculator/issues/7)
 
 ### As an admin user I want to….
-- Be able to add a new country 
-- Be able to delete a country
-- Be able to update the tax rates for an existing country 
-- Be able to log in easily and securely 
+8. [Add new jurisdictions, so that I can continuously improve the product](https://github.com/Laura10101/contractor-tax-calculator/issues/8)
+9. [Delete jurisdictions, so that I can continuously improve the product](https://github.com/Laura10101/contractor-tax-calculator/issues/9)
+10. [Define the questions that IT contractors should be asked for a given jurisdiction - and the format of the corresponding answer fields - so that the tax calculator will display only relevant questions to users](https://github.com/Laura10101/contractor-tax-calculator/issues/10)
+11. [Edit the questions and answer formats associated with a given jurisdiction at any time, so that I can keep the tax calculator up to date with changes in tax regimes](https://github.com/Laura10101/contractor-tax-calculator/issues/11)
+12. [Questions and answer formats that are associated with a jurisdiction to be deleted if the jurisdiction itself is deleted, so that I do not store redundant data in the database](https://github.com/Laura10101/contractor-tax-calculator/issues/12)
+13. [Create the tax rates for a jurisdiction, so that I can add new jurisdictions to improve the product](https://github.com/Laura10101/contractor-tax-calculator/issues/13)
+14. [Update tax rates for a jurisdiction, so that I can keep the product up to date with changing tax regimes](https://github.com/Laura10101/contractor-tax-calculator/issues/14)
+15. [Tax rates for a jurisdiction to be deleted if the jurisdiction is deleted, so that I do not store unnecessary data in the database](https://github.com/Laura10101/contractor-tax-calculator/issues/15)
+16. [View subscriptions, so that I can assist users with any subscription-related queries](https://github.com/Laura10101/contractor-tax-calculator/issues/16)
+17. [View payments, so that I can assist users with any payment-related queries](https://github.com/Laura10101/contractor-tax-calculator/issues/17)
+18. [Admin functionality to be protected by an admin user account, so that only authorised users can modify jurisdiction, form, and tax rate data](https://github.com/Laura10101/contractor-tax-calculator/issues/18)
+19. [View field names for question and rule fields in the config app, so that I can easily understand which data elements relate to which fields](https://github.com/Laura10101/contractor-tax-calculator/issues/237)
 
 ## Challenges Faced
 Tax law is highly complex. Different systems have different types of rules and caluclations. In order to limit the scope of the project, personal allowances have not been included yet. The project is dependent upon the calculations being accurate. Therefore research was a critical aspect. The sophisticated admin user will need to keep the information up to date for the calculator to continue to be accurate over time. 
@@ -226,9 +239,9 @@ Alternatively, if using Gitpod, you can click below to create your own workspace
 I would like to thank the Code Institute for all of the support through all four of my projects. Special thanks goes to Tim Nelson who was my personal tutor. He is a remarkable software professional and has a natural ability to teach and inspire. 
 
 ### Educational Resources
-- Uncle Bob’s Clean Code 
-- Government tax websites/legal resources 
-- Canva pallet picker (with colours amended by me)
+- [Uncle Bob’s Clean Code]()
+- Government tax websites/legal resources
+- [Canva pallet picker (with colours amended by me)](https://www.canva.com/colors/color-palette-generator/)
 - [Gang of Four Design Patterns](https://en.wikipedia.org/wiki/Design_Patterns)
 - [Django Best Practices: Projects vs Apps | LearnDjango.com](https://learndjango.com/tutorials/django-best-practices-projects-vs-apps)
 - [Django Stripe Subscriptions | TestDriven.io](https://testdriven.io/blog/django-stripe-subscriptions/)
