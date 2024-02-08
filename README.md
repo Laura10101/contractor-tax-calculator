@@ -289,14 +289,67 @@ The following diagram provides an early high-level design for how these differen
 ### Data Model
 
 **The Jurisdictions Domain**
+The data model for the Jurisdiction domain is shown below:
+
+![The jurisdiction data model](https://laura10101.github.io/contractor-tax-calculator/documentation/data-models/jurisdictions-api-data.jpg)
+
+Arguably, this data model is too small to be considered a context in its own right. However, as noted above this data model is referenced by both the Forms and Rules context. Given that the Jurisdiction data model is shared in this way, it was not logical to place the Jurisdiction data model in either the Forms or Rules.
+
+The alternative would have been to place Jurisdiction, Forms and Rules data in a single bounded context but I felt the resulting domain would have been too large with lots of unrelated functionality living behind a single API. This would have broken the single responsibility principle. I therefore felt splitting the Jurisdictions data out was the best option.
 
 **The Forms Domain**
+The data model for the Forms domain is shown below:
+
+![The forms data model](https://laura10101.github.io/contractor-tax-calculator/documentation/data-models/forms-api-data.jpg)
+
+In this data model, Questions for a single jurisdiction are grouped together into a Form. Given that the Form lives in a separate API, it holds the integer ID of the corresponding Jurisdiction rather than a Django foreign key. Holding the Foreign Key would have broken the microservices principle by allowing a model in one service to access the data inside another without going via the API.
+
+The model allows the admin to configure three types of question:
+
+- BooleanQuestions allow Yes or No as a response.
+- NumericQuestions allow numeric values to be provided as a response. These responses must fall within the range specified by the min_value and max_value attributes. The responses must also be an integer or a float depending on whether the is_integer field is true or false.
+- MultipleChoiceQuestions are composed of MultipleChoiceOptions. The response to a MultipleChoiceQuestion must be one of the options which is defined for that question.
 
 **The Rules Domain**
+The data model for the Rules domain is shown below:
+
+![The rules data model](https://laura10101.github.io/contractor-tax-calculator/documentation/data-models/rules-api-data.jpg)
+
+The Rules data model follows a similar pattern to the Questions data model. This is an implementation of the [Strategy Pattern](https://www.cs.up.ac.za/cs/lmarshall/TDP/Notes/_Chapter8_Strategy.pdf) which allows multiple implementations of the same function to be used interchangeably. In this case, the functions are the Validate and Calculate functions. This allows multiple rules of varying types to be defined for a jurisdiction and processed without complex conditional logic. Uncle Bob would like this!
+
+TaxCategory objects correspond to different types of tax (e.g., income, corporation, VAT, dividend, inheritance).
+
+RuleSets are used to group all of the tax Rules for a specific Jurisdiction and TaxCategory combination. For example, one RuleSet instance would be defined to hold Corporation Tax rules for France. Another would hold Corporation Tax rules for Germany, and so on.
+
+Three types of rule are supported:
+
+- **FlatRateRules** apply a single percentage to the full amount for a given income stream.
+- **TieredRateRules** apply tax in bands. Each band defined for the rule specifies a tax rate and the portion of the income stream to which that rate will be applied. For example, UK income tax may charge a rate of 0% on income up to £12,500, 20% on the portion of income between £12,500 to £45,000 and so on.
+- **SecondaryTieredRateRules** (also known as Tiered Rules with Progression) follow the same bands as a specified TieredRateRule (known as the primary rule). However, the secondary income stream starts to be taxed where the primary income ends. As an example, in the UK, dividend tax rates are set based on the total amount of income so if a person's salary falls half way through the higher rate (40%) tax band, the dividend income will start at that same point in the tax band.
+
+The Rules context also contains three models that hold the results of a tax calculation. Rather than just displaying the final amount of tax payable for each jurisdiction, I wanted to be able to display each step of the calculation to the IT Contractors so they can understand how the calculation was reached if they wish to. This data model allows the steps to be grouped and ordered.
+
+- **TaxCalculationResults** hold all of the steps for the entire calculation across all jurisdictions.
+- **TaxRuleSetResults** group the specific steps for a given RuleSet (tax category/jurisdiction combination).
+- **TaxRuleTierResults** hold the details and result of a specific calculation step.
+
+It's worth noting that these models do not hold foreign keys to any of the RuleSet or Rule data models but instead hold integer IDs referencing the RuleSet or Rule models, as well as the summary data for the associated rules and rulesets. The reason for this is to minimise the complexity of SQL queries when retrieving TaxCalculationResults. Instead of having to join the TaxRuleTierResults to the associated Rules in order to get the details of the step, all of the data needed to explain the step to the user is held within the TaxRuleTierResults.
 
 **The Subscriptions Domain**
+The data model for the Subscriptions domain is shown below:
+
+![The subscriptions data model](https://laura10101.github.io/contractor-tax-calculator/documentation/data-models/subscriptions-api-data.jpg)
 
 **The Payments Domain**
+The data model for the Payments domain is shown below:
+
+![The payments data model](https://laura10101.github.io/contractor-tax-calculator/documentation/data-models/payments-api-data.jpg)
+
+One important factor to note is that the Payment model holds the payment ID that is returned by Stripe for the payment. This is required to properly handle webhooks that are returned by Stripe. By storing the stripe_pid on the Payment model, the API can correctly identify the Payment entity to which a given webhook coming in from Stripe corresponds. This is needed since Stripe cannot hold the API's Payment.id value and a common identifier is needed between the two systems to allow the matching to take place.
+
+It is debatable whether the Payments context should really have been separated out from the Subscriptions context. Initially this decision was taken since the Payment functionality is very different to, and separate from, the functionality required to update Subscriptions. However, an alternative point of view is that the Pamyent process is simply part of the subscription user journey.
+
+One consequence of separating out the Payment and Subscription contexts was that it became harder to update a Subscription once Payment was completed. In a future version of the Tax Calculator, therefore, I would merge these two contexts together.
 
 ## Testing
 For all testing, please refer to the [TESTING.md](TESTING.md) file.
