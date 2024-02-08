@@ -5,15 +5,19 @@ from django.core.exceptions import ValidationError
 import pytest
 
 # Retrieving calculations
+
+
 @pytest.mark.django_db
 def test_get_calculations_for_null_username():
     calculations = get_calculations_for_user(None)
     assert calculations.count() == 0
 
+
 @pytest.mark.django_db
 def test_get_calculations_for_non_existent_username():
     calculations = get_calculations_for_user('Jimbo')
     assert calculations.count() == 0
+
 
 @pytest.mark.django_db
 def test_get_calculations_for_valid_username():
@@ -21,7 +25,11 @@ def test_get_calculations_for_valid_username():
     assert rule is not None
 
     jurisdiction_id = rule.ruleset.jurisdiction_id
-    calculation = create_calculation('bob', [jurisdiction_id], create_mock_variable_table())
+    calculation = create_calculation(
+        'bob',
+        [jurisdiction_id],
+        create_mock_variable_table()
+    )
     assert calculation is not None
     assert calculation.results.count() == 1
     assert calculation.results.first().results.count() == 1
@@ -34,10 +42,13 @@ def test_get_calculations_for_valid_username():
     assert calculation.results.first().results.count() == 1
 
 # Generating calculations
+
+
 @pytest.mark.django_db
 def test_create_calculation_with_no_jurisdictions():
     with pytest.raises(ValidationError):
         create_calculation('bob', [], create_mock_variable_table)
+
 
 @pytest.mark.django_db
 def test_create_calculation_with_single_jurisdiction():
@@ -55,6 +66,7 @@ def test_create_calculation_with_single_jurisdiction():
 
     assert tier_result.tax_payable == round(1000 * (20/100), 2)
 
+
 @pytest.mark.django_db
 def test_create_calculation_with_multiple_single_rule_jurisdictions():
     rule1 = create_mock_simple_tiered_rate_rule(8000, 45000, 'salary', 20)
@@ -64,7 +76,11 @@ def test_create_calculation_with_multiple_single_rule_jurisdictions():
     jursdiction_id_2 = rule2.ruleset.jurisdiction_id
 
     variable_table = create_mock_variable_table()
-    calculation = create_calculation('bob', [jursdiction_id_1, jursdiction_id_2], variable_table)
+    calculation = create_calculation(
+        'bob',
+        [jursdiction_id_1, jursdiction_id_2],
+        variable_table
+    )
 
     assert calculation is not None
     assert calculation.results.count() == 2
@@ -74,4 +90,5 @@ def test_create_calculation_with_multiple_single_rule_jurisdictions():
 
     ruleset_result_2 = calculation.results.all()[1]
     assert ruleset_result_2.results.count() == 1
-    assert ruleset_result_2.results.first().tax_payable == round(variable_table['dividends'] * (8/100), 2)
+    expected_tax = round(variable_table['dividends'] * (8/100), 2)
+    assert ruleset_result_2.results.first().tax_payable == expected_tax
