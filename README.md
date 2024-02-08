@@ -9,7 +9,7 @@ The goal of this calculator is to allow them to see an indicative calculation of
 
 The tax calculator could be expanded in the future to be of use to a wider demographic than just IT contractors. The software architecture of this project has been designed with scalability/xxxx? in mind, to ensure that additional jurisdictions and demographics can be added easily.
 
-![Am I responsive?](https://laura10101.github.io/kitten-calculator/documentation/screenshots/responsive-overview.jpg)
+![Am I responsive?](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/responsive-overview.jpg)
 
 ## Notes to Assessors
 The admin user site has been designed for a sophisticated professional tax adviser who has commissioned the project. As a result, and to keep the user experience streamlined, it does not explain tax concepts, rules, or basic instructions as the user would have in-depth knowledge of these. 
@@ -84,81 +84,81 @@ Font awesome was used to provide simple, clear graphics.
 
 As an IT contractor, I am first asked to choose whether I need to register or login:
 
-![The contractor index wireframe](https://laura10101.github.io/kitten-calculator/documentation/wireframes/contractor-index.png)
+![The contractor index wireframe](https://laura10101.github.io/contractor-tax-calculator/documentation/wireframes/contractor-index.png)
 
 If I choose to register, I am presented with a registration form:
 
-![The registration form wireframe](https://laura10101.github.io/kitten-calculator/documentation/wireframes/registration-form.png)
+![The registration form wireframe](https://laura10101.github.io/contractor-tax-calculator/documentation/wireframes/registration-form.png)
 
 If I choose to login, I am presented with a login form to access the Tax Calculator using my existing username and password:
 
-![The login form wireframe](https://laura10101.github.io/kitten-calculator/documentation/wireframes/login-form.png)
+![The login form wireframe](https://laura10101.github.io/contractor-tax-calculator/documentation/wireframes/login-form.png)
 
 When I login, I can see a summary of my past tax calculations, and my subscription status:
 
-![The contractor dashboard wireframe](https://laura10101.github.io/kitten-calculator/documentation/wireframes/dashboard.png)
+![The contractor dashboard wireframe](https://laura10101.github.io/contractor-tax-calculator/documentation/wireframes/dashboard.png)
 
 If my subscription has expired, or I have not subscribed yet, then I can choose to extend my subscription:
 
-![The subscription option page wireframe](https://laura10101.github.io/kitten-calculator/documentation/wireframes/subscription-option-form.png)
+![The subscription option page wireframe](https://laura10101.github.io/contractor-tax-calculator/documentation/wireframes/subscription-option-form.png)
 
 Once I have chosen my new subscription plan, I see a checkout page for my subscription:
 
-![The checkout form wireframe](https://laura10101.github.io/kitten-calculator/documentation/wireframes/checkout-form.png)
+![The checkout form wireframe](https://laura10101.github.io/contractor-tax-calculator/documentation/wireframes/checkout-form.png)
 
 When I have entered my payment details, payment is taken and I am shown a page confirming the status of the payment:
 
-![The payment status wireframe](https://laura10101.github.io/kitten-calculator/documentation/wireframes/payment-status.png)
+![The payment status wireframe](https://laura10101.github.io/contractor-tax-calculator/documentation/wireframes/payment-status.png)
 
 Once my payment has been completed, and my subscription updated, then I can start creating a tax calculation. The first step is to choose the countries that I want to compare:
 
-![The select jurisdictions page wireframe](https://laura10101.github.io/kitten-calculator/documentation/wireframes/calculation-jurisdictions.png)
+![The select jurisdictions page wireframe](https://laura10101.github.io/contractor-tax-calculator/documentation/wireframes/calculation-jurisdictions.png)
 
 Next, I enter my financial information following the on-screen instructions. Firstly, I select my income sources:
 
-![The income sources wireframe](https://laura10101.github.io/kitten-calculator/documentation/wireframes/calculation-income-sources.png)
+![The income sources wireframe](https://laura10101.github.io/contractor-tax-calculator/documentation/wireframes/calculation-income-sources.png)
 
 Then I enter my income details:
 
-![The income details wireframe](https://laura10101.github.io/kitten-calculator/documentation/wireframes/calculation-income.png)
+![The income details wireframe](https://laura10101.github.io/contractor-tax-calculator/documentation/wireframes/calculation-income.png)
 
 Finally, once I have provided all required data, my tax calculation is displayed:
 
-![The calculation results wireframe](https://laura10101.github.io/kitten-calculator/documentation/wireframes/calculation-results.png)
+![The calculation results wireframe](https://laura10101.github.io/contractor-tax-calculator/documentation/wireframes/calculation-results.png)
 
 **Admin Wireframes**
 
 As an admin, I can see a list of jurisdictions. I can choose to delete a jurisdiction, or add a new one:
 
-![The admin jurisdictions page wireframe](https://laura10101.github.io/kitten-calculator/documentation/wireframes/jurisdiction-list.png)
+![The admin jurisdictions page wireframe](https://laura10101.github.io/contractor-tax-calculator/documentation/wireframes/jurisdiction-list.png)
 
 If I choose to add a jurisdiction, then I am shown a form to enter jurisdiction details:
 
-![The admin add jurisdictions page wireframe](https://laura10101.github.io/kitten-calculator/documentation/wireframes/create-jurisdiction.png)
+![The admin add jurisdictions page wireframe](https://laura10101.github.io/contractor-tax-calculator/documentation/wireframes/create-jurisdiction.png)
 
 As an admin, I can see a list of tax categories. I can choose to add a new tax category, or delete one:
 
-![The admin tax categories page wireframe](https://laura10101.github.io/kitten-calculator/documentation/wireframes/tax-categories-list.png)
+![The admin tax categories page wireframe](https://laura10101.github.io/contractor-tax-calculator/documentation/wireframes/tax-categories-list.png)
 
 If I choose to add a tax category, then I am shown a form to enter tax category details:
 
-![The admin add tax category page wireframe](https://laura10101.github.io/kitten-calculator/documentation/wireframes/create-tax-category.png)
+![The admin add tax category page wireframe](https://laura10101.github.io/contractor-tax-calculator/documentation/wireframes/create-tax-category.png)
 
 As an admin, I can see a list of questions for a selected jurisdiction. I can choose to edit or delete existing questions, or add a new one:
 
-![The admin questions list wireframe](https://laura10101.github.io/kitten-calculator/documentation/wireframes/question-list.png)
+![The admin questions list wireframe](https://laura10101.github.io/contractor-tax-calculator/documentation/wireframes/question-list.png)
 
 When I choose to add or edit a question, I am shown a form to enter the details for the question. If I am editing an existing question, then the details of the current question are displayed:
 
-![The admin edit question modal wireframe](https://laura10101.github.io/kitten-calculator/documentation/wireframes/edit-question.png)
+![The admin edit question modal wireframe](https://laura10101.github.io/contractor-tax-calculator/documentation/wireframes/edit-question.png)
 
 As an admin, I can see a list of tax rates for a selected jurisdiction. I can choose to edit or delete existing tax rates, or add a new one:
 
-![The admin tax rates list wireframe](https://laura10101.github.io/kitten-calculator/documentation/wireframes/rule-list.png)
+![The admin tax rates list wireframe](https://laura10101.github.io/contractor-tax-calculator/documentation/wireframes/rule-list.png)
 
 When I choose to add or edit a tax rate, I am shown a form to enter the details for the tax rate. If I am editing an existing tax rate, then the details of the current tax rate are displayed:
 
-![The admin edit tax rate modal wireframe](https://laura10101.github.io/kitten-calculator/documentation/wireframes/edit-rule.png)
+![The admin edit tax rate modal wireframe](https://laura10101.github.io/contractor-tax-calculator/documentation/wireframes/edit-rule.png)
 
 ## Features
 
