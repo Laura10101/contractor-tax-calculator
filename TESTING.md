@@ -48,7 +48,9 @@ The following table lists the services tests for the Forms API. These tests can 
 ## Bugs
 
 ### Resolved Bugs
-For a complete list of resolved bugs, please see [BUGS.MD](BUGS.MD).
+A total of 222 bugs were identified and resolved during testsing for this project.
+
+For a complete list of these resolved bugs, please see [BUGS.MD](BUGS.MD).
 
 Alternatively, you can view the original list of resolved Github Bugs [here](https://github.com/Laura10101/contractor-tax-calculator/issues?q=is%3Aissue+is%3Aclosed).
 
