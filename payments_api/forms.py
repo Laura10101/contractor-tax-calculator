@@ -13,9 +13,6 @@ class PaymentForm(forms.ModelForm):
 
         model = Payment
         widgets = {
-            'subscription_id': autocomplete.ListSelect2(
-                'subscription-autocomplete'
-            ),
             'subscription_option_id': autocomplete.ListSelect2(
                 'subscription-option-autocomplete'
             ),

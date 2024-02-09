@@ -231,8 +231,7 @@ When I choose to add or edit a tax rate, I am shown a form to enter the details 
 - __The Financial Information form__
   - The application will display all questions associated with the selected Jurisdictions to the user.
   - The form guides the user through the process of responding to these questions.
-  - The form displays validation errors clearly to the user.
-  - The form cannot be submitted until all questions have been answered.
+  - The form displays validation errors clearly to the user and the form will not be submitted if validation errors are displayed.
 
 - __The Calculation Results page__
   - The application displays a summary of the calculation results to the user.

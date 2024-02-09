@@ -97,5 +97,5 @@ class Payment(models.Model):
         string = 'Payment #' + str(self.id) + ' of ' + str(self.total)
         string = string + ' for ' + subscription_length
         string = string + ' month extension to subscription '
-        string = string + str(self.subscription_id)
+        string = string + ' for user ' + str(self.user_id)
         return string
