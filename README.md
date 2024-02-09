@@ -164,6 +164,126 @@ When I choose to add or edit a tax rate, I am shown a form to enter the details 
 
 ### Existing Features
 
+- __A single landing page for Contractors and Admins__
+  - The application provides a welcome message when visitng the home URL, and provides clear links to guide the user towards the most relevant actions for them.
+
+- __An instructions page for Contractors__
+   - The application provides an instructions page for Contractors to help them understand the purpose of the Tax Calculator and the steps to use it.
+
+- __A login form__
+  - The application provides a login form to allow both Contractors and Admins to sign in.
+
+- __A registration form__
+  - The application provides a registration form to allow new Contractors to sign up.
+
+- __A registration form__
+  - The application provides a registration form to allow new Contractors to sign up.
+
+- __Toasts to display important Djanog messages to the user__
+  - The application will display Django-generated messages as toasts, allowing the user to view and then dismiss them.
+
+- __A dashboard for Contractors__
+  - The application provides a Contractor dashboard displaying their subscription status, recent payments, and their past tax calculations.
+
+- __Responsive navbar with relevant Contractor, Admin, and Account links clearly displayed__
+  - The application proivdes a navbar with separate drop-down menus for Contractor links, Admin links, and Account links.
+  - This allows all types of users to navigate around the site easily and access all features from any page.
+
+- __The Jurisdictions Selection form__
+  - The application provides a form allowing Contractors to select the jurisdictions they would like to include in tax calculations.
+  - The `Next` button is disabled until at least one jurisdiction has been selected.
+
+- __The Financial Information form__
+  - The application will display all questions associated with the selected Jurisdictions to the user.
+  - The form guides the user through the process of responding to these questions.
+  - The form displays validation errors clearly to the user.
+  - The form cannot be submitted until all questions have been answered.
+
+- __The Calculation Results page__
+  - The application displays a summary of the calculation results to the user.
+  - For each jurisdiction that was included in the calculation, a card is displayed providing a summary of the tax to be paid.
+  - The user can click the *View Details* button in order to see the detailed steps taken to calculate tax due for that Jurisdiction.
+
+- __The Calculation process breadcrumb__
+  - The application provides a breadcrumb to indicate to the user where they are in the process of producing a tax calculation.
+
+- __The Subscription Options form__
+  - The application provides a clear form that allows users to choose a subscription option.
+
+- __The Checkout form__
+  - The checkout form allows users to pay for their subscription via Stripe.
+
+- __The Admin landing page__
+  - The app provides an app for admins to choose between the basic admin app and the config app.
+  - This is required because I was unable to modify the default Django admin app to include a link to the config app, even with the support of a Code Institute tutor.
+
+- __The Basic admin app__
+  - The basic admin app is configured to allow admins to manage jurisdictions, tax categories, payments and subscriptions.
+
+- __Managing Jurisdictions__
+  - From the basic admin app, the user can choose the "Jurisdictions" link on the left hand side. From here they can create, edit, and delete Jurisdictions.
+
+- __Managing Tax Categories__
+  - From the basic admin app, the user can choose the "Tax Categories" link on the left hand side. From here they can create, edit, and delete Tax Categories.
+
+- __Managing Subscriptions__
+  - From the basic admin app, the user can choose the "Subscriptions" link on the left hand side. From here they can create, edit, and delete Subscriptions.
+
+- __Managing Payments__
+  - From the basic admin app, the user can choose the "Payments" link on the left hand side. From here they can create, edit, and delete Payments.
+
+- __Selecting Jurisdictions in the Config App__
+  - The select box at the top of the Config app allows the user to choose the jurisdiction for which they wish to manage rules and questions.
+
+- __Tooltips in the Config App__
+  - All buttons in the config app are marked up with tool tips to guide the user.
+
+- __The Question Display__
+  - The config app clearly displays a list of all questions for the selected jurisdiction to the user.
+  - For each question, a summary of the question is displayed.
+
+- __The Create Question journey__
+  - To create a new question for the selected jurisdiction, the users first choose the type of question they wish to create.
+  - The user then fills out the Create Question form as instructed on screen and clicks "Save Changes".
+
+- __The Edit Question journey__
+  - To edit an existing question, the user selects the Edit button next to a question and then completes the form that is displayed.
+
+- __Adding Multiple Choice Options__
+  - To add a multiple choice option, the user must first select a multiple choice question from the Questions display.
+  - Multiple choice options can only be added when the question is being edited (not created).
+  - Click the *Add Option* button at the bottom of the `Multiple Choice Question` form.
+
+- __Reordering Questions__
+  - To move questions up or down, the user clicks the Move Up or Move Down button next to a question.
+
+- __The Rulesets display__
+  - The config app clearly displays all rulesets for the selected jurisdiction to the user.
+  - For each ruleset, the rules defined under that ruleset are also displayed.
+
+- __The Create Ruleset journey__
+  - To create a new ruleset, the user clicks the Add Ruleset button at the top of the config app.
+  - The user then selects a tax category to create the ruleset for.
+
+- __Reordering Rulesets__
+  - To reorder rulesets, the user clicks the Move Up or Move Down button at the top of the Ruleset display.
+
+- __The Add Rule journey__
+  - To add a rule, the user clicks the Add Rule button at the top of the Ruleset display.
+  - The user then chooses a Rule Type.
+  - The user then fills out the `Create Rule` form that is displayed.
+
+- __Editing Rules__
+  - To edit a rule, the user clicks the Edit Rule button next to any rule in the Rulesets display.
+  - From here, they complete the form that is displayed and click *Save Changes*
+
+- __Reordering Rules__
+  - To reorder rules, the user clicks the Move Up or Move Down button next to any Rule.
+
+- __Adding Rule Tiers__
+  - To add a primary or secondary rule tier, the user first selects Edit next to either a Tiered Rate rule or a Tiered Rate rule with progression.
+  - The user can then choose to add a tier by clicking the *+ Tiers* button at the bottomn of the form.
+
 ### Features Left to Implement
 For this project I had to be very careful to keep the scope as tight as possible since there was a large amount of legal research, algorithms and architecture to carry out. With the limited time available, I had to prioritise. I architected the project in an agile way, to ensure that I could come back to it at a later date and add functionality as easily as possible. With more time, I would consider adding the following functionality:
 
