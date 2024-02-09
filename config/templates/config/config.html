@@ -954,173 +954,73 @@
                 </section>
             <!-- End Page Title -->
             <!-- Begin main content -->
-                <main>
-                    <!-- Begin control panel -->
-                        <section>
-                            <div class="control-panel">
-                                <div class="row jurisdiction-select-panel">
-                                    <!-- Begin jurisdiction select -->
-                                        <div class="col">
-                                            <label for="jurisdictions-select">Choose Jurisdiction</label>
-                                            <select class="custom-select" id="jurisdictions-select">
-                                            </select>
-                                        </div>
-                                    <!-- End jurisdiction select -->
-                                </div>
-
-                                <div class="row tab-controls">
-                                    <!-- Begin tab controls -->
-                                        <div class="col">
-                                            <div class="nav nav-pills" id="nav-tab" role="tablist">
-                                                <button class="nav-link active mt-3 border" id="nav-forms-tab" data-toggle="tab" data-target="#nav-forms"
-                                                    type="button" role="tab" aria-controls="nav-forms" aria-selected="true"
-                                                    data-toggle="tooltip" data-placement="top"
-                                                    title="Add, edit, and remove the questions that IT contractors need to be asked to calculate tax for this jurisdiction">
-                                                    Manage Questions
-                                                </button>
-                                                <button class="nav-link mt-3 border" id="nav-rules-tab" data-toggle="tab" data-target="#nav-rules"
-                                                    type="button" role="tab" aria-controls="nav-rules" aria-selected="false"
-                                                    data-toggle="tooltip" data-placement="top"
-                                                    title="Add, edit, and remove the tax rules that are used to calculate tax for this jurisdiction">
-                                                    Manage Tax Rates
-                                                </button>
-                                            </div>
-                                        </div>
-                                    <!-- End tab controls -->
-                                </div>
+                <!-- Begin control panel -->
+                    <section>
+                        <div class="control-panel">
+                            <div class="row jurisdiction-select-panel">
+                                <!-- Begin jurisdiction select -->
+                                    <div class="col">
+                                        <label for="jurisdictions-select">Choose Jurisdiction</label>
+                                        <select class="custom-select" id="jurisdictions-select">
+                                        </select>
+                                    </div>
+                                <!-- End jurisdiction select -->
                             </div>
-                        </section>
-                    <!-- End control panel -->
 
-                    <!-- Begin tab content -->
-                        <div class="tab-content border" id="nav-tabContent">
-                            <!-- Forms config -->
-                            <div class="tab-pane fade show active" id="nav-forms" role="tabpanel" aria-labelledby="nav-forms-tab">
-                                <div class="container">
-                                    <!-- Form manager options -->
-                                    <div class="row">
-                                        <div class="col manage-option-col">
-                                            <button type="button" class="btn btn-primary mt-3" data-toggle="modal" data-target="#question-type-modal"
-                                                data-toggle="tooltip" data-placement="top" title="Add a new question">
-                                                <i class="fas fa-plus"></i> Question
+                            <div class="row tab-controls">
+                                <!-- Begin tab controls -->
+                                    <div class="col">
+                                        <div class="nav nav-pills" id="nav-tab" role="tablist">
+                                            <button class="nav-link active mt-3 border" id="nav-forms-tab" data-toggle="tab" data-target="#nav-forms"
+                                                type="button" role="tab" aria-controls="nav-forms" aria-selected="true">
+                                                <b data-toggle="tooltip" data-placement="top"
+                                                title="Add, edit, and remove the questions that IT contractors need to be asked to calculate tax for this jurisdiction">
+                                                    Manage Questions
+                                                </b>
+                                            </button>
+                                            <button class="nav-link mt-3 border" id="nav-rules-tab" data-toggle="tab" data-target="#nav-rules"
+                                                type="button" role="tab" aria-controls="nav-rules" aria-selected="false">
+                                                <b data-toggle="tooltip" data-placement="top"
+                                                 title="Add, edit, and remove the tax rules that are used to calculate tax for this jurisdiction">
+                                                    Manage Tax Rates
+                                                </b>
                                             </button>
                                         </div>
                                     </div>
-                                    <!-- End form manager options -->
-                                    <div class="row">
-                                        <div class="col" id="questions-display-container">
-                                            <!-- Boolean question -->
-                                            <div class="card hidden" id="boolean-question-display-card">
-                                                <div class="card-body">
-                                                    <div class="row mb-2">
-                                                        <div class="col">
-                                                            <strong class="lead"><i class="fas fa-toggle-on"></i></strong>&nbsp;
-                                                            <strong class="lead">Yes/No Question</strong>
-                                                        </div>
-                                                        <div class="col-2 text-right">
-                                                            <!-- Question actions -->
-                                                                <i class="fas fa-edit edit-button"
-                                                                    data-toggle="tooltip" data-placement="top" title="Edit this question"></i>
-                                                                <i class="fas fa-trash-alt delete-button"
-                                                                    data-toggle="tooltip" data-placement="top" title="Delete this question"></i>
-                                                                <i class="fas fa-arrow-up move-up-button"
-                                                                    data-toggle="tooltip" data-placement="top" title="Move this question up"></i>
-                                                                <i class="fas fa-arrow-down move-down-button"
-                                                                    data-toggle="tooltip" data-placement="top" title="Move this question down"></i>
-                                                            <!-- End question actions -->
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col">
-                                                            <table class="table table-borderless">
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td class="entity-field-name-col"><b>Question Text</b></td>
-                                                                        <td id="boolean-question-display-text" class="entity-field-value-col">Text</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td><b>Data Name</b></td>
-                                                                        <td id="boolean-question-display-variable-name">Variable Name</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td><b>Explainer</b></td>
-                                                                        <td id="boolean-question-display-explainer">Explainer</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td><b>Is Mandatory?</b></td>
-                                                                        <td id="boolean-question-display-mandatory">Mandatory</td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- End boolean question -->
+                                <!-- End tab controls -->
+                            </div>
+                        </div>
+                    </section>
+                <!-- End control panel -->
 
-                                            <!-- Numeric question -->
-                                            <div class="card hidden" id="numeric-question-display-card">
-                                                <div class="card-body">
-                                                    <div class="row mb-2">
-                                                        <div class="col">
-                                                            <strong class="lead"><i class="fas fa-chart-pie"></i></strong>&nbsp;
-                                                            <strong class="lead">Numeric Question</strong>
-                                                        </div>
-                                                        <div class="col-2 text-right">
-                                                            <!-- Question actions -->
-                                                                <i class="fas fa-edit edit-button"
-                                                                    data-toggle="tooltip" data-placement="top" title="Edit this question"></i>
-                                                                <i class="fas fa-trash-alt delete-button"
-                                                                    data-toggle="tooltip" data-placement="top" title="Delete this question"></i>
-                                                                <i class="fas fa-arrow-up move-up-button"
-                                                                    data-toggle="tooltip" data-placement="top" title="Move this question up"></i>
-                                                                <i class="fas fa-arrow-down move-down-button"
-                                                                    data-toggle="tooltip" data-placement="top" title="Move this question down"></i>
-                                                            <!-- End question actions -->
-                                                        </div>
+                <!-- Begin tab content -->
+                    <div class="tab-content border" id="nav-tabContent">
+                        <!-- Forms config -->
+                        <div class="tab-pane fade show active" id="nav-forms" role="tabpanel" aria-labelledby="nav-forms-tab">
+                            <div class="container">
+                                <!-- Form manager options -->
+                                <div class="row">
+                                    <div class="col manage-option-col">
+                                        <button type="button" class="btn btn-primary mt-3" data-toggle="modal" data-target="#question-type-modal">
+                                            <b data-toggle="tooltip" data-placement="top" title="Add a new question">
+                                                <i class="fas fa-plus"></i> Question
+                                            </b>
+                                        </button>
+                                    </div>
+                                </div>
+                                <!-- End form manager options -->
+                                <div class="row">
+                                    <div class="col" id="questions-display-container">
+                                        <!-- Boolean question -->
+                                        <div class="card hidden" id="boolean-question-display-card">
+                                            <div class="card-body">
+                                                <div class="row mb-2">
+                                                    <div class="col">
+                                                        <strong class="lead"><i class="fas fa-toggle-on"></i></strong>&nbsp;
+                                                        <strong class="lead">Yes/No Question</strong>
                                                     </div>
-                                                    <div class="row">
-                                                        <div class="col">
-                                                            <table class="table table-borderless">
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td class="entity-field-name-col"><b>Question Text</b></td>
-                                                                        <td id="numeric-question-display-text" class="entity-field-value-col">Text</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td><b>Data Name</b></td>
-                                                                        <td id="numeric-question-display-variable-name">Variable Name</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td><b>Explainer</b></td>
-                                                                        <td id="numeric-question-display-explainer">Explainer</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td><b>Is Mandatory?</b></td>
-                                                                        <td id="numeric-question-display-mandatory">Mandatory</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td><b>Validation Rule</b></td>
-                                                                        <td id="numeric-question-display-validation-rule-summary">Integer between 0 and 100</td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- End numeric question -->
-
-                                            <!-- Multiple choice question -->
-                                            <div class="card hidden" id="multichoice-question-display-card">
-                                                <div class="card-body">
-                                                    <div class="row mb-2">
-                                                        <div class="col">
-                                                            <strong class="lead"><i class="fas fa-tasks"></i></strong>&nbsp;
-                                                            <strong class="lead">Multiple Choice Question</strong>
-                                                        </div>
-                                                        <div class="col-2 text-right">
-                                                            <!-- Question actions -->
+                                                    <div class="col-2 text-right">
+                                                        <!-- Question actions -->
                                                             <i class="fas fa-edit edit-button"
                                                                 data-toggle="tooltip" data-placement="top" title="Edit this question"></i>
                                                             <i class="fas fa-trash-alt delete-button"
@@ -1129,241 +1029,342 @@
                                                                 data-toggle="tooltip" data-placement="top" title="Move this question up"></i>
                                                             <i class="fas fa-arrow-down move-down-button"
                                                                 data-toggle="tooltip" data-placement="top" title="Move this question down"></i>
-                                                            <!-- End question actions -->
-                                                        </div>
+                                                        <!-- End question actions -->
                                                     </div>
-                                                    <div class="row">
-                                                        <div class="col">
-                                                            <table class="table table-borderless">
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td class="entity-field-name-col"><b>Question Text</b></td>
-                                                                        <td id="multichoice-question-display-text" class="entity-field-value-col">Text</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td><b>Data Name</b></td>
-                                                                        <td id="multichoice-question-display-variable-name">Variable Name</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td><b>Explainer</b></td>
-                                                                        <td id="multichoice-question-display-explainer">Explainer</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td><b>Is Mandatory?</b></td>
-                                                                        <td id="multichoice-question-display-mandatory">Mandatory</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td><b>Allow Multiple Selections?</b></td>
-                                                                        <td id="multichoice-question-display-multiselect">Multiselect</td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <table class="table table-borderless">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td class="entity-field-name-col"><b>Question Text</b></td>
+                                                                    <td id="boolean-question-display-text" class="entity-field-value-col">Text</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><b>Data Name</b></td>
+                                                                    <td id="boolean-question-display-variable-name">Variable Name</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><b>Explainer</b></td>
+                                                                    <td id="boolean-question-display-explainer">Explainer</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><b>Is Mandatory?</b></td>
+                                                                    <td id="boolean-question-display-mandatory">Mandatory</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!-- End multiple choice question -->
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- End forms config -->
+                                        <!-- End boolean question -->
 
-                            <!-- Rules config -->
-                            <div class="tab-pane fade" id="nav-rules" role="tabpanel" aria-labelledby="nav-rules-tab">
-                                <div class="container">
-                                    <!-- Rule manager options -->
-                                    <div class="row">
-                                        <div class="col manage-option-col">
-                                            <button type="button" class="btn btn-primary mt-3" onclick="createRuleset()"
-                                                data-toggle="tooltip" data-placement="top"
-                                                title="Tax rule collections group rules by the category of tax they relate to. Click to create a new tax rule collection.">
-                                                <i class="fas fa-plus"></i>
-                                                Tax Rule Collection
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <!-- Rule manager options -->
-
-                                    <div class="row">
-                                        <div class="col">
-                                            <!-- Ruleset -->
-                                            <div class="row">
-                                                <div class="col" id="rulesets-display-container">
-                                                    <div class="card hidden ruleset-container" id="ruleset-display-card">
-                                                        <div class="card-body">
-                                                            <div class="row mb-2">
-                                                                <div class="col">
-                                                                    <strong class="lead"><i class="fas fa-list-ol"></i></strong>&nbsp;
-                                                                    <strong id="ruleset-display-card-name" class="lead">Ruleset name</strong>
-                                                                </div>
-                                                                <div class="col-2 text-right">
-                                                                    <!-- Ruleset actions -->
-                                                                        <i class="fas fa-plus add-rule-button"
-                                                                            data-toggle="tooltip" data-placement="top" title="Edit this ruleset"></i>
-                                                                        <i class="fas fa-trash-alt delete-ruleset-button"
-                                                                            data-toggle="tooltip" data-placement="top" title="Delete this ruleset"></i>
-                                                                        <i class="fas fa-arrow-up move-ruleset-up-button"
-                                                                            data-toggle="tooltip" data-placement="top" title="Move this ruleset up"></i>
-                                                                        <i class="fas fa-arrow-down move-ruleset-down-button"
-                                                                            data-toggle="tooltip" data-placement="top" title="Move this ruleset down"></i>
-                                                                    <!-- End ruleset actions -->
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col" id="ruleset-display-card-rules">
-                                                                    <!-- Rules -->
-                                                                        <!-- Flat rate rule -->
-                                                                        <div class="card hidden rule-container" id="flat-rate-rule-display-card">
-                                                                            <div class="card-body">
-                                                                                <table class="table table-borderless">
-                                                                                    <tbody>
-                                                                                        <tr>
-                                                                                            <td rowspan="4" class="entity-type-col">
-                                                                                                <i class="fas fa-percent"></i>
-                                                                                                Flat rate
-                                                                                            </td>
-                                                                                            <td class="entity-field-name-col"><b>Name</b></td>
-                                                                                            <td id="flat-rate-rule-display-card-name" class="entity-field-value-col">Name</td>
-                                                                                            <td rowspan="4" class="entity-actions-col">
-                                                                                                <i class="fas fa-edit edit-button"
-                                                                                                    data-toggle="tooltip" data-placement="top"
-                                                                                                    title="Edit this rule"></i>
-                                                                                                <i class="fas fa-trash-alt delete-button"
-                                                                                                    data-toggle="tooltip" data-placement="top"
-                                                                                                    title="Delete this rule"></i>
-                                                                                                <i class="fas fa-arrow-up move-up-button"
-                                                                                                    data-toggle="tooltip" data-placement="top"
-                                                                                                    title="Move this rule up"></i>
-                                                                                                <i class="fas fa-arrow-down move-down-button"
-                                                                                                    data-toggle="tooltip" data-placement="top"
-                                                                                                    title="Move this rule down"></i>
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <td><b>Income Source</b></td>
-                                                                                            <td id="flat-rate-rule-display-card-variable-name">Variable Name</td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <td><b>Explainer</b></td>
-                                                                                            <td id="flat-rate-rule-display-card-explainer">Explainer</td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <td><b>Tax Rate</b></td>
-                                                                                            <td id="flat-rate-rule-display-card-tax-rate">Flat rate</td>
-                                                                                        </tr>
-                                                                                    </tbody>
-                                                                                </table>
-                                                                            </div>
-                                                                        </div>
-                                                                        <!-- End flat rate rule -->
-
-                                                                        <!-- Tiered rate rule -->
-                                                                        <div class="card hidden rule-container" id="tiered-rate-rule-display-card">
-                                                                            <div class="card-body">
-                                                                                <table class="table table-borderless">
-                                                                                    <tbody>
-                                                                                        <tr>
-                                                                                            <td rowspan="3" class="entity-type-col">
-                                                                                                <i class="fas fa-layer-group"></i>
-                                                                                                Tiered rate
-                                                                                            </td>
-                                                                                            <td class="entity-field-name-col"><b>Name</b></td>
-                                                                                            <td id="tiered-rate-rule-display-card-name" class="entity-field-value-col">
-                                                                                                Name
-                                                                                            </td>
-                                                                                            <td rowspan="3" class="entity-actions-col">
-                                                                                                <i class="fas fa-edit edit-button"
-                                                                                                    data-toggle="tooltip" data-placement="top"
-                                                                                                    title="Edit this rule"></i>
-                                                                                                <i class="fas fa-trash-alt delete-button"
-                                                                                                    data-toggle="tooltip" data-placement="top"
-                                                                                                    title="Delete this rule"></i>
-                                                                                                <i class="fas fa-arrow-up move-up-button"
-                                                                                                    data-toggle="tooltip" data-placement="top"
-                                                                                                    title="Move this rule up"></i>
-                                                                                                <i class="fas fa-arrow-down move-down-button"
-                                                                                                    data-toggle="tooltip" data-placement="top"
-                                                                                                    title="Move this rule down"></i>
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <td><b>Income Source</b></td>
-                                                                                            <td id="tiered-rate-rule-display-card-variable-name">Variable Name</td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <td><b>Explainer</b></td>
-                                                                                            <td id="tiered-rate-rule-display-card-explainer">Explainer</td>
-                                                                                        </tr>
-                                                                                    </tbody>
-                                                                                </table>
-                                                                            </div>
-                                                                        </div>
-                                                                        <!-- End tiered rate rule -->
-
-                                                                        <!-- Secondary tiered rate rule -->
-                                                                        <div class="card hidden rule-container" id="secondary-tiered-rate-rule-display-card">
-                                                                            <div class="card-body">
-                                                                                <table class="table table-borderless">
-                                                                                    <tbody>
-                                                                                        <tr>
-                                                                                            <td rowspan="4" class="entity-type-col">
-                                                                                                <i class="fas fa-link"></i>
-                                                                                                Progressive tiered rate
-                                                                                            </td>
-                                                                                            <td class="entity-field-name-col"><b>Name</b></td>
-                                                                                            <td id="secondary-tiered-rate-rule-display-card-name"
-                                                                                                class="entity-field-value-col">
-                                                                                                Name
-                                                                                            </td>
-                                                                                            <td rowspan="4" class="entity-actions-col">
-                                                                                                <i class="fas fa-edit edit-button"
-                                                                                                    data-toggle="tooltip" data-placement="top"
-                                                                                                    title="Edit this rule"></i>
-                                                                                                <i class="fas fa-trash-alt delete-button"
-                                                                                                    data-toggle="tooltip" data-placement="top"
-                                                                                                    title="Delete this rule"></i>
-                                                                                                <i class="fas fa-arrow-up move-up-button"
-                                                                                                    data-toggle="tooltip" data-placement="top"
-                                                                                                    title="Move this rule up"></i>
-                                                                                                <i class="fas fa-arrow-down move-down-button"
-                                                                                                    data-toggle="tooltip" data-placement="top"
-                                                                                                    title="Move this rule down"></i>
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <td><b>Income Source</b></td>
-                                                                                            <td id="secondary-tiered-rate-rule-display-card-variable-name">Variable Name</td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <td><b>Explainer</b></td>
-                                                                                            <td id="secondary-tiered-rate-rule-display-card-explainer">Explainer</td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <td><b>Primary Rule</b></td>
-                                                                                            <td id="secondary-tiered-rate-rule-display-card-primary-rule">Primary rule</td>
-                                                                                        </tr>
-                                                                                    </tbody>
-                                                                                </table>
-                                                                            </div>
-                                                                        </div>
-                                                                        <!-- End secondary tiered rate rule -->
-                                                                    <!-- End rules -->
-                                                                </div>
-                                                            </div>               
-                                                        </div>
+                                        <!-- Numeric question -->
+                                        <div class="card hidden" id="numeric-question-display-card">
+                                            <div class="card-body">
+                                                <div class="row mb-2">
+                                                    <div class="col">
+                                                        <strong class="lead"><i class="fas fa-chart-pie"></i></strong>&nbsp;
+                                                        <strong class="lead">Numeric Question</strong>
+                                                    </div>
+                                                    <div class="col-2 text-right">
+                                                        <!-- Question actions -->
+                                                            <i class="fas fa-edit edit-button"
+                                                                data-toggle="tooltip" data-placement="top" title="Edit this question"></i>
+                                                            <i class="fas fa-trash-alt delete-button"
+                                                                data-toggle="tooltip" data-placement="top" title="Delete this question"></i>
+                                                            <i class="fas fa-arrow-up move-up-button"
+                                                                data-toggle="tooltip" data-placement="top" title="Move this question up"></i>
+                                                            <i class="fas fa-arrow-down move-down-button"
+                                                                data-toggle="tooltip" data-placement="top" title="Move this question down"></i>
+                                                        <!-- End question actions -->
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <table class="table table-borderless">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td class="entity-field-name-col"><b>Question Text</b></td>
+                                                                    <td id="numeric-question-display-text" class="entity-field-value-col">Text</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><b>Data Name</b></td>
+                                                                    <td id="numeric-question-display-variable-name">Variable Name</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><b>Explainer</b></td>
+                                                                    <td id="numeric-question-display-explainer">Explainer</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><b>Is Mandatory?</b></td>
+                                                                    <td id="numeric-question-display-mandatory">Mandatory</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><b>Validation Rule</b></td>
+                                                                    <td id="numeric-question-display-validation-rule-summary">Integer between 0 and 100</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!-- End ruleset -->
                                         </div>
+                                        <!-- End numeric question -->
+
+                                        <!-- Multiple choice question -->
+                                        <div class="card hidden" id="multichoice-question-display-card">
+                                            <div class="card-body">
+                                                <div class="row mb-2">
+                                                    <div class="col">
+                                                        <strong class="lead"><i class="fas fa-tasks"></i></strong>&nbsp;
+                                                        <strong class="lead">Multiple Choice Question</strong>
+                                                    </div>
+                                                    <div class="col-2 text-right">
+                                                        <!-- Question actions -->
+                                                        <i class="fas fa-edit edit-button"
+                                                            data-toggle="tooltip" data-placement="top" title="Edit this question"></i>
+                                                        <i class="fas fa-trash-alt delete-button"
+                                                            data-toggle="tooltip" data-placement="top" title="Delete this question"></i>
+                                                        <i class="fas fa-arrow-up move-up-button"
+                                                            data-toggle="tooltip" data-placement="top" title="Move this question up"></i>
+                                                        <i class="fas fa-arrow-down move-down-button"
+                                                            data-toggle="tooltip" data-placement="top" title="Move this question down"></i>
+                                                        <!-- End question actions -->
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <table class="table table-borderless">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td class="entity-field-name-col"><b>Question Text</b></td>
+                                                                    <td id="multichoice-question-display-text" class="entity-field-value-col">Text</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><b>Data Name</b></td>
+                                                                    <td id="multichoice-question-display-variable-name">Variable Name</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><b>Explainer</b></td>
+                                                                    <td id="multichoice-question-display-explainer">Explainer</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><b>Is Mandatory?</b></td>
+                                                                    <td id="multichoice-question-display-mandatory">Mandatory</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><b>Allow Multiple Selections?</b></td>
+                                                                    <td id="multichoice-question-display-multiselect">Multiselect</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- End multiple choice question -->
                                     </div>
                                 </div>
                             </div>
-                            <!-- End rules config -->
                         </div>
-                    <!-- End tab content -->
-                </main>
+                        <!-- End forms config -->
+
+                        <!-- Rules config -->
+                        <div class="tab-pane fade" id="nav-rules" role="tabpanel" aria-labelledby="nav-rules-tab">
+                            <div class="container">
+                                <!-- Rule manager options -->
+                                <div class="row">
+                                    <div class="col manage-option-col">
+                                        <button type="button" class="btn btn-primary mt-3" onclick="createRuleset()"
+                                            data-toggle="tooltip" data-placement="top"
+                                            title="Tax rule collections group rules by the category of tax they relate to. Click to create a new tax rule collection.">
+                                            <i class="fas fa-plus"></i>
+                                            Tax Rule Collection
+                                        </button>
+                                    </div>
+                                </div>
+                                <!-- Rule manager options -->
+
+                                <div class="row">
+                                    <div class="col">
+                                        <!-- Ruleset -->
+                                        <div class="row">
+                                            <div class="col" id="rulesets-display-container">
+                                                <div class="card hidden ruleset-container" id="ruleset-display-card">
+                                                    <div class="card-body">
+                                                        <div class="row mb-2">
+                                                            <div class="col">
+                                                                <strong class="lead"><i class="fas fa-list-ol"></i></strong>&nbsp;
+                                                                <strong id="ruleset-display-card-name" class="lead">Ruleset name</strong>
+                                                            </div>
+                                                            <div class="col-2 text-right">
+                                                                <!-- Ruleset actions -->
+                                                                    <i class="fas fa-plus add-rule-button"
+                                                                        data-toggle="tooltip" data-placement="top" title="Edit this ruleset"></i>
+                                                                    <i class="fas fa-trash-alt delete-ruleset-button"
+                                                                        data-toggle="tooltip" data-placement="top" title="Delete this ruleset"></i>
+                                                                    <i class="fas fa-arrow-up move-ruleset-up-button"
+                                                                        data-toggle="tooltip" data-placement="top" title="Move this ruleset up"></i>
+                                                                    <i class="fas fa-arrow-down move-ruleset-down-button"
+                                                                        data-toggle="tooltip" data-placement="top" title="Move this ruleset down"></i>
+                                                                <!-- End ruleset actions -->
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col" id="ruleset-display-card-rules">
+                                                                <!-- Rules -->
+                                                                    <!-- Flat rate rule -->
+                                                                    <div class="card hidden rule-container" id="flat-rate-rule-display-card">
+                                                                        <div class="card-body">
+                                                                            <table class="table table-borderless">
+                                                                                <tbody>
+                                                                                    <tr>
+                                                                                        <td rowspan="4" class="entity-type-col">
+                                                                                            <i class="fas fa-percent"></i>
+                                                                                            Flat rate
+                                                                                        </td>
+                                                                                        <td class="entity-field-name-col"><b>Name</b></td>
+                                                                                        <td id="flat-rate-rule-display-card-name" class="entity-field-value-col">Name</td>
+                                                                                        <td rowspan="4" class="entity-actions-col">
+                                                                                            <i class="fas fa-edit edit-button"
+                                                                                                data-toggle="tooltip" data-placement="top"
+                                                                                                title="Edit this rule"></i>
+                                                                                            <i class="fas fa-trash-alt delete-button"
+                                                                                                data-toggle="tooltip" data-placement="top"
+                                                                                                title="Delete this rule"></i>
+                                                                                            <i class="fas fa-arrow-up move-up-button"
+                                                                                                data-toggle="tooltip" data-placement="top"
+                                                                                                title="Move this rule up"></i>
+                                                                                            <i class="fas fa-arrow-down move-down-button"
+                                                                                                data-toggle="tooltip" data-placement="top"
+                                                                                                title="Move this rule down"></i>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td><b>Income Source</b></td>
+                                                                                        <td id="flat-rate-rule-display-card-variable-name">Variable Name</td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td><b>Explainer</b></td>
+                                                                                        <td id="flat-rate-rule-display-card-explainer">Explainer</td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td><b>Tax Rate</b></td>
+                                                                                        <td id="flat-rate-rule-display-card-tax-rate">Flat rate</td>
+                                                                                    </tr>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!-- End flat rate rule -->
+
+                                                                    <!-- Tiered rate rule -->
+                                                                    <div class="card hidden rule-container" id="tiered-rate-rule-display-card">
+                                                                        <div class="card-body">
+                                                                            <table class="table table-borderless">
+                                                                                <tbody>
+                                                                                    <tr>
+                                                                                        <td rowspan="3" class="entity-type-col">
+                                                                                            <i class="fas fa-layer-group"></i>
+                                                                                            Tiered rate
+                                                                                        </td>
+                                                                                        <td class="entity-field-name-col"><b>Name</b></td>
+                                                                                        <td id="tiered-rate-rule-display-card-name" class="entity-field-value-col">
+                                                                                            Name
+                                                                                        </td>
+                                                                                        <td rowspan="3" class="entity-actions-col">
+                                                                                            <i class="fas fa-edit edit-button"
+                                                                                                data-toggle="tooltip" data-placement="top"
+                                                                                                title="Edit this rule"></i>
+                                                                                            <i class="fas fa-trash-alt delete-button"
+                                                                                                data-toggle="tooltip" data-placement="top"
+                                                                                                title="Delete this rule"></i>
+                                                                                            <i class="fas fa-arrow-up move-up-button"
+                                                                                                data-toggle="tooltip" data-placement="top"
+                                                                                                title="Move this rule up"></i>
+                                                                                            <i class="fas fa-arrow-down move-down-button"
+                                                                                                data-toggle="tooltip" data-placement="top"
+                                                                                                title="Move this rule down"></i>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td><b>Income Source</b></td>
+                                                                                        <td id="tiered-rate-rule-display-card-variable-name">Variable Name</td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td><b>Explainer</b></td>
+                                                                                        <td id="tiered-rate-rule-display-card-explainer">Explainer</td>
+                                                                                    </tr>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!-- End tiered rate rule -->
+
+                                                                    <!-- Secondary tiered rate rule -->
+                                                                    <div class="card hidden rule-container" id="secondary-tiered-rate-rule-display-card">
+                                                                        <div class="card-body">
+                                                                            <table class="table table-borderless">
+                                                                                <tbody>
+                                                                                    <tr>
+                                                                                        <td rowspan="4" class="entity-type-col">
+                                                                                            <i class="fas fa-link"></i>
+                                                                                            Progressive tiered rate
+                                                                                        </td>
+                                                                                        <td class="entity-field-name-col"><b>Name</b></td>
+                                                                                        <td id="secondary-tiered-rate-rule-display-card-name"
+                                                                                            class="entity-field-value-col">
+                                                                                            Name
+                                                                                        </td>
+                                                                                        <td rowspan="4" class="entity-actions-col">
+                                                                                            <i class="fas fa-edit edit-button"
+                                                                                                data-toggle="tooltip" data-placement="top"
+                                                                                                title="Edit this rule"></i>
+                                                                                            <i class="fas fa-trash-alt delete-button"
+                                                                                                data-toggle="tooltip" data-placement="top"
+                                                                                                title="Delete this rule"></i>
+                                                                                            <i class="fas fa-arrow-up move-up-button"
+                                                                                                data-toggle="tooltip" data-placement="top"
+                                                                                                title="Move this rule up"></i>
+                                                                                            <i class="fas fa-arrow-down move-down-button"
+                                                                                                data-toggle="tooltip" data-placement="top"
+                                                                                                title="Move this rule down"></i>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td><b>Income Source</b></td>
+                                                                                        <td id="secondary-tiered-rate-rule-display-card-variable-name">Variable Name</td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td><b>Explainer</b></td>
+                                                                                        <td id="secondary-tiered-rate-rule-display-card-explainer">Explainer</td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td><b>Primary Rule</b></td>
+                                                                                        <td id="secondary-tiered-rate-rule-display-card-primary-rule">Primary rule</td>
+                                                                                    </tr>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!-- End secondary tiered rate rule -->
+                                                                <!-- End rules -->
+                                                            </div>
+                                                        </div>               
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- End ruleset -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End rules config -->
+                    </div>
+                <!-- End tab content -->
             <!-- End main content -->
         </div>
     <!-- End page content -->
