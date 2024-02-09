@@ -592,20 +592,29 @@ The second warning relates to the use of document.write() to populate the DOM wh
 ## Responsiveness
 
 ### The Index Page
+![Mobile compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/responsiveness/index.png)
 
 ### The Contractor Dashboard
+![Mobile compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/responsiveness/contractor-dashboard.png)
 
 ### The Subscription Options Page
+![Mobile compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/responsiveness/subscription-options.png)
 
 ### The Checkout Form
+![Mobile compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/responsiveness/checkout.png)
 
 ### The Payment Status Page
+![Mobile compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/responsiveness/payment-status.png)
 
 ### The Select Jurisdictions Form
+![Mobile compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/responsiveness/select-jurisdictions.png)
 
 ### The Financial Information Form
+![Mobile compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/responsiveness/financial-info.png)
 
 ### The Tax Calculation Results Page
+![Mobile compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/responsiveness/calculation-results.png)
+![Mobile compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/responsiveness/calculation-results-details.png)
 
 ### The Config App - Questions Display
 
