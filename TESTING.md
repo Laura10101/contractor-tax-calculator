@@ -1,10 +1,225 @@
 # Testing
 
+## User Story Testing
+
+### As an IT contractor  I want to…..
+1. [Select the jurisdictions to compare tax calculations for, so that I only see jurisdictions I am interested in](https://github.com/Laura10101/contractor-tax-calculator/issues/1)
+   - The user selections jurisdictions using the `Select Jurisdictions` form as shown below.
+
+2. [Easily enter my income details, so that my tax can be calculated for each jurisdiction I have selected](https://github.com/Laura10101/contractor-tax-calculator/issues/2)
+   - The user enters their financial information using the `Financial Information` form as shown below.
+
+3. [See how much progress I am making while using the application, so that I can easily see where I am in the process](https://github.com/Laura10101/contractor-tax-calculator/issues/3)
+   - The user can see their progress through the application using the breadcrumb provided at the top of Tax Calculation journey pages.
+
+4. [See a clear tax calculation for each jurisdiction I have selected that is easy to understand, so that I can easily decide which jurisdiction is most favourable](https://github.com/Laura10101/contractor-tax-calculator/issues/4)
+   - The user views their tax calculation results on the `Calculation Results` page as shown below.
+
+5. [Have my data be protected by login and appropriate security measures, so that I have confidence only I can access the data](https://github.com/Laura10101/contractor-tax-calculator/issues/5)
+   - Any attempt to access a Contractor restricted page without logging in first redirects the user to the Login form.
+
+6. [Purchase subscriptions for the tax calculator, so that I can begin comparing my tax calculations right away](https://github.com/Laura10101/contractor-tax-calculator/issues/6)
+   - When the user is signed into account with no active subscription, they can purchase a subscription by first clicking the link on the Contractor dashboard.
+   - Then the user selects their subscription option.
+   - Finally, they complete the checkout form.
+   - Once payment has completed...
+   - Return to the contractor dashboard to confirm that your subscription is now active.
+
+### As the Contractor Tax Calculator team, I want...
+7. [Non-admin users to be prevented from creating tax calculations without an active subscription, so that I can generate an income](https://github.com/Laura10101/contractor-tax-calculator/issues/7)
+   - Attempting to create a tax calculation without a subscription will redirect the user to the subscription option page.
+
+### As an admin user I want to….
+8. [Add new jurisdictions, so that I can continuously improve the product](https://github.com/Laura10101/contractor-tax-calculator/issues/8)
+   - The user can add a new Jurisdiction by first visiting the `Jurisdictions` page in the basic admin app.
+   - The user can then choose to create a new Jurisdiction and complete the form.
+   - The `Jurisdictions` page will now display the new Jurisdiction.
+
+9. [Delete jurisdictions, so that I can continuously improve the product](https://github.com/Laura10101/contractor-tax-calculator/issues/9)
+   - The user can delete a Jurisdiction by first visiting the `Jurisdictions` page in the basic admin app.
+   - The user can then choose to delete a Jurisdiction and confirm the action.
+   - The `Jurisdictions` page will no longer display the new Jurisdiction.
+
+10. [Define the questions that IT contractors should be asked for a given jurisdiction - and the format of the corresponding answer fields - so that the tax calculator will display only relevant questions to users](https://github.com/Laura10101/contractor-tax-calculator/issues/10)
+   - The user can add a new question by choosing the *+ Question* button at the top of the Config app.
+   - The user then chooses a Question type.
+   - The user then completes the `Create Question` form as displayed and clicks *Save Changes*
+   - The new question will now be displayed.
+
+11. [Edit the questions and answer formats associated with a given jurisdiction at any time, so that I can keep the tax calculator up to date with changes in tax regimes](https://github.com/Laura10101/contractor-tax-calculator/issues/11)
+   - To edit a Question and its answer format, the user clicks the *Edit Question* icon next to any question.
+   - The user completes the `Edit Question` form as displayed and clicks *Save Changes*
+   - The updated question will be displayed.
+
+12. [Questions and answer formats that are associated with a jurisdiction to be deleted if the jurisdiction itself is deleted, so that I do not store redundant data in the database](https://github.com/Laura10101/contractor-tax-calculator/issues/12)
+   - I delete a Jurisdiction as per the instructions above.
+   - Check in the database to confirm that no form is associated with that Jurisdiction.
+
+13. [Create the tax rates for a jurisdiction, so that I can add new jurisdictions to improve the product](https://github.com/Laura10101/contractor-tax-calculator/issues/13)
+   - To create the tax rates for a Jurisdiction, the user first chooses to create a new ruleset by clicking the *+ Ruleset* button in the config app.
+   - The user selects the tax category for the new ruleset and then clicks *Save Changes*
+   - The user can now add rules to the ruleset by clicking the *+* button at the top of the ruleset to which the rule should be added.
+   - The user selects the type of rule to be created.
+   - They then complete the form as displayed and click *Save Changes*.
+   - The new rule will be displayed in the rulesets display.
+   - Tiers can be added to `Tiered Rate` or `Tiered Rate with Progression` rules by editing an existing rule.
+   - The user then clicks the *+ Tier* button at the bottom of the `Edit Question` form.
+   - The user then fills out the `Create Tier` form and clicks *Save Changes*.
+   - The new tier will be displayed.
+
+14. [Update tax rates for a jurisdiction, so that I can keep the product up to date with changing tax regimes](https://github.com/Laura10101/contractor-tax-calculator/issues/14)
+   - The user can update tax rates by clicking the *Edit* button next to any rule.
+   - The user then completes the `Edit Rule` form as displayed and clicks *Save Changes*.
+   - The updated rule details are displayed in the rule display.
+
+15. [Tax rates for a jurisdiction to be deleted if the jurisdiction is deleted, so that I do not store unnecessary data in the database](https://github.com/Laura10101/contractor-tax-calculator/issues/15)
+   - I first delete a jurisdiction as described above.
+   - I then check in the database to confirm that there are no rulesets with the deleted jurisdiction's ID.
+
+16. [View subscriptions, so that I can assist users with any subscription-related queries](https://github.com/Laura10101/contractor-tax-calculator/issues/16)
+   - Admin users can view subscriptions in the `Subscriptions` page of the basic admin app.
+
+17. [View payments, so that I can assist users with any payment-related queries](https://github.com/Laura10101/contractor-tax-calculator/issues/17)
+   - Admin users can view payments in the `Payments` page of the basic admin app.
+
+18. [Admin functionality to be protected by an admin user account, so that only authorised users can modify jurisdiction, form, and tax rate data](https://github.com/Laura10101/contractor-tax-calculator/issues/18)
+   - Attempting to access any admin page without logging in first will redirect the user to the login page.
+
+19. [View field names for question and rule fields in the config app, so that I can easily understand which data elements relate to which fields](https://github.com/Laura10101/contractor-tax-calculator/issues/237)
+   - The field names for questions are displayed for each field in the Questions display of the config app.
+   - The field names for rules are displayed for each rule in the Rulesets display of the config app.
+
 ## Browser Compatability
+
+All user story testing was performed in Edge. All Responsiveness tests were performed in Safari on a iPhone. The following tests confirm that the app works as expected in Chrome and Firefox.
+
+### The Index Page
+
+- __In Chrome__
+
+- __In Firefox__
+
+### The Contractor Landing Page
+
+- __In Chrome__
+
+- __In Firefox__
+
+### The Admin Landing Page
+
+- __In Chrome__
+
+- __In Firefox__
+
+### The Contractor Dashboard
+
+- __In Chrome__
+
+- __In Firefox__
+
+### The Subscription Options Page
+
+- __In Chrome__
+
+- __In Firefox__
+
+### The Checkout Form
+
+- __In Chrome__
+
+- __In Firefox__
+
+### The Select Jurisdictions Form
+
+- __In Chrome__
+
+- __In Firefox__
+
+### The Financial Information Form
+
+- __In Chrome__
+
+- __In Firefox__
+
+### The Tax Calculation Results Page
+
+- __In Chrome__
+
+- __In Firefox__
+
+### The Config App - Creating Questions
+
+- __In Chrome__
+
+- __In Firefox__
+
+### The Config App - Creating Multiple Choice Options
+
+- __In Chrome__
+
+- __In Firefox__
+
+### The Config App - Creating Rulesets
+
+- __In Chrome__
+
+- __In Firefox__
+
+### The Config App - Creating Rules
+
+- __In Chrome__
+
+- __In Firefox__
+
+### The Config App - Creating Rule Tiers
+
+- __In Chrome__
+
+- __In Firefox__
+
+### The Config App - Creating Secondary Rule Tiers
+
+- __In Chrome__
+
+- __In Firefox__
 
 ## Code Validation
 
 ### HTML Validation
+All custom HTML passes validation as shown below. The only warning that I ignored related to some section elements not having a heading.
+
+__The Index Page__
+![HTML validation for index page](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/html/index.png)
+
+__The Contractor Landing Page__
+![HTML validation for contractor landing page](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/html/contractor-landing.png)
+
+__The Contractor Dashboard__
+![HTML validation for contractor dashboard](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/html/contractor-dashboard.png)
+
+__The Subscription Options Page__
+![HTML validation for subscription options form](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/html/subscription-options.png)
+
+__The Checkout Form__
+![HTML validation for checkout form](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/html/checkout.png)
+
+__The Payment Status Page__
+![HTML validation for select jurisdictions form](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/html/payment-status.png)
+
+__The Select Jurisdictions Form__
+![HTML validation for select jurisdictions form](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/html/select-jurisdictions.png)
+
+__The Financial Information Form__
+![HTML validation for financial info form](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/html/financial-info.png)
+
+__The Tax Calculation Results Page__
+![HTML validation for calculation results page](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/html/calculation-results.png)
+
+__The Admin Landing Page__
+![HTML validation for admin landing page](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/html/admin-landing.png)
+
+__The Config App__
+![HTML validation for config app](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/html/config.png)
 
 ### CSS Validation
 All custom CSS is contained within my base.css file as part of the base template. This file validates successfully as shown below:
@@ -84,9 +299,59 @@ The second warning relates to the use of document.write() to populate the DOM wh
 
 ![JSHint validation for service_clients.test.js](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/js/service-clients-test-js-validation.png)
 
+### Python validation (PEP8)
+
+**Calculations App**
+
+**Checkout App**
+
+**Config App**
+
+**Home App**
+
+**Subscription App**
+
+**Forms API**
+
+**Jurisdictions API**
+
+**Payments API**
+
+**Rules API**
+
+**Subscriptions API**
+
 ## Responsiveness
 
-## User Story Tests
+### The Index Page
+
+### The Contractor Landing Page
+
+### The Admin Landing Page
+
+### The Contractor Dashboard
+
+### The Subscription Options Page
+
+### The Checkout Form
+
+### The Select Jurisdictions Form
+
+### The Financial Information Form
+
+### The Tax Calculation Results Page
+
+### The Config App - Creating Questions
+
+### The Config App - Creating Multiple Choice Options
+
+### The Config App - Creating Rulesets
+
+### The Config App - Creating Rules
+
+### The Config App - Creating Rule Tiers
+
+### The Config App - Creating Secondary Rule Tiers
 
 ## JavaScript Tests
 
