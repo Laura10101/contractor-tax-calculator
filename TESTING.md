@@ -4,90 +4,162 @@
 
 ### As an IT contractor  I want to…..
 1. [Select the jurisdictions to compare tax calculations for, so that I only see jurisdictions I am interested in](https://github.com/Laura10101/contractor-tax-calculator/issues/1)
-   - The user selections jurisdictions using the `Select Jurisdictions` form as shown below.
+  - The user selections jurisdictions using the `Select Jurisdictions` form as shown below.
+  - The `Next` button is disabled until at least one jurisdiction has been selected.
+  ![The select jurisdiction form](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/select-jurisdictions.png)
+  - Once a selection has been made, the form can be submitted.
+  ![The select jurisdiction form](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/select-jurisdictions-selected.png)
 
 2. [Easily enter my income details, so that my tax can be calculated for each jurisdiction I have selected](https://github.com/Laura10101/contractor-tax-calculator/issues/2)
-   - The user enters their financial information using the `Financial Information` form as shown below.
+  - The user enters their financial information using the `Financial Information` form as shown below.
+  - The form guides the user through the process of responding to these questions.
+  - The form displays validation errors clearly to the user and the form will not be submitted if validation errors are displayed.
+  ![The financial info form](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/financial-info-errors.png)
+  - Once all errors are cleared, the form can be submitted.
+  ![The financial info form](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/financial-info.png)
 
 3. [See how much progress I am making while using the application, so that I can easily see where I am in the process](https://github.com/Laura10101/contractor-tax-calculator/issues/3)
    - The user can see their progress through the application using the breadcrumb provided at the top of Tax Calculation journey pages.
+   ![The breadcrumb](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/breadcrumb.png)
 
 4. [See a clear tax calculation for each jurisdiction I have selected that is easy to understand, so that I can easily decide which jurisdiction is most favourable](https://github.com/Laura10101/contractor-tax-calculator/issues/4)
    - The user views their tax calculation results on the `Calculation Results` page as shown below.
+   - For each jurisdiction that was included in the calculation, a card is displayed providing a summary of the tax to be paid.
+  ![The calculation results page](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/calculation-results.png)
+  - The user can click the *View Details* button in order to see the detailed steps taken to calculate tax due for that Jurisdiction.
+  ![The calculation results page](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/calculation-result-details.png)
+
 
 5. [Have my data be protected by login and appropriate security measures, so that I have confidence only I can access the data](https://github.com/Laura10101/contractor-tax-calculator/issues/5)
    - Any attempt to access a Contractor restricted page without logging in first redirects the user to the Login form.
+   - Here the user attempts to access the contractor dashboard while not logged in.
+   ![Forcing contractor login](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/force-contractor-login-1.png)
+   - They are redirected as shown to the login form.
+   ![Forcing contractor login](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/force-contractor-login-2.png)
+
 
 6. [Purchase subscriptions for the tax calculator, so that I can begin comparing my tax calculations right away](https://github.com/Laura10101/contractor-tax-calculator/issues/6)
    - When the user is signed into account with no active subscription, they can purchase a subscription by first clicking the link on the Contractor dashboard.
+   ![Purchasing a subscription](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/contractor-dashboard-new-user.png)
    - Then the user selects their subscription option.
+   ![The subscription options form](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/subscription-options.png)
    - Finally, they complete the checkout form.
+   ![The checkout form](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/checkout.png)
    - Once payment has completed...
+   ![The payment status page](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/payment-status.png)
    - Return to the contractor dashboard to confirm that your subscription is now active.
+   ![Purchasing a subscription](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/contractor-dashboard.png)
 
 ### As the Contractor Tax Calculator team, I want...
 7. [Non-admin users to be prevented from creating tax calculations without an active subscription, so that I can generate an income](https://github.com/Laura10101/contractor-tax-calculator/issues/7)
    - Attempting to create a tax calculation without a subscription will redirect the user to the subscription option page.
+   ![Forcing contractor subscription](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/force-subscription-1.png)
+   ![Forcing contractor subscription](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/force-subscription-2.png)
 
 ### As an admin user I want to….
 8. [Add new jurisdictions, so that I can continuously improve the product](https://github.com/Laura10101/contractor-tax-calculator/issues/8)
    - The user can add a new Jurisdiction by first visiting the `Jurisdictions` page in the basic admin app.
+   ![Creating a jurisdiction](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/manage-jurisdictions.png)
    - The user can then choose to create a new Jurisdiction and complete the form.
+   ![Creating a jurisdiction](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/manage-jurisdictions-create.png)
    - The `Jurisdictions` page will now display the new Jurisdiction.
+   ![Creating a jurisdiction](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/manage-jurisdictions-create-success.png)
 
 9. [Delete jurisdictions, so that I can continuously improve the product](https://github.com/Laura10101/contractor-tax-calculator/issues/9)
    - The user can delete a Jurisdiction by first visiting the `Jurisdictions` page in the basic admin app.
+   ![Deleting a jurisdiction](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/manage-jurisdictions.png)
    - The user can then choose to delete a Jurisdiction and confirm the action.
+   ![Deleting a jurisdiction](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/manage-jurisdictions-delete.png)
    - The `Jurisdictions` page will no longer display the new Jurisdiction.
+   ![Deleting a jurisdiction](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/manage-jurisdictions-delete-success.png)
 
 10. [Define the questions that IT contractors should be asked for a given jurisdiction - and the format of the corresponding answer fields - so that the tax calculator will display only relevant questions to users](https://github.com/Laura10101/contractor-tax-calculator/issues/10)
-   - The user can add a new question by choosing the *+ Question* button at the top of the Config app.
-   - The user then chooses a Question type.
-   - The user then completes the `Create Question` form as displayed and clicks *Save Changes*
-   - The new question will now be displayed.
+  - To create a new question for the selected jurisdiction, the users first choose the type of question they wish to create.
+  ![Creating questions in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-question-type.png)
+  - The user then fills out the Create Question form as instructed on screen and clicks "Save Changes".
+  ![Creating questions in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-create-question-errors.png)
+  - A success message is displayed.
+  ![Creating questions in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-create-question-success.png)
+  - The question is then displayed.
+  ![Creating questions in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-create-question-display.png)
+  - To add a multiple choice option, the user must first select to edit a multiple choice question from the Questions display, as described above.
+  - Multiple choice options can only be added when the question is being edited (not created).
+  - Click the *Add Option* button at the bottom of the `Multiple Choice Question` form.
+  ![Editing questions in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-edit-question.png)
+  - Complete the form that is displayed and click *Save Changes*.
+  ![Creating multiple choice options in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-add-option.png)
+  - A success message is displayed:
+  ![Creating multiple choice options in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-add-option-success.png)
+  - The new option is displayed in the table on the `Edit Question` page.
+  ![Creating multiple choice options in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-add-option-displayed.png)
 
 11. [Edit the questions and answer formats associated with a given jurisdiction at any time, so that I can keep the tax calculator up to date with changes in tax regimes](https://github.com/Laura10101/contractor-tax-calculator/issues/11)
-   - To edit a Question and its answer format, the user clicks the *Edit Question* icon next to any question.
-   - The user completes the `Edit Question` form as displayed and clicks *Save Changes*
-   - The updated question will be displayed.
+   - To edit an existing question, the user selects the Edit button next to a question and then completes the form that is displayed.
+  ![Editing questions in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-edit-question.png)
+  - A success message is then displayed.
+  ![Editing questions in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-edit-question-success.png)
+  - The updated question is displayed.
+  ![Editing questions in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-edit-question-displayed.png)
 
 12. [Questions and answer formats that are associated with a jurisdiction to be deleted if the jurisdiction itself is deleted, so that I do not store redundant data in the database](https://github.com/Laura10101/contractor-tax-calculator/issues/12)
    - I delete a Jurisdiction as per the instructions above.
    - Check in the database to confirm that no form is associated with that Jurisdiction.
+   ![Deleting a jurisdiction](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/manage-jurisdictions-delete-forms.png)
 
 13. [Create the tax rates for a jurisdiction, so that I can add new jurisdictions to improve the product](https://github.com/Laura10101/contractor-tax-calculator/issues/13)
-   - To create the tax rates for a Jurisdiction, the user first chooses to create a new ruleset by clicking the *+ Ruleset* button in the config app.
-   - The user selects the tax category for the new ruleset and then clicks *Save Changes*
-   - The user can now add rules to the ruleset by clicking the *+* button at the top of the ruleset to which the rule should be added.
-   - The user selects the type of rule to be created.
-   - They then complete the form as displayed and click *Save Changes*.
-   - The new rule will be displayed in the rulesets display.
-   - Tiers can be added to `Tiered Rate` or `Tiered Rate with Progression` rules by editing an existing rule.
-   - The user then clicks the *+ Tier* button at the bottom of the `Edit Question` form.
-   - The user then fills out the `Create Tier` form and clicks *Save Changes*.
-   - The new tier will be displayed.
+   - To create a new ruleset, the user clicks the *+ Ruleset* button at the top of the config app.
+   - The user then selects a tax category to create the ruleset for.
+   ![Creating a ruleset in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-ruleset-tax-category.png)
+   - A success message is then displayed.
+   ![Creating a ruleset in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-ruleset-success.png)
+   - And the ruleset is displayed within the rulesets display.
+   ![Creating a ruleset in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-ruleset-displayed.png)
+   - To add a rule, the user clicks the *+* button in the title bar for the Ruleset to which the rule should be added.
+   - The user then chooses a Rule Type.
+   ![Creating a rule in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-rule-type.png)
+   - The user then fills out the `Create Rule` form that is displayed and then clicks *Save Changes*.
+   ![Creating a rule in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-rule-create.png)
+   - A success message is then displayed.
+   ![Creating a rule in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-rule-create-success.png)
+   - And the rule is displayed in the rulesets display.
+   ![Creating a rule in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-rule-create-displayed.png)
+
 
 14. [Update tax rates for a jurisdiction, so that I can keep the product up to date with changing tax regimes](https://github.com/Laura10101/contractor-tax-calculator/issues/14)
-   - The user can update tax rates by clicking the *Edit* button next to any rule.
-   - The user then completes the `Edit Rule` form as displayed and clicks *Save Changes*.
-   - The updated rule details are displayed in the rule display.
+   - To edit a rule, the user clicks the Edit Rule button next to any rule in the Rulesets display.
+   - From here, they complete the form that is displayed and click *Save Changes*
+   ![Editing a rule in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-rule-edit.png)
+   - A success message is then displayed.
+   ![Editing a rule in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-rule-edit-success.png)
+   - And the rule is updated in the rulesets display.
+   ![Editing a rule in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-rule-edit-displayed.png)
 
 15. [Tax rates for a jurisdiction to be deleted if the jurisdiction is deleted, so that I do not store unnecessary data in the database](https://github.com/Laura10101/contractor-tax-calculator/issues/15)
    - I first delete a jurisdiction as described above.
    - I then check in the database to confirm that there are no rulesets with the deleted jurisdiction's ID.
+   ![Deleting a jurisdiction](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/manage-jurisdictions-delete-rulesets.png)
 
 16. [View subscriptions, so that I can assist users with any subscription-related queries](https://github.com/Laura10101/contractor-tax-calculator/issues/16)
    - Admin users can view subscriptions in the `Subscriptions` page of the basic admin app.
+   ![Managing subscriptions](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/manage-subscriptions.png)
 
 17. [View payments, so that I can assist users with any payment-related queries](https://github.com/Laura10101/contractor-tax-calculator/issues/17)
    - Admin users can view payments in the `Payments` page of the basic admin app.
+   ![Managing payments](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/manage-payments.png)
 
 18. [Admin functionality to be protected by an admin user account, so that only authorised users can modify jurisdiction, form, and tax rate data](https://github.com/Laura10101/contractor-tax-calculator/issues/18)
    - Attempting to access any admin page without logging in first will redirect the user to the login page.
+   - Here a logged in user attempts to access the basic admin page by entering the URL.
+   ![Forcing admin login](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/force-admin-login-1.png)
+   - They are forced to the admin login page.
+   ![Forcing admin login](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/force-admin-login-2.png)
+
 
 19. [View field names for question and rule fields in the config app, so that I can easily understand which data elements relate to which fields](https://github.com/Laura10101/contractor-tax-calculator/issues/237)
    - The field names for questions are displayed for each field in the Questions display of the config app.
+   ![Questions in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-questions.png)
    - The field names for rules are displayed for each rule in the Rulesets display of the config app.
+   ![Creating a rule in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-rule-create-displayed.png)
 
 ## Browser Compatability
 
