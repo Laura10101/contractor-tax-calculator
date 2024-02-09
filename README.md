@@ -201,87 +201,120 @@ When I choose to add or edit a tax rate, I am shown a form to enter the details 
 
 - __A single landing page for Contractors and Admins__
   - The application provides a welcome message when visitng the home URL, and provides clear links to guide the user towards the most relevant actions for them.
+  ![The landing page](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/index.png)
 
 - __An instructions page for Contractors__
    - The application provides an instructions page for Contractors to help them understand the purpose of the Tax Calculator and the steps to use it.
+   ![The contractor landing page](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/contractor-landing.png)
 
 - __A login form__
   - The application provides a login form to allow both Contractors and Admins to sign in.
+  ![The login page](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/login.png)
 
 - __A registration form__
   - The application provides a registration form to allow new Contractors to sign up.
-
-- __A registration form__
-  - The application provides a registration form to allow new Contractors to sign up.
+  ![The registration page](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/registration.png)
 
 - __Toasts to display important Djanog messages to the user__
   - The application will display Django-generated messages as toasts, allowing the user to view and then dismiss them.
+  ![Toasts](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/toasts.png)
 
 - __A dashboard for Contractors__
   - The application provides a Contractor dashboard displaying their subscription status, recent payments, and their past tax calculations.
+  ![The contractor dashboard page](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/contractor-dashboard.png)
 
 - __Responsive navbar with relevant Contractor, Admin, and Account links clearly displayed__
   - The application proivdes a navbar with separate drop-down menus for Contractor links, Admin links, and Account links.
   - This allows all types of users to navigate around the site easily and access all features from any page.
+  ![The navbar on large screen](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/navbar-large.png)
+  - The navbar is responsive to accomodate small screens.
+  ![The navbar on small screen](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/navbar-responsive.png)
 
 - __The Jurisdictions Selection form__
   - The application provides a form allowing Contractors to select the jurisdictions they would like to include in tax calculations.
   - The `Next` button is disabled until at least one jurisdiction has been selected.
+  ![The select jurisdiction form](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/select-jurisdictions.png)
+  - Once a selection has been made, the form can be submitted.
+  ![The select jurisdiction form](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/select-jurisdictions-selected.png)
 
 - __The Financial Information form__
   - The application will display all questions associated with the selected Jurisdictions to the user.
   - The form guides the user through the process of responding to these questions.
   - The form displays validation errors clearly to the user and the form will not be submitted if validation errors are displayed.
+  ![The financial info form](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/financial-info-errors.png)
+  - Once all errors are cleared, the form can be submitted.
+  ![The financial info form](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/financial-info.png)
 
 - __The Calculation Results page__
   - The application displays a summary of the calculation results to the user.
   - For each jurisdiction that was included in the calculation, a card is displayed providing a summary of the tax to be paid.
+  ![The calculation results page](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/calculation-results.png)
   - The user can click the *View Details* button in order to see the detailed steps taken to calculate tax due for that Jurisdiction.
+  ![The calculation results page](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/calculation-result-details.png)
 
 - __The Calculation process breadcrumb__
   - The application provides a breadcrumb to indicate to the user where they are in the process of producing a tax calculation.
+  ![The breadcrumb](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/breadcrumb.png)
 
 - __The Subscription Options form__
   - The application provides a clear form that allows users to choose a subscription option.
+  ![The subscription options form](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/subscription-options.png)
 
 - __The Checkout form__
   - The checkout form allows users to pay for their subscription via Stripe.
+  ![The checkout form](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/checkout.png)
 
 - __The Admin landing page__
   - The app provides an app for admins to choose between the basic admin app and the config app.
   - This is required because I was unable to modify the default Django admin app to include a link to the config app, even with the support of a Code Institute tutor.
+  ![The admin landing page](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/admin-landing.png)
 
 - __The Basic admin app__
   - The basic admin app is configured to allow admins to manage jurisdictions, tax categories, payments and subscriptions.
+  ![The admin app - basic](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/basic-admin.png)
 
 - __Managing Jurisdictions__
   - From the basic admin app, the user can choose the "Jurisdictions" link on the left hand side. From here they can create, edit, and delete Jurisdictions.
+  ![Managing jurisdictions](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/manage-jurisdictions.png)
 
 - __Managing Tax Categories__
   - From the basic admin app, the user can choose the "Tax Categories" link on the left hand side. From here they can create, edit, and delete Tax Categories.
+  ![Managing tax categories](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/manage-tax-categories.png)
 
 - __Managing Subscriptions__
   - From the basic admin app, the user can choose the "Subscriptions" link on the left hand side. From here they can create, edit, and delete Subscriptions.
+  ![Managing subscriptions](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/manage-subscriptions.png)
 
 - __Managing Payments__
   - From the basic admin app, the user can choose the "Payments" link on the left hand side. From here they can create, edit, and delete Payments.
+  ![Managing payments](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/manage-payments.png)
 
 - __Selecting Jurisdictions in the Config App__
   - The select box at the top of the Config app allows the user to choose the jurisdiction for which they wish to manage rules and questions.
-
-- __Tooltips in the Config App__
-  - All buttons in the config app are marked up with tool tips to guide the user.
+  ![Selecting jurisdictions in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-select-jurisdiction.png)
 
 - __The Question Display__
   - The config app clearly displays a list of all questions for the selected jurisdiction to the user.
   - For each question, a summary of the question is displayed.
+  ![Questions in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-questions.png)
 
 - __The Create Question journey__
   - To create a new question for the selected jurisdiction, the users first choose the type of question they wish to create.
+  ![Creating questions in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-question-type.png)
   - The user then fills out the Create Question form as instructed on screen and clicks "Save Changes".
+  ![Creating questions in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-create-question-errors.png)
+  - A success message is displayed.
+  ![Creating questions in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-create-question-success.png)
+  - The question is then displayed.
+  ![Creating questions in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-create-question-display.png)
 
 - __The Edit Question journey__
   - To edit an existing question, the user selects the Edit button next to a question and then completes the form that is displayed.
+  ![Editing questions in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-edit-question.png)
+  - A success message is then displayed.
+  ![Editing questions in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-edit-question-success.png)
+  - The updated question is displayed.
+  ![Editing questions in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-edit-question-displayed.png)
 
 - __Adding Multiple Choice Options__
   - To add a multiple choice option, the user must first select a multiple choice question from the Questions display.
@@ -310,9 +343,6 @@ When I choose to add or edit a tax rate, I am shown a form to enter the details 
 - __Editing Rules__
   - To edit a rule, the user clicks the Edit Rule button next to any rule in the Rulesets display.
   - From here, they complete the form that is displayed and click *Save Changes*
-
-- __Reordering Rules__
-  - To reorder rules, the user clicks the Move Up or Move Down button next to any Rule.
 
 - __Adding Rule Tiers__
   - To add a primary or secondary rule tier, the user first selects Edit next to either a Tiered Rate rule or a Tiered Rate rule with progression.
