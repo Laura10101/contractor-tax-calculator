@@ -31,11 +31,6 @@
     background-color: #e9f5f9;
 }
 
-/* Config app - entity displays - entity type column */
-.entity-type-col {
-    width: 20%;
-}
-
 /* Config app - entity displays - field name column */
 .entity-field-name-col {
     width: 20%;
@@ -43,10 +38,5 @@
 
 /* Config app - entity displays - field value column */
 .entity-field-value-col {
-    width: 45%;
-}
-
-/* Config app - entity displays - entity actions column */
-.entity-actions-col {
-    width: 15%;
+    width: 80%;
 }
