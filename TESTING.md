@@ -355,6 +355,29 @@ The second warning relates to the use of document.write() to populate the DOM wh
 
 ## JavaScript Tests
 
+### Running the Jest tests
+To fully test the Config app, I have developed four Jest tests suites to cover each of the functional layeres of the config app's JavaScript. One of these - the **service_clients.test.js** test suite - checks that the service clients correctly interact with the APIs. In order for this to work correctly without adding test data into the production system, a couple of steps must be taken to set up the APIs in test mode.
+
+1. Follow the `Local Deployment` steps as described in the [README](README.md).
+2. In `env.py`, make sure that the `os.environ['USE_TEST_DB']` setting is set to `True`.
+3. Run the following three commands shown below in the Gitpod terminal. The first command runs the `jest_test_setup` script which tears down the existing test database and recreates it with some basic test data.
+```console
+python jest_test_setup.py
+python manage.py runserver
+npm test
+```
+4. To repeat the tests, run the following two commands (no need to run the Django server again).
+```console
+python jest_test_setup.py
+npm test
+```
+5. Once done with testing, change the `os.environ['USE_TEST_DB']` setting back to `False` in `eny.py`.
+6. Finally, re-run the Django server to return to using the production database.
+```console
+python manage.py runserver
+```
+
+### Overview of Results
 The JavaScript underpinning the config app was highly complex and so testing all of the scenarios supported by the config app was not possible manually. I therefore developed a suite of JavaScript automated tests using Jest.
 
 The JavaScript for the config app is organised into four layers as described below:
