@@ -593,15 +593,13 @@ The second warning relates to the use of document.write() to populate the DOM wh
 
 ### The Index Page
 
-### The Contractor Landing Page
-
-### The Admin Landing Page
-
 ### The Contractor Dashboard
 
 ### The Subscription Options Page
 
 ### The Checkout Form
+
+### The Payment Status Page
 
 ### The Select Jurisdictions Form
 
@@ -609,17 +607,15 @@ The second warning relates to the use of document.write() to populate the DOM wh
 
 ### The Tax Calculation Results Page
 
+### The Config App - Questions Display
+
 ### The Config App - Creating Questions
 
-### The Config App - Creating Multiple Choice Options
+### The Config App - Rulesets Display
 
 ### The Config App - Creating Rulesets
 
 ### The Config App - Creating Rules
-
-### The Config App - Creating Rule Tiers
-
-### The Config App - Creating Secondary Rule Tiers
 
 ## JavaScript Tests
 
