@@ -1012,40 +1012,48 @@
                                             <!-- Boolean question -->
                                             <div class="card hidden" id="boolean-question-display-card">
                                                 <div class="card-body">
-                                                    <table class="table table-borderless">
-                                                        <tbody>
-                                                            <tr>
-                                                                <td rowspan="4" class="entity-type-col">
-                                                                    <i class="fas fa-toggle-on"></i>
-                                                                    Yes/No Question
-                                                                </td>
-                                                                <td class="entity-field-name-col"><b>Question Text</b></td>
-                                                                <td id="boolean-question-display-text" class="entity-field-value-col">Text</td>
-                                                                <td rowspan="4" class="entity-actions-col">
-                                                                    <i class="fas fa-edit edit-button"
-                                                                        data-toggle="tooltip" data-placement="top" title="Edit this question"></i>
-                                                                    <i class="fas fa-trash-alt delete-button"
-                                                                        data-toggle="tooltip" data-placement="top" title="Delete this question"></i>
-                                                                    <i class="fas fa-arrow-up move-up-button"
-                                                                        data-toggle="tooltip" data-placement="top" title="Move this question up"></i>
-                                                                    <i class="fas fa-arrow-down move-down-button"
-                                                                        data-toggle="tooltip" data-placement="top" title="Move this question down"></i>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td><b>Data Name</b></td>
-                                                                <td id="boolean-question-display-variable-name">Variable Name</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td><b>Explainer</b></td>
-                                                                <td id="boolean-question-display-explainer">Explainer</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td><b>Is Mandatory?</b></td>
-                                                                <td id="boolean-question-display-mandatory">Mandatory</td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
+                                                    <div class="row mb-2">
+                                                        <div class="col">
+                                                            <strong class="lead"><i class="fas fa-toggle-on"></i></strong>&nbsp;
+                                                            <strong class="lead">Yes/No Question</strong>
+                                                        </div>
+                                                        <div class="col-2 text-right">
+                                                            <!-- Question actions -->
+                                                                <i class="fas fa-edit edit-button"
+                                                                    data-toggle="tooltip" data-placement="top" title="Edit this question"></i>
+                                                                <i class="fas fa-trash-alt delete-button"
+                                                                    data-toggle="tooltip" data-placement="top" title="Delete this question"></i>
+                                                                <i class="fas fa-arrow-up move-up-button"
+                                                                    data-toggle="tooltip" data-placement="top" title="Move this question up"></i>
+                                                                <i class="fas fa-arrow-down move-down-button"
+                                                                    data-toggle="tooltip" data-placement="top" title="Move this question down"></i>
+                                                            <!-- End question actions -->
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <table class="table table-borderless">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td class="entity-field-name-col"><b>Question Text</b></td>
+                                                                        <td id="boolean-question-display-text" class="entity-field-value-col">Text</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><b>Data Name</b></td>
+                                                                        <td id="boolean-question-display-variable-name">Variable Name</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><b>Explainer</b></td>
+                                                                        <td id="boolean-question-display-explainer">Explainer</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><b>Is Mandatory?</b></td>
+                                                                        <td id="boolean-question-display-mandatory">Mandatory</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <!-- End boolean question -->
@@ -1053,44 +1061,52 @@
                                             <!-- Numeric question -->
                                             <div class="card hidden" id="numeric-question-display-card">
                                                 <div class="card-body">
-                                                    <table class="table table-borderless">
-                                                        <tbody>
-                                                            <tr>
-                                                                <td rowspan="5" class="entity-type-col">
-                                                                    <i class="fas fa-chart-pie"></i>
-                                                                    Numeric Question
-                                                                </td>
-                                                                <td class="entity-field-name-col"><b>Question Text</b></td>
-                                                                <td id="numeric-question-display-text" class="entity-field-value-col">Text</td>
-                                                                <td rowspan="5" class="entity-actions-col">
-                                                                    <i class="fas fa-edit edit-button"
-                                                                        data-toggle="tooltip" data-placement="top" title="Edit this question"></i>
-                                                                    <i class="fas fa-trash-alt delete-button"
-                                                                        data-toggle="tooltip" data-placement="top" title="Delete this question"></i>
-                                                                    <i class="fas fa-arrow-up move-up-button"
-                                                                        data-toggle="tooltip" data-placement="top" title="Move this question up"></i>
-                                                                    <i class="fas fa-arrow-down move-down-button"
-                                                                        data-toggle="tooltip" data-placement="top" title="Move this question down"></i>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td><b>Data Name</b></td>
-                                                                <td id="numeric-question-display-variable-name">Variable Name</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td><b>Explainer</b></td>
-                                                                <td id="numeric-question-display-explainer">Explainer</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td><b>Is Mandatory?</b></td>
-                                                                <td id="numeric-question-display-mandatory">Mandatory</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td><b>Validation Rule</b></td>
-                                                                <td id="numeric-question-display-validation-rule-summary">Integer between 0 and 100</td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
+                                                    <div class="row mb-2">
+                                                        <div class="col">
+                                                            <strong class="lead"><i class="fas fa-chart-pie"></i></strong>&nbsp;
+                                                            <strong class="lead">Numeric Question</strong>
+                                                        </div>
+                                                        <div class="col-2 text-right">
+                                                            <!-- Question actions -->
+                                                                <i class="fas fa-edit edit-button"
+                                                                    data-toggle="tooltip" data-placement="top" title="Edit this question"></i>
+                                                                <i class="fas fa-trash-alt delete-button"
+                                                                    data-toggle="tooltip" data-placement="top" title="Delete this question"></i>
+                                                                <i class="fas fa-arrow-up move-up-button"
+                                                                    data-toggle="tooltip" data-placement="top" title="Move this question up"></i>
+                                                                <i class="fas fa-arrow-down move-down-button"
+                                                                    data-toggle="tooltip" data-placement="top" title="Move this question down"></i>
+                                                            <!-- End question actions -->
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <table class="table table-borderless">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td class="entity-field-name-col"><b>Question Text</b></td>
+                                                                        <td id="numeric-question-display-text" class="entity-field-value-col">Text</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><b>Data Name</b></td>
+                                                                        <td id="numeric-question-display-variable-name">Variable Name</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><b>Explainer</b></td>
+                                                                        <td id="numeric-question-display-explainer">Explainer</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><b>Is Mandatory?</b></td>
+                                                                        <td id="numeric-question-display-mandatory">Mandatory</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><b>Validation Rule</b></td>
+                                                                        <td id="numeric-question-display-validation-rule-summary">Integer between 0 and 100</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <!-- End numeric question -->
@@ -1098,44 +1114,52 @@
                                             <!-- Multiple choice question -->
                                             <div class="card hidden" id="multichoice-question-display-card">
                                                 <div class="card-body">
-                                                    <table class="table table-borderless">
-                                                        <tbody>
-                                                            <tr>
-                                                                <td rowspan="5" class="entity-type-col">
-                                                                    <i class="fas fa-tasks"></i>
-                                                                    Multiple Choice Question
-                                                                </td>
-                                                                <td class="entity-field-name-col"><b>Question Text</b></td>
-                                                                <td id="multichoice-question-display-text" class="entity-field-value-col">Text</td>
-                                                                <td rowspan="5" class="entity-actions-col">
-                                                                    <i class="fas fa-edit edit-button"
-                                                                        data-toggle="tooltip" data-placement="top" title="Edit this question"></i>
-                                                                    <i class="fas fa-trash-alt delete-button"
-                                                                        data-toggle="tooltip" data-placement="top" title="Delete this question"></i>
-                                                                    <i class="fas fa-arrow-up move-up-button"
-                                                                        data-toggle="tooltip" data-placement="top" title="Move this question up"></i>
-                                                                    <i class="fas fa-arrow-down move-down-button"
-                                                                        data-toggle="tooltip" data-placement="top" title="Move this question down"></i>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td><b>Data Name</b></td>
-                                                                <td id="multichoice-question-display-variable-name">Variable Name</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td><b>Explainer</b></td>
-                                                                <td id="multichoice-question-display-explainer">Explainer</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td><b>Is Mandatory?</b></td>
-                                                                <td id="multichoice-question-display-mandatory">Mandatory</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td><b>Allow Multiple Selections?</b></td>
-                                                                <td id="multichoice-question-display-multiselect">Multiselect</td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
+                                                    <div class="row mb-2">
+                                                        <div class="col">
+                                                            <strong class="lead"><i class="fas fa-tasks"></i></strong>&nbsp;
+                                                            <strong class="lead">Multiple Choice Question</strong>
+                                                        </div>
+                                                        <div class="col-2 text-right">
+                                                            <!-- Question actions -->
+                                                            <i class="fas fa-edit edit-button"
+                                                                data-toggle="tooltip" data-placement="top" title="Edit this question"></i>
+                                                            <i class="fas fa-trash-alt delete-button"
+                                                                data-toggle="tooltip" data-placement="top" title="Delete this question"></i>
+                                                            <i class="fas fa-arrow-up move-up-button"
+                                                                data-toggle="tooltip" data-placement="top" title="Move this question up"></i>
+                                                            <i class="fas fa-arrow-down move-down-button"
+                                                                data-toggle="tooltip" data-placement="top" title="Move this question down"></i>
+                                                            <!-- End question actions -->
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <table class="table table-borderless">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td class="entity-field-name-col"><b>Question Text</b></td>
+                                                                        <td id="multichoice-question-display-text" class="entity-field-value-col">Text</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><b>Data Name</b></td>
+                                                                        <td id="multichoice-question-display-variable-name">Variable Name</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><b>Explainer</b></td>
+                                                                        <td id="multichoice-question-display-explainer">Explainer</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><b>Is Mandatory?</b></td>
+                                                                        <td id="multichoice-question-display-mandatory">Mandatory</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><b>Allow Multiple Selections?</b></td>
+                                                                        <td id="multichoice-question-display-multiselect">Multiselect</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <!-- End multiple choice question -->
