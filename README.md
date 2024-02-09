@@ -11,6 +11,41 @@ The tax calculator could be expanded in the future to be of use to a wider demog
 
 ![Am I responsive?](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/responsive-overview.jpg)
 
+## Table of Contents
+- [Tax Calculator](#tax-calculator)
+   * [Notes to Assessors](#notes-to-assessors)
+   * [Users](#users)
+   * [User stories ](#user-stories)
+      + [As an IT contractor  I want to…..](#as-an-it-contractor--i-want-to)
+      + [As the Contractor Tax Calculator team, I want...](#as-the-contractor-tax-calculator-team-i-want)
+      + [As an admin user I want to….](#as-an-admin-user-i-want-to)
+   * [Challenges Faced](#challenges-faced)
+   * [UX](#ux)
+      + [Colour Scheme](#colour-scheme)
+      + [Typography](#typography)
+      + [Imagery](#imagery)
+      + [Wireframes](#wireframes)
+   * [Features](#features)
+      + [Existing Features](#existing-features)
+      + [Features Left to Implement](#features-left-to-implement)
+   * [Technical Design](#technical-design)
+      + [The Technical Challenges](#the-technical-challenges)
+      + [Monolith versus Microservices](#monolith-versus-microservices)
+      + [Domain-Driven Design](#domain-driven-design)
+      + [High-Level Architecture](#high-level-architecture)
+      + [API Code Design](#api-code-design)
+      + [High Level System Flow](#high-level-system-flow)
+      + [Data Model](#data-model)
+   * [Testing](#testing)
+   * [Deployment](#deployment)
+      + [Heroku](#heroku)
+      + [ElephantSQL DB](#elephantsql-db)
+      + [Stripe](#stripe)
+      + [Local Deployment](#local-deployment)
+   * [Credits](#credits)
+      + [Thanks](#thanks)
+      + [Educational Resources](#educational-resources)
+
 ## Notes to Assessors
 The admin user site has been designed for a sophisticated professional tax adviser who has commissioned the project. As a result, and to keep the user experience streamlined, it does not explain tax concepts, rules, or basic instructions as the user would have in-depth knowledge of these. 
 
