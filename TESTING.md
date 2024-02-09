@@ -168,90 +168,111 @@ All user story testing was performed in Edge. All Responsiveness tests were perf
 ### The Index Page
 
 - __In Chrome__
+![Browser compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/browser-testing/chrome/index.png)
 
 - __In Firefox__
 
 ### The Contractor Landing Page
 
 - __In Chrome__
-
-- __In Firefox__
-
-### The Admin Landing Page
-
-- __In Chrome__
+![Browser compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/browser-testing/chrome/contractor-landing.png)
 
 - __In Firefox__
 
 ### The Contractor Dashboard
 
 - __In Chrome__
+![Browser compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/browser-testing/chrome/contractor-dashboard.png)
 
 - __In Firefox__
 
 ### The Subscription Options Page
 
 - __In Chrome__
+![Browser compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/browser-testing/chrome/subscription-options.png)
 
 - __In Firefox__
 
 ### The Checkout Form
 
 - __In Chrome__
+![Browser compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/browser-testing/chrome/checkout.png)
+
+- __In Firefox__
+
+### The Payment Status Page
+
+- __In Chrome__
+![Browser compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/browser-testing/chrome/payment-complete.png)
 
 - __In Firefox__
 
 ### The Select Jurisdictions Form
 
 - __In Chrome__
+![Browser compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/browser-testing/chrome/select-jurisdictions.png)
 
 - __In Firefox__
 
 ### The Financial Information Form
 
 - __In Chrome__
+![Browser compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/browser-testing/chrome/financial-info.png)
 
 - __In Firefox__
 
 ### The Tax Calculation Results Page
 
 - __In Chrome__
+![Browser compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/browser-testing/chrome/calculation-results.png)
+![Browser compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/browser-testing/chrome/calculation-results-details.png)
 
 - __In Firefox__
 
 ### The Config App - Creating Questions
 
 - __In Chrome__
-
-- __In Firefox__
-
-### The Config App - Creating Multiple Choice Options
-
-- __In Chrome__
+   - The dialog box:
+   ![Browser compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/browser-testing/chrome/config-question-create.png)
+   - The success message
+   ![Browser compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/browser-testing/chrome/config-question-create-success.png)
 
 - __In Firefox__
 
 ### The Config App - Creating Rulesets
 
 - __In Chrome__
+   - Selecting the tax category for the ruleset:
+   ![Browser compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/browser-testing/chrome/config-ruleset-tax-category.png)
+   - The success message:
+   ![Browser compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/browser-testing/chrome/config-ruleset-success.png)
 
 - __In Firefox__
 
 ### The Config App - Creating Rules
 
 - __In Chrome__
+   - Entering rule details:
+   ![Browser compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/browser-testing/chrome/config-rule-create.png)
+   - The success message:
+   ![Browser compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/browser-testing/chrome/config-rule-create-success.png)
+
+- __In Firefox__
+
+### The Config App - Editing Rules
+
+- __In Chrome__
+![Browser compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/browser-testing/chrome/config-rule-edit.png)
 
 - __In Firefox__
 
 ### The Config App - Creating Rule Tiers
 
 - __In Chrome__
-
-- __In Firefox__
-
-### The Config App - Creating Secondary Rule Tiers
-
-- __In Chrome__
+   - Entering tier details:
+   ![Browser compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/browser-testing/chrome/config-tier-create.png)
+   - The success message:
+   ![Browser compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/browser-testing/chrome/config-tier-create-success.png)
 
 - __In Firefox__
 
