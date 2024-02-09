@@ -488,7 +488,8 @@ def create_calculation(username, jurisdiction_ids, variable_table):
 
             if not has_rules:
                 excluded_jurisdiction_ids.append(jurisdiction_id)
-    excluded_id_str = ','.join(excluded_jurisdiction_ids)
+    excluded_id_strs = [str(val) for val in excluded_jurisdiction_ids]
+    excluded_id_str = ','.join(excluded_id_strs)
     calculation_result.excluded_jurisdiction_ids = excluded_id_str
 
     return calculation_result
