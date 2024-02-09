@@ -525,29 +525,29 @@ The second warning relates to the use of document.write() to populate the DOM wh
 
 **Subscriptions API**
 - The `admin.py` file:
-![PEP8 validation](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/python/apis/jurisdictions/admin_py.png)
+![PEP8 validation](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/python/apis/subscriptions/admin_py.png)
 - The `apps.py` file:
-![PEP8 validation](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/python/apis/jurisdictions/apps_py.png)
+![PEP8 validation](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/python/apis/subscriptions/apps_py.png)
 - The `autocompletes.py` file:
-![PEP8 validation](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/python/apis/jurisdictions/autocompletes_py.png)
+![PEP8 validation](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/python/apis/subscriptions/autocompletes_py.png)
 - The `forms.py` file:
-![PEP8 validation](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/python/apis/jurisdictions/forms_py.png)
+![PEP8 validation](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/python/apis/subscriptions/forms_py.png)
 - The `models.py` file:
-![PEP8 validation](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/python/apis/jurisdictions/models_py.png)
+![PEP8 validation](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/python/apis/subscriptions/models_py.png)
 - The `signals.py` file:
-![PEP8 validation](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/python/apis/jurisdictions/signals_py.png)
+![PEP8 validation](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/python/apis/subscriptions/signals_py.png)
 - The `services.py` file:
-![PEP8 validation](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/python/apis/jurisdictions/services_py.png)
+![PEP8 validation](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/python/apis/subscriptions/services_py.png)
 - The `urls.py` file:
-![PEP8 validation](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/python/apis/jurisdictions/urls_py.png)
+![PEP8 validation](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/python/apis/subscriptions/urls_py.png)
 - The `views.py` file:
-![PEP8 validation](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/python/apis/jurisdictions/views_py.png)
+![PEP8 validation](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/python/apis/subscriptions/views_py.png)
 - The `test_models.py` file:
-![PEP8 validation](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/python/apis/jurisdictions/test_models_py.png)
+![PEP8 validation](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/python/apis/subscriptions/test_models_py.png)
 - The `test_services.py` file:
-![PEP8 validation](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/python/apis/jurisdictions/test_services_py.png)
+![PEP8 validation](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/python/apis/subscriptions/test_services_py.png)
 - The `test_views.py` file:
-![PEP8 validation](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/python/apis/jurisdictions/test_views_py.png)
+![PEP8 validation](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/python/apis/subscriptions/test_views_py.png)
 
 ## Responsiveness
 
