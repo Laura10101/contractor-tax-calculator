@@ -617,14 +617,25 @@ The second warning relates to the use of document.write() to populate the DOM wh
 ![Mobile compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/responsiveness/calculation-results-details.png)
 
 ### The Config App - Questions Display
+![Mobile compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/responsiveness/config-questions.png)
 
 ### The Config App - Creating Questions
+- Selecting a question type:
+![Mobile compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/responsiveness/config-question-type.png)
+- Entering question details:
+![Mobile compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/responsiveness/config-question-create.png)
 
 ### The Config App - Rulesets Display
+![Mobile compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/responsiveness/config-rulesets.png)
 
 ### The Config App - Creating Rulesets
+![Mobile compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/responsiveness/config-ruleset-tax-category.png)
 
 ### The Config App - Creating Rules
+- Selecting a rule type:
+![Mobile compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/responsiveness/config-rule-type.png)
+- Entering the rule details:
+![Mobile compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/responsiveness/config-create-rule.png)
 
 ## JavaScript Tests
 
