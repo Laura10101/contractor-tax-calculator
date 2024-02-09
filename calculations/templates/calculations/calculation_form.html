@@ -113,7 +113,7 @@
                                                             {% elif type == 'numeric' %}
                                                                 {% if question.is_integer %}
                                                                     <!-- Integer question -->
-                                                                        <div class="card" style="width: 18rem;">
+                                                                        <div class="card">
                                                                             <div class="card-body">
                                                                                 <h5 class="card-title" id="{{ question.variable_name}}-title">
                                                                                     {{ question.text }}
@@ -133,7 +133,7 @@
                                                                     <!-- End integer question -->
                                                                 {% else %}
                                                                     <!-- Floating point question -->
-                                                                        <div class="card" style="width: 18rem;">
+                                                                        <div class="card">
                                                                             <div class="card-body">
                                                                                 <h5 class="card-title" id="{{ question.variable_name}}-title">
                                                                                     {{ question.text }}
@@ -155,7 +155,7 @@
                                                             {% elif type == 'multiple_choice' %}
                                                                 {% if question.is_multiselect %}
                                                                     <!-- Multiselect question -->
-                                                                        <div class="card" style="width: 18rem;">
+                                                                        <div class="card">
                                                                             <div class="card-body">
                                                                                 <h5 class="card-title" id="{{ question.variable_name}}-title">
                                                                                     {{ question.text }}
@@ -187,7 +187,7 @@
                                                                     <!-- End multiselect question -->
                                                                 {% else %}
                                                                     <!-- Single choice question -->
-                                                                        <div class="card" style="width: 18rem;">
+                                                                        <div class="card">
                                                                             <div class="card-body">
                                                                                 <h5 class="card-title" id="{{ question.variable_name}}-title">
                                                                                     {{ question.text }}
