@@ -373,15 +373,67 @@ The second warning relates to the use of document.write() to populate the DOM wh
 
 ### Python validation (PEP8)
 
+**Settings**
+- The main `settings.py` file:
+![PEP8 validation](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/python/settings/settings_py.png)
+- The `test_settings.py` file:
+![PEP8 validation](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/python/settings/test_settings_py.png)
+- The `urls.py` file:
+![PEP8 validation](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/python/settings/urls_py.png)
+
+**Utilities**
+- The main `custom_storages.py` file:
+![PEP8 validation](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/python/utilities/custom_storages_py.png)
+- The `jest_test_setup.py` file:
+![PEP8 validation](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/python/utilities/jest_test_setup_py.png)
+- The `django_test_setup.py` file:
+![PEP8 validation](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/python/utilities/django_test_setup_py.png)
+- The `json_to_markdown.py` file:
+![PEP8 validation](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/python/utilities/json_markdown_py.png)
+
 **Calculations App**
+- The `apps.py` file:
+![PEP8 validation](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/python/apps/calculations/apps_py.png)
+- The `helpers.py` file:
+![PEP8 validation](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/python/apps/calculations/helpers_py.png)
+- The `urls.py` file:
+![PEP8 validation](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/python/apps/calculations/urls_py.png)
+- The `views.py` file:
+![PEP8 validation](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/python/apps/calculations/views_py.png)
 
 **Checkout App**
+- The `apps.py` file:
+![PEP8 validation](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/python/apps/checkout/apps_py.png)
+- The `urls.py` file:
+![PEP8 validation](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/python/apps/checkout/urls_py.png)
+- The `views.py` file:
+![PEP8 validation](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/python/apps/checkout/views_py.png)
 
 **Config App**
+- The `apps.py` file:
+![PEP8 validation](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/python/apps/config/apps_py.png)
+- The `urls.py` file:
+![PEP8 validation](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/python/apps/config/urls_py.png)
+- The `views.py` file:
+![PEP8 validation](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/python/apps/config/views_py.png)
 
 **Home App**
+- The `apps.py` file:
+![PEP8 validation](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/python/apps/home/apps_py.png)
+- The `urls.py` file:
+![PEP8 validation](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/python/apps/home/urls_py.png)
+- The `views.py` file:
+![PEP8 validation](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/python/apps/home/views_py.png)
 
 **Subscription App**
+- The `apps.py` file:
+![PEP8 validation](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/python/apps/subscriptions/apps_py.png)
+- The `helpers.py` file:
+![PEP8 validation](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/python/apps/subscriptions/helpers_py.png)
+- The `urls.py` file:
+![PEP8 validation](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/python/apps/subscriptions/urls_py.png)
+- The `views.py` file:
+![PEP8 validation](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/python/apps/subscriptions/views_py.png)
 
 **Forms API**
 
