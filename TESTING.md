@@ -687,25 +687,6 @@ These 600 tests provide 83% coverage across the five APIs as shown below. The fo
 
 ![Test coverage report for API tests](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/api-testing/api-test-coverage.jpg)
 
-### Forms API Tests ###
-
-**Services Tests**
-The following table lists the services tests for the Forms API. These tests can be found in forms_api/test_services.py while the asscoiated services can be found in forms_api/services.py.
-
-| Test Name | Tested Service | Test Scenario | Expected Result |
-| --------- | -------------- | ------------- | --------------- |
-| 
-
-**Views Tests**
-
-### Jurisdiction API Tests ###
-
-### Payments API Tests ###
-
-### Rules API Tests ###
-
-### Subscription API Tests ###
-
 ## Bugs
 All bugs found during testing for this project were tracked using the Issues feature in Github.
 
