@@ -171,13 +171,7 @@ All user story testing was performed in Edge. All Responsiveness tests were perf
 ![Browser compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/browser-testing/chrome/index.png)
 
 - __In Firefox__
-
-### The Contractor Landing Page
-
-- __In Chrome__
-![Browser compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/browser-testing/chrome/contractor-landing.png)
-
-- __In Firefox__
+![Browser compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/browser-testing/firefox/index.png)
 
 ### The Contractor Dashboard
 
@@ -185,6 +179,7 @@ All user story testing was performed in Edge. All Responsiveness tests were perf
 ![Browser compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/browser-testing/chrome/contractor-dashboard.png)
 
 - __In Firefox__
+![Browser compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/browser-testing/firefox/contractor-dashboard.png)
 
 ### The Subscription Options Page
 
@@ -192,6 +187,7 @@ All user story testing was performed in Edge. All Responsiveness tests were perf
 ![Browser compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/browser-testing/chrome/subscription-options.png)
 
 - __In Firefox__
+![Browser compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/browser-testing/firefox/subscription-options.png)
 
 ### The Checkout Form
 
@@ -199,6 +195,7 @@ All user story testing was performed in Edge. All Responsiveness tests were perf
 ![Browser compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/browser-testing/chrome/checkout.png)
 
 - __In Firefox__
+![Browser compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/browser-testing/firefox/checkout.png)
 
 ### The Payment Status Page
 
@@ -206,6 +203,7 @@ All user story testing was performed in Edge. All Responsiveness tests were perf
 ![Browser compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/browser-testing/chrome/payment-complete.png)
 
 - __In Firefox__
+![Browser compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/browser-testing/firefox/payment-complete.png)
 
 ### The Select Jurisdictions Form
 
@@ -213,6 +211,7 @@ All user story testing was performed in Edge. All Responsiveness tests were perf
 ![Browser compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/browser-testing/chrome/select-jurisdictions.png)
 
 - __In Firefox__
+![Browser compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/browser-testing/firefox/select-jurisdictions.png)
 
 ### The Financial Information Form
 
@@ -221,6 +220,8 @@ All user story testing was performed in Edge. All Responsiveness tests were perf
 
 - __In Firefox__
 
+![Browser compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/browser-testing/firefox/financial-info.png)
+
 ### The Tax Calculation Results Page
 
 - __In Chrome__
@@ -228,6 +229,8 @@ All user story testing was performed in Edge. All Responsiveness tests were perf
 ![Browser compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/browser-testing/chrome/calculation-results-details.png)
 
 - __In Firefox__
+![Browser compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/browser-testing/firefox/calculation-results.png)
+![Browser compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/browser-testing/firefox/calculation-results-details.png)
 
 ### The Config App - Creating Questions
 
@@ -239,6 +242,11 @@ All user story testing was performed in Edge. All Responsiveness tests were perf
 
 - __In Firefox__
 
+   - The dialog box:
+   ![Browser compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/browser-testing/firefox/config-question-create.png)
+   - The success message
+   ![Browser compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/browser-testing/firefox/config-question-create-success.png)
+
 ### The Config App - Creating Rulesets
 
 - __In Chrome__
@@ -248,6 +256,8 @@ All user story testing was performed in Edge. All Responsiveness tests were perf
    ![Browser compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/browser-testing/chrome/config-ruleset-success.png)
 
 - __In Firefox__
+   - Selecting the tax category for the ruleset:
+   ![Browser compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/browser-testing/firefox/config-ruleset-tax-category.png)
 
 ### The Config App - Creating Rules
 
@@ -258,6 +268,10 @@ All user story testing was performed in Edge. All Responsiveness tests were perf
    ![Browser compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/browser-testing/chrome/config-rule-create-success.png)
 
 - __In Firefox__
+   - Entering rule details:
+   ![Browser compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/browser-testing/firefox/config-rule-create.png)
+   - The success message:
+   ![Browser compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/browser-testing/firefox/config-rule-create-success.png)
 
 ### The Config App - Editing Rules
 
@@ -265,6 +279,7 @@ All user story testing was performed in Edge. All Responsiveness tests were perf
 ![Browser compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/browser-testing/chrome/config-rule-edit.png)
 
 - __In Firefox__
+![Browser compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/browser-testing/firefox/config-rule-edit.png)
 
 ### The Config App - Creating Rule Tiers
 
@@ -275,6 +290,10 @@ All user story testing was performed in Edge. All Responsiveness tests were perf
    ![Browser compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/browser-testing/chrome/config-tier-create-success.png)
 
 - __In Firefox__
+   - Entering tier details:
+   ![Browser compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/browser-testing/firefox/config-tier-create.png)
+   - The success message:
+   ![Browser compatibility testing](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/browser-testing/firefox/config-tier-create-success.png)
 
 ## Code Validation
 
