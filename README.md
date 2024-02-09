@@ -99,9 +99,7 @@ The architecture of the project was critical to ensuring that the project is sca
 ## UX
 
 ### Colour Scheme
-The aim of this site was to appear professional, accurate and trustworthy with good levels of contrast to satisfy optimal UX design. As a result the following colour scheme was used: 
-
-(colours TBC!!!!)
+The aim of this site was to appear professional, accurate and trustworthy with good levels of contrast to satisfy optimal UX design.
 
 As this is an entirely new site, I do not have any demographic data about the expected users. Once the site is in use data will be collected and demographic assumptions will be revised. The colour scheme can then be changed if it is felt necessary. 
 
