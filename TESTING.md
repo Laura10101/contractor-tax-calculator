@@ -355,6 +355,24 @@ The second warning relates to the use of document.write() to populate the DOM wh
 
 ## JavaScript Tests
 
+The JavaScript underpinning the config app was highly complex and so testing all of the scenarios supported by the config app was not possible manually. I therefore developed a suite of JavaScript automated tests using Jest.
+
+The JavaScript for the config app is organised into four layers as described below:
+
+- **views.js** provides the event handlers and action methods that provide the functionality for each component of the user interface.
+- **view_utils.js** provides a set of utility functions for DOM manipulation and data validation. These cover controlling Bootstrap modals, validating user input, and displaying models returned by the API to the user.
+- **view_models.js** provide a set of functions used for managing application state. This includes storing and refreshing referential data (Jurisdictions and Tax Categories), query methods to retrieve objects from the app state by ID or other attributes, and commands for managing entity ordinals.
+- **view_consts.js** define constants used by the other layers of JavaScript. These constants include API endpoints for different actions and IDs of important DOM elements.
+- **service_clients.js** define a set of functions that provide easier access to the APIs via a set of JQuery AJAX requests.
+
+I therefore organiseed my Jest tests for the config app into four suites with each suite testing one of the layers above, with the exception of the view_consts layer since this contains no functionality.
+
+The four test suites comprise 259 tests, achieving overall coverage across the five layers of 83% of functions and 92% of statements.
+
+All of these tests are currently passing as shown below.
+
+![JSHint validation for views.js](https://laura10101.github.io/contractor-tax-calculator/documentation/validation/js/views-validation.png)
+
 ## API Tests
 
 The main functionality for the tax calculator has been implemented across five different APIs, each managing the data and services associated with a different data domain. Each API was separated into a number of logical layers as described in the [README](README.md):
