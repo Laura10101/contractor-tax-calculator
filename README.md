@@ -317,36 +317,75 @@ When I choose to add or edit a tax rate, I am shown a form to enter the details 
   ![Editing questions in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-edit-question-displayed.png)
 
 - __Adding Multiple Choice Options__
-  - To add a multiple choice option, the user must first select a multiple choice question from the Questions display.
+  - To add a multiple choice option, the user must first select to edit a multiple choice question from the Questions display, as described above.
   - Multiple choice options can only be added when the question is being edited (not created).
   - Click the *Add Option* button at the bottom of the `Multiple Choice Question` form.
+  ![Editing questions in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-edit-question.png)
+  - Complete the form that is displayed and click *Save Changes*.
+  ![Creating multiple choice options in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-add-option.png)
+  - A success message is displayed:
+  ![Creating multiple choice options in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-add-option-success.png)
+  - The new option is displayed in the table on the `Edit Question` page.
+  ![Creating multiple choice options in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-add-option-displayed.png)
 
 - __Reordering Questions__
   - To move questions up or down, the user clicks the Move Up or Move Down button next to a question.
+  - In the screenshot below, the Salary question preceeds the Dividends question.
+  ![Reordering questions in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-question-swap-1.png)
+  - After clicking the Move Up button on Dividends, that question now comes first.
+  ![Reordering questions in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-question-swap-2.png)
 
 - __The Rulesets display__
   - The config app clearly displays all rulesets for the selected jurisdiction to the user.
   - For each ruleset, the rules defined under that ruleset are also displayed.
+  ![Rulesets and rules displayed in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-ruleset-displayed.png)
 
 - __The Create Ruleset journey__
-  - To create a new ruleset, the user clicks the Add Ruleset button at the top of the config app.
+  - To create a new ruleset, the user clicks the *+ Ruleset* button at the top of the config app.
   - The user then selects a tax category to create the ruleset for.
+  ![Creating a ruleset in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-ruleset-tax-category.png)
+  - A success message is then displayed.
+  ![Creating a ruleset in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-ruleset-success.png)
+  - And the ruleset is displayed within the rulesets display.
+  ![Creating a ruleset in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-ruleset-displayed.png)
 
 - __Reordering Rulesets__
   - To reorder rulesets, the user clicks the Move Up or Move Down button at the top of the Ruleset display.
+  - In the image below, the Income Tax ruleset preceeds the Dividend Tax ruleset.
+  ![Reodering rulesets in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-swap-rulesets-1.png)
+  - After moving the Dividend Tax ruleset up, this is displayed first.
+  ![Reodering rulesets in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-swap-rulesets-2.png)
 
 - __The Add Rule journey__
-  - To add a rule, the user clicks the Add Rule button at the top of the Ruleset display.
+  - To add a rule, the user clicks the *+* button in the title bar for the Ruleset to which the rule should be added.
   - The user then chooses a Rule Type.
-  - The user then fills out the `Create Rule` form that is displayed.
+  ![Creating a rule in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-rule-type.png)
+  - The user then fills out the `Create Rule` form that is displayed and then clicks *Save Changes*.
+  ![Creating a rule in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-rule-create.png)
+  - A success message is then displayed.
+  ![Creating a rule in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-rule-create-success.png)
+  - And the rule is displayed in the rulesets display.
+  ![Creating a rule in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-rule-create-displayed.png)
 
 - __Editing Rules__
   - To edit a rule, the user clicks the Edit Rule button next to any rule in the Rulesets display.
   - From here, they complete the form that is displayed and click *Save Changes*
+  ![Editing a rule in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-rule-edit.png)
+  - A success message is then displayed.
+  ![Editing a rule in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-rule-edit-success.png)
+  - And the rule is updated in the rulesets display.
+  ![Editing a rule in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-rule-edit-displayed.png)
 
 - __Adding Rule Tiers__
   - To add a primary or secondary rule tier, the user first selects Edit next to either a Tiered Rate rule or a Tiered Rate rule with progression.
   - The user can then choose to add a tier by clicking the *+ Tiers* button at the bottomn of the form.
+  ![Adding a rule tier in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-tier-create-displayed.png)
+  - The user then completes the form that is displayed and clicks *Save Changes*.
+  ![Adding a rule tier in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-tier-create.png)
+  - A success message is displayed.
+  ![Adding a rule tier in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-tier-create-success.png)
+  - The new tier is then displayed.
+  ![Adding a rule tier in the config app](https://laura10101.github.io/contractor-tax-calculator/documentation/screenshots/features/config-tier-create-displayed.png)
 
 ### Features Left to Implement
 For this project I had to be very careful to keep the scope as tight as possible since there was a large amount of legal research, algorithms and architecture to carry out. With the limited time available, I had to prioritise. I architected the project in an agile way, to ensure that I could come back to it at a later date and add functionality as easily as possible. With more time, I would consider adding the following functionality:
